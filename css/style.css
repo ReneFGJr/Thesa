@@ -1,0 +1,69 @@
+.btn-social {
+    width: 90%;
+    position: relative;
+    opacity: 1;
+    transition: 0.3s ease;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px grey;
+    padding: 0px;
+    margin: 10px;
+}
+
+.btn-social:hover {
+    transform: scale(1.1, 1.1);
+    opacity: 1;
+    box-shadow: 2px 2px 15px grey;
+}
+
+.btn-mini {
+    width: 130px;
+    /*height: 80%; */
+    position: relative;
+    opacity: 1;
+    transition: 0.3s ease;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px grey;
+    padding: 0px;
+    margin: 10px 0px;
+    border-radius: 20%;
+}
+
+.btn-mini:hover {
+    transform: scale(1.1, 1.1);
+    opacity: 1;
+    box-shadow: 2px 2px 5px grey;
+}
+.term_item
+	{
+		font-size: 150%;
+	}
+.supersmall
+	{
+		font-size: 65%;
+	}
+.small
+	{
+		font-size: 85%;
+	}
+.middle
+	{
+		font-size: 120%;
+	}
+.big
+	{
+		font-size: 200%;
+	}
+.xxxbig
+	{
+		font-size: 300%;
+	}	
+
+.treeview
+	{
+		font-size: 125%;
+	}
+	
+.h4, h4
+	{
+		color: #c0c0c0;
+	}

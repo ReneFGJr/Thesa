@@ -1,0 +1,76 @@
+.logo_title {
+	font-family: "Unica One";
+	font-size: 700%;
+	color: #3333c0;
+	text-align: center;
+}
+.logo_subtitle {
+	font-family: "Roboto";
+	font-size: 150%;
+	color: #3333c0;
+	text-align: center;
+}
+.logo_mini {
+	font-size: 150%;
+}
+#welcome {
+	padding-top: 50px;
+	min-height: 900px;
+	color: #fff;
+	background-color: #fefefe;
+}
+.bg_thesa {
+	background-color: #3333c0;
+	color: #ffffff;
+}
+.thesa_tree {
+	width: 100%;
+	border: 1px solid #C0C0C0;
+	min-height: 500px;
+}
+a.term
+	{
+		font-size: 120%;
+		line-height: 180%;
+		/* font-weight: bold; */
+	}
+a.term_word
+	{
+		font-size: 120%;
+		line-height: 180%;
+		font-style: italic;		
+	}
+ul.thesa
+	{
+		list-style-type: none;
+	}
+.thesa-concept {
+	font-size: 200%;
+	font-weight: bold;
+	padding-bottom: 5px;
+}
+.thesa {
+	color: #3333c0;
+}
+.thesa_under {
+	border-bottom: 1px dashed #3333c0;
+}
+a {
+	color: #3333c0;
+}
+a:hover {
+	color: #3333c0;
+}
+.nav > li > a {
+	color: #3333c0;
+	font-size: 15px;
+	/* font-family: "Roboto"; */
+	font-family: "Unica One";
+	text-decoration: none;
+}
+.nav > li > a > hover {
+	color: #3333c0;
+	opacity: 0.8;
+	text-decoration: none;
+}
+

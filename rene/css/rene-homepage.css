@@ -1,0 +1,66 @@
+/*!
+ * Start Bootstrap - Shop Homepage (http://startbootstrap.com/)
+ * Copyright 2013-2016 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+ */
+
+body {
+    padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+	font-family: "Roboto Condensed","Ropa Sans", "Roboto","Open Sans Condensed";
+	font-color: #333333;
+}
+.navbar
+	{
+		background-color: #efefef;
+	}
+.navbar-brand
+	{
+		font-size: 40px;
+		font-family: "Ropa Sans", "Roboto","Open Sans Condensed";		
+	}
+a
+	{
+		color: #111111;
+	}	
+a:hover
+	{
+		color: #000000;
+	}	
+	
+.slide-image {
+    width: 100%;
+}
+
+.carousel-holder {
+    margin-bottom: 30px;
+}
+
+.carousel-control,
+.item {
+    border-radius: 4px;
+}
+
+.caption-title {
+    padding: 5px;
+	background-color: #C0C0E0;
+	font-family: Tahoma, Arial;
+    overflow: hidden;
+}
+
+.caption {
+    min-height: 130px;
+    overflow: hidden;
+	margin-bottom: 30px;
+}
+
+.caption h4 {
+    /* white-space: nowrap; */
+}
+
+p
+	{
+		font-size: 20px;
+	}
+footer {
+    margin: 50px 0;
+}
