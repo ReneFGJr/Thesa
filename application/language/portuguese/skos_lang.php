@@ -35,11 +35,12 @@ $lang['Welcome_signup'] = 'Cadastro de usuário';
 $lang['Username'] = 'Nome do usuário';
 $lang['Sign Up Send'] = 'Solicitar cadastro';
 $lang['Voltar'] = 'Nome do usuário';
-
+$lang['concept_add'] = 'Adicionar Termos';
 $lang['all'] = 'todas';
 $lang['Welcome'] = 'Bem vindo a';
 $lang['edit'] = 'editar';
 $lang['last_update'] = 'atualização';
+$lang['glossario'] = 'Glossário';
 
 
 /* Login */
@@ -67,7 +68,7 @@ $lang['skosxl:literalForm'] = 'extenso de ';
 $lang['skosxl:abbreviation_of'] = 'abreviatura de';
 
 
-$lang['skos:definition'] = 'Definição do descritor';
+$lang['skos:definition'] = 'Definição do conceito';
 $lang['skos:example'] = 'Nota de exemplo';
 $lang['skos:scopeNote'] = 'Nota de escopo / nota de aplicação';
 $lang['skos:changeNote'] = 'Nota de alteração';

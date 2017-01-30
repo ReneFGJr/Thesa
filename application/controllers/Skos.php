@@ -818,6 +818,8 @@ class Skos extends CI_Controller {
 			{
 				/* TERMO PERDIDOS */
 				$tela .= $this->skoses->acao_novos_termos($id);
+				$tela .= $this->skoses->acao_visualizar_glossario($id);
+
 				$tela .= $this->skoses->termos_sem_conceito($id,$ltr);
 			}
 		$tela .= '	</div>';
