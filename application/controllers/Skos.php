@@ -1,5 +1,5 @@
 <?php
-class skos extends CI_Controller {
+class Skos extends CI_Controller {
 
 	var $CO = 25;
 	/* Conceito */
@@ -16,7 +16,6 @@ class skos extends CI_Controller {
 
 	function __construct() {
 		parent::__construct();
-		//$this -> lang -> load("app", "portuguese");
 		$this -> lang -> load("skos", "portuguese");
 		$this -> load -> library('form_validation');
 		$this -> load -> database();
@@ -29,6 +28,16 @@ class skos extends CI_Controller {
 		/* Security */
 		//		$this -> security();
 	}
+	
+	function index() {
+		$this -> cab(2);
+
+		$this -> load -> view("skos/github_fork", null);
+		$this -> load -> view("skos/welcome", null);
+	
+		$this -> load -> view("skos/thesa_home", null);
+		//redirect(base_url('index.php/skos/myskos'));
+	}	
 
 	function cab($nb = 1) {
 		$this -> load -> view('skos/thesa_header', null);
@@ -59,13 +68,7 @@ class skos extends CI_Controller {
 		}
 	}
 
-	function index() {
-		$this -> cab(2);
-		$this -> load -> view("skos/github_fork", null);
-		$this -> load -> view("skos/welcome", null);
-		$this -> load -> view("skos/thesa_home", null);
-		//redirect(base_url('index.php/skos/myskos'));
-	}
+
 
 	/* LOGIN */
 	function login($act='') {
@@ -88,6 +91,12 @@ class skos extends CI_Controller {
 		}
 
 	}
+	/* LOGIN SIGN UP */
+	function login_sign_up()
+		{
+		$this -> cab(2);
+		$this->load->view('skos/thesa_sign_up',null);	
+		}
 
 	/* EDIcaO DAS CLASSE */
 	function classe() {

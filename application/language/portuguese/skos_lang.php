@@ -30,6 +30,11 @@ if (!function_exists(('msg')))
 	}
 $lang['status_1'] = 'Em edição';
 $lang['status_2'] = 'Publicado';
+$lang['fullName'] = 'Nome completo';
+$lang['Welcome_signup'] = 'Cadastro de usuário';
+$lang['Username'] = 'Nome do usuário';
+$lang['Sign Up Send'] = 'Solicitar cadastro';
+$lang['Voltar'] = 'Nome do usuário';
 
 $lang['all'] = 'todas';
 $lang['Welcome'] = 'Bem vindo a';

@@ -39,11 +39,6 @@
 </style>
 
 <body data-spy="scroll" data-target=".navbar" data-offset="50">
-<script>
-	$("#main-wrap").blockScroll({
-
-	});
-</script>
 	<nav class="navbar navbar-fixed-top" id="main-wrap">
 		<div class="container-fluid">
 			<div class="navbar-header">

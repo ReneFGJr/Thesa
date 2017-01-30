@@ -18,6 +18,6 @@ if (!isset($title)) { $title = 'Thesa - Semantic Thesaurus';}
 	
 	
 	<!--- ICONE --->
-	<link rel="shortcut icon" href="<?php echo base_url('img/icone/favicon.png');?>">
-	<link href="<?php echo base_url('img/icone/favicon.ico');?>" rel="icon" type="image/x-icon"/>
+	<link rel="shortcut icon" href="<?php echo base_url('favicon.png');?>">
+	<link href="<?php echo base_url('img/icone/favicon.png');?>" rel="icon" type="image/x-icon"/>
 </header>
