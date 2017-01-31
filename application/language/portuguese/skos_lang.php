@@ -41,6 +41,9 @@ $lang['Welcome'] = 'Bem vindo a';
 $lang['edit'] = 'editar';
 $lang['last_update'] = 'atualização';
 $lang['glossario'] = 'Glossário';
+$lang['delete_term_confirm'] = 'Excluir term do tesauro?';
+$lang['success_action'] = 'Ação realizada com sucesso';
+$lang['item_already_deleted'] = 'Term já estava excluído';
 
 
 /* Login */

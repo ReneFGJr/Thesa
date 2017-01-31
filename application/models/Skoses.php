@@ -3,6 +3,7 @@ class skoses extends CI_model {
 
 	VAR $table_concept = 'th_concept';
 	VAR $table_thesaurus = 'th_thesaurus';
+	var $table_terms = 'rdf_literal';
 	var $chave = 'pweio23908d09m09e8m';
 	/* Recover ID Thesaurus */
 	function th($th = '') {
@@ -797,6 +798,21 @@ class skoses extends CI_model {
 		return ($sx);
 	}
 
+	function delete_term_from_th($th,$idt)
+		{
+			$sql = "select * from rdf_literal_th where lt_term = $idt and lt_thesauros = $th";
+			$rlt = $this->db->query($sql);
+			$rlt = $rlt->result_array();
+			if (count($rlt) > 0)
+				{
+					$sql = "delete from rdf_literal_th where lt_term = $idt and lt_thesauros = $th";
+					$rlt = $this->db->query($sql);
+					return(1);				
+				} else {
+					return(0);
+				}
+		}
+
 	function terms_add($t = '', $id = '', $lang = '') {
 		$sql = "select * from rdf_literal where rl_value = '$t' and rl_type = 24 and rl_lang = '$lang' ";
 		$rlt = $this -> db -> query($sql);
@@ -895,6 +911,17 @@ class skoses extends CI_model {
 		$ops = '1:' . msg('status_1');
 		$ops .= '&2:' . msg('status_2');
 		array_push($cp, array('$O ' . $ops, 'pa_status', msg('thesaurus_status'), true, true));
+		array_push($cp, array('$B8', '', msg('save'), false, true));
+		return ($cp);
+	}
+
+	function cp_term($id = '') {
+		$cp = array();
+		array_push($cp, array('$H8', 'id_rl', '', true, true));
+		array_push($cp, array('$S80', 'rl_value', msg('term_name'), true, true));
+
+		$sql = "select * from language order by lg_order";
+		array_push($cp, array('$Q  lg_code:lg_language:' . $sql, 'rl_lang', msg('language'), true, true));
 		array_push($cp, array('$B8', '', msg('save'), false, true));
 		return ($cp);
 	}
