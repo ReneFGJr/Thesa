@@ -1,11 +1,33 @@
-<?php ?>	
+<?php
+$link = base_url('index.php');
+$link .= '/skos/c/' . $id_c . '/' . $c_th;
+
+$linkc = $this -> skoses -> url;
+$linkc .= 'index.php/skos/c/' . $id_c;
+//.'#'.$rl_value;
+
+$linkr = base_url('index.php');
+$linkr .= '/skos/c/' . $id_c . '/rdf';
+?>	
 <div class="container">
 	<div class="row">
-		<div class="col-md-12">
-			<span class="thesa-concept thesa thesa_under"><?php echo $rl_value; ?></span>
+		<div class="col-md-10 col-xs-10 col-sm-10">
+			<a  href="<?php echo $link; ?>"  class="thesa-concept thesa thesa_under"><?php echo $rl_value; ?></a>
+			<br><input type="text" id="cpc" value = "<?php echo $linkc; ?>" class="small" style="width: 100%; border: 0px;" readonly >
 			<br>
 			<br>
 		</div>
+		<div class="col-md-2 text-right">
+			<nobr>
+			<a href="<?php echo $linkc; ?>" class="btn btn-default"><?php echo $this -> skoses -> prefix . ':' . $c_concept; ?></a>
+			<button class="btnc btn btn-default" data-clipboard-target="#cpc" title="<?php echo msg('copy_to_clipboard'); ?>" style="font-size: 140%;">
+    			<span class="glyphicon glyphicon-copy" aria-hidden="true"></span>
+			</button>
+			<a href="<?php echo $linkr; ?>" class="btn btn-default" title="<?php echo msg("rdf_link");?>">
+			<img src="<?php echo base_url('img/icone/rdf_w3c.svg');?>" height="18">
+			</a>
+			</nobr>
+		</div>		
 	</div>
 	<div class="row">
 		<div class="col-md-5">
@@ -53,10 +75,10 @@
 						echo '<br>';
 					}
 					echo '<br>';
-				}				
+				}
 
 				/**************************************************** usado por ****/
-				if ((count($terms_hd) > 0) and ($this->skoses->autho('',$ct_th))) {
+				if ((count($terms_hd) > 0) and ($this -> skoses -> autho('', $ct_th))) {
 					for ($r = 0; $r < count($terms_hd); $r++) {
 						$line = $terms_hd[$r];
 						$link = '<a href="' . base_url('index.php/skos/c/' . $line['ct_concept']) . '" class="thesa_link">';
@@ -68,8 +90,7 @@
 						echo '<br>';
 					}
 					echo '<br>';
-				}				
-
+				}
 
 				/******************************************** TR *******************/
 				if (count($terms_tr) > 0) {
@@ -91,8 +112,8 @@
 					for ($r = 0; $r < count($terms_ge); $r++) {
 						$line = $terms_ge[$r];
 						$link = '<a href="' . base_url('index.php/skos/c/' . $line['ct_concept']) . '" class="thesa_link">';
-						$prop = trim($line['prefix_ref']).':'.trim($line['rs_propriety']);
-						echo msg($prop).': ';
+						$prop = trim($line['prefix_ref']) . ':' . trim($line['rs_propriety']);
+						echo msg($prop) . ': ';
 						echo $link;
 						echo $line['rl_value'];
 						echo '</a>';
@@ -105,26 +126,23 @@
 		</div>
 		<div class="col-md-5">
 		<?php
-			/******************************************************* NOTES *******/
-			if (count($notes) > 0) {
-				for ($r = 0; $r < count($notes); $r++) {
-					$line = $notes[$r];
-					echo '<br>';
-					echo '<span class="thesa_under thesa">';
-					echo '<b>';
-					echo msg($line['prefix_ref'] . ':' . $line['rs_propriety']);
-					echo '</b>';
-					echo '</span>';
-					echo '<br><span class="thesa_texto">' . mst($line['rl_value']) . '</span>';
-					echo '<br>';
-				}
-
+		/******************************************************* NOTES *******/
+		if (count($notes) > 0) {
+			for ($r = 0; $r < count($notes); $r++) {
+				$line = $notes[$r];
+				echo '<br>';
+				echo '<span class="thesa_under thesa">';
+				echo '<b>';
+				echo msg($line['prefix_ref'] . ':' . $line['rs_propriety']);
+				echo '</b>';
+				echo '</span>';
+				echo '<br><span class="thesa_texto">' . mst($line['rl_value']) . '</span>';
+				echo '<br>';
 			}
+
+		}
 				?>
 		</div>		
-		<div class="col-md-2 text-right">
-			<span class="btn btn-default"><?php echo $c_concept; ?></span>
-		</div>
 	</div>
 </div>
 

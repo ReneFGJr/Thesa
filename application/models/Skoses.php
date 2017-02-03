@@ -5,6 +5,29 @@ class skoses extends CI_model {
 	VAR $table_thesaurus = 'th_thesaurus';
 	var $table_terms = 'rdf_literal';
 	var $chave = 'pweio23908d09m09e8m';
+
+	var $name = '';
+	var $prefix = '';
+	var $name_contact = '';
+	var $name_contact_email = '';
+	var $url = '';
+
+	function __construct() {
+		$sql = "select * from thesa where id_thesa = 1";
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+		if (count($rlt) == 0) {
+			$this -> load -> view('skos/510', $data);
+		} else {
+			$line = $rlt[0];
+			$this -> name = $line['thesa_name'];
+			$this -> prefix = $line['thesa_prefix'];
+			$this -> name_contact = $line['thesa_contact'];
+			$this -> name_contact_email = $line['thesa_contact_email'];
+			$this -> url = $line['thesa_url'];
+		}
+	}
+
 	/* Recover ID Thesaurus */
 	function th($th = '') {
 		if (strlen($th) == 0) {
@@ -798,20 +821,18 @@ class skoses extends CI_model {
 		return ($sx);
 	}
 
-	function delete_term_from_th($th,$idt)
-		{
-			$sql = "select * from rdf_literal_th where lt_term = $idt and lt_thesauros = $th";
-			$rlt = $this->db->query($sql);
-			$rlt = $rlt->result_array();
-			if (count($rlt) > 0)
-				{
-					$sql = "delete from rdf_literal_th where lt_term = $idt and lt_thesauros = $th";
-					$rlt = $this->db->query($sql);
-					return(1);				
-				} else {
-					return(0);
-				}
+	function delete_term_from_th($th, $idt) {
+		$sql = "select * from rdf_literal_th where lt_term = $idt and lt_thesauros = $th";
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+		if (count($rlt) > 0) {
+			$sql = "delete from rdf_literal_th where lt_term = $idt and lt_thesauros = $th";
+			$rlt = $this -> db -> query($sql);
+			return (1);
+		} else {
+			return (0);
 		}
+	}
 
 	function terms_add($t = '', $id = '', $lang = '') {
 		$sql = "select * from rdf_literal where rl_value = '$t' and rl_type = 24 and rl_lang = '$lang' ";
@@ -949,14 +970,14 @@ class skoses extends CI_model {
 		if (count($rlt) == 0) {
 
 			/* locate next concept ID */
-			$sql = "select c_concept from th_concept order by c_concept desc limit 1 ";
+			$sql = "select id_c from th_concept order by id_c desc limit 1 ";
 			$rlt = $this -> db -> query($sql);
 			$rlt = $rlt -> result_array();
 			if (count($rlt) == 0) {
 				$idc = 0;
 			} else {
 				$line = $rlt[0];
-				$idc = sonumero($line['c_concept']);
+				$idc = sonumero($line['id_c']);
 			}
 			$co = 'c' . strzero(($idc + 1), 3);
 
@@ -1325,7 +1346,6 @@ class skoses extends CI_model {
 		$sx .= '<br/>';
 		$sx .= '<br/>';
 		$sx .= '<a href="' . base_url('index.php/skos/thrs/' . $th) . '" class="btn btn-default" style="width: 100%;">' . msg('Report Thesaurus') . '</a>';
-		
 
 		return ($sx);
 	}
@@ -1367,6 +1387,66 @@ class skoses extends CI_model {
 				$yrlt = $this -> db -> query($sql);
 			}
 		}
+	}
+
+	function xml($data) {
+
+		//create a new document
+		// 1st param takes version and 2nd param takes encoding;
+		$dom = new DomDocument("1.0", "UTF-8");
+
+		// it can also be set later, like below, if you decide not to declare at first line:
+		$dom -> version = "1.0";
+		$dom -> encoding = "UTF-8";
+
+		$dom -> createElement('NODE_NAME', 'NODE_VALUE');
+		// we create a XML Node and store it in a variable called noteElem;
+		$noteElem = $dom -> createElement('rdf');		
+
+		// createElement takes 2 param also, with 1st param takes the node Name, and 2nd param is node Value
+		$toElem = $dom -> createElement('concept', $data['ct_concept']);
+		$toElem->setAttribute('created', $data['c_created']);
+		//$toElem->setAttribute('value', $data['rl_value']);
+		//$toElem->setAttribute('thesaurus', $data['pa_name']);
+		
+		
+		$toElem2 = $dom -> createElement('url', $this->skoses->url.'index.php/c/');
+		$toElem3 = $dom -> createElement('prefix', $this->skoses->prefix);
+
+		$toElem4 = $dom -> createElement('literal', $data['rl_value']);
+		$toElem4->setAttribute('language', $data['rl_lang']);
+		
+		$toElem5 = $dom -> createElement('thesauros', $data['pa_name']);
+		$toElem6 = $dom -> createElement('thesauros_id', $data['id_pa']);
+		$toElem7 = $dom -> createElement('uri', $this->skoses->prefix.':'.$data['ct_concept']);
+		$toElem8 = $dom -> createElement('class', 'skos');
+		$toElem9 = $dom -> createElement('subclass', $data['pa_class']);
+
+		// now, we add $toElem as a child of $noteElem
+		$toSKOS = $dom -> createElement('skos', '');
+		$toSKOS->setAttribute('uri', $this->skoses->prefix.':'.$data['ct_concept']);
+		$toSKOS->setAttribute('value', $this->skoses->prefix.':'.$data['rl_value']);
+		$toSKOS->setAttribute('language', $this->skoses->prefix.':'.$data['rl_lang']);
+		
+		$toSKOS -> appendChild($toElem7);
+		$toSKOS -> appendChild($toElem);
+		$toSKOS -> appendChild($toElem2);
+		$toSKOS -> appendChild($toElem3);
+		$toSKOS -> appendChild($toElem4);
+		$toSKOS -> appendChild($toElem5);
+		$toSKOS -> appendChild($toElem6);
+		$toSKOS -> appendChild($toElem8);
+		$toSKOS -> appendChild($toElem9);
+		
+		$noteElem -> appendChild($toSKOS);
+
+		// add $noteElem to the main dom
+		$dom->appendChild( $noteElem );
+		$dom->createComment('Thesa');
+
+		echo $dom -> saveXML();
+		exit;
+		return ($sx);
 	}
 
 }

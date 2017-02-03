@@ -15,6 +15,10 @@ if (!isset($title)) { $title = 'Thesa - Semantic Thesaurus';}
 	<script src=<?php echo base_url('js/bootstrap.js');?>></script>
 	<script src=<?php echo base_url('js/js_windows.js');?>></script>
 	<script src=<?php echo base_url('js/animatescroll.min.js'); ?>></script>
+	<script src=<?php echo base_url('js/clipboard.js'); ?>></script>
+	<script>
+		new Clipboard('.btnc');	
+	</script>
 	
 	
 	<!--- ICONE --->

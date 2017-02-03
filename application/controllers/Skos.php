@@ -23,6 +23,7 @@ class Skos extends CI_Controller {
 		$this -> load -> helper('form_sisdoc');
 		$this -> load -> helper('url');
 		$this -> load -> library('session');
+		$this -> load -> helper('xml');
 
 		date_default_timezone_set('America/Sao_Paulo');
 		/* Security */
@@ -470,20 +471,32 @@ class Skos extends CI_Controller {
 	}
 
 	/***************************************************************************** Conecpt */
-	function c($c = '', $th = '') {
+	function c($c = '', $proto = '') {
 		$this -> load -> model("skoses");
 
-		/* CAB */
-		$this -> cab();
-
 		$data = $this -> skoses -> le($c);
+		if (count($data) == 0) { redirect(base_url('index.php/skos/error/c'));
+		}
 		$data = $this -> skoses -> le_c($data['id_c'], $data['ct_th']);
+		if (count($data) == 0) { redirect(base_url('index.php/skos/error/c'));
+		}
 
-		$this -> load -> view('skos/thesa_thesaurus', $data);
-		$this -> load -> view('skos/thesa_breadcrumb', $data);
+		switch ($proto) {
+			case 'xml' :
+				header('Content-type: text/xml');
+				$this -> skoses -> xml($data);
+				break;
+			default :
+				/* CAB */
+				$this -> cab();
+				
+				$this -> load -> view('skos/thesa_thesaurus', $data);
+				$this -> load -> view('skos/thesa_breadcrumb', $data);
 
-		$this -> load -> view("skos/thesa_schema", $data);
-		$this -> load -> view("skos/thesa_concept", $data);
+				$this -> load -> view("skos/thesa_schema", $data);
+				$this -> load -> view("skos/thesa_concept", $data);
+				break;
+		}
 
 		//redirect(base_url('index.php/skos/myskos'));
 	}
@@ -643,6 +656,13 @@ class Skos extends CI_Controller {
 		$this -> load -> view('content', $data);
 	}
 
+	function error($er = '') {
+		$this -> cab();
+		$data['title'] = 'Erro 510';
+		$data['content'] = msg('concept_not_found');
+		$this -> load -> view('skos/510', $data);
+	}
+
 	function ed($idc = 0, $tp = '') {
 		/* Load model */
 		$this -> load -> model("skoses");
@@ -706,6 +726,8 @@ class Skos extends CI_Controller {
 
 		$data['content'] = $tela;
 		$this -> load -> view('content', $data);
+
+		$this -> load -> view('header/footer', null);
 	}
 
 	/* Narrowed */
@@ -784,7 +806,7 @@ class Skos extends CI_Controller {
 
 	}
 
-	function term_delete($th = '', $chk = '', $idt = '', $act = '', $chk2='') {
+	function term_delete($th = '', $chk = '', $idt = '', $act = '', $chk2 = '') {
 		$this -> load -> model('skoses');
 		$this -> cab();
 
@@ -792,14 +814,13 @@ class Skos extends CI_Controller {
 			$th = $_SESSION['skos'];
 		}
 		$data = $this -> skoses -> le_th($th);
-		
+
 		$data2 = $this -> skoses -> le_term($idt, $th);
-		
-		if (count($data2) == 0)
-			{
-				redirect(base_url('index.php/skos/terms/'.$th));
-			}
-					
+
+		if (count($data2) == 0) {
+			redirect(base_url('index.php/skos/terms/' . $th));
+		}
+
 		$data = array_merge($data, $data2);
 
 		$this -> load -> view('skos/thesa_thesaurus', $data);
@@ -810,22 +831,20 @@ class Skos extends CI_Controller {
 
 		$chk3 = checkpost_link($th . 'DEL' . $idt);
 		if ($chk2 == $chk3) {
-			
-			$rs = $this->skoses->delete_term_from_th($th,$idt);
-			
-			if ($rs==1)
-				{
-					$tela = $this -> load -> view('success', $data, true);
-					$data['content'] = $tela;
-					$this -> load -> view('content', $data);
-				} else {
-					$data['content'] = msg('item_already_deleted');
-					$tela = $this -> load -> view('success', $data, true);
-					$data['content'] = $tela;
-					$this -> load -> view('content', $data);					
-				}
-			
-						
+
+			$rs = $this -> skoses -> delete_term_from_th($th, $idt);
+
+			if ($rs == 1) {
+				$tela = $this -> load -> view('success', $data, true);
+				$data['content'] = $tela;
+				$this -> load -> view('content', $data);
+			} else {
+				$data['content'] = msg('item_already_deleted');
+				$tela = $this -> load -> view('success', $data, true);
+				$data['content'] = $tela;
+				$this -> load -> view('content', $data);
+			}
+
 		} else {
 			$data['link'] = base_url('index.php/skos/term_delete/' . $th . '/' . $chk . '/' . $idt . '/DEL/' . $chk3);
 			$data['content'] = msg('delete_term_confirm');

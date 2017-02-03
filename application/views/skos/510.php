@@ -3,6 +3,6 @@
 	<tr>
 		<td width="50%" align="center"><span class="logo_title logo_mini" style="font-size: 600%;">
 			<span class="glyphicon glyphicon-tags" aria-hidden="true" ></span> THESA</span></td>
-		<td  class="bg_thesa"  align="center" style="color: #fff;"><h1>404 - Page not found</h1></td>
+		<td class="bg_thesa" align="center" style="color: #fff;"><h1><?php echo $title;?></h1><?php echo $content;?></h1></td>
 	</tr>
 </table>

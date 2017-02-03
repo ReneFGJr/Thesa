@@ -44,6 +44,9 @@ $lang['glossario'] = 'Glossário';
 $lang['delete_term_confirm'] = 'Excluir term do tesauro?';
 $lang['success_action'] = 'Ação realizada com sucesso';
 $lang['item_already_deleted'] = 'Term já estava excluído';
+$lang['concept_not_found'] = 'Conceito não localizado';
+$lang['copy_to_clipboard'] = 'Copiar para clipboard';
+$lang['rdf_link'] = 'Arquivo RDF';
 
 
 /* Login */

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.4.1
+-- version 4.4.10
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: 18-Jan-2017 às 20:40
--- Versão do servidor: 5.7.11
--- PHP Version: 5.6.18
+-- Host: bdlivre.ufrgs.br
+-- Generation Time: Feb 02, 2017 at 11:01 AM
+-- Server version: 5.5.31
+-- PHP Version: 5.6.20
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,25 +17,74 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `books`
+-- Database: `tesauros`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `language`
+-- Table structure for table `ci_sessions`
 --
 
-CREATE TABLE `language` (
-  `id_lg` bigint(20) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `ci_sessions` (
+  `id` varchar(40) NOT NULL,
+  `ip_address` varchar(45) NOT NULL,
+  `timestamp` int(10) unsigned NOT NULL DEFAULT '0',
+  `data` blob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `ci_sessions`
+--
+
+INSERT INTO `ci_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES
+('06f5fe6dd01f57d72e579f8b768f299ca4c28ecb', '143.54.112.217', 1485785968, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353738353931353b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a223638626239336631323239346336313932386231396237626131386637396237223b736b6f737c733a313a2233223b736b6f732d6d64357c733a353a22736b6f7333223b),
+('0ffc8ff0d37323f244f6779ad59f08d3125c91c4', '191.32.34.63', 1486039655, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438363033393635353b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a223732316366633036343634393166343536613132616633633463363935633039223b736b6f737c733a313a2239223b736b6f732d6d64357c733a353a22736b6f7339223b),
+('16b313e8acd6fa3259cc49a245929343b242fc27', '143.54.112.217', 1485886179, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353838363136363b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a226631656434333334346638616463313634653635396436666366323966303034223b),
+('1e093225f1e7b700856ddf9da8e13f56f8ab462f', '143.54.235.63', 1485974781, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353937343736313b736b6f737c733a313a2233223b736b6f732d6d64357c733a353a22736b6f7333223b),
+('2badeee7a4517deb048ddc880bd12550958e4bf7', '143.54.112.217', 1485958987, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353935383639303b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a223638396431393436303933356434306163663134346162613636393939323763223b736b6f737c733a313a2236223b736b6f732d6d64357c733a353a22736b6f7336223b),
+('36378e4209e2b7e0bebccc50e3979380c7f421c0', '143.54.112.217', 1485959490, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353935393330323b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a223638396431393436303933356434306163663134346162613636393939323763223b736b6f737c733a313a2236223b736b6f732d6d64357c733a353a22736b6f7336223b),
+('36eca2968313408636b5c8f03ba5cf97b4bc764e', '191.32.34.63', 1486039397, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438363033393139393b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a223732316366633036343634393166343536613132616633633463363935633039223b736b6f737c733a313a2239223b736b6f732d6d64357c733a353a22736b6f7339223b),
+('39c4dbb6a701c62e1abfbafc22378033ca69d68f', '143.54.235.63', 1485946583, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353934363537393b),
+('3bdefb9d928a8845a5ec317007596dd96ecfc796', '143.54.112.217', 1485869770, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353836393438323b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a226631656434333334346638616463313634653635396436666366323966303034223b736b6f737c733a313a2232223b736b6f732d6d64357c733a353a22736b6f7332223b),
+('426380f6be23d8fcbc871995f00e1a4ede1f73be', '143.54.112.217', 1485870190, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353837303138323b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a226631656434333334346638616463313634653635396436666366323966303034223b736b6f737c733a313a2232223b736b6f732d6d64357c733a353a22736b6f7332223b),
+('48efd598b87d1017071d12d6894fad2109ca3a98', '143.54.112.217', 1485799785, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353739393635373b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a223638626239336631323239346336313932386231396237626131386637396237223b736b6f737c733a313a2232223b736b6f732d6d64357c733a353a22736b6f7332223b),
+('49bdf11cc87400af89c6c4c0f0f20e3d27b84391', '191.32.34.63', 1486036093, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438363033353937303b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a223732316366633036343634393166343536613132616633633463363935633039223b736b6f737c733a313a2238223b736b6f732d6d64357c733a353a22736b6f7338223b),
+('4f256490c81788fe91208cfdebf1e31e17e0b28a', '191.32.34.63', 1486036627, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438363033363333303b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a223732316366633036343634393166343536613132616633633463363935633039223b736b6f737c733a313a2238223b736b6f732d6d64357c733a353a22736b6f7338223b),
+('5d8a7e04c02b6dba4a83bf2ca6ed345add002664', '143.54.112.217', 1485874251, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353837343235313b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a226631656434333334346638616463313634653635396436666366323966303034223b736b6f737c733a313a2232223b736b6f732d6d64357c733a353a22736b6f7332223b),
+('67ec903d5ec72c0d791a13f0e7410757f5e81375', '179.178.16.87', 1485857377, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353835373037373b736b6f737c733a313a2235223b736b6f732d6d64357c733a353a22736b6f7335223b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a226631656434333334346638616463313634653635396436666366323966303034223b),
+('697da6687f452c0c2e82cbc4bf40a94621ccf07c', '201.86.199.79', 1485815996, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353831353934313b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a223638626239336631323239346336313932386231396237626131386637396237223b),
+('6e1f5e9a2cca70d4a9c3b03eb2ea8d0c94d477bd', '191.32.34.63', 1486038075, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438363033383037353b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a223732316366633036343634393166343536613132616633633463363935633039223b736b6f737c733a313a2238223b736b6f732d6d64357c733a353a22736b6f7338223b),
+('7096e5a5a4d957541a60a0d1184b89fce040441d', '143.54.112.217', 1485798284, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353739383238343b),
+('724aa87afbbfd09a61a41e60ad743b6c0f4ba4f1', '143.54.112.217', 1485958287, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353935383134343b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a223638396431393436303933356434306163663134346162613636393939323763223b736b6f737c733a313a2236223b736b6f732d6d64357c733a353a22736b6f7336223b),
+('762663315e849155f6ab3f6a4ac1120027251b26', '143.54.112.217', 1485780976, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353738303836303b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a223638626239336631323239346336313932386231396237626131386637396237223b736b6f737c733a313a2237223b736b6f732d6d64357c733a353a22736b6f7337223b),
+('7c0c65a9e4378ce447764ba817db4a0072bf9093', '143.54.235.63', 1485791958, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353739313935353b),
+('7d87a082ab5844bff0d8e03dbbaaa3ae180c2db1', '179.178.16.87', 1485857648, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353835373338323b736b6f737c733a313a2235223b736b6f732d6d64357c733a353a22736b6f7335223b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a226631656434333334346638616463313634653635396436666366323966303034223b),
+('85d12cd020784a71e5e2869471cc9146029b6c62', '179.178.16.87', 1485857871, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353835373735333b736b6f737c733a313a2235223b736b6f732d6d64357c733a353a22736b6f7335223b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a226631656434333334346638616463313634653635396436666366323966303034223b),
+('892ae212bcb309ff68606af7e91d4eab8ef3929e', '191.32.34.63', 1486037153, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438363033373031393b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a223732316366633036343634393166343536613132616633633463363935633039223b736b6f737c733a313a2238223b736b6f732d6d64357c733a353a22736b6f7338223b),
+('95050c66a14d54a66a59d2de551393e87fc68490', '143.54.112.217', 1485781580, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353738313538303b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a223638626239336631323239346336313932386231396237626131386637396237223b736b6f737c733a313a2237223b736b6f732d6d64357c733a353a22736b6f7337223b),
+('acc59511594c880dc76eaa1bd10263931b86ef72', '143.54.112.217', 1485959294, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353935393030303b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a223638396431393436303933356434306163663134346162613636393939323763223b736b6f737c733a313a2236223b736b6f732d6d64357c733a353a22736b6f7336223b),
+('ec834f10cff9c8c7a3ddb8092e8f0f534342b95f', '143.54.112.217', 1485872358, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353837323238373b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a226631656434333334346638616463313634653635396436666366323966303034223b736b6f737c733a313a2232223b736b6f732d6d64357c733a353a22736b6f7332223b),
+('f9c3a1273cbaf1cb101b6f7610e54ab1a2a7c54d', '143.54.112.217', 1485871780, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438353837313735363b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a226631656434333334346638616463313634653635396436666366323966303034223b736b6f737c733a313a2232223b736b6f732d6d64357c733a353a22736b6f7332223b),
+('fb3ff537297ab0cf6a864ab29e69e1ed5b9661d9', '191.32.34.63', 1486039085, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438363033383833323b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a223732316366633036343634393166343536613132616633633463363935633039223b736b6f737c733a313a2239223b736b6f732d6d64357c733a353a22736b6f7339223b),
+('fdc946c143e8691d4ea6921b22912d01fad39808', '191.32.34.63', 1486036860, 0x5f5f63695f6c6173745f726567656e65726174657c693a313438363033363633313b757365727c733a343a2272656e65223b70657266696c7c733a383a222341444d23424942223b6e6f6d657c733a32323a2252656e6520462e204761627269656c204a756e696f72223b6e6976656c7c733a313a2239223b69647c733a313a2231223b636865636b7c733a33323a223732316366633036343634393166343536613132616633633463363935633039223b736b6f737c733a313a2238223b736b6f732d6d64357c733a353a22736b6f7338223b);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `language`
+--
+
+CREATE TABLE IF NOT EXISTS `language` (
+  `id_lg` bigint(20) unsigned NOT NULL,
   `lg_code` varchar(6) DEFAULT NULL,
   `lg_language` varchar(80) DEFAULT NULL,
   `lg_order` int(11) DEFAULT NULL,
   `lg_active` int(11) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=512 DEFAULT CHARSET=utf8;
 
 --
--- Extraindo dados da tabela `language`
+-- Dumping data for table `language`
 --
 
 INSERT INTO `language` (`id_lg`, `lg_code`, `lg_language`, `lg_order`, `lg_active`) VALUES
@@ -216,7 +265,7 @@ INSERT INTO `language` (`id_lg`, `lg_code`, `lg_language`, `lg_order`, `lg_activ
 (175, 'gsw', 'Swiss German', 99, 0),
 (176, '-gua', 'Guarani', 99, 0),
 (177, 'guj', 'Gujarati', 99, 0),
-(178, 'gwi', 'Gwich\'in', 99, 0),
+(178, 'gwi', 'Gwich''in', 99, 0),
 (179, 'hai', 'Haida', 99, 0),
 (180, 'hat', 'Haitian French Creole', 99, 0),
 (181, 'hau', 'Hausa', 99, 0),
@@ -371,7 +420,7 @@ INSERT INTO `language` (`id_lg`, `lg_code`, `lg_language`, `lg_order`, `lg_activ
 (330, 'nog', 'Nogai', 99, 0),
 (331, 'non', 'Old Norse', 99, 0),
 (332, 'nor', 'Norwegian', 99, 0),
-(333, 'nqo', 'N\'Ko', 99, 0),
+(333, 'nqo', 'N''Ko', 99, 0),
 (334, 'nso', 'Northern Sotho', 99, 0),
 (335, 'nub', 'Nubian languages', 99, 0),
 (336, 'nwc', 'Newari, Old', 99, 0),
@@ -554,11 +603,11 @@ INSERT INTO `language` (`id_lg`, `lg_code`, `lg_language`, `lg_order`, `lg_activ
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `rdf`
+-- Table structure for table `rdf`
 --
 
-CREATE TABLE `rdf` (
-  `id_rdf` bigint(20) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `rdf` (
+  `id_rdf` bigint(20) unsigned NOT NULL,
   `rdf_r1` text NOT NULL,
   `rdf_prop` int(11) NOT NULL,
   `rdf_r2` text NOT NULL,
@@ -568,11 +617,11 @@ CREATE TABLE `rdf` (
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `rdf_authority`
+-- Table structure for table `rdf_authority`
 --
 
-CREATE TABLE `rdf_authority` (
-  `id_au` bigint(20) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `rdf_authority` (
+  `id_au` bigint(20) unsigned NOT NULL,
   `au_descript` char(200) NOT NULL,
   `au_type` int(11) NOT NULL,
   `au_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -582,18 +631,18 @@ CREATE TABLE `rdf_authority` (
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `rdf_form_rule`
+-- Table structure for table `rdf_form_rule`
 --
 
-CREATE TABLE `rdf_form_rule` (
-  `id_rr` bigint(20) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `rdf_form_rule` (
+  `id_rr` bigint(20) unsigned NOT NULL,
   `rr_field` text NOT NULL,
   `rr_description` char(200) NOT NULL,
   `rr_active` int(11) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
--- Extraindo dados da tabela `rdf_form_rule`
+-- Dumping data for table `rdf_form_rule`
 --
 
 INSERT INTO `rdf_form_rule` (`id_rr`, `rr_field`, `rr_description`, `rr_active`) VALUES
@@ -607,18 +656,18 @@ INSERT INTO `rdf_form_rule` (`id_rr`, `rr_field`, `rr_description`, `rr_active`)
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `rdf_literal`
+-- Table structure for table `rdf_literal`
 --
 
-CREATE TABLE `rdf_literal` (
-  `id_rl` bigint(20) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `rdf_literal` (
+  `id_rl` bigint(20) unsigned NOT NULL,
   `rl_type` int(11) NOT NULL,
   `rl_value` longtext NOT NULL,
   `rl_lang` varchar(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=512 DEFAULT CHARSET=utf8;
 
 --
--- Extraindo dados da tabela `rdf_literal`
+-- Dumping data for table `rdf_literal`
 --
 
 INSERT INTO `rdf_literal` (`id_rl`, `rl_type`, `rl_value`, `rl_lang`) VALUES
@@ -878,7 +927,7 @@ INSERT INTO `rdf_literal` (`id_rl`, `rl_type`, `rl_value`, `rl_lang`) VALUES
 (259, 24, 'Tecnologia', 'por'),
 (260, 24, 'Ensino a distância', 'por'),
 (261, 24, 'Epistemologia', 'por'),
-(262, 24, 'Ciência da informação', 'por'),
+(262, 24, 'Ciência da Informação', 'por'),
 (263, 24, 'Teoria doconhecimento', 'por'),
 (264, 24, 'História das ideias', 'por'),
 (265, 24, 'Documentos', 'por'),
@@ -1100,25 +1149,52 @@ INSERT INTO `rdf_literal` (`id_rl`, `rl_type`, `rl_value`, `rl_lang`) VALUES
 (481, 24, 'Bibliometria', 'por'),
 (482, 24, 'Bibliométrico', 'por'),
 (483, 24, 'Input', 'eng'),
-(484, 24, 'Jcr', 'eng');
+(484, 24, 'Jcr', 'eng'),
+(485, 24, 'Instrumento de coleta de dados', 'por'),
+(486, 24, 'Questionário', 'por'),
+(487, 24, 'Entrevista', 'por'),
+(488, 24, 'Relatório consolidado', 'por'),
+(489, 24, 'Brasil', 'por'),
+(490, 24, 'Estados do brasil', 'por'),
+(491, 24, 'Regiões do brasil', 'por'),
+(492, 24, 'H-index', 'eng'),
+(493, 24, 'Universidade de São Paulo', 'por'),
+(494, 24, 'Universidade Federal do Ceará', 'por'),
+(495, 24, 'Universidade Federal Fluminense', 'por'),
+(496, 24, 'Universidade Federal de São Carlos', 'por'),
+(497, 24, 'Universidade Federal do Pará', 'por'),
+(498, 24, 'Universidade Estadual Paulista Júlio de Mesquita Filho', 'por'),
+(499, 24, 'Universidade Federal da Bahia', 'por'),
+(500, 24, 'Universidade Federal de Santa Catarina', 'por'),
+(501, 24, 'Universidade Federal de Pernambuco', 'por'),
+(502, 24, 'Pontifícia Universidade Católica de Campinas', 'por'),
+(503, 24, 'Universidade Federal da ParaÍba', 'por'),
+(504, 24, 'Universidade Estadual de Londrina', 'por'),
+(505, 24, 'Universidade Federal do Rio de Janeiro', 'por'),
+(506, 24, 'Universidade de BrasÍlia', 'por'),
+(507, 24, 'Universidade Federal de Minas Gerais', 'por'),
+(508, 24, 'Universidade Federal do Rio Grande do Sul', 'por'),
+(509, 24, 'Fundação Casa de Rui Barbosa', 'por'),
+(510, 24, 'Universidade Federal do Rio Grande do Norte', 'por'),
+(511, 24, '6.07.00.009', 'por');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `rdf_literal_note`
+-- Table structure for table `rdf_literal_note`
 --
 
-CREATE TABLE `rdf_literal_note` (
-  `id_rl` bigint(20) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `rdf_literal_note` (
+  `id_rl` bigint(20) unsigned NOT NULL,
   `rl_type` int(11) NOT NULL,
   `rl_value` longtext NOT NULL,
   `rl_lang` varchar(6) NOT NULL,
   `rl_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `rl_c` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 --
--- Extraindo dados da tabela `rdf_literal_note`
+-- Dumping data for table `rdf_literal_note`
 --
 
 INSERT INTO `rdf_literal_note` (`id_rl`, `rl_type`, `rl_value`, `rl_lang`, `rl_created`, `rl_c`) VALUES
@@ -1133,23 +1209,27 @@ INSERT INTO `rdf_literal_note` (`id_rl`, `rl_type`, `rl_value`, `rl_lang`, `rl_c
 (9, 31, 'Aipim foi escolhido por questões regionais, relacionadas ao uso no Rio Grande do Sul.', 'por', '2017-01-04 13:16:09', 260),
 (10, 30, 'Ontologia é um modelo de dados que representa um conjunto de conceitos dentro de um domínio e os relacionamentos entre estes. Uma ontologia é utilizada para realizar inferência sobre os objetos do domínio (Ciência da Computação).', 'por', '2017-01-12 00:34:24', 430),
 (11, 30, 'A acessibilidade serve de base para analisar os outputs\r\n(produtos) da ciência. A acessibilidade é essencial par que a informação\r\ncientífica alcance maior número de usuários. Ao término da pesquisa e de sua\r\neditoração, a visibilidade e os recursos de acessibilidade constituem o\r\nprocesso final de comunicação dos resultados das pesquisas.', 'por', '2017-01-18 13:24:07', 924),
-(12, 30, 'Acesso aberto da informação científica é também\r\nconhecida pelo termo inglês open access. Tratam-se de bases de dados ou de\r\nperiódicos que é gratuita e aberta a todos a todos os interessados que queiram\r\nacessar uma informação. Através de uma base de dados de acesso aberto, o\r\nusuário não precisa pagar para ter acesso às publicações.', 'por', '2017-01-18 13:24:31', 925);
+(12, 30, 'Acesso aberto da informação científica é também\r\nconhecida pelo termo inglês open access. Tratam-se de bases de dados ou de\r\nperiódicos que é gratuita e aberta a todos a todos os interessados que queiram\r\nacessar uma informação. Através de uma base de dados de acesso aberto, o\r\nusuário não precisa pagar para ter acesso às publicações.', 'por', '2017-01-18 13:24:31', 925),
+(13, 30, 'corpo de conhecimentos sistematizados adquiridos via observação, identificação, pesquisa e explicação de determinadas categorias de fenômenos e fatos, e formulados metódica e racionalmente.', 'por', '2017-02-01 14:11:27', 979),
+(14, 30, 'O Índice H é um indicador científico, de citação, e foi criado pelo físico Jorge\r\nHirsch. H é o número de artigos publicados por um pesquisador que obtém um\r\ntotal de citações igual ou superior a h. Trata-se de uma medida de\r\ndesempenho de um pesquisador. Um exemplo: Se um pesquisador possui um\r\nH 30 significa que ele publicou 30 trabalhos que receberam pelo menos 30\r\ncitações.', 'por', '2017-02-01 14:23:07', 981),
+(15, 42, 'Trata-se de uma medida de desempenho de um pesquisador. Um exemplo: Se\r\num pesquisador possui um H 30 significa que ele publicou 30 trabalhos que\r\nreceberam pelo menos 30 citações.', 'por', '2017-02-01 14:23:28', 981),
+(16, 43, 'HIRSCH, J.E. An index to quantify an individual´s scientific research output. Proceedings of the National Academy of Sciences of the United States of America, v. 102, n. 46, p. 16569-16572, nov. 2005.', 'por', '2017-02-01 14:26:31', 981);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `rdf_literal_th`
+-- Table structure for table `rdf_literal_th`
 --
 
-CREATE TABLE `rdf_literal_th` (
-  `id_lt` bigint(20) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `rdf_literal_th` (
+  `id_lt` bigint(20) unsigned NOT NULL,
   `lt_term` int(11) NOT NULL,
   `lt_thesauros` int(11) NOT NULL,
   `lt_status` int(11) NOT NULL DEFAULT '1'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=524 DEFAULT CHARSET=utf8;
 
 --
--- Extraindo dados da tabela `rdf_literal_th`
+-- Dumping data for table `rdf_literal_th`
 --
 
 INSERT INTO `rdf_literal_th` (`id_lt`, `lt_term`, `lt_thesauros`, `lt_status`) VALUES
@@ -1645,16 +1725,46 @@ INSERT INTO `rdf_literal_th` (`id_lt`, `lt_term`, `lt_thesauros`, `lt_status`) V
 (490, 481, 7, 1),
 (491, 482, 7, 1),
 (492, 483, 7, 1),
-(493, 484, 7, 1);
+(493, 484, 7, 1),
+(494, 485, 2, 1),
+(495, 486, 2, 1),
+(496, 487, 2, 1),
+(497, 488, 2, 1),
+(498, 489, 2, 1),
+(499, 490, 2, 1),
+(500, 491, 2, 1),
+(501, 300, 6, 1),
+(502, 444, 6, 1),
+(503, 492, 6, 1),
+(504, 493, 8, 1),
+(505, 494, 8, 1),
+(506, 495, 8, 1),
+(507, 496, 8, 1),
+(508, 497, 8, 1),
+(509, 498, 8, 1),
+(510, 499, 8, 1),
+(511, 500, 8, 1),
+(512, 501, 8, 1),
+(513, 502, 8, 1),
+(514, 503, 8, 1),
+(515, 504, 8, 1),
+(516, 505, 8, 1),
+(517, 506, 8, 1),
+(518, 507, 8, 1),
+(519, 508, 8, 1),
+(520, 509, 8, 1),
+(521, 510, 8, 1),
+(522, 262, 9, 1),
+(523, 511, 9, 1);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `rdf_media`
+-- Table structure for table `rdf_media`
 --
 
-CREATE TABLE `rdf_media` (
-  `id_rm` bigint(20) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `rdf_media` (
+  `id_rm` bigint(20) unsigned NOT NULL,
   `rm_conecpt` int(11) NOT NULL,
   `rm_filename` text NOT NULL,
   `rm_link` text NOT NULL,
@@ -1668,19 +1778,19 @@ CREATE TABLE `rdf_media` (
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `rdf_perfil_propriety`
+-- Table structure for table `rdf_perfil_propriety`
 --
 
-CREATE TABLE `rdf_perfil_propriety` (
-  `id_pa` bigint(20) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `rdf_perfil_propriety` (
+  `id_pa` bigint(20) unsigned NOT NULL,
   `pa_class` int(11) NOT NULL,
   `pa_propriety` int(11) NOT NULL,
   `pa_rule` int(11) NOT NULL,
   `pa_ord` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
--- Extraindo dados da tabela `rdf_perfil_propriety`
+-- Dumping data for table `rdf_perfil_propriety`
 --
 
 INSERT INTO `rdf_perfil_propriety` (`id_pa`, `pa_class`, `pa_propriety`, `pa_rule`, `pa_ord`) VALUES
@@ -1691,18 +1801,18 @@ INSERT INTO `rdf_perfil_propriety` (`id_pa`, `pa_class`, `pa_propriety`, `pa_rul
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `rdf_prefil_class`
+-- Table structure for table `rdf_prefil_class`
 --
 
-CREATE TABLE `rdf_prefil_class` (
-  `id_rpc` bigint(20) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `rdf_prefil_class` (
+  `id_rpc` bigint(20) unsigned NOT NULL,
   `rpc_name` char(150) NOT NULL,
   `rpc_description` text NOT NULL,
   `rpc_active` int(11) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
--- Extraindo dados da tabela `rdf_prefil_class`
+-- Dumping data for table `rdf_prefil_class`
 --
 
 INSERT INTO `rdf_prefil_class` (`id_rpc`, `rpc_name`, `rpc_description`, `rpc_active`) VALUES
@@ -1711,18 +1821,18 @@ INSERT INTO `rdf_prefil_class` (`id_rpc`, `rpc_name`, `rpc_description`, `rpc_ac
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `rdf_prefix`
+-- Table structure for table `rdf_prefix`
 --
 
-CREATE TABLE `rdf_prefix` (
-  `id_prefix` bigint(20) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `rdf_prefix` (
+  `id_prefix` bigint(20) unsigned NOT NULL,
   `prefix_ref` char(30) NOT NULL,
   `prefix_url` char(250) NOT NULL,
   `prefix_ativo` int(11) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 --
--- Extraindo dados da tabela `rdf_prefix`
+-- Dumping data for table `rdf_prefix`
 --
 
 INSERT INTO `rdf_prefix` (`id_prefix`, `prefix_ref`, `prefix_url`, `prefix_ativo`) VALUES
@@ -1744,11 +1854,11 @@ INSERT INTO `rdf_prefix` (`id_prefix`, `prefix_ref`, `prefix_url`, `prefix_ativo
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `rdf_resource`
+-- Table structure for table `rdf_resource`
 --
 
-CREATE TABLE `rdf_resource` (
-  `id_rs` bigint(20) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `rdf_resource` (
+  `id_rs` bigint(20) unsigned NOT NULL,
   `rs_prefix` int(11) NOT NULL,
   `rs_propriety` char(100) NOT NULL,
   `rs_propriety_inverse` char(100) NOT NULL,
@@ -1757,10 +1867,10 @@ CREATE TABLE `rdf_resource` (
   `rs_marc` varchar(30) NOT NULL,
   `rs_group` varchar(10) NOT NULL,
   `rs_public` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
 
 --
--- Extraindo dados da tabela `rdf_resource`
+-- Dumping data for table `rdf_resource`
 --
 
 INSERT INTO `rdf_resource` (`id_rs`, `rs_prefix`, `rs_propriety`, `rs_propriety_inverse`, `rs_type`, `rs_mandatory`, `rs_marc`, `rs_group`, `rs_public`) VALUES
@@ -1804,23 +1914,26 @@ INSERT INTO `rdf_resource` (`id_rs`, `rs_prefix`, `rs_propriety`, `rs_propriety_
 (38, 14, 'isFeminine', 'isMasculine', '', 0, '', 'FE', 0),
 (39, 14, 'isMasculine', 'isFeminine', '', 0, '', 'FE', 0),
 (40, 14, 'abbreviation_of', 'literalForm', '', 0, '', 'FE', 1),
-(41, 14, 'produto_produtor', 'produtor_produto', '', 0, '', 'FE', 1);
+(41, 14, 'produto_produtor', 'produtor_produto', '', 0, '', 'FE', 1),
+(42, 14, 'garantiaLiteraria', '', '', 0, '', 'NT', 1),
+(43, 14, 'noteCited', '', '', 0, '', 'NT', 1),
+(44, 14, 'code', '', '', 0, '', 'TE', 1);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `th_concept`
+-- Table structure for table `th_concept`
 --
 
-CREATE TABLE `th_concept` (
-  `id_c` bigint(20) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `th_concept` (
+  `id_c` bigint(20) unsigned NOT NULL,
   `c_th` int(11) NOT NULL,
-  `c_concept` char(20) NOT NULL,
+  `c_concept` char(40) NOT NULL,
   `c_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=1025 DEFAULT CHARSET=utf8;
 
 --
--- Extraindo dados da tabela `th_concept`
+-- Dumping data for table `th_concept`
 --
 
 INSERT INTO `th_concept` (`id_c`, `c_th`, `c_concept`, `c_created`) VALUES
@@ -2782,26 +2895,91 @@ INSERT INTO `th_concept` (`id_c`, `c_th`, `c_concept`, `c_created`) VALUES
 (956, 7, 'c956', '2017-01-18 20:13:59'),
 (957, 7, 'c957', '2017-01-18 20:14:03'),
 (958, 7, 'c958', '2017-01-18 20:14:44'),
-(959, 7, 'c959', '2017-01-18 20:15:15');
+(959, 7, 'c959', '2017-01-18 20:15:15'),
+(960, 5, 'c960', '2017-01-31 10:08:38'),
+(961, 5, 'c961', '2017-01-31 10:09:51'),
+(962, 5, 'c962', '2017-01-31 10:11:35'),
+(963, 5, 'c963', '2017-01-31 10:11:47'),
+(964, 2, 'c964', '2017-01-31 13:33:20'),
+(965, 2, 'c965', '2017-01-31 13:33:20'),
+(966, 2, 'c966', '2017-01-31 13:33:20'),
+(967, 2, 'c967', '2017-01-31 13:33:27'),
+(968, 2, 'c968', '2017-01-31 13:33:32'),
+(969, 2, 'c969', '2017-01-31 13:33:36'),
+(970, 2, 'c970', '2017-01-31 14:09:33'),
+(971, 2, 'c971', '2017-01-31 14:09:40'),
+(972, 2, 'c972', '2017-01-31 14:18:54'),
+(973, 2, 'c973', '2017-01-31 14:18:54'),
+(974, 2, 'c974', '2017-01-31 14:18:54'),
+(975, 2, 'c975', '2017-01-31 14:19:01'),
+(976, 2, 'c976', '2017-01-31 14:19:08'),
+(977, 2, 'c977', '2017-01-31 14:19:15'),
+(978, 6, 'c978', '2017-02-01 14:10:49'),
+(979, 6, 'c979', '2017-02-01 14:10:57'),
+(980, 6, 'c980', '2017-02-01 14:22:49'),
+(981, 6, 'c981', '2017-02-01 14:22:54'),
+(982, 6, 'c982', '2017-02-01 14:28:07'),
+(983, 8, 'c983', '2017-02-02 11:52:10'),
+(984, 8, 'c984', '2017-02-02 11:52:10'),
+(985, 8, 'c985', '2017-02-02 11:52:10'),
+(986, 8, 'c986', '2017-02-02 11:52:10'),
+(987, 8, 'c987', '2017-02-02 11:52:10'),
+(988, 8, 'c988', '2017-02-02 11:52:10'),
+(989, 8, 'c989', '2017-02-02 11:52:10'),
+(990, 8, 'c990', '2017-02-02 11:52:10'),
+(991, 8, 'c991', '2017-02-02 11:52:10'),
+(992, 8, 'c992', '2017-02-02 11:52:10'),
+(993, 8, 'c993', '2017-02-02 11:52:10'),
+(994, 8, 'c994', '2017-02-02 11:52:10'),
+(995, 8, 'c995', '2017-02-02 11:52:10'),
+(996, 8, 'c996', '2017-02-02 11:52:10'),
+(997, 8, 'c997', '2017-02-02 11:52:10'),
+(998, 8, 'c998', '2017-02-02 11:52:10'),
+(999, 8, 'c999', '2017-02-02 11:52:10'),
+(1000, 8, 'c1000', '2017-02-02 11:52:10'),
+(1001, 8, 'c1001', '2017-02-02 11:52:10'),
+(1002, 8, 'c1002', '2017-02-02 11:52:10'),
+(1003, 8, 'c1003', '2017-02-02 11:52:10'),
+(1004, 8, 'c1004', '2017-02-02 11:55:14'),
+(1005, 8, 'c1005', '2017-02-02 11:55:20'),
+(1006, 8, 'c1006', '2017-02-02 11:55:25'),
+(1007, 8, 'c1007', '2017-02-02 11:55:31'),
+(1008, 8, 'c1008', '2017-02-02 11:55:50'),
+(1009, 8, 'c1009', '2017-02-02 11:56:09'),
+(1010, 8, 'c1010', '2017-02-02 11:56:27'),
+(1011, 8, 'c1011', '2017-02-02 11:56:39'),
+(1012, 8, 'c1012', '2017-02-02 11:57:04'),
+(1013, 8, 'c1013', '2017-02-02 11:57:13'),
+(1014, 8, 'c1014', '2017-02-02 11:57:44'),
+(1015, 8, 'c1015', '2017-02-02 11:58:15'),
+(1016, 8, 'c1016', '2017-02-02 11:58:42'),
+(1017, 8, 'c1017', '2017-02-02 11:59:02'),
+(1018, 8, 'c1018', '2017-02-02 11:59:27'),
+(1019, 8, 'c1019', '2017-02-02 11:59:58'),
+(1020, 8, 'c1020', '2017-02-02 12:00:10'),
+(1021, 8, 'c1021', '2017-02-02 12:00:43'),
+(1022, 9, 'c1022', '2017-02-02 12:36:38'),
+(1023, 9, 'c1023', '2017-02-02 12:37:00'),
+(1024, 9, 'c1024', '2017-02-02 12:40:35');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `th_concept_term`
+-- Table structure for table `th_concept_term`
 --
 
-CREATE TABLE `th_concept_term` (
-  `id_ct` bigint(20) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `th_concept_term` (
+  `id_ct` bigint(20) unsigned NOT NULL,
   `ct_concept` int(11) NOT NULL,
   `ct_th` int(11) NOT NULL,
   `ct_term` int(11) NOT NULL,
   `ct_concept_2` int(11) NOT NULL,
   `ct_propriety` int(11) NOT NULL,
   `ct_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=1291 DEFAULT CHARSET=utf8;
 
 --
--- Extraindo dados da tabela `th_concept_term`
+-- Dumping data for table `th_concept_term`
 --
 
 INSERT INTO `th_concept_term` (`id_ct`, `ct_concept`, `ct_th`, `ct_term`, `ct_concept_2`, `ct_propriety`, `ct_created`) VALUES
@@ -3142,16 +3320,86 @@ INSERT INTO `th_concept_term` (`id_ct`, `ct_concept`, `ct_th`, `ct_term`, `ct_co
 (1174, 927, 7, 472, 0, 25, '2017-01-18 13:25:32'),
 (1173, 926, 7, 0, 0, 25, '2017-01-18 13:25:17'),
 (1172, 925, 7, 451, 0, 25, '2017-01-18 13:21:53'),
-(1171, 924, 7, 468, 0, 25, '2017-01-18 13:21:38');
+(1171, 924, 7, 468, 0, 25, '2017-01-18 13:21:38'),
+(1221, 960, 5, 256, 0, 25, '2017-01-31 10:08:38'),
+(1222, 960, 5, 422, 0, 34, '2017-01-31 10:09:37'),
+(1223, 961, 5, 417, 0, 25, '2017-01-31 10:09:51'),
+(1224, 962, 5, 268, 0, 25, '2017-01-31 10:11:35'),
+(1225, 963, 5, 377, 0, 25, '2017-01-31 10:11:48'),
+(1226, 963, 5, 359, 0, 37, '2017-01-31 10:12:12'),
+(1227, 964, 2, 0, 0, 25, '2017-01-31 13:33:20'),
+(1228, 965, 2, 0, 0, 25, '2017-01-31 13:33:20'),
+(1229, 966, 2, 0, 0, 25, '2017-01-31 13:33:20'),
+(1230, 967, 2, 486, 0, 25, '2017-01-31 13:33:27'),
+(1231, 968, 2, 487, 0, 25, '2017-01-31 13:33:32'),
+(1232, 969, 2, 485, 0, 25, '2017-01-31 13:33:36'),
+(1233, 969, 2, 0, 967, 26, '2017-01-31 13:33:50'),
+(1234, 969, 2, 0, 968, 26, '2017-01-31 13:34:07'),
+(1235, 970, 2, 0, 0, 25, '2017-01-31 14:09:33'),
+(1236, 971, 2, 488, 0, 25, '2017-01-31 14:09:40'),
+(1237, 972, 2, 0, 0, 25, '2017-01-31 14:18:54'),
+(1238, 973, 2, 0, 0, 25, '2017-01-31 14:18:54'),
+(1239, 974, 2, 0, 0, 25, '2017-01-31 14:18:54'),
+(1240, 975, 2, 489, 0, 25, '2017-01-31 14:19:01'),
+(1241, 976, 2, 490, 0, 25, '2017-01-31 14:19:08'),
+(1242, 977, 2, 491, 0, 25, '2017-01-31 14:19:15'),
+(1243, 978, 6, 0, 0, 25, '2017-02-01 14:10:49'),
+(1244, 979, 6, 300, 0, 25, '2017-02-01 14:10:57'),
+(1245, 980, 6, 0, 0, 25, '2017-02-01 14:22:49'),
+(1246, 981, 6, 444, 0, 25, '2017-02-01 14:22:54'),
+(1247, 982, 6, 0, 0, 25, '2017-02-01 14:28:07'),
+(1248, 983, 8, 0, 0, 25, '2017-02-02 11:52:10'),
+(1249, 984, 8, 0, 0, 25, '2017-02-02 11:52:10'),
+(1250, 985, 8, 0, 0, 25, '2017-02-02 11:52:10'),
+(1251, 986, 8, 0, 0, 25, '2017-02-02 11:52:10'),
+(1252, 987, 8, 0, 0, 25, '2017-02-02 11:52:10'),
+(1253, 988, 8, 0, 0, 25, '2017-02-02 11:52:10'),
+(1254, 989, 8, 0, 0, 25, '2017-02-02 11:52:10'),
+(1255, 990, 8, 0, 0, 25, '2017-02-02 11:52:10'),
+(1256, 991, 8, 0, 0, 25, '2017-02-02 11:52:10'),
+(1257, 992, 8, 0, 0, 25, '2017-02-02 11:52:10'),
+(1258, 993, 8, 0, 0, 25, '2017-02-02 11:52:10'),
+(1259, 994, 8, 0, 0, 25, '2017-02-02 11:52:10'),
+(1260, 995, 8, 0, 0, 25, '2017-02-02 11:52:10'),
+(1261, 996, 8, 0, 0, 25, '2017-02-02 11:52:10'),
+(1262, 997, 8, 0, 0, 25, '2017-02-02 11:52:10'),
+(1263, 998, 8, 0, 0, 25, '2017-02-02 11:52:10'),
+(1264, 999, 8, 0, 0, 25, '2017-02-02 11:52:10'),
+(1265, 1000, 8, 0, 0, 25, '2017-02-02 11:52:10'),
+(1266, 1001, 8, 0, 0, 25, '2017-02-02 11:52:10'),
+(1267, 1002, 8, 0, 0, 25, '2017-02-02 11:52:10'),
+(1268, 1003, 8, 0, 0, 25, '2017-02-02 11:52:10'),
+(1269, 1004, 8, 509, 0, 25, '2017-02-02 11:55:14'),
+(1270, 1005, 8, 502, 0, 25, '2017-02-02 11:55:20'),
+(1271, 1006, 8, 506, 0, 25, '2017-02-02 11:55:25'),
+(1272, 1007, 8, 493, 0, 25, '2017-02-02 11:55:31'),
+(1273, 1008, 8, 504, 0, 25, '2017-02-02 11:55:50'),
+(1274, 1009, 8, 498, 0, 25, '2017-02-02 11:56:09'),
+(1275, 1010, 8, 499, 0, 25, '2017-02-02 11:56:27'),
+(1276, 1011, 8, 503, 0, 25, '2017-02-02 11:56:39'),
+(1277, 1012, 8, 507, 0, 25, '2017-02-02 11:57:04'),
+(1278, 1013, 8, 501, 0, 25, '2017-02-02 11:57:13'),
+(1279, 1014, 8, 500, 0, 25, '2017-02-02 11:57:44'),
+(1280, 1015, 8, 496, 0, 25, '2017-02-02 11:58:15'),
+(1281, 1016, 8, 494, 0, 25, '2017-02-02 11:58:42'),
+(1282, 1017, 8, 497, 0, 25, '2017-02-02 11:59:02'),
+(1283, 1018, 8, 505, 0, 25, '2017-02-02 11:59:27'),
+(1284, 1019, 8, 0, 0, 25, '2017-02-02 11:59:58'),
+(1285, 1020, 8, 510, 0, 25, '2017-02-02 12:00:10'),
+(1286, 1021, 8, 508, 0, 25, '2017-02-02 12:00:43'),
+(1287, 1022, 9, 0, 0, 25, '2017-02-02 12:36:38'),
+(1288, 1023, 9, 262, 0, 25, '2017-02-02 12:37:00'),
+(1289, 1023, 9, 607, 0, 25, '2017-02-02 12:40:35'),
+(1290, 1024, 9, 511, 0, 44, '2017-02-02 12:42:42');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `th_thesaurus`
+-- Table structure for table `th_thesaurus`
 --
 
-CREATE TABLE `th_thesaurus` (
-  `id_pa` bigint(20) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `th_thesaurus` (
+  `id_pa` bigint(20) unsigned NOT NULL,
   `pa_name` char(150) NOT NULL,
   `pa_description` text NOT NULL,
   `pa_status` int(11) NOT NULL,
@@ -3160,53 +3408,60 @@ CREATE TABLE `th_thesaurus` (
   `pa_creator` int(11) NOT NULL,
   `pa_hidden` int(11) NOT NULL DEFAULT '0',
   `pa_avaliacao` double NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 --
--- Extraindo dados da tabela `th_thesaurus`
+-- Dumping data for table `th_thesaurus`
 --
 
 INSERT INTO `th_thesaurus` (`id_pa`, `pa_name`, `pa_description`, `pa_status`, `pa_created`, `pa_classe`, `pa_creator`, `pa_hidden`, `pa_avaliacao`) VALUES
 (1, 'Tesauro Literatura Infantil e Juvenil', '', 2, '2016-10-23 14:57:52', 0, 1, 0, 0),
-(2, 'Vocabulário CEDAP-DSpace', '', 1, '2016-11-17 06:35:44', 0, 1, 0, 0),
+(2, 'Vocabulário CEDAP-DSpace', '', 2, '2016-11-17 06:35:44', 0, 1, 0, 0),
 (3, 'Functional Requirements for Bibliographic Records', '', 2, '2016-11-17 12:03:53', 1, 1, 1, 0),
 (4, 'Organização do conhecimento', '', 2, '2016-12-13 20:27:54', 1, 1, 0, 0),
 (5, 'Brapci', '', 1, '2016-12-23 02:25:35', 1, 1, 0, 0),
 (6, 'Thesauros Teste', '', 1, '2017-01-04 12:47:42', 1, 1, 0, 0),
-(7, 'Tesauro de Estudos Métricos da Informação', '', 2, '2017-01-18 12:06:01', 1, 1, 0, 0);
+(7, 'Tesauro de Estudos Métricos da Informação', '', 2, '2017-01-18 12:06:01', 1, 1, 0, 0),
+(8, 'Entidade Coletiva - Universidades', '', 1, '2017-02-02 11:47:40', 1, 1, 0, 0),
+(9, 'Área do Conhecimento  - CAPES', '', 1, '2017-02-02 12:33:25', 1, 1, 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `th_users`
+-- Table structure for table `th_users`
 --
 
-CREATE TABLE `th_users` (
-  `id_ust` bigint(20) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `th_users` (
+  `id_ust` bigint(20) unsigned NOT NULL,
   `ust_user_id` int(11) NOT NULL,
   `ust_user_role` int(11) NOT NULL,
   `ust_th` int(11) NOT NULL,
   `ust_status` int(11) NOT NULL,
   `ust_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
--- Extraindo dados da tabela `th_users`
+-- Dumping data for table `th_users`
 --
 
 INSERT INTO `th_users` (`id_ust`, `ust_user_id`, `ust_user_role`, `ust_th`, `ust_status`, `ust_created`) VALUES
 (1, 1, 1, 4, 1, '2017-01-18 08:52:15'),
 (2, 1, 1, 3, 1, '2017-01-18 11:21:07'),
-(3, 1, 1, 7, 1, '2017-01-18 12:06:48');
+(3, 1, 1, 7, 1, '2017-01-18 12:06:48'),
+(4, 1, 1, 5, 1, '2017-01-31 10:08:14'),
+(5, 1, 1, 2, 1, '2017-01-31 13:32:35'),
+(6, 1, 1, 6, 1, '2017-02-01 14:10:29'),
+(7, 1, 1, 8, 1, '2017-02-02 11:48:08'),
+(8, 1, 1, 9, 1, '2017-02-02 12:33:42');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `users`
+-- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
-  `id_us` bigint(20) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `users` (
+  `id_us` bigint(20) unsigned NOT NULL,
   `us_nome` char(80) NOT NULL,
   `us_email` char(80) NOT NULL,
   `us_cidade` char(40) NOT NULL,
@@ -3230,10 +3485,10 @@ CREATE TABLE `users` (
   `us_perfil` text NOT NULL,
   `us_login` char(20) NOT NULL,
   `us_password` char(255) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=388 DEFAULT CHARSET=latin1;
 
 --
--- Extraindo dados da tabela `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id_us`, `us_nome`, `us_email`, `us_cidade`, `us_pais`, `us_codigo`, `us_link`, `us_ativo`, `us_nivel`, `us_image`, `us_genero`, `us_verificado`, `us_autenticador`, `us_cadastro`, `us_revisoes`, `us_colaboracoes`, `us_acessos`, `us_pesquisa`, `us_erros`, `us_outros`, `us_last`, `us_perfil`, `us_login`, `us_password`) VALUES
@@ -3242,19 +3497,19 @@ INSERT INTO `users` (`id_us`, `us_nome`, `us_email`, `us_cidade`, `us_pais`, `us
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `works`
+-- Table structure for table `works`
 --
 
-CREATE TABLE `works` (
-  `id_w` bigint(20) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `works` (
+  `id_w` bigint(20) unsigned NOT NULL,
   `w_id` char(20) NOT NULL,
   `w_status` int(11) NOT NULL DEFAULT '1',
   `w_create` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `w_update` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
--- Extraindo dados da tabela `works`
+-- Dumping data for table `works`
 --
 
 INSERT INTO `works` (`id_w`, `w_id`, `w_status`, `w_create`, `w_update`) VALUES
@@ -3264,6 +3519,13 @@ INSERT INTO `works` (`id_w`, `w_id`, `w_status`, `w_create`, `w_update`) VALUES
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `ci_sessions`
+--
+ALTER TABLE `ci_sessions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ci_sessions_timestamp` (`timestamp`);
 
 --
 -- Indexes for table `language`
@@ -3381,92 +3643,92 @@ ALTER TABLE `works`
 -- AUTO_INCREMENT for table `language`
 --
 ALTER TABLE `language`
-  MODIFY `id_lg` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=512;
+  MODIFY `id_lg` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=512;
 --
 -- AUTO_INCREMENT for table `rdf`
 --
 ALTER TABLE `rdf`
-  MODIFY `id_rdf` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_rdf` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `rdf_authority`
 --
 ALTER TABLE `rdf_authority`
-  MODIFY `id_au` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_au` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `rdf_form_rule`
 --
 ALTER TABLE `rdf_form_rule`
-  MODIFY `id_rr` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_rr` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `rdf_literal`
 --
 ALTER TABLE `rdf_literal`
-  MODIFY `id_rl` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=485;
+  MODIFY `id_rl` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=512;
 --
 -- AUTO_INCREMENT for table `rdf_literal_note`
 --
 ALTER TABLE `rdf_literal_note`
-  MODIFY `id_rl` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_rl` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `rdf_literal_th`
 --
 ALTER TABLE `rdf_literal_th`
-  MODIFY `id_lt` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=494;
+  MODIFY `id_lt` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=524;
 --
 -- AUTO_INCREMENT for table `rdf_media`
 --
 ALTER TABLE `rdf_media`
-  MODIFY `id_rm` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_rm` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `rdf_perfil_propriety`
 --
 ALTER TABLE `rdf_perfil_propriety`
-  MODIFY `id_pa` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_pa` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `rdf_prefil_class`
 --
 ALTER TABLE `rdf_prefil_class`
-  MODIFY `id_rpc` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_rpc` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `rdf_prefix`
 --
 ALTER TABLE `rdf_prefix`
-  MODIFY `id_prefix` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_prefix` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `rdf_resource`
 --
 ALTER TABLE `rdf_resource`
-  MODIFY `id_rs` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id_rs` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=45;
 --
 -- AUTO_INCREMENT for table `th_concept`
 --
 ALTER TABLE `th_concept`
-  MODIFY `id_c` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=960;
+  MODIFY `id_c` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1025;
 --
 -- AUTO_INCREMENT for table `th_concept_term`
 --
 ALTER TABLE `th_concept_term`
-  MODIFY `id_ct` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1221;
+  MODIFY `id_ct` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1291;
 --
 -- AUTO_INCREMENT for table `th_thesaurus`
 --
 ALTER TABLE `th_thesaurus`
-  MODIFY `id_pa` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_pa` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `th_users`
 --
 ALTER TABLE `th_users`
-  MODIFY `id_ust` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_ust` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_us` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=388;
+  MODIFY `id_us` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=388;
 --
 -- AUTO_INCREMENT for table `works`
 --
 ALTER TABLE `works`
-  MODIFY `id_w` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_w` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
