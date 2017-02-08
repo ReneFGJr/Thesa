@@ -9,21 +9,23 @@
 					<h4 class="thesa"><?php echo msg('Welcome_signup'); ?>
 					THESA</h4>
 					<span><?php echo msg('fullName'); ?></span>
-					<input type="text" name="fullName" id="fullName" class="form-control input-sm chat-input" placeholder="<?php echo msg('fullName'); ?>" value="<?php get("fullName");?>" />
+					<input type="text" name="fullName" value="<?php echo get("fullName");?>" id="fullName" class="form-control input-sm chat-input" placeholder="<?php echo msg('fullName'); ?>" value="<?php get("fullName");?>"  style="font-size: 200%; height: 250%; color: #808080;" />
 					</br>
 										
-					<span><?php echo msg('Username'); ?></span>
-					<input type="text" name="userName" id="userName" class="form-control input-sm chat-input" placeholder="<?php echo msg('Username'); ?>" value="<?php get("userName");?>" />
+					<span><?php echo msg('e-mail'); ?></span>
+					<input type="string" name="email" value="<?php echo get("email");?>" id="email" class="form-control input-sm chat-input" placeholder="<?php echo msg('email'); ?>" style="font-size: 200%; height: 250%;  color: #808080;" />
 					</br>
-					<span><?php echo msg('Password'); ?></span>
-					<input type="password" name="userPassword" id="userPassword" class="form-control input-sm chat-input" placeholder="<?php echo msg('Password'); ?>" />
-					</br>
+					
+					<span><?php echo $email_ok;?></span>
+					</br></br>
+					
 					<div class="wrapper">
 						<span class="group-btn" id="signup"> <a href="#" class="btn btn-primary btn-md"><?php echo msg('Sign Up Send'); ?>
 							<i class="fa fa-sign-in"></i></a> </span>
 
 						<span class="group-btn" id="return"> <a href="#" class="btn btn-default btn-md"><?php echo msg('Return'); ?>
 							<i class="fa fa-sign-in"></i></a> </span>
+							
 					</div>
 				</form>
 				<br>

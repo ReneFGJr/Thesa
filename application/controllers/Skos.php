@@ -24,6 +24,7 @@ class Skos extends CI_Controller {
 		$this -> load -> helper('url');
 		$this -> load -> library('session');
 		$this -> load -> helper('xml');
+		$this -> load -> helper('email');
 
 		date_default_timezone_set('America/Sao_Paulo');
 		/* Security */
@@ -91,8 +92,30 @@ class Skos extends CI_Controller {
 
 	/* LOGIN SIGN UP */
 	function login_sign_up() {
+		$this -> load -> model('skoses');
 		$this -> cab(2);
-		$this -> load -> view('skos/thesa_sign_up', null);
+
+		$nome = get("fullName");
+		$email = get("email");
+		$data = array();
+		$data['email_ok'] = '';
+		if (strlen($email) > 0) {
+			$ok = validaemail($email);
+			if ($ok == 1) {
+				$ok = $this -> skoses -> user_exist($email);
+				if ($ok == 1) {
+					$data['email_ok'] = '<span class="btn alert-danger">' . msg("email_already_inserted") . '</span>';
+				} else {
+					$data['email_ok'] = '<span class="btn alert-success">' . msg("email_inserted") . '</span>';
+					$this -> skoses -> user_insert_temp($email, $nome);
+					$this -> skoses -> user_email_send($email, $nome, 'SIGNUP');
+				}
+			} else {
+				$data['email_ok'] = '<span class="btn alert-danger">' . msg("email_error") . '</span>';
+			}
+		}
+
+		$this -> load -> view('skos/thesa_sign_up', $data);
 	}
 
 	/* EDIcaO DAS CLASSE */
@@ -397,7 +420,6 @@ class Skos extends CI_Controller {
 			$this -> load -> view('header/close', null);
 			//$this->skoes->
 		}
-
 	}
 
 	/***************************************************************************** Termo oculto */
@@ -489,7 +511,7 @@ class Skos extends CI_Controller {
 			default :
 				/* CAB */
 				$this -> cab();
-				
+
 				$this -> load -> view('skos/thesa_thesaurus', $data);
 				$this -> load -> view('skos/thesa_breadcrumb', $data);
 
@@ -1044,6 +1066,23 @@ class Skos extends CI_Controller {
 			}
 		}
 		return (0);
+	}
+
+	function user_valid() {
+		/* Load model */
+
+		$this -> load -> model("skoses");
+		$this -> cab();
+				
+		$email = get("dd0");
+		$check = get("chk");
+		
+		$chk = checkpost_link($email . date("Ymd"));
+		if ($chk == $check) {			
+			$this->skoses->user_valid($email,1);
+			$this->skoses->user_change_password($email,substr(md5(date("Ymds"),4,10)));
+			$this -> skoses -> user_email_send($email, $nome, 'WELCOME');
+		}
 	}
 
 }

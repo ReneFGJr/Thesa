@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.4.10
+-- version 4.5.4.1
 -- http://www.phpmyadmin.net
 --
--- Host: bdlivre.ufrgs.br
--- Generation Time: Feb 02, 2017 at 11:01 AM
--- Server version: 5.5.31
--- PHP Version: 5.6.20
+-- Host: localhost
+-- Generation Time: Feb 08, 2017 at 09:34 PM
+-- Server version: 5.7.11
+-- PHP Version: 5.6.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `tesauros`
+-- Database: `books`
 --
 
 -- --------------------------------------------------------
@@ -26,10 +26,10 @@ SET time_zone = "+00:00";
 -- Table structure for table `ci_sessions`
 --
 
-CREATE TABLE IF NOT EXISTS `ci_sessions` (
+CREATE TABLE `ci_sessions` (
   `id` varchar(40) NOT NULL,
   `ip_address` varchar(45) NOT NULL,
-  `timestamp` int(10) unsigned NOT NULL DEFAULT '0',
+  `timestamp` int(10) UNSIGNED NOT NULL DEFAULT '0',
   `data` blob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -75,13 +75,13 @@ INSERT INTO `ci_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES
 -- Table structure for table `language`
 --
 
-CREATE TABLE IF NOT EXISTS `language` (
-  `id_lg` bigint(20) unsigned NOT NULL,
+CREATE TABLE `language` (
+  `id_lg` bigint(20) UNSIGNED NOT NULL,
   `lg_code` varchar(6) DEFAULT NULL,
   `lg_language` varchar(80) DEFAULT NULL,
   `lg_order` int(11) DEFAULT NULL,
   `lg_active` int(11) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB AUTO_INCREMENT=512 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `language`
@@ -265,7 +265,7 @@ INSERT INTO `language` (`id_lg`, `lg_code`, `lg_language`, `lg_order`, `lg_activ
 (175, 'gsw', 'Swiss German', 99, 0),
 (176, '-gua', 'Guarani', 99, 0),
 (177, 'guj', 'Gujarati', 99, 0),
-(178, 'gwi', 'Gwich''in', 99, 0),
+(178, 'gwi', 'Gwich\'in', 99, 0),
 (179, 'hai', 'Haida', 99, 0),
 (180, 'hat', 'Haitian French Creole', 99, 0),
 (181, 'hau', 'Hausa', 99, 0),
@@ -420,7 +420,7 @@ INSERT INTO `language` (`id_lg`, `lg_code`, `lg_language`, `lg_order`, `lg_activ
 (330, 'nog', 'Nogai', 99, 0),
 (331, 'non', 'Old Norse', 99, 0),
 (332, 'nor', 'Norwegian', 99, 0),
-(333, 'nqo', 'N''Ko', 99, 0),
+(333, 'nqo', 'N\'Ko', 99, 0),
 (334, 'nso', 'Northern Sotho', 99, 0),
 (335, 'nub', 'Nubian languages', 99, 0),
 (336, 'nwc', 'Newari, Old', 99, 0),
@@ -603,11 +603,40 @@ INSERT INTO `language` (`id_lg`, `lg_code`, `lg_language`, `lg_order`, `lg_activ
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `mensagem_own`
+--
+
+CREATE TABLE `mensagem_own` (
+  `id_m` bigint(20) UNSIGNED NOT NULL,
+  `m_descricao` char(150) NOT NULL,
+  `m_header` char(150) NOT NULL,
+  `m_foot` char(150) NOT NULL,
+  `m_ativo` tinyint(4) NOT NULL,
+  `m_email` char(100) NOT NULL,
+  `m_own_cod` char(10) NOT NULL,
+  `smtp_host` char(80) NOT NULL,
+  `smtp_user` char(80) NOT NULL,
+  `smtp_pass` char(80) NOT NULL,
+  `smtp_protocol` char(5) NOT NULL,
+  `smtp_port` char(3) NOT NULL,
+  `mailtype` char(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `mensagem_own`
+--
+
+INSERT INTO `mensagem_own` (`id_m`, `m_descricao`, `m_header`, `m_foot`, `m_ativo`, `m_email`, `m_own_cod`, `smtp_host`, `smtp_user`, `smtp_pass`, `smtp_protocol`, `smtp_port`, `mailtype`) VALUES
+(1, 'Thesa - Tesauro Semantico Aplicado', '', '', 1, 'rene.gabriel@ufrgs.br', '', 'mail.brapci.inf.br', 'brapci@brapci.inf.br', '448545ct', 'smtp', '587', '');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `rdf`
 --
 
-CREATE TABLE IF NOT EXISTS `rdf` (
-  `id_rdf` bigint(20) unsigned NOT NULL,
+CREATE TABLE `rdf` (
+  `id_rdf` bigint(20) UNSIGNED NOT NULL,
   `rdf_r1` text NOT NULL,
   `rdf_prop` int(11) NOT NULL,
   `rdf_r2` text NOT NULL,
@@ -620,8 +649,8 @@ CREATE TABLE IF NOT EXISTS `rdf` (
 -- Table structure for table `rdf_authority`
 --
 
-CREATE TABLE IF NOT EXISTS `rdf_authority` (
-  `id_au` bigint(20) unsigned NOT NULL,
+CREATE TABLE `rdf_authority` (
+  `id_au` bigint(20) UNSIGNED NOT NULL,
   `au_descript` char(200) NOT NULL,
   `au_type` int(11) NOT NULL,
   `au_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -634,12 +663,12 @@ CREATE TABLE IF NOT EXISTS `rdf_authority` (
 -- Table structure for table `rdf_form_rule`
 --
 
-CREATE TABLE IF NOT EXISTS `rdf_form_rule` (
-  `id_rr` bigint(20) unsigned NOT NULL,
+CREATE TABLE `rdf_form_rule` (
+  `id_rr` bigint(20) UNSIGNED NOT NULL,
   `rr_field` text NOT NULL,
   `rr_description` char(200) NOT NULL,
   `rr_active` int(11) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `rdf_form_rule`
@@ -659,12 +688,12 @@ INSERT INTO `rdf_form_rule` (`id_rr`, `rr_field`, `rr_description`, `rr_active`)
 -- Table structure for table `rdf_literal`
 --
 
-CREATE TABLE IF NOT EXISTS `rdf_literal` (
-  `id_rl` bigint(20) unsigned NOT NULL,
+CREATE TABLE `rdf_literal` (
+  `id_rl` bigint(20) UNSIGNED NOT NULL,
   `rl_type` int(11) NOT NULL,
   `rl_value` longtext NOT NULL,
   `rl_lang` varchar(6) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=512 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `rdf_literal`
@@ -1184,14 +1213,14 @@ INSERT INTO `rdf_literal` (`id_rl`, `rl_type`, `rl_value`, `rl_lang`) VALUES
 -- Table structure for table `rdf_literal_note`
 --
 
-CREATE TABLE IF NOT EXISTS `rdf_literal_note` (
-  `id_rl` bigint(20) unsigned NOT NULL,
+CREATE TABLE `rdf_literal_note` (
+  `id_rl` bigint(20) UNSIGNED NOT NULL,
   `rl_type` int(11) NOT NULL,
   `rl_value` longtext NOT NULL,
   `rl_lang` varchar(6) NOT NULL,
   `rl_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `rl_c` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `rdf_literal_note`
@@ -1221,12 +1250,12 @@ INSERT INTO `rdf_literal_note` (`id_rl`, `rl_type`, `rl_value`, `rl_lang`, `rl_c
 -- Table structure for table `rdf_literal_th`
 --
 
-CREATE TABLE IF NOT EXISTS `rdf_literal_th` (
-  `id_lt` bigint(20) unsigned NOT NULL,
+CREATE TABLE `rdf_literal_th` (
+  `id_lt` bigint(20) UNSIGNED NOT NULL,
   `lt_term` int(11) NOT NULL,
   `lt_thesauros` int(11) NOT NULL,
   `lt_status` int(11) NOT NULL DEFAULT '1'
-) ENGINE=MyISAM AUTO_INCREMENT=524 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `rdf_literal_th`
@@ -1763,8 +1792,8 @@ INSERT INTO `rdf_literal_th` (`id_lt`, `lt_term`, `lt_thesauros`, `lt_status`) V
 -- Table structure for table `rdf_media`
 --
 
-CREATE TABLE IF NOT EXISTS `rdf_media` (
-  `id_rm` bigint(20) unsigned NOT NULL,
+CREATE TABLE `rdf_media` (
+  `id_rm` bigint(20) UNSIGNED NOT NULL,
   `rm_conecpt` int(11) NOT NULL,
   `rm_filename` text NOT NULL,
   `rm_link` text NOT NULL,
@@ -1781,13 +1810,13 @@ CREATE TABLE IF NOT EXISTS `rdf_media` (
 -- Table structure for table `rdf_perfil_propriety`
 --
 
-CREATE TABLE IF NOT EXISTS `rdf_perfil_propriety` (
-  `id_pa` bigint(20) unsigned NOT NULL,
+CREATE TABLE `rdf_perfil_propriety` (
+  `id_pa` bigint(20) UNSIGNED NOT NULL,
   `pa_class` int(11) NOT NULL,
   `pa_propriety` int(11) NOT NULL,
   `pa_rule` int(11) NOT NULL,
   `pa_ord` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `rdf_perfil_propriety`
@@ -1804,12 +1833,12 @@ INSERT INTO `rdf_perfil_propriety` (`id_pa`, `pa_class`, `pa_propriety`, `pa_rul
 -- Table structure for table `rdf_prefil_class`
 --
 
-CREATE TABLE IF NOT EXISTS `rdf_prefil_class` (
-  `id_rpc` bigint(20) unsigned NOT NULL,
+CREATE TABLE `rdf_prefil_class` (
+  `id_rpc` bigint(20) UNSIGNED NOT NULL,
   `rpc_name` char(150) NOT NULL,
   `rpc_description` text NOT NULL,
   `rpc_active` int(11) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `rdf_prefil_class`
@@ -1824,12 +1853,12 @@ INSERT INTO `rdf_prefil_class` (`id_rpc`, `rpc_name`, `rpc_description`, `rpc_ac
 -- Table structure for table `rdf_prefix`
 --
 
-CREATE TABLE IF NOT EXISTS `rdf_prefix` (
-  `id_prefix` bigint(20) unsigned NOT NULL,
+CREATE TABLE `rdf_prefix` (
+  `id_prefix` bigint(20) UNSIGNED NOT NULL,
   `prefix_ref` char(30) NOT NULL,
   `prefix_url` char(250) NOT NULL,
   `prefix_ativo` int(11) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `rdf_prefix`
@@ -1857,8 +1886,8 @@ INSERT INTO `rdf_prefix` (`id_prefix`, `prefix_ref`, `prefix_url`, `prefix_ativo
 -- Table structure for table `rdf_resource`
 --
 
-CREATE TABLE IF NOT EXISTS `rdf_resource` (
-  `id_rs` bigint(20) unsigned NOT NULL,
+CREATE TABLE `rdf_resource` (
+  `id_rs` bigint(20) UNSIGNED NOT NULL,
   `rs_prefix` int(11) NOT NULL,
   `rs_propriety` char(100) NOT NULL,
   `rs_propriety_inverse` char(100) NOT NULL,
@@ -1867,7 +1896,7 @@ CREATE TABLE IF NOT EXISTS `rdf_resource` (
   `rs_marc` varchar(30) NOT NULL,
   `rs_group` varchar(10) NOT NULL,
   `rs_public` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `rdf_resource`
@@ -1922,15 +1951,37 @@ INSERT INTO `rdf_resource` (`id_rs`, `rs_prefix`, `rs_propriety`, `rs_propriety_
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `thesa`
+--
+
+CREATE TABLE `thesa` (
+  `id_thesa` bigint(20) UNSIGNED NOT NULL,
+  `thesa_name` varchar(200) NOT NULL,
+  `thesa_url` varchar(255) NOT NULL,
+  `thesa_prefix` varchar(30) NOT NULL,
+  `thesa_contact` varchar(200) NOT NULL,
+  `thesa_contact_email` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `thesa`
+--
+
+INSERT INTO `thesa` (`id_thesa`, `thesa_name`, `thesa_url`, `thesa_prefix`, `thesa_contact`, `thesa_contact_email`) VALUES
+(1, 'Thesa - UFRGS', 'https://www.ufrgs.br/tesauros/', 'thesa', '', '');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `th_concept`
 --
 
-CREATE TABLE IF NOT EXISTS `th_concept` (
-  `id_c` bigint(20) unsigned NOT NULL,
+CREATE TABLE `th_concept` (
+  `id_c` bigint(20) UNSIGNED NOT NULL,
   `c_th` int(11) NOT NULL,
   `c_concept` char(40) NOT NULL,
   `c_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=MyISAM AUTO_INCREMENT=1025 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `th_concept`
@@ -2968,15 +3019,15 @@ INSERT INTO `th_concept` (`id_c`, `c_th`, `c_concept`, `c_created`) VALUES
 -- Table structure for table `th_concept_term`
 --
 
-CREATE TABLE IF NOT EXISTS `th_concept_term` (
-  `id_ct` bigint(20) unsigned NOT NULL,
+CREATE TABLE `th_concept_term` (
+  `id_ct` bigint(20) UNSIGNED NOT NULL,
   `ct_concept` int(11) NOT NULL,
   `ct_th` int(11) NOT NULL,
   `ct_term` int(11) NOT NULL,
   `ct_concept_2` int(11) NOT NULL,
   `ct_propriety` int(11) NOT NULL,
   `ct_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=MyISAM AUTO_INCREMENT=1291 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `th_concept_term`
@@ -3398,8 +3449,8 @@ INSERT INTO `th_concept_term` (`id_ct`, `ct_concept`, `ct_th`, `ct_term`, `ct_co
 -- Table structure for table `th_thesaurus`
 --
 
-CREATE TABLE IF NOT EXISTS `th_thesaurus` (
-  `id_pa` bigint(20) unsigned NOT NULL,
+CREATE TABLE `th_thesaurus` (
+  `id_pa` bigint(20) UNSIGNED NOT NULL,
   `pa_name` char(150) NOT NULL,
   `pa_description` text NOT NULL,
   `pa_status` int(11) NOT NULL,
@@ -3408,7 +3459,7 @@ CREATE TABLE IF NOT EXISTS `th_thesaurus` (
   `pa_creator` int(11) NOT NULL,
   `pa_hidden` int(11) NOT NULL DEFAULT '0',
   `pa_avaliacao` double NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `th_thesaurus`
@@ -3431,14 +3482,14 @@ INSERT INTO `th_thesaurus` (`id_pa`, `pa_name`, `pa_description`, `pa_status`, `
 -- Table structure for table `th_users`
 --
 
-CREATE TABLE IF NOT EXISTS `th_users` (
-  `id_ust` bigint(20) unsigned NOT NULL,
+CREATE TABLE `th_users` (
+  `id_ust` bigint(20) UNSIGNED NOT NULL,
   `ust_user_id` int(11) NOT NULL,
   `ust_user_role` int(11) NOT NULL,
   `ust_th` int(11) NOT NULL,
   `ust_status` int(11) NOT NULL,
   `ust_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `th_users`
@@ -3460,8 +3511,8 @@ INSERT INTO `th_users` (`id_ust`, `ust_user_id`, `ust_user_role`, `ust_th`, `ust
 -- Table structure for table `users`
 --
 
-CREATE TABLE IF NOT EXISTS `users` (
-  `id_us` bigint(20) unsigned NOT NULL,
+CREATE TABLE `users` (
+  `id_us` bigint(20) UNSIGNED NOT NULL,
   `us_nome` char(80) NOT NULL,
   `us_email` char(80) NOT NULL,
   `us_cidade` char(40) NOT NULL,
@@ -3485,7 +3536,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `us_perfil` text NOT NULL,
   `us_login` char(20) NOT NULL,
   `us_password` char(255) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=388 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
@@ -3500,13 +3551,13 @@ INSERT INTO `users` (`id_us`, `us_nome`, `us_email`, `us_cidade`, `us_pais`, `us
 -- Table structure for table `works`
 --
 
-CREATE TABLE IF NOT EXISTS `works` (
-  `id_w` bigint(20) unsigned NOT NULL,
+CREATE TABLE `works` (
+  `id_w` bigint(20) UNSIGNED NOT NULL,
   `w_id` char(20) NOT NULL,
   `w_status` int(11) NOT NULL DEFAULT '1',
   `w_create` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `w_update` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `works`
@@ -3532,6 +3583,12 @@ ALTER TABLE `ci_sessions`
 --
 ALTER TABLE `language`
   ADD UNIQUE KEY `id_lg` (`id_lg`);
+
+--
+-- Indexes for table `mensagem_own`
+--
+ALTER TABLE `mensagem_own`
+  ADD UNIQUE KEY `id_m` (`id_m`);
 
 --
 -- Indexes for table `rdf`
@@ -3600,6 +3657,12 @@ ALTER TABLE `rdf_resource`
   ADD UNIQUE KEY `id_rs` (`id_rs`);
 
 --
+-- Indexes for table `thesa`
+--
+ALTER TABLE `thesa`
+  ADD UNIQUE KEY `id_thesa` (`id_thesa`);
+
+--
 -- Indexes for table `th_concept`
 --
 ALTER TABLE `th_concept`
@@ -3643,92 +3706,102 @@ ALTER TABLE `works`
 -- AUTO_INCREMENT for table `language`
 --
 ALTER TABLE `language`
-  MODIFY `id_lg` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=512;
+  MODIFY `id_lg` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=512;
+--
+-- AUTO_INCREMENT for table `mensagem_own`
+--
+ALTER TABLE `mensagem_own`
+  MODIFY `id_m` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `rdf`
 --
 ALTER TABLE `rdf`
-  MODIFY `id_rdf` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
+  MODIFY `id_rdf` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `rdf_authority`
 --
 ALTER TABLE `rdf_authority`
-  MODIFY `id_au` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
+  MODIFY `id_au` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `rdf_form_rule`
 --
 ALTER TABLE `rdf_form_rule`
-  MODIFY `id_rr` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `id_rr` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `rdf_literal`
 --
 ALTER TABLE `rdf_literal`
-  MODIFY `id_rl` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=512;
+  MODIFY `id_rl` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=512;
 --
 -- AUTO_INCREMENT for table `rdf_literal_note`
 --
 ALTER TABLE `rdf_literal_note`
-  MODIFY `id_rl` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
+  MODIFY `id_rl` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `rdf_literal_th`
 --
 ALTER TABLE `rdf_literal_th`
-  MODIFY `id_lt` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=524;
+  MODIFY `id_lt` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=524;
 --
 -- AUTO_INCREMENT for table `rdf_media`
 --
 ALTER TABLE `rdf_media`
-  MODIFY `id_rm` bigint(20) unsigned NOT NULL AUTO_INCREMENT;
+  MODIFY `id_rm` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `rdf_perfil_propriety`
 --
 ALTER TABLE `rdf_perfil_propriety`
-  MODIFY `id_pa` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id_pa` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `rdf_prefil_class`
 --
 ALTER TABLE `rdf_prefil_class`
-  MODIFY `id_rpc` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id_rpc` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `rdf_prefix`
 --
 ALTER TABLE `rdf_prefix`
-  MODIFY `id_prefix` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
+  MODIFY `id_prefix` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `rdf_resource`
 --
 ALTER TABLE `rdf_resource`
-  MODIFY `id_rs` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=45;
+  MODIFY `id_rs` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+--
+-- AUTO_INCREMENT for table `thesa`
+--
+ALTER TABLE `thesa`
+  MODIFY `id_thesa` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `th_concept`
 --
 ALTER TABLE `th_concept`
-  MODIFY `id_c` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1025;
+  MODIFY `id_c` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1025;
 --
 -- AUTO_INCREMENT for table `th_concept_term`
 --
 ALTER TABLE `th_concept_term`
-  MODIFY `id_ct` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1291;
+  MODIFY `id_ct` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1291;
 --
 -- AUTO_INCREMENT for table `th_thesaurus`
 --
 ALTER TABLE `th_thesaurus`
-  MODIFY `id_pa` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+  MODIFY `id_pa` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `th_users`
 --
 ALTER TABLE `th_users`
-  MODIFY `id_ust` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+  MODIFY `id_ust` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_us` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=388;
+  MODIFY `id_us` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=388;
 --
 -- AUTO_INCREMENT for table `works`
 --
 ALTER TABLE `works`
-  MODIFY `id_w` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id_w` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

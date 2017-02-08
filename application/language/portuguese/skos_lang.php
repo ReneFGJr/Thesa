@@ -34,7 +34,7 @@ $lang['fullName'] = 'Nome completo';
 $lang['Welcome_signup'] = 'Cadastro de usuário';
 $lang['Username'] = 'Nome do usuário';
 $lang['Sign Up Send'] = 'Solicitar cadastro';
-$lang['Voltar'] = 'Nome do usuário';
+$lang['Voltar'] = 'voltar';
 $lang['concept_add'] = 'Adicionar Termos';
 $lang['all'] = 'todas';
 $lang['Welcome'] = 'Bem vindo a';
@@ -105,6 +105,8 @@ $lang['terms'] = 'descritores';
 $lang['concepts'] = 'conceitos';
 $lang['Conceitual map'] = 'Mapa conceitual';
 $lang['Report Thesaurus'] = 'Thesauro Impresso';
+
+$lang['skosxl:code'] = 'notação (código)';
 
 $lang['thesaurus_open'] = "TESAUROS ABERTOS";
 $lang['thesaurus_myth'] = "MEUS TESAUROS";

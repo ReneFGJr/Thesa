@@ -1449,5 +1449,70 @@ class skoses extends CI_model {
 		return ($sx);
 	}
 
+	function user_email_send($para,$nome,$code)
+		{
+			$anexos=array();
+			$texto = 'SIGNUP - Thesa<hr>';
+			switch($code)
+				{
+				case 'SIGNUP':
+					$link = base_url('index.php/skos/user_valid/?dd0='.$para.'&chk='.checkpost_link($para.date("Ymd")));
+					$assunto = 'Cadastro de novo usuários - Thesa';
+					$texto .= 'Para ativar seu cadastro é necessário clicar no link abaixo:';
+					$texto .= '<br><br>';
+					$texto .= '<a href="'.$link.'" target="_new">'.$link.'</a>';
+					$texto = utf8_decode($texto);
+					$assunto = utf8_decode($assunto);
+					$de = 1;					
+					break;
+				default:
+					$assunto = 'Enviado de e-mail';
+					$texto = 'texto';
+					$de = 1;
+					break;
+				}
+				
+			enviaremail($para, $assunto, $texto, $de);
+		}
+	function user_insert_temp($email,$name)
+		{
+			if ($this->user_exist($email) == 0)
+				{
+					$md5 = md5($email.$name);
+					$sql = "insert into users 
+							( 	
+							us_nome, us_email, us_login,
+							us_password, us_autenticador, us_nivel,
+							us_ativo
+							)
+							values
+							('$name','$email','$email',
+							'$md5','E',0,
+							-1
+							)";
+					//$rlt = $this->db->query($sql);
+				}
+		}
+	function user_valid($email,$vlr=1)
+		{
+			$sql = "update users
+						set us_ativo = $vlr
+						where us_email = '$email' ";
+			$rlt = $this->db->query($sql);
+			return(1);
+		}
+	function user_exist($email)
+		{
+			$sql = "select * from users where us_email = '$email' ";
+			$rlt = $this->db->query($sql);
+			$rlt = $rlt->result_array();
+			if (count($rlt) > 0)
+				{
+					return(1);
+				} else {
+					return(0);
+				}
+		}
+
 }
 ?>
