@@ -28,11 +28,24 @@ if (!function_exists(('msg')))
 					}
 			}
 	}
-$lang['status_1'] = 'Em edição';
-$lang['status_2'] = 'Publicado';
+$lang['to_invite'] = 'incorporar';
+$lang['email_invalid'] = 'e-mail inválido';
+$lang['email_not_exist'] = 'e-mail não cadastrado';
+$lang['collaborator_insered'] = 'colaborador vinculado com sucesso!';
+$lang['collaborators'] = 'colaboradores';
+$lang['collaborator'] = 'colaborador';
+$lang['not_record'] = 'sem registro';	
+$lang['has_send_email_to'] = 'Verifique seu e-mail, vou enviado uma confirmação para o endereço ';
+$lang['no_match_password'] = 'Senhas não conferem';
+$lang['password_more_shot'] = 'Senha muito curta';
+$lang['password_is_requered'] = 'Senha é obrigatória';
+$lang['change_password_successful'] = 'Senha alterada com sucesso';
+$lang['new_thesaurus'] = 'Criar novo vocabulário controlado / tesauros';
+$lang['status_1'] = 'Acesso restrito / em edição';
+$lang['status_2'] = 'Acesso público';
 $lang['fullName'] = 'Nome completo';
 $lang['Welcome_signup'] = 'Cadastro de usuário';
-$lang['Username'] = 'Nome do usuário';
+$lang['Username'] = 'Usuário (email)';
 $lang['Sign Up Send'] = 'Solicitar cadastro';
 $lang['Voltar'] = 'voltar';
 $lang['concept_add'] = 'Adicionar Termos';
@@ -96,7 +109,7 @@ $lang['Terms'] = 'Descritores';
 $lang['concept_FLE'] = 'Genero / Flexão';
 $lang['select_a_concept'] = 'Selecione um conceito';
 $lang['save'] = 'Gravar';
-$lang['my_thesauros'] = 'Thesaurus';
+$lang['my_thesauros'] = 'Meus tesauros';
 $lang['status'] = 'Situação';
 $lang['date'] = 'Data';
 $lang['type'] = 'Tipo';

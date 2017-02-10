@@ -6,7 +6,7 @@
 		<div class="col-md-offset-3 col-md-4">
 			<div class="form-login">
 				<form method="post" id="form">
-					<h4 class="thesa"><?php echo msg('Welcome'); ?>
+					<h4 class="thesa logo_title logo_mini"><?php echo UpperCase(msg('Welcome')); ?>
 					THESA</h4>
 					<span><?php echo msg('Username'); ?></span>
 					<input type="text" name="userName" id="userName" class="form-control input-sm chat-input" placeholder="<?php echo msg('Username'); ?>" value="<?php get("userName");?>" />
@@ -14,6 +14,7 @@
 					<span><?php echo msg('Password'); ?></span>
 					<input type="password" name="userPassword" id="userPassword" class="form-control input-sm chat-input" placeholder="<?php echo msg('Password'); ?>" />
 					</br>
+					<span><?php echo $email_ok;?></span>
 					<div class="wrapper">
 						<span class="group-btn" id="signin"> <a href="#" class="btn btn-primary btn-md"><?php echo msg('Sign In'); ?>
 							<i class="fa fa-sign-in"></i></a> </span>
@@ -24,16 +25,6 @@
 				</form>
 				<br>
 				<br>
-				<!--
-				<ul class="roboto">
-					<li>
-						Ainda não sou cadastrado
-					</li>
-					<li>
-						Esqueci minha senha
-					</li>
-				</ul>
-				-->
 			</div>
 		</div>
 

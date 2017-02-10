@@ -73,20 +73,36 @@ class Skos extends CI_Controller {
 	/* LOGIN */
 	function login($act = '') {
 		$this -> cab(2);
-
+		$data['email_ok'] = '';
 		if (strlen($act) > 0) {
-			if ($this -> validate($act) == 1) {
+			$rs = $this -> validate($act);
+			if ($rs == 1) {
+
 				redirect(base_url('index.php/skos/'));
 			}
 		}
-
-		$this -> load -> view('skos/thesa_login');
 
 		$ok = $this -> validate();
 		if ($ok == 1) {
 			redirect(base_url('index.php/skos/myth'));
 			exit ;
+		} else {
+			if (strlen(get("userName")) > 0)
+			switch($ok) {
+				case -1 :
+					$data['email_ok'] = '<span class="btn alert-danger">' . msg("user_not_validaded") . '#' . $ok . '</span>';
+					$link = ' | <a href="' . base_url('index.php/skos/user_revalid/?dd0=' . get("userName") . '&chk=' . checkpost_link(get("userName"))) . '" class="btn alert-danger">';
+					$link .= msg('resend_validation');
+					$link .= '</a>';
+					$link .= '<br/><br/>';
+					$data['email_ok'] .= $link;
+					break;
+				default :
+					$data['email_ok'] = '<span class="btn alert-danger">' . msg("user_invalid_password") . '#' . $ok . '</span><br/><br/>';
+					break;
+			}
 		}
+		$this -> load -> view('skos/thesa_login', $data);
 
 	}
 
@@ -131,14 +147,43 @@ class Skos extends CI_Controller {
 
 	function myth() {
 		$this -> load -> model('skoses');
-
-		$this -> cab();
-		$us = 1;
+		$this -> cab(1);
+		$us = $_SESSION['id'];
 		$tela = $this -> skoses -> myskoses($us);
 		$data['content'] = $tela;
+		$data['content'] .= $this->load->view('skos/thesa_btn_new',$data,true);
+		
 		$data['title'] = msg('my_thesauros');
 		$this -> load -> view('content', $data);
 	}
+	
+	function th_new()
+		{
+		$us = $_SESSION['id'];	
+
+		/* Load model */
+		$this -> load -> model("skoses");
+
+		$this -> cab(1);
+
+		$cp = $this -> skoses -> cp_th_new($us);
+				$form = new form;
+				$form -> table = $this -> skoses -> table_thesaurus;
+				$form -> cp = $cp;
+				$form -> id = 0;
+
+				$data['content'] = $form -> editar($cp, $this -> skoses -> table_thesaurus);
+				$data['title'] = msg('my_thesauros');
+				$this -> load -> view('content', $data);
+
+				if ($form -> saved > 0) {
+					
+					$this->skoses->th_assosiation_users();
+					
+					redirect(base_url('index.php/skos/myth/'));
+				}
+							
+		}
 
 	function thesa() {
 		$this -> load -> model('skoses');
@@ -207,11 +252,13 @@ class Skos extends CI_Controller {
 		array_push($cp, array('$T80:8', '', msg('terms'), True, False));
 		array_push($cp, array('$M', '', '<font class="small">' . msg('terms_info') . '</font>', False, False));
 		array_push($cp, array('$Q lg_code:lg_language:select * from language where lg_active = 1 order by lg_order', '', msg('language'), True, False));
+		array_push($cp, array('$C', '', msg('Lowercase'), False, False));
 		array_push($cp, array('$B8', '', msg('save'), False, False));
 		$tela = $form -> editar($cp, '');
 
 		if ($form -> saved > 0) {
-			$data['content'] = $this -> skoses -> incorpore_terms(get("dd1"), $id, get("dd3"));
+			$lc = get("dd4");
+			$data['content'] = $this -> skoses -> incorpore_terms(get("dd1"), $id, get("dd3"),$lc);
 			$data['title'] = '';
 			$this -> load -> view('content', $data);
 		} else {
@@ -219,7 +266,7 @@ class Skos extends CI_Controller {
 			$data['title'] = '';
 			$this -> load -> view('content', $data);
 		}
-
+		$this -> load -> view('header/footer', null);
 	}
 
 	function concept_subordinate($th = '', $chk = '', $idt) {
@@ -344,8 +391,10 @@ class Skos extends CI_Controller {
 	function th_edit($id = '', $chk = '') {
 		/* Load model */
 		$this -> load -> model("skoses");
+		
+		$this->skoses->th_assosiation_users();
 
-		$this -> cab(2);
+		$this -> cab(1);
 
 		$data = $this -> skoses -> le_skos($id);
 
@@ -358,6 +407,7 @@ class Skos extends CI_Controller {
 				$form -> id = $id;
 
 				$data['content'] = $form -> editar($cp, $this -> skoses -> table_thesaurus);
+				$data['title'] = 'my_thesauros';
 				$this -> load -> view('content', $data);
 
 				if ($form -> saved > 0) {
@@ -366,10 +416,41 @@ class Skos extends CI_Controller {
 					} else {
 						redirect(base_url('index.php/skos/myth'));
 					}
-
 				}
+				
+				
+				$msg = '';			
+				
+				/* Incluir colaboradores */
+				$emailCollaborator = get("emailCollaborator");
+				$btn_emailCollaborator = get("btn_emailCollaborator");
+				if (strlen($btn_emailCollaborator) > 0)
+					{
+						$ok = validaemail($emailCollaborator);
+						if ($ok == 1)
+							{
+								$ok = $this->skoses->user_exist($emailCollaborator);
+								if ($ok == 0)
+									{
+										$msg .= '<span class="btn alert-danger">'.msg('email_not_exist').'</span>';		
+									} else {
+										$user_c = $this->skoses->line['id_us'];
+										$msg .= '<span class="btn alert-success">'.msg('collaborator_insered').'</span>';
+										$this->skoses->user_thesa($id,$user_c,'INS');
+									}
+							} else {
+								$msg .= '<span class="btn alert-danger">'.msg('email_invalid').'</span>';
+							}
+						
+					}
+
+				/* Colaboradores */
+				$msg = $this->skoses->th_collaborators($id).$msg;		
+				$data['content'] = $msg;
+				$this->load->view('skos/thesa_users',$data);
 			}
 		}
+		$this -> load -> view('header/footer', null);
 	}
 
 	/***************************************************************************** TR Relacionado */
@@ -1058,7 +1139,14 @@ class Skos extends CI_Controller {
 					$ck['check'] = md5($line['id_us'] . date("Ymd"));
 					$this -> session -> set_userdata($ck);
 					return (1);
+				} else {
+					$ok = $line['us_ativo'];
+					if ($ok == 1) { $ok == -9;
+					}
+					return ($ok);
 				}
+			} else {
+				return (-2);
 			}
 		} else {
 			if (isset($_SESSION['check'])) {
@@ -1068,20 +1156,91 @@ class Skos extends CI_Controller {
 		return (0);
 	}
 
+	function user_revalid() {
+		/* Load model */
+
+		$this -> load -> model("skoses");
+
+		$email = get("dd0");
+		$check = get("chk");
+
+		$chk = checkpost_link($email);
+		if ($check == $chk) {
+			$this -> cab();
+			$this -> skoses -> user_exist($email);
+			$line = $this -> skoses -> line;
+			$nome = $line['us_nome'];
+			$this -> skoses -> user_email_send($email, $nome, 'SIGNUP');
+			$data = array();
+			$data['title'] = msg('email');
+			$data['content'] = msg('has_send_email_to') . ' ' . $email;
+			$this -> load -> view('skos/100', $data);
+		} else {
+			$this -> cab(0);
+			$data = array();
+			$data['title'] = 'Error 533';
+			$data['content'] = 'Invalid checkpost';
+			$this -> load -> view('skos/510', $data);
+		}
+
+	}
+
 	function user_valid() {
 		/* Load model */
 
 		$this -> load -> model("skoses");
 		$this -> cab();
-				
+
 		$email = get("dd0");
-		$check = get("chk");
-		
+		$check = get("chk") . get("dd4");
+		$acao = get("acao");
+		$chk2 = '';
 		$chk = checkpost_link($email . date("Ymd"));
-		if ($chk == $check) {			
-			$this->skoses->user_valid($email,1);
-			$this->skoses->user_change_password($email,substr(md5(date("Ymds"),4,10)));
-			$this -> skoses -> user_email_send($email, $nome, 'WELCOME');
+		if ($chk == $check) {
+			/* CHECK #1 */
+			if (strlen($acao) > 0) {
+				$pw1 = get("dd1");
+				$pw2 = get("dd2");
+				if (strlen($pw1) < 5) {
+					if (strlen($pw1) > 0) {
+						$chk2 = '<span class="btn alert-danger">' . msg('password_more_shot') . '</span>';
+					} else {
+						$chk2 = '<span class="btn alert-danger">' . msg('password_is_requered') . '</span>';
+					}
+				} else {
+					if ($pw1 != $pw2) {
+						$chk2 = '<span class="btn alert-danger">' . msg('no_match_password') . '</span>';
+					} else {
+						$this->skoses->user_set_password($email,$pw1);
+						$data = array();
+						$data['title'] = msg('change_password');
+						$data['content'] = msg('change_password_successful');
+						$data['content'] .= '<br/><br/><a href="'.base_url('index.php/skos/login').'" class="btn btn-default">'.msg('return').'</a>'; 
+						$this->load->view('skos/100',$data);
+						return(0);
+					}
+				}
+			}
+
+			$this -> skoses -> user_valid($email, 1);
+			$cp = array();
+			array_push($cp, array('$HV', '', $email, True, True));
+			array_push($cp, array('$P80', '', msg('new_password'), True, True));
+			array_push($cp, array('$P80', '', msg('retype') . ' ' . msg('new_password'), True, True));
+			array_push($cp, array('$B8', '', msg('save'), False, True));
+			array_push($cp, array('$HV', '', $chk, True, True));
+			array_push($cp, array('$M', '', $chk2, True, True));
+			$form = new form;
+
+			$form -> id = 0;
+			$tela = $form -> editar($cp, '');
+
+			$data['title'] = msg('welcome');
+			$data['content'] = msg('define_your_password');
+			$data['content'] .= $tela;
+			$this -> load -> view('skos/100', $data);
+
+			//$this -> skoses -> user_email_send($email, $nome, 'WELCOME');
 		}
 	}
 

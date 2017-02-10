@@ -12,6 +12,8 @@ class skoses extends CI_model {
 	var $name_contact_email = '';
 	var $url = '';
 
+	var $line = array();
+
 	function __construct() {
 		$sql = "select * from thesa where id_thesa = 1";
 		$rlt = $this -> db -> query($sql);
@@ -442,7 +444,9 @@ class skoses extends CI_model {
 		$th = round(sonumero($th));
 		$sql = "select * from th_concept_term as t1
 					INNER JOIN rdf_literal ON id_rl = t1.ct_term
-						WHERE t1.ct_concept = $id and t1.ct_th = $th and t1.ct_propriety = 27";
+					INNER JOIN rdf_resource ON id_rs = t1.ct_propriety
+					LEFT JOIN rdf_prefix ON id_prefix = rs_prefix
+						WHERE t1.ct_concept = $id and t1.ct_th = $th and rs_group = 'TE'";
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
 		if (count($rlt) > 0) {
@@ -646,24 +650,46 @@ class skoses extends CI_model {
 	}
 
 	/* MY Thesaurus */
+	function th_assosiation_users()
+		{
+			$sql = "select *
+						FROM th_thesaurus
+						LEFT JOIN th_users ON ust_th = id_pa
+							where ust_user_id is null ";
+			$rlt = $this->db->query($sql);
+			$rlt = $rlt->result_array();
+			for ($r=0;$r < count($rlt);$r++)
+				{
+					$line = $rlt[$r];
+					$th = $line['id_pa'];
+					$user = $line['pa_creator'];
+					$tipo = 'INS';
+					$this->skoses->user_thesa($th,$user,$tipo);
+				}
+		}
+		
 	function myskoses($user = 0) {
 		if ($user == 0) {
 			$sql = "select * from th_thesaurus
 					where pa_status = 2 
 					order by pa_name ";
 		} else {
-			$sql = "select * from th_thesaurus
-							where pa_creator = $user 
+			$sql = "select id_pa, pa_name, pa_created, pa_status, pa_avaliacao, pa_creator
+						FROM th_thesaurus
+						LEFT JOIN th_users ON ust_th = id_pa
+							where (pa_creator = $user) or (ust_user_id = $user)
+							group by  id_pa, pa_name, pa_created, pa_status, pa_avaliacao, pa_creator
 							order by pa_status desc, pa_name ";
 		}
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
 		$sx = '';
 		$sx .= '<table width="100%" class="table">';
-		$sx .= '<tr><th>' . msg('description') . '</b></th>';
-		$sx .= '<th>' . msg('last_update') . '</th>';
-		$sx .= '<th>' . msg('status') . '</th>';
-		$sx .= '<th>' . msg('avaliation') . '</th>';
+		$sx .= '<tr class="small">
+					<td>' . msg('description') . '</td>';
+		$sx .= '<td>' . msg('last_update') . '</td>';
+		$sx .= '<td>' . msg('status') . '</td>';
+		$sx .= '<td>' . msg('avaliation') . '</td>';
 		$sx .= '</tr>' . cr();
 		for ($r = 0; $r < count($rlt); $r++) {
 			$line = $rlt[$r];
@@ -702,6 +728,9 @@ class skoses extends CI_model {
 				}
 			}
 			$sx .= '</tr>';
+		}
+		if (count($rlt) == 0) {
+			$sx .= '<tr><td colspan=6><span class="btn alert-danger">' . msg('not_record') . '</span></td></tr>';
 		}
 		$sx .= '</table>';
 		return ($sx);
@@ -774,7 +803,7 @@ class skoses extends CI_model {
 	}
 
 	/* Incorpore terns intro thesaurus */
-	function incorpore_terms($t = '', $id = '', $lang = '') {
+	function incorpore_terms($t = '', $id = '', $lang = '',$lc='') {
 		$th = $_SESSION['skos'];
 		$t = troca($t, chr(13), ';');
 		$t = troca($t, chr(10), ';');
@@ -806,7 +835,7 @@ class skoses extends CI_model {
 		$sx = '';
 		for ($r = 0; $r < count($ln); $r++) {
 			$t = $ln[$r];
-			$t = $this -> prepara_termo($t);
+			$t = $this -> prepara_termo($t,$lc);
 			if (strlen($t) > 0) {
 				/* Incorpore Term intro Vocabulary Literal */
 				$this -> terms_add($t, $id, $lang);
@@ -859,13 +888,16 @@ class skoses extends CI_model {
 		return ($id);
 	}
 
-	Function prepara_termo($t = '') {
+	Function prepara_termo($t = '',$lc='') {
 		$t = utf8_decode($t);
-		$t = LowerCase($t);
-		$t = UpperCase(substr($t, 0, 1)) . substr($t, 1, strlen($t));
-		if (substr($t, 0, 1) == '#') {
-			$t = UpperCase(substr($t, 1, strlen($t)));
-		}
+		if (strlen($lc) > 0)
+			{
+				$t = LowerCase($t);
+				$t = UpperCase(substr($t, 0, 1)) . substr($t, 1, strlen($t));
+				if (substr($t, 0, 1) == '#') {
+					$t = UpperCase(substr($t, 1, strlen($t)));
+				}				
+			}
 		$t = utf8_encode($t);
 		return ($t);
 	}
@@ -921,6 +953,19 @@ class skoses extends CI_model {
 		} else {
 			return (0);
 		}
+	}
+
+	function cp_th_new($us = '') {
+		$cp = array();
+		array_push($cp, array('$H8', 'id_pa', '', false, true));
+		array_push($cp, array('$S80', 'pa_name', msg('thesaurus_name'), true, true));
+		array_push($cp, array('$T80:5', 'pa_description', msg('thesaurus_description'), false, true));
+		array_push($cp, array('$HV', 'pa_status', '1', true, true));
+		array_push($cp, array('$HV', 'pa_classe', 1, true, true));
+		array_push($cp, array('$HV', 'pa_creator',$us, true, true));
+		
+		array_push($cp, array('$B8', '', msg('save'), false, true));
+		return ($cp);
 	}
 
 	function cp_th($id = '') {
@@ -1401,33 +1446,32 @@ class skoses extends CI_model {
 
 		$dom -> createElement('NODE_NAME', 'NODE_VALUE');
 		// we create a XML Node and store it in a variable called noteElem;
-		$noteElem = $dom -> createElement('rdf');		
+		$noteElem = $dom -> createElement('rdf');
 
 		// createElement takes 2 param also, with 1st param takes the node Name, and 2nd param is node Value
 		$toElem = $dom -> createElement('concept', $data['ct_concept']);
-		$toElem->setAttribute('created', $data['c_created']);
+		$toElem -> setAttribute('created', $data['c_created']);
 		//$toElem->setAttribute('value', $data['rl_value']);
 		//$toElem->setAttribute('thesaurus', $data['pa_name']);
-		
-		
-		$toElem2 = $dom -> createElement('url', $this->skoses->url.'index.php/c/');
-		$toElem3 = $dom -> createElement('prefix', $this->skoses->prefix);
+
+		$toElem2 = $dom -> createElement('url', $this -> skoses -> url . 'index.php/c/');
+		$toElem3 = $dom -> createElement('prefix', $this -> skoses -> prefix);
 
 		$toElem4 = $dom -> createElement('literal', $data['rl_value']);
-		$toElem4->setAttribute('language', $data['rl_lang']);
-		
+		$toElem4 -> setAttribute('language', $data['rl_lang']);
+
 		$toElem5 = $dom -> createElement('thesauros', $data['pa_name']);
 		$toElem6 = $dom -> createElement('thesauros_id', $data['id_pa']);
-		$toElem7 = $dom -> createElement('uri', $this->skoses->prefix.':'.$data['ct_concept']);
+		$toElem7 = $dom -> createElement('uri', $this -> skoses -> prefix . ':' . $data['ct_concept']);
 		$toElem8 = $dom -> createElement('class', 'skos');
 		$toElem9 = $dom -> createElement('subclass', $data['pa_class']);
 
 		// now, we add $toElem as a child of $noteElem
 		$toSKOS = $dom -> createElement('skos', '');
-		$toSKOS->setAttribute('uri', $this->skoses->prefix.':'.$data['ct_concept']);
-		$toSKOS->setAttribute('value', $this->skoses->prefix.':'.$data['rl_value']);
-		$toSKOS->setAttribute('language', $this->skoses->prefix.':'.$data['rl_lang']);
-		
+		$toSKOS -> setAttribute('uri', $this -> skoses -> prefix . ':' . $data['ct_concept']);
+		$toSKOS -> setAttribute('value', $this -> skoses -> prefix . ':' . $data['rl_value']);
+		$toSKOS -> setAttribute('language', $this -> skoses -> prefix . ':' . $data['rl_lang']);
+
 		$toSKOS -> appendChild($toElem7);
 		$toSKOS -> appendChild($toElem);
 		$toSKOS -> appendChild($toElem2);
@@ -1437,49 +1481,46 @@ class skoses extends CI_model {
 		$toSKOS -> appendChild($toElem6);
 		$toSKOS -> appendChild($toElem8);
 		$toSKOS -> appendChild($toElem9);
-		
+
 		$noteElem -> appendChild($toSKOS);
 
 		// add $noteElem to the main dom
-		$dom->appendChild( $noteElem );
-		$dom->createComment('Thesa');
+		$dom -> appendChild($noteElem);
+		$dom -> createComment('Thesa');
 
 		echo $dom -> saveXML();
-		exit;
+		exit ;
 		return ($sx);
 	}
 
-	function user_email_send($para,$nome,$code)
-		{
-			$anexos=array();
-			$texto = 'SIGNUP - Thesa<hr>';
-			switch($code)
-				{
-				case 'SIGNUP':
-					$link = base_url('index.php/skos/user_valid/?dd0='.$para.'&chk='.checkpost_link($para.date("Ymd")));
-					$assunto = 'Cadastro de novo usuários - Thesa';
-					$texto .= 'Para ativar seu cadastro é necessário clicar no link abaixo:';
-					$texto .= '<br><br>';
-					$texto .= '<a href="'.$link.'" target="_new">'.$link.'</a>';
-					$texto = utf8_decode($texto);
-					$assunto = utf8_decode($assunto);
-					$de = 1;					
-					break;
-				default:
-					$assunto = 'Enviado de e-mail';
-					$texto = 'texto';
-					$de = 1;
-					break;
-				}
-				
-			enviaremail($para, $assunto, $texto, $de);
+	function user_email_send($para, $nome, $code) {
+		$anexos = array();
+		$texto = 'SIGNUP - Thesa<hr>';
+		switch($code) {
+			case 'SIGNUP' :
+				$link = base_url('index.php/skos/user_valid/?dd0=' . $para . '&chk=' . checkpost_link($para . date("Ymd")));
+				$assunto = 'Cadastro de novo usuários - Thesa';
+				$texto .= 'Para ativar seu cadastro é necessário clicar no link abaixo:';
+				$texto .= '<br><br>';
+				$texto .= '<a href="' . $link . '" target="_new">' . $link . '</a>';
+				$texto = utf8_decode($texto);
+				$assunto = utf8_decode($assunto);
+				$de = 1;
+				break;
+			default :
+				$assunto = 'Enviado de e-mail';
+				$texto = 'texto';
+				$de = 1;
+				break;
 		}
-	function user_insert_temp($email,$name)
-		{
-			if ($this->user_exist($email) == 0)
-				{
-					$md5 = md5($email.$name);
-					$sql = "insert into users 
+
+		enviaremail($para, $assunto, $texto, $de);
+	}
+
+	function user_insert_temp($email, $name) {
+		if ($this -> user_exist($email) == 0) {
+			$md5 = md5($email . $name);
+			$sql = "insert into users 
 							( 	
 							us_nome, us_email, us_login,
 							us_password, us_autenticador, us_nivel,
@@ -1490,27 +1531,101 @@ class skoses extends CI_model {
 							'$md5','E',0,
 							-1
 							)";
-					//$rlt = $this->db->query($sql);
-				}
+			$rlt = $this -> db -> query($sql);
+			$sql = "update users set us_codigo = lpad(id_us,7,0) where us_codigo = '' or us_codigo is null";
 		}
-	function user_valid($email,$vlr=1)
-		{
-			$sql = "update users
+	}
+
+	function user_valid($email, $vlr = 1) {
+		$sql = "update users
 						set us_ativo = $vlr
 						where us_email = '$email' ";
-			$rlt = $this->db->query($sql);
-			return(1);
+		$rlt = $this -> db -> query($sql);
+		return (1);
+	}
+
+	function user_set_password($email, $pw) {
+		$sql = "update users
+						set us_ativo = 1,
+						us_password = '$pw'
+						where us_email = '$email' ";
+		$rlt = $this -> db -> query($sql);
+		return (1);
+	}
+
+	function user_exist($email) {
+		$sql = "select * from users where us_email = '$email' ";
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+		if (count($rlt) > 0) {
+			$this -> line = $rlt[0];
+			return (1);
+		} else {
+			return (0);
 		}
-	function user_exist($email)
+	}
+	
+	function th_collaborators($th)
 		{
-			$sql = "select * from users where us_email = '$email' ";
-			$rlt = $this->db->query($sql);
-			$rlt = $rlt->result_array();
-			if (count($rlt) > 0)
+					$sql = "select * from th_users 
+								INNER JOIN users ON ust_user_id = id_us
+								where ust_th = $th
+								order by us_nome";
+					$rlt = $this->db->query($sql);
+					$rlt = $rlt->result_array();
+					$sx = '<table width="100%" class="table">';
+					$sx .= '<tr class="small">';
+					$sx .= '<th width="2%">'.msg('#').'</th>';
+					$sx .= '<th width="48%">'.msg('userName').'</th>';
+					$sx .= '<th width="48%">'.msg('userEmail').'</th>';
+					$sx .= '</tr>';
+					$id = 0;
+					for ($r=0;$r < count($rlt);$r++)
+						{
+							$id++;
+							$line = $rlt[$r];
+							$sx .= '<tr>';
+							$sx .= '<td>';
+							$sx .= $id;
+							$sx .= '</td>';
+							
+							$sx .= '<td>';
+							$sx .= $line['us_nome'];
+							$sx .= '</td>';
+							$sx .= '<td>';
+							$sx .= $line['us_email'];
+							$sx .= '</td>';
+							$sx .= '</tr>';
+						}
+					$sx .= '</table>';
+					return($sx);
+		}
+	
+	function user_thesa($th,$user,$tipo)
+		{
+			if ($tipo == 'INS')
 				{
+					$sql = "select * from th_users 
+								where ust_user_id = $user and ust_th = $th";
+					$rlt = $this->db->query($sql);
+					$rlt = $rlt->result_array();
+					if (count($rlt) == 0)
+						{
+							$sql = "insert into th_users
+									(
+									ust_user_id, ust_user_role, ust_th,
+									ust_status
+									) values (
+									$user, 1, $th,
+									1)";
+							$rlt = $this->db->query($sql);
+							return(1);
+						} else {
+							$sql = "update th_users set ust_status = 1 
+									where ust_user_id = $user and ust_th = $th";
+							$rlt = $this->db->query($sql);
+						}	
 					return(1);
-				} else {
-					return(0);
 				}
 		}
 

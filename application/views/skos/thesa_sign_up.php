@@ -6,7 +6,7 @@
 		<div class="col-md-offset-3 col-md-9">
 			<div class="form-login">
 				<form method="post" id="form">
-					<h4 class="thesa"><?php echo msg('Welcome_signup'); ?>
+					<h4 class="thesa logo_title logo_mini"><?php echo UpperCase(msg('Welcome_signup')); ?>
 					THESA</h4>
 					<span><?php echo msg('fullName'); ?></span>
 					<input type="text" name="fullName" value="<?php echo get("fullName");?>" id="fullName" class="form-control input-sm chat-input" placeholder="<?php echo msg('fullName'); ?>" value="<?php get("fullName");?>"  style="font-size: 200%; height: 250%; color: #808080;" />
