@@ -88,19 +88,19 @@ class Skos extends CI_Controller {
 			exit ;
 		} else {
 			if (strlen(get("userName")) > 0)
-			switch($ok) {
-				case -1 :
-					$data['email_ok'] = '<span class="btn alert-danger">' . msg("user_not_validaded") . '#' . $ok . '</span>';
-					$link = ' | <a href="' . base_url('index.php/skos/user_revalid/?dd0=' . get("userName") . '&chk=' . checkpost_link(get("userName"))) . '" class="btn alert-danger">';
-					$link .= msg('resend_validation');
-					$link .= '</a>';
-					$link .= '<br/><br/>';
-					$data['email_ok'] .= $link;
-					break;
-				default :
-					$data['email_ok'] = '<span class="btn alert-danger">' . msg("user_invalid_password") . '#' . $ok . '</span><br/><br/>';
-					break;
-			}
+				switch($ok) {
+					case -1 :
+						$data['email_ok'] = '<span class="btn alert-danger">' . msg("user_not_validaded") . '#' . $ok . '</span>';
+						$link = ' | <a href="' . base_url('index.php/skos/user_revalid/?dd0=' . get("userName") . '&chk=' . checkpost_link(get("userName"))) . '" class="btn alert-danger">';
+						$link .= msg('resend_validation');
+						$link .= '</a>';
+						$link .= '<br/><br/>';
+						$data['email_ok'] .= $link;
+						break;
+					default :
+						$data['email_ok'] = '<span class="btn alert-danger">' . msg("user_invalid_password") . '#' . $ok . '</span><br/><br/>';
+						break;
+				}
 		}
 		$this -> load -> view('skos/thesa_login', $data);
 
@@ -151,15 +151,14 @@ class Skos extends CI_Controller {
 		$us = $_SESSION['id'];
 		$tela = $this -> skoses -> myskoses($us);
 		$data['content'] = $tela;
-		$data['content'] .= $this->load->view('skos/thesa_btn_new',$data,true);
-		
+		$data['content'] .= $this -> load -> view('skos/thesa_btn_new', $data, true);
+
 		$data['title'] = msg('my_thesauros');
 		$this -> load -> view('content', $data);
 	}
-	
-	function th_new()
-		{
-		$us = $_SESSION['id'];	
+
+	function th_new() {
+		$us = $_SESSION['id'];
 
 		/* Load model */
 		$this -> load -> model("skoses");
@@ -167,23 +166,23 @@ class Skos extends CI_Controller {
 		$this -> cab(1);
 
 		$cp = $this -> skoses -> cp_th_new($us);
-				$form = new form;
-				$form -> table = $this -> skoses -> table_thesaurus;
-				$form -> cp = $cp;
-				$form -> id = 0;
+		$form = new form;
+		$form -> table = $this -> skoses -> table_thesaurus;
+		$form -> cp = $cp;
+		$form -> id = 0;
 
-				$data['content'] = $form -> editar($cp, $this -> skoses -> table_thesaurus);
-				$data['title'] = msg('my_thesauros');
-				$this -> load -> view('content', $data);
+		$data['content'] = $form -> editar($cp, $this -> skoses -> table_thesaurus);
+		$data['title'] = msg('my_thesauros');
+		$this -> load -> view('content', $data);
 
-				if ($form -> saved > 0) {
-					
-					$this->skoses->th_assosiation_users();
-					
-					redirect(base_url('index.php/skos/myth/'));
-				}
-							
+		if ($form -> saved > 0) {
+
+			$this -> skoses -> th_assosiation_users();
+
+			redirect(base_url('index.php/skos/myth/'));
 		}
+
+	}
 
 	function thesa() {
 		$this -> load -> model('skoses');
@@ -258,7 +257,7 @@ class Skos extends CI_Controller {
 
 		if ($form -> saved > 0) {
 			$lc = get("dd4");
-			$data['content'] = $this -> skoses -> incorpore_terms(get("dd1"), $id, get("dd3"),$lc);
+			$data['content'] = $this -> skoses -> incorpore_terms(get("dd1"), $id, get("dd3"), $lc);
 			$data['title'] = '';
 			$this -> load -> view('content', $data);
 		} else {
@@ -391,8 +390,8 @@ class Skos extends CI_Controller {
 	function th_edit($id = '', $chk = '') {
 		/* Load model */
 		$this -> load -> model("skoses");
-		
-		$this->skoses->th_assosiation_users();
+
+		$this -> skoses -> th_assosiation_users();
 
 		$this -> cab(1);
 
@@ -417,37 +416,33 @@ class Skos extends CI_Controller {
 						redirect(base_url('index.php/skos/myth'));
 					}
 				}
-				
-				
-				$msg = '';			
-				
+
+				$msg = '';
+
 				/* Incluir colaboradores */
 				$emailCollaborator = get("emailCollaborator");
 				$btn_emailCollaborator = get("btn_emailCollaborator");
-				if (strlen($btn_emailCollaborator) > 0)
-					{
-						$ok = validaemail($emailCollaborator);
-						if ($ok == 1)
-							{
-								$ok = $this->skoses->user_exist($emailCollaborator);
-								if ($ok == 0)
-									{
-										$msg .= '<span class="btn alert-danger">'.msg('email_not_exist').'</span>';		
-									} else {
-										$user_c = $this->skoses->line['id_us'];
-										$msg .= '<span class="btn alert-success">'.msg('collaborator_insered').'</span>';
-										$this->skoses->user_thesa($id,$user_c,'INS');
-									}
-							} else {
-								$msg .= '<span class="btn alert-danger">'.msg('email_invalid').'</span>';
-							}
-						
+				if (strlen($btn_emailCollaborator) > 0) {
+					$ok = validaemail($emailCollaborator);
+					if ($ok == 1) {
+						$ok = $this -> skoses -> user_exist($emailCollaborator);
+						if ($ok == 0) {
+							$msg .= '<span class="btn alert-danger">' . msg('email_not_exist') . '</span>';
+						} else {
+							$user_c = $this -> skoses -> line['id_us'];
+							$msg .= '<span class="btn alert-success">' . msg('collaborator_insered') . '</span>';
+							$this -> skoses -> user_thesa($id, $user_c, 'INS');
+						}
+					} else {
+						$msg .= '<span class="btn alert-danger">' . msg('email_invalid') . '</span>';
 					}
 
+				}
+
 				/* Colaboradores */
-				$msg = $this->skoses->th_collaborators($id).$msg;		
+				$msg = $this -> skoses -> th_collaborators($id) . $msg;
 				$data['content'] = $msg;
-				$this->load->view('skos/thesa_users',$data);
+				$this -> load -> view('skos/thesa_users', $data);
 			}
 		}
 		$this -> load -> view('header/footer', null);
@@ -1211,13 +1206,13 @@ class Skos extends CI_Controller {
 					if ($pw1 != $pw2) {
 						$chk2 = '<span class="btn alert-danger">' . msg('no_match_password') . '</span>';
 					} else {
-						$this->skoses->user_set_password($email,$pw1);
+						$this -> skoses -> user_set_password($email, $pw1);
 						$data = array();
 						$data['title'] = msg('change_password');
 						$data['content'] = msg('change_password_successful');
-						$data['content'] .= '<br/><br/><a href="'.base_url('index.php/skos/login').'" class="btn btn-default">'.msg('return').'</a>'; 
-						$this->load->view('skos/100',$data);
-						return(0);
+						$data['content'] .= '<br/><br/><a href="' . base_url('index.php/skos/login') . '" class="btn btn-default">' . msg('return') . '</a>';
+						$this -> load -> view('skos/100', $data);
+						return (0);
 					}
 				}
 			}
@@ -1242,6 +1237,22 @@ class Skos extends CI_Controller {
 
 			//$this -> skoses -> user_email_send($email, $nome, 'WELCOME');
 		}
+	}
+
+	function search($term1='') {
+		$this -> load -> model("skoses");
+		$this -> cab();
+		$th = '';
+
+		$term = get("search").$term1;
+		
+		$tela = '<h3>'.$term.'</h3>'.cr();
+		$tela .= $this->skoses->search_term($term,$th);
+		
+		$data['content'] = $tela;
+		$data['title'] = '';
+		$this->load->view('content',$data);
+		
 	}
 
 }

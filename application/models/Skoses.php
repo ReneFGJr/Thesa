@@ -1628,6 +1628,37 @@ class skoses extends CI_model {
 					return(1);
 				}
 		}
+	function search_term($t='',$th='')
+		{
+			$sql = "select * from th_concept_term
+						INNER JOIN rdf_literal ON id_rl = ct_term
+						INNER JOIN th_thesaurus ON ct_th = id_pa
+						where rl_value like '%".$t."%'
+						order by rl_value";
+			$rlt = $this->db->query($sql);
+			$rlt = $rlt->result_array();
+			$sx = '<table width="100%" class="table">';
+			for ($r=0;$r < count($rlt);$r++)
+				{
+					$line = $rlt[$r];
+					$link = '<a href="'.base_url('index.php/skos/c/'.$line['ct_concept'].'/'.$line['ct_th']).'" class="link">';
+					$sx .= '<tr>';
+					$sx .= '<td>';
+					$sx .= $link;
+					$sx .= $line['rl_value'];
+					$sx .= '</a>';
+					$sx .= '<sup>(';
+					$sx .= $line['rl_lang'];
+					$sx .= ')</sup>';
+					$sx .= '</td>';
+					$sx .= '<td>';
+					$sx .= $line['pa_name'];
+					$sx .= '</td>';
+					$sx .= '</tr>';
+				}
+			$sx .= '</table>';
+			return($sx);
+		}
 
 }
 ?>
