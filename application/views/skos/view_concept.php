@@ -96,7 +96,7 @@ if (!isset($action)) {
 		<div class="col-md-2">
 			<a href="<?php echo base_url('index.php/skos/json/'.$c_concept);?>" target="_new" class="btn btn-default">JSON</a>
 			<h4><?php echo msg('concept_IMG'); ?></h4>
-			<img src="/projeto/Biblioteca_Facil/_acervo/thumb/0000000_287px.jpg" border=1 class="img-rounded" style="width: 100%">
+			<img src="<?php echo base_url('_acervo/thumb/0000000_287px.jpg');?>" border=1 class="img-rounded" style="width: 100%">
 		</div>
 		<div>
 			Metadados administrativo
