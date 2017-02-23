@@ -9,7 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @category	Helpers
  * @author		Rene F. Gabriel Junior <renefgj@gmail.com>
  * @link		http://www.sisdoc.com.br/CodIgniter
- * @version		v0.16.31
+ * @version		v0.17.02.23
  */
 $dd = array();
 
@@ -369,6 +369,13 @@ function load_page($url) {
 	return $header;
 }
 
+if (!function_exists('msg')) {
+	function msg($x) {
+		return ($x);
+	}
+
+}
+
 function brtos($data) {
 	$data = sonumero($data);
 	$data = substr($data, 4, 4) . substr($data, 2, 2) . substr($data, 0, 2);
@@ -587,7 +594,7 @@ function DateAdd($ddf, $ddi, $ddt) {
 		$ddt = mktime(0, 0, 0, $ddmes, $dddia + $ddi, $ddano);
 	}
 	if ($ddf == 'w') {
-		$ddt = mktime(0, 0, 0, $ddmes, $dddia + 7, $ddano);
+		$ddt = mktime(0, 0, 0, $ddmes, $dddia + $ddi*7, $ddano);
 	}
 	if ($ddf == 'm') {
 		$ddt = mktime(0, 0, 0, $ddmes + $ddi, $dddia, $ddano);
@@ -1417,11 +1424,11 @@ if (!function_exists('form_edit')) {
 					$link = '';
 					$linkf = '';
 				}
-				$data .= chr(15) . '<td ' . $mskm . '>' . $link . '<font ' . $style . '>' . trim($row[$flds]) . '</font>' . $linkf . '</td>';
+				$data .= '<td ' . $mskm . '>' . $link . '<font ' . $style . '>' . trim($row[$flds]) . '</font>' . $linkf . '</td>';
 			}
 			if ($obj -> edit == True) {
 				$idr = trim($row[$fd[0]]);
-				$data .= chr(15) . '<td width="1%" align="center"><A HREF="' . $obj -> row_edit . '/' . $idr . '/' . checkpost_link($idr) . '"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></td>';
+				$data .= '<td width="1%" align="center"><A HREF="' . $obj -> row_edit . '/' . $idr . '/' . checkpost_link($idr) . '"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></td>';
 			}
 			$data .= '</tr>' . chr(13) . chr(10);
 		}
@@ -1706,7 +1713,7 @@ if (!function_exists('form_edit')) {
 				form_save($obj);
 			}
 		}
-		
+
 		$tela = '';
 		$tela .= '
 			<div class="containter">
@@ -1802,6 +1809,8 @@ if (!function_exists('form_edit')) {
 		}
 		if (substr($type, 0, 3) == '$UF') { $tt = 'UF';
 		}
+		if (substr($type, 0, 4) == '$RDF') { $tt = 'RDF';
+		}		
 
 		/* form */
 		$max = 100;
@@ -1876,7 +1885,7 @@ if (!function_exists('form_edit')) {
 				}
 
 				/* recupera dados */
-				$dados = array('name' => $dn, 'id' => $dn, 'size' => 1, 'class' => 'form_select ');
+				$dados = array('name' => $dn, 'id' => $dn, 'size' => 1, 'class' => 'form-control ');
 
 				$tela .= $tr;
 
@@ -1896,7 +1905,7 @@ if (!function_exists('form_edit')) {
 					/* TR da tabela */
 					$tela .= $tr;
 					$nr = round(sonumero($type));
-					if ($nr < 1) { $nr = '1';
+					if ($nr < 1) { $nr = '3';
 					}
 
 					if (substr($tdl, 0, 3) == '<td') {
@@ -2113,7 +2122,7 @@ if (!function_exists('form_edit')) {
 				}
 
 				/* recupera dados */
-				$dados = array('name' => $dn, 'id' => $dn, 'size' => 1, 'class' => 'form_select  ');
+				$dados = array('name' => $dn, 'id' => $dn, 'size' => 1, 'class' => 'form-control  ');
 
 				$tela .= $tr;
 
@@ -2147,7 +2156,7 @@ if (!function_exists('form_edit')) {
 					$options[$flds] = $vlrs;
 				}
 
-				$dados = array('name' => $dn, 'id' => $dn, 'size' => 1, 'class' => 'form_select  ');
+				$dados = array('name' => $dn, 'id' => $dn, 'size' => 1, 'class' => 'form-control  ');
 
 				$tela .= $tr;
 
@@ -2183,7 +2192,7 @@ if (!function_exists('form_edit')) {
 					$vlrs = $row[$vlrs];
 					$options[$flds] = $vlrs;
 					$checked = '';
-					$dados = array('name' => $dn, 'id' => $dn, 'value' => $flds, 'class' => 'form_select  ', 'checked' => $checked);
+					$dados = array('name' => $dn, 'id' => $dn, 'value' => $flds, 'class' => 'form-control  ', 'checked' => $checked);
 					$form .= form_radio($dados) . ' ' . $vlrs . '<br>';
 				}
 
@@ -2202,7 +2211,7 @@ if (!function_exists('form_edit')) {
 			/* String */
 			case 'R' :
 				$ntype = trim(substr($type, 2, strlen($type)));
-				$ntype = troca($ntype, '&', ';') . ';';
+				$ntype = troca($ntype, '&', ';') . ';';	
 				$param = splitx(';', $ntype);
 				$form = '<table width="100%" border=0>';
 
@@ -2360,12 +2369,47 @@ if (!function_exists('form_edit')) {
 
 				$size = sonumero($type);
 
-				$dados = array('name' => $dn, 'id' => $dn, 'value' => $vlr, 'maxlenght' => $max, 'size' => $size, 'placeholder' => $label, 'class' => 'form_string form_s' . $size);
+				$dados = array('name' => $dn, 'id' => $dn, 'value' => $vlr, 'maxlenght' => $max, 'size' => $size, 'placeholder' => $label, 'class' => 'form-control form_string form_s' . $size, 'style'=>'width: '.$size.'%;');
 				if ($readonly == false) { $dados['readonly'] = 'readonly';
 				}
 				$tela .= $td . form_input($dados);
 				$tela .= $tdn . $trn;
 				break;
+				
+			/* RDF */
+			case 'RDF' :
+				
+				$ntype = trim(substr($type, 4, strlen($type)));
+				$ntype = troca($ntype, ':', ';') . ';';
+				$param = splitx(';', $ntype);
+				$options = array('' => msg('::select an option::'));
+
+				/* recupera dados */
+				$sql = "select * from rdf as tabela
+							where rdf_class = '".$param[0]."' 
+							order by rdf_value";
+				$CI = &get_instance();
+				$query = $CI -> db -> query($sql);
+				foreach ($query->result_array() as $row) {
+					/* recupera ID */
+					$flds = $row['rdf_resource'];
+					$vlrs = $row['rdf_value'];
+					$options[$flds] = $vlrs;
+				}
+
+				$dados = array('name' => $dn, 'id' => $dn, 'size' => 1, 'class' => 'form-control  ');
+
+				$tela .= $tr;
+
+				/* label */
+				if (strlen($label) > 0) {
+					$tela .= $tdl . $label . ' ';
+				}
+				if ($required == 1) { $tela .= ' <font color="red">*</font> ';
+				}
+				$tela .= '<TD>';
+				$tela .= form_dropdown($dados, $options, $vlr);
+				break;				
 
 			case 'SW' :
 				{
@@ -2436,7 +2480,7 @@ if (!function_exists('form_edit')) {
 				if ($required == 1) { $tela .= ' <font color="red">*</font> ';
 				}
 
-				$data = array('name' => $dn, 'id' => $dn, 'value' => $vlr, 'rows' => $param[1], 'cols' => $param[0], 'class' => 'form_textarea ');
+				$data = array('name' => $dn, 'id' => $dn, 'value' => $vlr, 'rows' => $param[1], 'cols' => $param[0], 'class' => 'form-control form_textarea ');
 				$tela .= $td . form_textarea($data);
 				$tela .= $tdn . $trn;
 				break;
