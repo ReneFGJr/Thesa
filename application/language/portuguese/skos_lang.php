@@ -28,6 +28,17 @@ if (!function_exists(('msg')))
 					}
 			}
 	}
+
+$lang['change_old'] = 'termo anterior';
+$lang['has_prefTerm'] = 'como preferencial';
+$lang['change'] = 'alterado';
+$lang['Action'] = 'Ação';
+$lang['Descript'] = 'Descrição';
+$lang['User'] = 'Usuário';
+$lang['Term_create_concept'] = 'Criar conceito';
+$lang['concept_create'] = 'Conceito criado com o termo ';
+$lang['hidden_log'] = 'Ocultar registro de eventos';
+$lang['view_log'] = 'Mostrar registro de eventos';
 $lang['to_invite'] = 'incorporar';
 $lang['email_invalid'] = 'e-mail inválido';
 $lang['email_not_exist'] = 'e-mail não cadastrado';
@@ -85,6 +96,7 @@ $lang['skosxl:isMasculine'] = 'masculino de';
 $lang['skosxl:isFeminine'] = 'feminino de';
 $lang['skosxl:literalForm'] = 'extenso de ';
 $lang['skosxl:abbreviation_of'] = 'abreviatura de';
+$lang['skosxl:acronym'] = 'sigla';
 
 
 $lang['skos:definition'] = 'Definição do conceito';

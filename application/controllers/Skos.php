@@ -148,7 +148,12 @@ class Skos extends CI_Controller {
 	function myth() {
 		$this -> load -> model('skoses');
 		$this -> cab(1);
+		if (!isset($_SESSION['id']))
+			{
+				redirect(base_url('index.php/skos/login'));
+			}
 		$us = $_SESSION['id'];
+		
 		$tela = $this -> skoses -> myskoses($us);
 		$data['content'] = $tela;
 		$data['content'] .= $this -> load -> view('skos/thesa_btn_new', $data, true);
@@ -234,6 +239,62 @@ class Skos extends CI_Controller {
 		$tela .= '</div>';
 		$data['content'] = $tela;
 		$this -> load -> view('content', $data);
+	}
+
+	function concept_change_preflabel($id='', $th='', $chk='') {
+		$this -> load -> model('skoses');
+		$this -> cab(0);
+
+		$chk2 = checkpost_link($id.$th);
+		if ($chk2 != $chk) {
+			$data['title'] = 'Checksum error';
+			$data['content'] = 'action canceled';
+			$this -> load -> view('skos/510', $data);
+			return('');
+		}
+
+		$data = $this->skoses->le_c($id,$th);
+		
+		/*************** action *********************/
+		$idn = get("dd5");
+		if (strlen($idn) > 0)
+			{
+				echo '===>'.$idn;
+				echo '<br>===>'.$data['ct_term'];
+				echo '<br>===>'.$id;
+				$ok = $this->skoses->concept_chage($id,$idn,$data['ct_term'],$data['c_th']);
+				if ($ok == 1)
+					{
+						$this->load->view('wclose');
+						//$this->load->
+						return('ok');
+					} else {
+						$data['title'] = 'Fail';
+						$data['content'] = 'Error on save';
+						$this->load->view('skos/510',$data);
+						return('');
+					}
+			}		
+		
+		
+		$sx = '<h1>'.$data['rl_value'].'</h1>';
+		$sx .= '<form method="post">';
+		$sx .= '<ul style="list-style-type: none;">';
+		$terms = array_merge($data['terms_al'],$data['terms_hd'],$data['terms_ge']);
+				
+		for ($r=0;$r < count($terms);$r++)
+			{
+				$line = $terms[$r];
+				$rd = '<input type="radio" name="dd5" value="'.$line['ct_term'].'">';
+				$sx .= '<li>'.$rd.' '.$line['rl_value'].'</li>';
+			}
+		$sx .= '</ul>';
+		$sx .= '<input type="submit" value="'.msg('change').'">';
+		$sx .= '</form>';
+		$data['content'] = $sx;
+		$this->load->view('content',$data);
+		
+		
 	}
 
 	function concept_add() {
@@ -587,6 +648,12 @@ class Skos extends CI_Controller {
 			default :
 				/* CAB */
 				$this -> cab();
+				$user_id = 0;
+				$data['edit'] = '';
+				if (isset($_SESSION['id'])) {
+					$user_id = $_SESSION['id'];
+					$data['edit'] = isset($data['allow'][$user_id]);
+				}
 
 				$this -> load -> view('skos/thesa_thesaurus', $data);
 				$this -> load -> view('skos/thesa_breadcrumb', $data);
@@ -628,6 +695,13 @@ class Skos extends CI_Controller {
 		/* Recupera informações sobre o Concecpt */
 		$data2 = $this -> skoses -> le_c($c, $th);
 		$this -> load -> view('skos/view_concept', $data2);
+
+		$this -> load -> view('skos/thesa_concept_tools', $data2);
+		
+		$data['content'] = $data2['logs'];
+		$this->load->view('content',$data);
+		
+		$this -> load -> view('header/footer', null);
 
 	}
 
@@ -868,7 +942,20 @@ class Skos extends CI_Controller {
 		$is_active = $this -> skoses -> is_concept($t, $th);
 
 		if ($is_active == 0) {
+			//$this->skoses->
+			$sql = "select * from rdf_literal where id_rl = ".$t;
+			$rlt = $this->db->query($sql);
+			$rlt = $rlt->result_array();
+			$desc = '';
+			$act = 'CREAT';
+			if (count($rlt) > 0)
+				{
+					$line = $rlt[0];
+					$desc = msg('concept_create').' <b>'.$line['rl_value'].'</b>';
+				}
 			$id = $this -> skoses -> concept_create($t, $th);
+			$this -> skoses -> log_insert($id,$th,$act,$desc);
+			
 			redirect(base_url('index.php/skos/c/' . $id));
 		}
 
@@ -1239,20 +1326,20 @@ class Skos extends CI_Controller {
 		}
 	}
 
-	function search($term1='') {
+	function search($term1 = '') {
 		$this -> load -> model("skoses");
 		$this -> cab();
 		$th = '';
 
-		$term = get("search").$term1;
-		
-		$tela = '<h3>'.$term.'</h3>'.cr();
-		$tela .= $this->skoses->search_term($term,$th);
-		
+		$term = get("search") . $term1;
+
+		$tela = '<h3>' . $term . '</h3>' . cr();
+		$tela .= $this -> skoses -> search_term($term, $th);
+
 		$data['content'] = $tela;
 		$data['title'] = '';
-		$this->load->view('content',$data);
-		
+		$this -> load -> view('content', $data);
+
 	}
 
 }

@@ -124,7 +124,10 @@ class skoses extends CI_model {
 			$line['terms_hd'] = $this -> le_c_hidden($id, $th);
 			$line['terms_ge'] = $this -> le_c_propriety($id, 'FE', $th);
 
+			$line['allow'] = $this -> le_c_users($th);
+
 			$line['notes'] = $this -> le_c_note($id, $th);
+			$line['logs'] = $this->log_show($id);
 
 			return ($line);
 		} else {
@@ -565,6 +568,20 @@ class skoses extends CI_model {
 		}
 	}
 
+	function le_c_users($th = '') {
+		$sql = "select * from th_users where ust_th = $th and ust_status = 1";
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+		$rs = array();
+		for ($r = 0; $r < count($rlt); $r++) {
+			$line = $rlt[$r];
+			$id = $line['ust_user_id'];
+			$rl = $line['ust_user_role'];
+			$rs[$id] = $rl;
+		}
+		return ($rs);
+	}
+
 	function le_tree_js() {
 		return ('');
 	}
@@ -650,24 +667,22 @@ class skoses extends CI_model {
 	}
 
 	/* MY Thesaurus */
-	function th_assosiation_users()
-		{
-			$sql = "select *
+	function th_assosiation_users() {
+		$sql = "select *
 						FROM th_thesaurus
 						LEFT JOIN th_users ON ust_th = id_pa
 							where ust_user_id is null ";
-			$rlt = $this->db->query($sql);
-			$rlt = $rlt->result_array();
-			for ($r=0;$r < count($rlt);$r++)
-				{
-					$line = $rlt[$r];
-					$th = $line['id_pa'];
-					$user = $line['pa_creator'];
-					$tipo = 'INS';
-					$this->skoses->user_thesa($th,$user,$tipo);
-				}
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+		for ($r = 0; $r < count($rlt); $r++) {
+			$line = $rlt[$r];
+			$th = $line['id_pa'];
+			$user = $line['pa_creator'];
+			$tipo = 'INS';
+			$this -> skoses -> user_thesa($th, $user, $tipo);
 		}
-		
+	}
+
 	function myskoses($user = 0) {
 		if ($user == 0) {
 			$sql = "select * from th_thesaurus
@@ -803,7 +818,7 @@ class skoses extends CI_model {
 	}
 
 	/* Incorpore terns intro thesaurus */
-	function incorpore_terms($t = '', $id = '', $lang = '',$lc='') {
+	function incorpore_terms($t = '', $id = '', $lang = '', $lc = '') {
 		$th = $_SESSION['skos'];
 		$t = troca($t, chr(13), ';');
 		$t = troca($t, chr(10), ';');
@@ -835,7 +850,7 @@ class skoses extends CI_model {
 		$sx = '';
 		for ($r = 0; $r < count($ln); $r++) {
 			$t = $ln[$r];
-			$t = $this -> prepara_termo($t,$lc);
+			$t = $this -> prepara_termo($t, $lc);
 			if (strlen($t) > 0) {
 				/* Incorpore Term intro Vocabulary Literal */
 				$this -> terms_add($t, $id, $lang);
@@ -888,16 +903,15 @@ class skoses extends CI_model {
 		return ($id);
 	}
 
-	Function prepara_termo($t = '',$lc='') {
+	Function prepara_termo($t = '', $lc = '') {
 		$t = utf8_decode($t);
-		if (strlen($lc) > 0)
-			{
-				$t = LowerCase($t);
-				$t = UpperCase(substr($t, 0, 1)) . substr($t, 1, strlen($t));
-				if (substr($t, 0, 1) == '#') {
-					$t = UpperCase(substr($t, 1, strlen($t)));
-				}				
+		if (strlen($lc) > 0) {
+			$t = LowerCase($t);
+			$t = UpperCase(substr($t, 0, 1)) . substr($t, 1, strlen($t));
+			if (substr($t, 0, 1) == '#') {
+				$t = UpperCase(substr($t, 1, strlen($t)));
 			}
+		}
 		$t = utf8_encode($t);
 		return ($t);
 	}
@@ -962,8 +976,8 @@ class skoses extends CI_model {
 		array_push($cp, array('$T80:5', 'pa_description', msg('thesaurus_description'), false, true));
 		array_push($cp, array('$HV', 'pa_status', '1', true, true));
 		array_push($cp, array('$HV', 'pa_classe', 1, true, true));
-		array_push($cp, array('$HV', 'pa_creator',$us, true, true));
-		
+		array_push($cp, array('$HV', 'pa_creator', $us, true, true));
+
 		array_push($cp, array('$B8', '', msg('save'), false, true));
 		return ($cp);
 	}
@@ -990,6 +1004,43 @@ class skoses extends CI_model {
 		array_push($cp, array('$Q  lg_code:lg_language:' . $sql, 'rl_lang', msg('language'), true, true));
 		array_push($cp, array('$B8', '', msg('save'), false, true));
 		return ($cp);
+	}
+
+	function concept_chage($c = '', $t1 = '', $t2 = '', $th = '') {
+		$sql = "select * from th_concept_term 
+					INNER JOIN rdf_literal ON id_rl = ct_term
+						where ct_concept = $c
+							AND ct_th = $th
+							AND ct_term = $t2 ";
+		$rlt1 = $this -> db -> query($sql);
+		$rlt1 = $rlt1 -> result_array();
+		if (count($rlt1) == 1) {
+			$rlt1 = $rlt1[0];
+		}
+
+		$sql = "select * from th_concept_term 
+					INNER JOIN rdf_literal ON id_rl = ct_term
+						where ct_concept = $c
+							AND ct_th = $th
+							AND ct_term = $t1 ";
+		$rlt2 = $this -> db -> query($sql);
+		$rlt2 = $rlt2 -> result_array();
+		if (count($rlt2) == 1) {
+			$rlt2 = $rlt2[0];
+		}
+
+		if ((count($rlt2) > 0) and (count($rlt1) > 0)) {		
+			$sql = "update th_concept_term set ct_term = $t2 where id_ct = " . $rlt2['id_ct'] . ';';
+			$rlt = $this -> db -> query($sql);
+			
+			$sql = "update th_concept_term set ct_term = $t1 where id_ct = " . $rlt1['id_ct'] . ';';
+			$rlt = $this -> db -> query($sql);
+			
+			$desc = msg('change').' <b>'.$rlt2['rl_value'].'</b> '.msg('has_prefTerm').', '.msg('change_old').' (<i>'.$rlt1['rl_value'].'</i>)';
+			$this->skoses->log_insert($c,$th,'CHG',$desc);
+			return(1);
+		}
+		return(0);
 	}
 
 	function concept_create($t, $th) {
@@ -1564,100 +1615,153 @@ class skoses extends CI_model {
 			return (0);
 		}
 	}
-	
-	function th_collaborators($th)
-		{
-					$sql = "select * from th_users 
+
+	function th_collaborators($th) {
+		$sql = "select * from th_users 
 								INNER JOIN users ON ust_user_id = id_us
 								where ust_th = $th
 								order by us_nome";
-					$rlt = $this->db->query($sql);
-					$rlt = $rlt->result_array();
-					$sx = '<table width="100%" class="table">';
-					$sx .= '<tr class="small">';
-					$sx .= '<th width="2%">'.msg('#').'</th>';
-					$sx .= '<th width="48%">'.msg('userName').'</th>';
-					$sx .= '<th width="48%">'.msg('userEmail').'</th>';
-					$sx .= '</tr>';
-					$id = 0;
-					for ($r=0;$r < count($rlt);$r++)
-						{
-							$id++;
-							$line = $rlt[$r];
-							$sx .= '<tr>';
-							$sx .= '<td>';
-							$sx .= $id;
-							$sx .= '</td>';
-							
-							$sx .= '<td>';
-							$sx .= $line['us_nome'];
-							$sx .= '</td>';
-							$sx .= '<td>';
-							$sx .= $line['us_email'];
-							$sx .= '</td>';
-							$sx .= '</tr>';
-						}
-					$sx .= '</table>';
-					return($sx);
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+		$sx = '<table width="100%" class="table">';
+		$sx .= '<tr class="small">';
+		$sx .= '<th width="2%">' . msg('#') . '</th>';
+		$sx .= '<th width="48%">' . msg('userName') . '</th>';
+		$sx .= '<th width="48%">' . msg('userEmail') . '</th>';
+		$sx .= '</tr>';
+		$id = 0;
+		for ($r = 0; $r < count($rlt); $r++) {
+			$id++;
+			$line = $rlt[$r];
+			$sx .= '<tr>';
+			$sx .= '<td>';
+			$sx .= $id;
+			$sx .= '</td>';
+
+			$sx .= '<td>';
+			$sx .= $line['us_nome'];
+			$sx .= '</td>';
+			$sx .= '<td>';
+			$sx .= $line['us_email'];
+			$sx .= '</td>';
+			$sx .= '</tr>';
 		}
-	
-	function user_thesa($th,$user,$tipo)
-		{
-			if ($tipo == 'INS')
-				{
-					$sql = "select * from th_users 
+		$sx .= '</table>';
+		return ($sx);
+	}
+
+	function user_thesa($th, $user, $tipo) {
+		if ($tipo == 'INS') {
+			$sql = "select * from th_users 
 								where ust_user_id = $user and ust_th = $th";
-					$rlt = $this->db->query($sql);
-					$rlt = $rlt->result_array();
-					if (count($rlt) == 0)
-						{
-							$sql = "insert into th_users
+			$rlt = $this -> db -> query($sql);
+			$rlt = $rlt -> result_array();
+			if (count($rlt) == 0) {
+				$sql = "insert into th_users
 									(
 									ust_user_id, ust_user_role, ust_th,
 									ust_status
 									) values (
 									$user, 1, $th,
 									1)";
-							$rlt = $this->db->query($sql);
-							return(1);
-						} else {
-							$sql = "update th_users set ust_status = 1 
+				$rlt = $this -> db -> query($sql);
+				return (1);
+			} else {
+				$sql = "update th_users set ust_status = 1 
 									where ust_user_id = $user and ust_th = $th";
-							$rlt = $this->db->query($sql);
-						}	
-					return(1);
-				}
+				$rlt = $this -> db -> query($sql);
+			}
+			return (1);
 		}
-	function search_term($t='',$th='')
-		{
-			$sql = "select * from th_concept_term
+	}
+
+	function search_term($t = '', $th = '') {
+		$sql = "select * from th_concept_term
 						INNER JOIN rdf_literal ON id_rl = ct_term
 						INNER JOIN th_thesaurus ON ct_th = id_pa
-						where rl_value like '%".$t."%'
+						where rl_value like '%" . $t . "%'
 						order by rl_value";
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+		$sx = '<table width="100%" class="table">';
+		for ($r = 0; $r < count($rlt); $r++) {
+			$line = $rlt[$r];
+			$link = '<a href="' . base_url('index.php/skos/c/' . $line['ct_concept'] . '/' . $line['ct_th']) . '" class="link">';
+			$sx .= '<tr>';
+			$sx .= '<td>';
+			$sx .= $link;
+			$sx .= $line['rl_value'];
+			$sx .= '</a>';
+			$sx .= '<sup>(';
+			$sx .= $line['rl_lang'];
+			$sx .= ')</sup>';
+			$sx .= '</td>';
+			$sx .= '<td>';
+			$sx .= $line['pa_name'];
+			$sx .= '</td>';
+			$sx .= '</tr>';
+		}
+		$sx .= '</table>';
+		return ($sx);
+	}
+	
+	function log_show($idc)
+		{
+			$sql = "select * from  th_log 
+						INNER JOIN users ON id_us = lg_user
+					WHERE lg_c = $idc
+					ORDER BY lg_date desc
+					LIMIT 20";
 			$rlt = $this->db->query($sql);
 			$rlt = $rlt->result_array();
-			$sx = '<table width="100%" class="table">';
+			$sx = '';
+			$sx .= '<span class="btn btn-default" id="view_log">'.msg('view_log').'</span>';
+			$sx .= '<span class="btn btn-default" id="hidden_log" style="display: none;">'.msg('hidden_log').'</span>';
+			$sx .= '<br><br>';
+			$sx .= '<table width="100%" style="display: none;" id="table_log" class="table small">';
+			$sx .= '<tr>';
+			$sx .= '<th width="5%">'.msg('date').'</th>';
+			$sx .= '<th width="5%">'.msg('Action').'</th>';
+			$sx .= '<th width="65%">'.msg('Descript').'</th>';
+			$sx .= '<th width="25%">'.msg('User').'</th>';
+			$sx .= '</tr>';
 			for ($r=0;$r < count($rlt);$r++)
 				{
 					$line = $rlt[$r];
-					$link = '<a href="'.base_url('index.php/skos/c/'.$line['ct_concept'].'/'.$line['ct_th']).'" class="link">';
 					$sx .= '<tr>';
-					$sx .= '<td>';
-					$sx .= $link;
-					$sx .= $line['rl_value'];
-					$sx .= '</a>';
-					$sx .= '<sup>(';
-					$sx .= $line['rl_lang'];
-					$sx .= ')</sup>';
-					$sx .= '</td>';
-					$sx .= '<td>';
-					$sx .= $line['pa_name'];
-					$sx .= '</td>';
+					$sx .= '<td>'.stodbr($line['lg_date']).'</td>';
+					$sx .= '<td>'.$line['lg_action'].'</td>';
+					$sx .= '<td>'.$line['lg_descript'].'</td>';
+					$sx .= '<td>'.$line['us_nome'].'</td>';
 					$sx .= '</tr>';
 				}
 			$sx .= '</table>';
+			$sx .= '<script>'.cr();
+			$sx .= '	$( "#view_log" ).click(function() {
+							$("#table_log").toggle("slow");
+							$("#view_log").toggle();
+							$("#hidden_log").toggle();
+						});';
+			$sx .= '	$( "#hidden_log" ).click(function() {
+							$("#table_log").toggle("slow");
+							$("#view_log").toggle();
+							$("#hidden_log").toggle();
+						});';						
+			$sx .= '</script>'.cr();
 			return($sx);
+		}	
+	
+	function log_insert($idc,$th,$act,$desc)
+		{
+			$user = $_SESSION['id'];
+			$sql = "insert into th_log
+					(
+						lg_c, lg_user, lg_action, lg_descript, lg_th 
+					) values (
+						$idc, $user, '$act', '$desc', $th
+					)";
+			$rlt = $this->db->query($sql);
+			return(1);
 		}
 
 }

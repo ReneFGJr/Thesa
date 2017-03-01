@@ -98,22 +98,5 @@ if (!isset($action)) {
 			<h4><?php echo msg('concept_IMG'); ?></h4>
 			<img src="<?php echo base_url('_acervo/thumb/0000000_287px.jpg');?>" border=1 class="img-rounded" style="width: 100%">
 		</div>
-		<div>
-			Metadados administrativo
-			<ul>
-				<li>
-					Autor
-				</li>
-				<li>
-					Data de criação
-				</li>
-				<li>
-					Data de atualização
-				</li>
-				<li>
-					descrição da ação
-				</li>
-			</ul>
-		</div>
 	</div>
 </div>
