@@ -37,7 +37,7 @@ class Skos extends CI_Controller {
 		$this -> load -> view("skos/github_fork", null);
 		$this -> load -> view("skos/welcome", null);
 
-		$this -> load -> view("skos/thesa_home", null);
+		$this -> load -> view("skos/thesa_home_pt", null);
 		//redirect(base_url('index.php/skos/myskos'));
 	}
 
