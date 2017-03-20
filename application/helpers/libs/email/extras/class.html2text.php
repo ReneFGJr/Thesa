@@ -206,7 +206,7 @@ class Html2Text
     );
 
     /**
-     * Temporary workspace used during PRE processing.
+     * Temporary catalogspace used during PRE processing.
      *
      * @type string
      */

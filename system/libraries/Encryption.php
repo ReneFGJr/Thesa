@@ -808,7 +808,7 @@ class CI_Encryption {
 			//
 			// - RC4 (ARCFour) has a strange implementation under OpenSSL.
 			//   Its 'rc4-40' cipher method seems to work flawlessly, yet
-			//   there's another one, 'rc4' that only works with a 16-byte key.
+			//   there's another one, 'rc4' that only catalogs with a 16-byte key.
 			//
 			// - DES is compatible, but doesn't need an alias.
 			//

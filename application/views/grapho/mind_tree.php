@@ -4,16 +4,16 @@
   <head>
     <meta charset="utf-8">
     <title>Simple Example</title>
-    <link rel="stylesheet" href="http://jaredforsyth.com/treed/workflowy/font-awesome-4.0.3/css/font-awesome.css">
-    <link rel="stylesheet" href="http://jaredforsyth.com/treed/workflowy/build/build.css">
+    <link rel="stylesheet" href="http://jaredforsyth.com/treed/catalogflowy/font-awesome-4.0.3/css/font-awesome.css">
+    <link rel="stylesheet" href="http://jaredforsyth.com/treed/catalogflowy/build/build.css">
   </head>
   <body>
     <h1 id="title">Simple Example</h1>
     <div id="example"></div>
-    <script src="http://jaredforsyth.com/treed/workflowy/marked.js"></script>
-    <script src="http://jaredforsyth.com/treed/workflowy/demo-data.js"></script>
-    <script src="http://jaredforsyth.com/treed/workflowy/demo-bundle.js"></script>
-    <script src="http://jaredforsyth.com/treed/workflowy/setup.js"></script>
+    <script src="http://jaredforsyth.com/treed/catalogflowy/marked.js"></script>
+    <script src="http://jaredforsyth.com/treed/catalogflowy/demo-data.js"></script>
+    <script src="http://jaredforsyth.com/treed/catalogflowy/demo-bundle.js"></script>
+    <script src="http://jaredforsyth.com/treed/catalogflowy/setup.js"></script>
 
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

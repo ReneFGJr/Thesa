@@ -494,7 +494,7 @@ if ( ! function_exists('nice_date'))
 {
 	/**
 	 * Turns many "reasonably-date-like" strings into something
-	 * that is actually useful. This only works for dates after unix epoch.
+	 * that is actually useful. This only catalogs for dates after unix epoch.
 	 *
 	 * @param	string	The terribly formatted date-like string
 	 * @param	string	Date format to return (same as php date function)

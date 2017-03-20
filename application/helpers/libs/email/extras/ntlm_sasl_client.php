@@ -42,12 +42,12 @@ class ntlm_sasl_client_class
         return ($unicode);
     }
 
-    public function typeMsg1($domain, $workstation)
+    public function typeMsg1($domain, $catalogstation)
     {
         $domain_length = strlen($domain);
-        $workstation_length = strlen($workstation);
-        $workstation_offset = 32;
-        $domain_offset = $workstation_offset + $workstation_length;
+        $catalogstation_length = strlen($catalogstation);
+        $catalogstation_offset = 32;
+        $domain_offset = $catalogstation_offset + $catalogstation_length;
         return (
             "NTLMSSP\0" .
             "\x01\x00\x00\x00" .
@@ -55,10 +55,10 @@ class ntlm_sasl_client_class
             pack("v", $domain_length) .
             pack("v", $domain_length) .
             pack("V", $domain_offset) .
-            pack("v", $workstation_length) .
-            pack("v", $workstation_length) .
-            pack("V", $workstation_offset) .
-            $workstation .
+            pack("v", $catalogstation_length) .
+            pack("v", $catalogstation_length) .
+            pack("V", $catalogstation_offset) .
+            $catalogstation .
             $domain
         );
     }
@@ -85,7 +85,7 @@ class ntlm_sasl_client_class
         return $response;
     }
 
-    public function typeMsg3($ntlm_response, $user, $domain, $workstation)
+    public function typeMsg3($ntlm_response, $user, $domain, $catalogstation)
     {
         $domain_unicode = $this->ASCIIToUnicode($domain);
         $domain_length = strlen($domain_unicode);
@@ -93,12 +93,12 @@ class ntlm_sasl_client_class
         $user_unicode = $this->ASCIIToUnicode($user);
         $user_length = strlen($user_unicode);
         $user_offset = $domain_offset + $domain_length;
-        $workstation_unicode = $this->ASCIIToUnicode($workstation);
-        $workstation_length = strlen($workstation_unicode);
-        $workstation_offset = $user_offset + $user_length;
+        $catalogstation_unicode = $this->ASCIIToUnicode($catalogstation);
+        $catalogstation_length = strlen($catalogstation_unicode);
+        $catalogstation_offset = $user_offset + $user_length;
         $lm = "";
         $lm_length = strlen($lm);
-        $lm_offset = $workstation_offset + $workstation_length;
+        $lm_offset = $catalogstation_offset + $catalogstation_length;
         $ntlm = $ntlm_response;
         $ntlm_length = strlen($ntlm);
         $ntlm_offset = $lm_offset + $lm_length;
@@ -120,16 +120,16 @@ class ntlm_sasl_client_class
             pack("v", $user_length) .
             pack("v", $user_length) .
             pack("V", $user_offset) .
-            pack("v", $workstation_length) .
-            pack("v", $workstation_length) .
-            pack("V", $workstation_offset) .
+            pack("v", $catalogstation_length) .
+            pack("v", $catalogstation_length) .
+            pack("V", $catalogstation_offset) .
             pack("v", $session_length) .
             pack("v", $session_length) .
             pack("V", $session_offset) .
             "\x01\x02\x00\x00" .
             $domain_unicode .
             $user_unicode .
-            $workstation_unicode .
+            $catalogstation_unicode .
             $lm .
             $ntlm
         );
@@ -145,7 +145,7 @@ class ntlm_sasl_client_class
             "user" => "",
             "password" => "",
             "realm" => "",
-            "workstation" => ""
+            "catalogstation" => ""
         );
         $defaults = array();
         $status = $client->GetCredentials($this->credentials, $defaults, $interactions);
@@ -160,7 +160,7 @@ class ntlm_sasl_client_class
     {
         switch ($this->state) {
             case SASL_NTLM_STATE_IDENTIFY_DOMAIN:
-                $message = $this->TypeMsg1($this->credentials["realm"], $this->credentials["workstation"]);
+                $message = $this->TypeMsg1($this->credentials["realm"], $this->credentials["catalogstation"]);
                 $this->state = SASL_NTLM_STATE_RESPOND_CHALLENGE;
                 break;
             case SASL_NTLM_STATE_RESPOND_CHALLENGE:
@@ -169,7 +169,7 @@ class ntlm_sasl_client_class
                     $ntlm_response,
                     $this->credentials["user"],
                     $this->credentials["realm"],
-                    $this->credentials["workstation"]
+                    $this->credentials["catalogstation"]
                 );
                 $this->state = SASL_NTLM_STATE_DONE;
                 break;

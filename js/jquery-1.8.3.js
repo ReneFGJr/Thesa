@@ -1310,14 +1310,14 @@ jQuery.support = (function() {
 		// (WebKit defaults to false instead of true, IE too, if it's in an optgroup)
 		optSelected: opt.selected,
 
-		// Test setAttribute on camelCase class. If it works, we need attrFixes when doing get/setAttribute (ie6/7)
+		// Test setAttribute on camelCase class. If it catalogs, we need attrFixes when doing get/setAttribute (ie6/7)
 		getSetAttribute: div.className !== "t",
 
 		// Tests for enctype support on a form (#6743)
 		enctype: !!document.createElement("form").enctype,
 
 		// Makes sure cloning an html5 element does not cause problems
-		// Where outerHTML is undefined, this still works
+		// Where outerHTML is undefined, this still catalogs
 		html5Clone: document.createElement("nav").cloneNode( true ).outerHTML !== "<:nav></:nav>",
 
 		// jQuery.support.boxModel DEPRECATED in 1.8 since we don't support Quirks Mode
@@ -2588,7 +2588,7 @@ if ( !jQuery.support.optSelected ) {
 			if ( parent ) {
 				parent.selectedIndex;
 
-				// Make sure that it also works with optgroups, see #5701
+				// Make sure that it also catalogs with optgroups, see #5701
 				if ( parent.parentNode ) {
 					parent.parentNode.selectedIndex;
 				}
@@ -5249,7 +5249,7 @@ if ( document.querySelectorAll ) {
 					newContext = context,
 					newSelector = context.nodeType === 9 && selector;
 
-				// qSA works strangely on Element-rooted queries
+				// qSA catalogs strangely on Element-rooted queries
 				// We can work around this by specifying an extra ID on the root
 				// and working up from there (Thanks to Andrew Dupont for the technique)
 				// IE 8 doesn't work on object elements

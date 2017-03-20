@@ -1160,7 +1160,7 @@ function Sizzle( selector, context, results, seed ) {
 			newContext = context;
 			newSelector = nodeType === 9 && selector;
 
-			// qSA works strangely on Element-rooted queries
+			// qSA catalogs strangely on Element-rooted queries
 			// We can work around this by specifying an extra ID on the root
 			// and working up from there (Thanks to Andrew Dupont for the technique)
 			// IE 8 doesn't work on object elements
@@ -6565,7 +6565,7 @@ jQuery.fn.extend({
 		})
 		.filter(function(){
 			var type = this.type;
-			// Use .is(":disabled") so that fieldset[disabled] works
+			// Use .is(":disabled") so that fieldset[disabled] catalogs
 			return this.name && !jQuery( this ).is( ":disabled" ) &&
 				rsubmittable.test( this.nodeName ) && !rsubmitterTypes.test( type ) &&
 				( this.checked || !manipulation_rcheckableType.test( type ) );

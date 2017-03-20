@@ -281,11 +281,11 @@ class PHPMailer
     public $Realm = '';
 
     /**
-     * SMTP workstation.
+     * SMTP catalogstation.
      * Used for NTLM auth
      * @type string
      */
-    public $Workstation = '';
+    public $catalogstation = '';
 
     /**
      * The SMTP server timeout in seconds.
@@ -738,7 +738,7 @@ class PHPMailer
 
     /**
      * Add a "CC" address.
-     * @note: This function works with the SMTP mailer on win32, not with the "mail" mailer.
+     * @note: This function catalogs with the SMTP mailer on win32, not with the "mail" mailer.
      * @param string $address
      * @param string $name
      * @return boolean true on success, false if address already used
@@ -750,7 +750,7 @@ class PHPMailer
 
     /**
      * Add a "BCC" address.
-     * @note: This function works with the SMTP mailer on win32, not with the "mail" mailer.
+     * @note: This function catalogs with the SMTP mailer on win32, not with the "mail" mailer.
      * @param string $address
      * @param string $name
      * @return boolean true on success, false if address already used
@@ -875,7 +875,7 @@ class PHPMailer
     public static function validateAddress($address, $patternselect = 'auto')
     {
         if (!$patternselect or $patternselect == 'auto') {
-            //Check this constant first so it works when extension_loaded() is disabled by safe mode
+            //Check this constant first so it catalogs when extension_loaded() is disabled by safe mode
             //Constant was added in PHP 5.2.4
             if (defined('PCRE_VERSION')) {
                 //This pattern can get stuck in a recursive loop in PCRE <= 8.0.2
@@ -1346,7 +1346,7 @@ class PHPMailer
                             $this->Password,
                             $this->AuthType,
                             $this->Realm,
-                            $this->Workstation
+                            $this->catalogstation
                         )
                         ) {
                             throw new phpmailerException($this->lang('authenticate'));
@@ -3097,7 +3097,7 @@ class PHPMailer
     /**
      * Multi-byte-safe pathinfo replacement.
      * Drop-in replacement for pathinfo(), but multibyte-safe, cross-platform-safe, old-version-safe.
-     * Works similarly to the one in PHP >= 5.2.0
+     * catalogs similarly to the one in PHP >= 5.2.0
      * @link http://www.php.net/manual/en/function.pathinfo.php#107461
      * @param string $path A filename or path, does not need to exist as a file
      * @param integer|string $options Either a PATHINFO_* constant,

@@ -349,7 +349,7 @@ class SMTP
      * @param string $password    The password
      * @param string $authtype    The auth type (PLAIN, LOGIN, NTLM, CRAM-MD5)
      * @param string $realm       The auth realm for NTLM
-     * @param string $workstation The auth workstation for NTLM
+     * @param string $catalogstation The auth catalogstation for NTLM
      * @access public
      * @return boolean True if successfully authenticated.
      */
@@ -358,7 +358,7 @@ class SMTP
         $password,
         $authtype = null,
         $realm = '',
-        $workstation = ''
+        $catalogstation = ''
     ) {
         if (!$this->server_caps) {
             $this->error = array('error' => 'Authentication is not allowed before HELO/EHLO');
@@ -454,7 +454,7 @@ class SMTP
                     return false;
                 }
                 //msg1
-                $msg1 = $ntlm_client->TypeMsg1($realm, $workstation); //msg1
+                $msg1 = $ntlm_client->TypeMsg1($realm, $catalogstation); //msg1
 
                 if (!$this->sendCommand(
                     'AUTH NTLM',
@@ -477,7 +477,7 @@ class SMTP
                     $ntlm_res,
                     $username,
                     $realm,
-                    $workstation
+                    $catalogstation
                 );
                 // send encoded username
                 return $this->sendCommand('Username', base64_encode($msg3), 235);
@@ -503,7 +503,7 @@ class SMTP
 
     /**
      * Calculate an MD5 HMAC hash.
-     * Works like hash_hmac('md5', $data, $key)
+     * catalogs like hash_hmac('md5', $data, $key)
      * in case that function is not available
      * @param string $data The data to hash
      * @param string $key  The key to hash with
@@ -629,7 +629,7 @@ class SMTP
             //We need to break this line up into several smaller lines
             //This is a small micro-optimisation: isset($str[$len]) is equivalent to (strlen($str) > $len)
             while (isset($line[self::MAX_LINE_LENGTH])) {
-                //Working backwards, try to find a space within the last MAX_LINE_LENGTH chars of the line to break on
+                //cataloging backwards, try to find a space within the last MAX_LINE_LENGTH chars of the line to break on
                 //so as to avoid breaking in the middle of a word
                 $pos = strrpos(substr($line, 0, self::MAX_LINE_LENGTH), ' ');
                 if (!$pos) { //Deliberately matches both false and 0
@@ -956,7 +956,7 @@ class SMTP
 
     /**
      * A multipurpose method
-     * The method works in three ways, dependent on argument value and current state
+     * The method catalogs in three ways, dependent on argument value and current state
      *   1. HELO/EHLO was not sent - returns null and set up $this->error
      *   2. HELO was sent
      *     $name = 'HELO': returns server name

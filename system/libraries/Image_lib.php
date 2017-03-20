@@ -264,7 +264,7 @@ class CI_Image_lib {
 	public $wm_shadow_distance	= 2;
 
 	/**
-	 * Image opacity: 1 - 100  Only works with image
+	 * Image opacity: 1 - 100  Only catalogs with image
 	 *
 	 * @var int
 	 */

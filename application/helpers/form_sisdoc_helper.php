@@ -396,7 +396,7 @@ function strzero($ddx, $ttz) {
 }
 
 function UpperCase($d) {
-
+	
 	$d = troca($d, 'ç', 'Ç');
 
 	$d = troca($d, 'á', 'Á');
@@ -720,12 +720,12 @@ function nbr_autor($xa, $tp) {
 		if ($tp == 2) { $xa = UpperCase(trim(trim($xp1) . ', ' . trim($xp2)));
 		}
 	}
-	if (($tp == 3) or ($tp == 4)) {
+	if (($tp == 3) or ($tp == 4) or ($tp == 9)) {
 		if ($tp == 4) { $xa = UpperCase($xa);
 		}
 	}
 
-	if (($tp >= 5) or ($tp <= 6)) {
+	if ((($tp >= 5) and ($tp <= 6)) or ($tp==9)) {
 		$xp2a = str_word_count(LowerCase($xp2), 1);
 		$xp2 = '';
 		for ($k = 0; $k < count($xp2a); $k++) {
@@ -739,12 +739,20 @@ function nbr_autor($xa, $tp) {
 			}
 			if ($xp2a[$k] == 'de') { $xp2a[$k] = '';
 			}
-			if (strlen($xp2a[$k]) > 0) { $xp2 = $xp2 . substr($xp2a[$k], 0, 1) . '. ';
-			}
+			if ($tp==9)
+				{
+						if (strlen($xp2a[$k]) > 0) { $xp2 = $xp2 . $xp2a[$k] . ' ';
+						}
+				} else {
+						if (strlen($xp2a[$k]) > 0) { $xp2 = $xp2 . substr($xp2a[$k], 0, 1) . '. ';
+						}
+				}
 		}
 		$xp2 = trim($xp2);
 		if ($tp == 6) { $xa = UpperCase(trim(trim($xp2) . ' ' . trim($xp1)));
 		}
+		if ($tp == 9) { $xa = UpperCase(trim(trim($xp2) . ' ' . trim($xp1)));
+		}		
 		if ($tp == 5) { $xa = UpperCase(trim(trim($xp1) . ', ' . trim($xp2)));
 		}
 	}
@@ -858,6 +866,7 @@ function highlight($text, $words) {
 
 function UpperCaseSQL($d) {
 	//$d = strtoupper($d);
+
 	/* acentos agudos */
 	$d = (str_replace(array('á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú'), array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'), $d));
 
@@ -2192,7 +2201,8 @@ if (!function_exists('form_edit')) {
 					$vlrs = $row[$vlrs];
 					$options[$flds] = $vlrs;
 					$checked = '';
-					$dados = array('name' => $dn, 'id' => $dn, 'value' => $flds, 'class' => 'form-control  ', 'checked' => $checked);
+					//$dados = array('name' => $dn, 'id' => $dn, 'value' => $flds, 'class' => 'form-control  ', 'checked' => $checked);
+					$dados = array('name' => $dn, 'id' => $dn, 'value' => $flds,  'checked' => $checked);
 					$form .= form_radio($dados) . ' ' . $vlrs . '<br>';
 				}
 

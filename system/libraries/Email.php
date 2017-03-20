@@ -1494,7 +1494,7 @@ class CI_Email {
 		// RFC 2045 specifies CRLF as "\r\n".
 		// However, many developers choose to override that and violate
 		// the RFC rules due to (apparently) a bug in MS Exchange,
-		// which only works with "\n".
+		// which only catalogs with "\n".
 		if ($this->crlf === "\r\n")
 		{
 			if (is_php('5.3'))

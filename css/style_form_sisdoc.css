@@ -1,0 +1,120 @@
+.money
+	{
+		text-align: right;
+		width: 150px;
+	}
+.form_string
+	{
+		font-size: 18px;
+		font-family: 'CICPG',Helvetica, Tahoma, Verdana, Arial, sans-serif;
+		border: 1px solid #A0A0A0;
+		padding: 2px;
+	}
+.form_s80
+	{
+		font-size: 18px;
+		font-family: 'CICPG',Helvetica, Tahoma, Verdana, Arial, sans-serif;
+		border: 1px solid #A0A0A0;
+		padding: 2px;
+		width: 100%;
+	}
+	
+.form_select
+	{
+		font-size: 18px;
+		font-family: 'CICPG',Helvetica, Tahoma, Verdana, Arial, sans-serif;
+		width: auto;
+		border: 1px solid #A0A0A0;
+		padding: 2px;
+	}
+	
+.form_textarea
+	{
+		font-size: 18px;
+		font-family: 'CICPG',Helvetica, Tahoma, Verdana, Arial, sans-serif;
+		width: 98%;
+		border: 1px solid #A0A0A0;
+		padding: 2px;
+	}
+	
+#row a {
+	color: #335533;
+	text-decoration: none;
+}
+#row a:hover {
+	color: #335533;
+	text-decoration: underline;
+}
+#row td {
+	border-bottom: 1px solid #E0E0E0;
+}
+#row th {
+	border-bottom: 2px solid #808080;
+	font-size: 11px;
+}
+#row tbody > tr:nth-child(odd) > td {
+	background-color: #FCFCFC;
+}
+
+#row tr:hover {
+	background-color: #EEEEFF;
+}
+#npag ul {
+	border: 1px solid #000000;
+}
+#npag li {
+	border: 1px solid #000000;
+	background-color: #EEE;
+	width: 30px;
+	text-align: center;
+	margin-left: 2px;
+	list-style-type: none;
+	display: inline-block;
+	cursor: pointer;
+}
+#npag li:hover {
+	background-color: #333;
+	color: #EEEEEE;
+}
+
+#basket {
+	border: 0px solid #E0E0E0;
+	width: 100%;
+}
+#basket_itens {
+	border: 1px solid #E0E0E0;
+	padding: 5px;
+	width: 160px;
+	float: right;
+	margin: 10px;
+	text-align: center;
+}
+
+.radio_form_big {
+	font-family: Roboto, Roboto, Arial, Tahoma, Verdana;
+	font-size: 14px;
+	color: #FFFFFF;
+	padding: 20px 0px 20px 10px;
+}
+
+.botao_01:hover {
+	background-color: #B0B0B0;
+}
+.botao_01 {
+	float: left;
+	margin: 10px;
+	padding: 5px;
+	padding-top: 10px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	background-color: #DDDDDD;
+	width: 200px;
+	height: 40px;
+	opacity: 1;
+	border: 2px solid #000000;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-ms-border-radius: 10px;
+	-o-border-radius: 10px;
+}

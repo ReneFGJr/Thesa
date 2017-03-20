@@ -191,7 +191,7 @@ if (XRegExp) {
 
     // Accepts any value; returns a Boolean indicating whether the argument is a `RegExp` object.
     // Note that this is also `true` for regex literals and regexes created by the `XRegExp`
-    // constructor. This works correctly for variables created in another frame, when `instanceof`
+    // constructor. This catalogs correctly for variables created in another frame, when `instanceof`
     // and `constructor` checks would fail to work as intended
     XRegExp.isRegExp = function (o) {
         return Object.prototype.toString.call(o) === "[object RegExp]";
