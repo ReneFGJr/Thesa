@@ -1341,6 +1341,12 @@ class Skos extends CI_Controller {
 		$this -> load -> view('content', $data);
 
 	}
+	
+	function export($th='',$type='simple')
+		{
+			$this -> load -> model("skoses");
+			$this->skoses->export($th,$type);
+		}
 
 }
 ?>

@@ -49,11 +49,17 @@ class find extends CI_controller {
 		$this -> load -> model('finds');
 		$this -> cab(1);
 		
+		$data = $this->finds->le_attr($id);
+
+		$this->load->view('find/class/view',$data);
+
 		$tela2 = $this -> finds -> attr_edit($id);
+
+		$tela = $this -> finds -> attr_class($id) . $tela2;
+
+		$data['content'] = $tela;
+		$data['content'] .= $this->finds->list_data_attr($id);
 		
-		$tela = $this->finds->attr_class($id).$tela2;
-		
-		$data['content'] = $tela; 
 		$this -> load -> view('content', $data);
 		$this -> foot();
 	}
@@ -62,11 +68,11 @@ class find extends CI_controller {
 		/* Edit attribute */
 		$this -> load -> model('finds');
 		$this -> cab(1);
-		
-		$tela = $this->finds->row_classes();
+
+		$tela = $this -> finds -> row_classes();
 		$data['content'] = $tela;
-		$this->load->view('content',$data);
-		
+		$this -> load -> view('content', $data);
+
 		$this -> foot();
 	}
 
@@ -194,6 +200,18 @@ class find extends CI_controller {
 			$this -> load -> view('content', $data);
 		}
 
+	}
+
+	function update() {
+		$this -> load -> model('finds');
+		$this -> cab(1);
+		$file = 'xml/thesa-01.xml';
+		$table = 'rdf_resource';
+		
+		$class = 79;
+		$tela = $this->finds->import_xml($file,$class);
+		$data['content'] = $tela;
+		$this->load->view('content',$data);
 	}
 
 }

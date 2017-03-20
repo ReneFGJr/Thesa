@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:si="https://www.w3schools.com/rdf/">
+<prefix id="thesa" url="url"/>
+<prefix id="skosxl" url="url"/>
+<prefix id="skos" url="url"/>
+<concept id="thesa:c1335" propriety="skosxl:literalForm" resource="2º ed." update="2017-03-20 14:39:47"  language="pt_BR" />
+<concept id="thesa:c1335" propriety="skos:prefLabel" resource="Segunda edição" update="2017-03-20 14:39:47"  language="pt_BR" />
+<concept id="thesa:c1341" propriety="skos:prefLabel" resource="Primeira edição" update="2017-03-20 14:40:18"  language="pt_BR" />
+<concept id="thesa:c1342" propriety="skosxl:literalForm" resource="3º ed." update="2017-03-20 14:40:24"  language="pt_BR" />
+<concept id="thesa:c1342" propriety="skos:prefLabel" resource="Terceira edição" update="2017-03-20 14:40:24"  language="pt_BR" />
+</rdf:RDF>

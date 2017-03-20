@@ -127,7 +127,7 @@ class skoses extends CI_model {
 			$line['allow'] = $this -> le_c_users($th);
 
 			$line['notes'] = $this -> le_c_note($id, $th);
-			$line['logs'] = $this->log_show($id);
+			$line['logs'] = $this -> log_show($id);
 
 			return ($line);
 		} else {
@@ -1009,18 +1009,18 @@ class skoses extends CI_model {
 			$rlt2 = $rlt2[0];
 		}
 
-		if ((count($rlt2) > 0) and (count($rlt1) > 0)) {		
+		if ((count($rlt2) > 0) and (count($rlt1) > 0)) {
 			$sql = "update th_concept_term set ct_term = $t2 where id_ct = " . $rlt2['id_ct'] . ';';
 			$rlt = $this -> db -> query($sql);
-			
+
 			$sql = "update th_concept_term set ct_term = $t1 where id_ct = " . $rlt1['id_ct'] . ';';
 			$rlt = $this -> db -> query($sql);
-			
-			$desc = msg('change').' <b>'.$rlt2['rl_value'].'</b> '.msg('has_prefTerm').', '.msg('change_old').' (<i>'.$rlt1['rl_value'].'</i>)';
-			$this->skoses->log_insert($c,$th,'CHG',$desc);
-			return(1);
+
+			$desc = msg('change') . ' <b>' . $rlt2['rl_value'] . '</b> ' . msg('has_prefTerm') . ', ' . msg('change_old') . ' (<i>' . $rlt1['rl_value'] . '</i>)';
+			$this -> skoses -> log_insert($c, $th, 'CHG', $desc);
+			return (1);
 		}
-		return(0);
+		return (0);
 	}
 
 	function concept_create($t, $th) {
@@ -1684,65 +1684,148 @@ class skoses extends CI_model {
 		$sx .= '</table>';
 		return ($sx);
 	}
-	
-	function log_show($idc)
-		{
-			$sql = "select * from  th_log 
+
+	function log_show($idc) {
+		$sql = "select * from  th_log 
 						INNER JOIN users ON id_us = lg_user
 					WHERE lg_c = $idc
 					ORDER BY lg_date desc
 					LIMIT 20";
-			$rlt = $this->db->query($sql);
-			$rlt = $rlt->result_array();
-			$sx = '';
-			$sx .= '<span class="btn btn-default" id="view_log">'.msg('view_log').'</span>';
-			$sx .= '<span class="btn btn-default" id="hidden_log" style="display: none;">'.msg('hidden_log').'</span>';
-			$sx .= '<br><br>';
-			$sx .= '<table width="100%" style="display: none;" id="table_log" class="table small">';
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+		$sx = '';
+		$sx .= '<span class="btn btn-default" id="view_log">' . msg('view_log') . '</span>';
+		$sx .= '<span class="btn btn-default" id="hidden_log" style="display: none;">' . msg('hidden_log') . '</span>';
+		$sx .= '<br><br>';
+		$sx .= '<table width="100%" style="display: none;" id="table_log" class="table small">';
+		$sx .= '<tr>';
+		$sx .= '<th width="5%">' . msg('date') . '</th>';
+		$sx .= '<th width="5%">' . msg('Action') . '</th>';
+		$sx .= '<th width="65%">' . msg('Descript') . '</th>';
+		$sx .= '<th width="25%">' . msg('User') . '</th>';
+		$sx .= '</tr>';
+		for ($r = 0; $r < count($rlt); $r++) {
+			$line = $rlt[$r];
 			$sx .= '<tr>';
-			$sx .= '<th width="5%">'.msg('date').'</th>';
-			$sx .= '<th width="5%">'.msg('Action').'</th>';
-			$sx .= '<th width="65%">'.msg('Descript').'</th>';
-			$sx .= '<th width="25%">'.msg('User').'</th>';
+			$sx .= '<td>' . stodbr($line['lg_date']) . '</td>';
+			$sx .= '<td>' . $line['lg_action'] . '</td>';
+			$sx .= '<td>' . $line['lg_descript'] . '</td>';
+			$sx .= '<td>' . $line['us_nome'] . '</td>';
 			$sx .= '</tr>';
-			for ($r=0;$r < count($rlt);$r++)
-				{
-					$line = $rlt[$r];
-					$sx .= '<tr>';
-					$sx .= '<td>'.stodbr($line['lg_date']).'</td>';
-					$sx .= '<td>'.$line['lg_action'].'</td>';
-					$sx .= '<td>'.$line['lg_descript'].'</td>';
-					$sx .= '<td>'.$line['us_nome'].'</td>';
-					$sx .= '</tr>';
-				}
-			$sx .= '</table>';
-			$sx .= '<script>'.cr();
-			$sx .= '	$( "#view_log" ).click(function() {
+		}
+		$sx .= '</table>';
+		$sx .= '<script>' . cr();
+		$sx .= '	$( "#view_log" ).click(function() {
 							$("#table_log").toggle("slow");
 							$("#view_log").toggle();
 							$("#hidden_log").toggle();
 						});';
-			$sx .= '	$( "#hidden_log" ).click(function() {
+		$sx .= '	$( "#hidden_log" ).click(function() {
 							$("#table_log").toggle("slow");
 							$("#view_log").toggle();
 							$("#hidden_log").toggle();
-						});';						
-			$sx .= '</script>'.cr();
-			return($sx);
-		}	
-	
-	function log_insert($idc,$th,$act,$desc)
-		{
-			$user = $_SESSION['id'];
-			$sql = "insert into th_log
+						});';
+		$sx .= '</script>' . cr();
+		return ($sx);
+	}
+
+	function log_insert($idc, $th, $act, $desc) {
+		$user = $_SESSION['id'];
+		$sql = "insert into th_log
 					(
 						lg_c, lg_user, lg_action, lg_descript, lg_th 
 					) values (
 						$idc, $user, '$act', '$desc', $th
 					)";
-			$rlt = $this->db->query($sql);
-			return(1);
+		$rlt = $this -> db -> query($sql);
+		return (1);
+	}
+
+	function export($th, $type) {
+		$prefix = array();
+		
+		$sql = "select * from th_concept						
+						INNER JOIN th_concept_term ON ct_concept = id_c
+						LEFT JOIN rdf_literal ON ct_term = id_rl
+						INNER JOIN rdf_resource ON ct_propriety = id_rs
+						INNER JOIN rdf_prefix ON rs_prefix = id_prefix
+						INNER JOIN thesa ON c_agency = id_thesa						
+						WHERE c_th = $th
+						order by thesa_prefix, c_concept";
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+		$sx = '';
+		for ($r = 0; $r < count($rlt); $r++) {
+			$line = $rlt[$r];
+			
+			/* PREFIX */
+			$pre = trim($line['thesa_prefix']);
+			if (!isset($prefix[$pre])) { $prefix[$pre] = "url"; } 
+			$pre = trim($line['prefix_ref']);
+			if (!isset($prefix[$pre])) { $prefix[$pre] = "url"; }
+			 
+			$lang = '';
+			
+			$update = $line['c_created'];
+
+			$p1 = $line['thesa_prefix'];
+			$p1 .= ':';
+			$p1 .= $line['c_concept'];
+
+			$re = $line['prefix_ref'];
+			$re .= ':';
+			$re .= $line['rs_propriety'];
+
+			if (strlen($line['rl_value']) == 0) {
+				$p2 = $line['thesa_prefix'];
+				$p2 .= ':';
+				$p2 .= 'c' . $line['ct_concept_2'];
+			} else {
+				$p2 = parseToXML($line['rl_value']);
+				$lang = ' language="'.$line['rl_lang'].'" ';
+				if ($line['rl_value']=='') {
+					$p2 = '#';
+				}
+			}
+			switch ($type) {
+				case 'xml' :
+					$sx .= '<concept id="' . $p1 . '" propriety="' . $re . '" resource="' . $p2 . '" update="'.$update.'" '.$lang.'/>' . cr();
+					break;
+				default :
+					$sx .= $p1 . chr(9) . $re . chr(9) . '"' . $p2 . '"' . cr();
+					break;
+			}
+
 		}
 
+		switch ($type) {
+			case 'xml' :
+				header("Content-type: text/xml");
+				$sr = '<?xml version="1.0"?>' . cr();
+				$sr .= '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:si="https://www.w3schools.com/rdf/">' . cr();
+				foreach ($prefix as $key => $value) {
+					$sr .= '<prefix id="'.$key.'" url="'.$value.'"/>'.cr();					
+				}
+				$sr .= $sx;
+				$sr .= '</rdf:RDF>';
+				echo $sr;
+				return ('');
+				break;
+			default :
+				echo '<pre>' . $sx . '</pre>';
+				break;
+		}
+
+	}
+
+}
+
+function parseToXML($htmlStr) {
+	$xmlStr = str_replace('<', '&lt;', $htmlStr);
+	$xmlStr = str_replace('>', '&gt;', $xmlStr);
+	$xmlStr = str_replace('"', '&quot;', $xmlStr);
+	$xmlStr = str_replace("'", '&#39;', $xmlStr);
+	$xmlStr = str_replace("&", '&amp;', $xmlStr);
+	return $xmlStr;
 }
 ?>

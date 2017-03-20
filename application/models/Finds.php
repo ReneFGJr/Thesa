@@ -13,14 +13,74 @@ class finds extends CI_model {
 		$sx = $this -> sugestoes($name);
 		return ($sx);
 	}
-	
-	function row_classes($id='') {
+
+	function le_attr($id)
+		{
+			$sql = "select * from rdf_resource
+						INNER JOIN rdf_prefix ON id_prefix = rs_prefix
+						where id_rs = ".$id;
+			$rlt = $this->db->query($sql);
+			$rlt = $rlt->result_array();
+			$line = $rlt[0];
+			return($line);
+		}
+		
+	function list_data_attr($id)
+		{
+			$sql = "select * from find_id
+						INNER JOIN find_literal ON f_literal = id_l 
+						WHERE f_class = $id	order by l_value
+						LIMIT 20";
+			$rlt = $this->db->query($sql);
+			$rlt = $rlt->result_array();
+			$sx = '<table width="100%" class="table">';
+			for ($r=0;$r < count($rlt);$r++)
+				{
+					$line = $rlt[$r];
+					$sx .= '<tr>';
+					$sx .= '<td>'.$line['l_value'].' ('.$line['l_language'].')</td>';
+					$sx .= '</tr>';
+				}
+			$sx .= '</table>';
+			return($sx);
+		}
+	function import_xml($file,$class) {
+
+		$xml = simplexml_load_file($file);
+		$sx = '';
+		//echo $xml -> getName() . "<br />";
+		foreach ($xml->children() as $child) {
+			$type = $child -> getName();
+			$id = $child['id'];
+			$prop = $child['propriety'];
+			$reso = trim($child['resource']);
+			$update = $child['update'];
+			$lang = $child['language'];
+			echo "<br /> ->" . $type . ' ' . $id . ' ' . $prop. '==>'.$reso.' ('.round(sonumero($id)).')';
+
+			/* LITERAL */
+			if ((($prop == 'skos:prefLabel') OR ($prop == 'skos:altLabel')) AND (round(sonumero($id)) > 0)) {
+				if (strlen($reso) > 0) {
+					if ($lang == 'por') { $lang = 'pt_BR';
+					}
+					if ($prop == 'skos:prefLabel')
+						{
+							$this->create_id($reso, $lang, $class);
+						}
+				}
+			}
+		}
+		return ($sx);
+
+	}
+
+	function row_classes($id = '') {
 		$form = new form;
 
 		$form -> fd = array('id_rs', 'prefix_ref', 'rs_propriety', 'rs_type');
-		$form -> lb = array('id', msg('prefix_ref'), msg('fi_razao_social'),msg('rs_type'));
-		$form -> mk = array('', 'L', 'L', 'L');		
-		
+		$form -> lb = array('id', msg('prefix_ref'), msg('fi_razao_social'), msg('rs_type'));
+		$form -> mk = array('', 'L', 'L', 'L');
+
 		$form -> tabela = '(select * from rdf_resource INNER JOIN rdf_prefix ON id_prefix = rs_prefix) as tabela';
 		$form -> see = true;
 		$form -> novo = true;
@@ -32,13 +92,12 @@ class finds extends CI_model {
 		$form -> row = base_url('index.php/find/classes');
 
 		return (row($form, $id));
-	}	
-	
-	function view_propriety($id)
-		{
-			$cp = 'RP1.prefix_ref as pr1, RS1.rs_propriety as rs1, l_value ';
-			//$cp .= 'RP2.prefix_ref as pr2, RS2.rs_propriety as rs2 ';
-			$sql = "SELECT $cp FROM find_rdf
+	}
+
+	function view_propriety($id) {
+		$cp = 'RP1.prefix_ref as pr1, RS1.rs_propriety as rs1, l_value ';
+		//$cp .= 'RP2.prefix_ref as pr2, RS2.rs_propriety as rs2 ';
+		$sql = "SELECT $cp FROM find_rdf
 			
 						INNER JOIN find_id as f1 ON fr_id_2 = id_f
 						INNER JOIN find_literal ON f_literal = id_l
@@ -48,30 +107,28 @@ class finds extends CI_model {
 
 												
 						WHERE fr_id_1 = $id";
-			$rlt = $this->db->query($sql);
-			$rlt = $rlt->result_array();
-			$sx = '<table width="100%" class="table">';
-			for ($r=0;$r < count($rlt);$r++)
-				{
-					$line = $rlt[$r];
-					
-					print_r($line);
-					//exit;
-					echo '<hr>';	
-					$sx .= '<tr>';
-					$sx .= '<td>'.$line['pr1'].':'.$line['rs1'].'</td>';
-					$sx .= '<td>'.$line['l_value'].'</td>';
-					$sx .= '</tr>';
-				}	
-			$sx .= '</table>';
-			return($sx);
-		}
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+		$sx = '<table width="100%" class="table">';
+		for ($r = 0; $r < count($rlt); $r++) {
+			$line = $rlt[$r];
 
-	function attr_class($id)
-		{
-			$cp = 'RS1.rs_propriety as rs1, RP1.prefix_ref as rp1';
-			$cp .= ', RS2.rs_propriety as rs2, RP2.prefix_ref as rp2';
-			$sql = "select $cp from find_class_attributes
+			print_r($line);
+			//exit;
+			echo '<hr>';
+			$sx .= '<tr>';
+			$sx .= '<td>' . $line['pr1'] . ':' . $line['rs1'] . '</td>';
+			$sx .= '<td>' . $line['l_value'] . '</td>';
+			$sx .= '</tr>';
+		}
+		$sx .= '</table>';
+		return ($sx);
+	}
+
+	function attr_class($id) {
+		$cp = 'RS1.rs_propriety as rs1, RP1.prefix_ref as rp1';
+		$cp .= ', RS2.rs_propriety as rs2, RP2.prefix_ref as rp2';
+		$sql = "select $cp from find_class_attributes
 							INNER JOIN rdf_resource as RS1 ON fcs_propriety = RS1.id_rs
 							INNER JOIN rdf_prefix as RP1 ON RS1.rs_prefix = RP1.id_prefix 
 							
@@ -80,33 +137,32 @@ class finds extends CI_model {
 							
 						WHERE fcs_class = $id";
 
-			$rlt = $this->db->query($sql);
-			$rlt = $rlt->result_array();
-			
-			$sx = '<table width="100%" class="table">';
-			$sx .= '<tr>
-						<th width="47%">'.msg('propriety').'</th>
-						<th width="47%">'.msg('range').'</th>
-						<th width="5%">'.msg('act').'</th>
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+
+		$sx = '<table width="100%" class="table">';
+		$sx .= '<tr>
+						<th width="47%">' . msg('propriety') . '</th>
+						<th width="47%">' . msg('range') . '</th>
+						<th width="5%">' . msg('act') . '</th>
 					</tr>';
-					
-			for ($r=0;$r < count($rlt);$r++)
-				{
-					$line = $rlt[$r];
 
-					$sx .= '<tr>';
-					$sx .= '<td>'.$line['rp1'].':'.$line['rs1'].'</td>';
-					$sx .= '<td>'.$line['rp2'].':'.$line['rs2'].'</td>';
-					$link = '<span class="glyphicon glyphicon-remove-sign" aria-hidden="true" style="color: red;"></span>';
-					$link = '<a href="#">'.$link.'</a>';
-					$sx .= '<td align="center">'.$link.'</td>';
-					$sx .= '</tr>';
-				}
-			$sx .= '</table>';
-			return($sx);
+		for ($r = 0; $r < count($rlt); $r++) {
+			$line = $rlt[$r];
+
+			$sx .= '<tr>';
+			$sx .= '<td>' . $line['rp1'] . ':' . $line['rs1'] . '</td>';
+			$sx .= '<td>' . $line['rp2'] . ':' . $line['rs2'] . '</td>';
+			$link = '<span class="glyphicon glyphicon-remove-sign" aria-hidden="true" style="color: red;"></span>';
+			$link = '<a href="#">' . $link . '</a>';
+			$sx .= '<td align="center">' . $link . '</td>';
+			$sx .= '</tr>';
 		}
+		$sx .= '</table>';
+		return ($sx);
+	}
 
-	function attr_edit($id = '', $chk = '', $class = '59') {
+	function attr_edit($class = '', $chk = '') {
 		$table = 'find_class_attributes';
 
 		$form = new form;
@@ -201,15 +257,24 @@ class finds extends CI_model {
 		$cp = 'RP1.prefix_ref as pr1, RS1.rs_propriety as rs1';
 		$cp .= ', RP2.prefix_ref as pr2, RS2.rs_propriety as rs2';
 		$cp .= ', id_fcs';
+		//$cp = '*';
 		$sql = "select $cp 
 						FROM find_class_attributes
 						LEFT JOIN rdf_resource as RS1 ON fcs_propriety = RS1.id_rs
 						LEFT JOIN rdf_resource as RS2 ON fcs_range = RS2.id_rs
 						LEFT JOIN rdf_prefix as RP1 ON RP1.id_prefix = RS1.rs_prefix
 						LEFT JOIN rdf_prefix as RP2 ON RP2.id_prefix = RS2.rs_prefix
-						LEFT JOIN find_rdf ON  
+						LEFT JOIN find_rdf ON fr_propriety = fcs_propriety
 						WHERE fcs_class = $id
 						ORDER BY fcs_group, fcs_order ";
+		$sql1 = "select *
+						FROM find_class_attributes
+						LEFT JOIN rdf_resource as RS1 ON fcs_propriety = RS1.id_rs
+						LEFT JOIN rdf_resource as RS2 ON fcs_range = RS2.id_rs
+						LEFT JOIN rdf_prefix as RP1 ON RP1.id_prefix = RS1.rs_prefix
+						LEFT JOIN rdf_prefix as RP2 ON RP2.id_prefix = RS2.rs_prefix
+						WHERE fcs_class = $id
+						ORDER BY fcs_group, fcs_order ";						
 
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
@@ -220,9 +285,9 @@ class finds extends CI_model {
 		$sx .= '</tr>';
 		for ($r = 0; $r < count($rlt); $r++) {
 			$line = $rlt[$r];
-			//	print_r($line);
+			//print_r($line); exit;
 			$ida = $line['id_fcs'];
-			
+
 			$link = '<a href="#" onclick="newwin(\'' . base_url('index.php/find/editvw/' . $id . '/' . $ida . '/' . $c) . '\');">';
 			$link .= '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>';
 			$link .= '</a>';

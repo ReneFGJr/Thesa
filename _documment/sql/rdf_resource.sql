@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.7.1
+-- version 4.5.4.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 20, 2017 at 10:22 AM
--- Server version: 5.6.20-log
--- PHP Version: 5.4.31
+-- Generation Time: Mar 20, 2017 at 08:47 PM
+-- Server version: 5.7.11
+-- PHP Version: 5.6.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `books`
@@ -26,8 +26,8 @@ SET time_zone = "+00:00";
 -- Table structure for table `rdf_resource`
 --
 
-CREATE TABLE IF NOT EXISTS `rdf_resource` (
-`id_rs` bigint(20) unsigned NOT NULL,
+CREATE TABLE `rdf_resource` (
+  `id_rs` bigint(20) UNSIGNED NOT NULL,
   `rs_prefix` int(11) NOT NULL,
   `rs_propriety` char(100) NOT NULL,
   `rs_propriety_inverse` char(100) NOT NULL,
@@ -37,14 +37,14 @@ CREATE TABLE IF NOT EXISTS `rdf_resource` (
   `rs_group` varchar(10) NOT NULL,
   `rs_public` int(11) NOT NULL DEFAULT '0',
   `rs_source` char(255) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=78 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `rdf_resource`
 --
 
 INSERT INTO `rdf_resource` (`id_rs`, `rs_prefix`, `rs_propriety`, `rs_propriety_inverse`, `rs_type`, `rs_mandatory`, `rs_marc`, `rs_group`, `rs_public`, `rs_source`) VALUES
-(1, 12, 'class', '', 'C', 0, '', '', 0, ''),
+(1, 12, 'Class', '', 'C', 0, '', '', 0, ''),
 (2, 1, 'creator', '', 'P', 0, '', '', 0, ''),
 (3, 1, 'subject', '', 'P', 0, '', '', 0, ''),
 (4, 1, 'description', '', 'P', 0, '', '', 0, ''),
@@ -107,7 +107,7 @@ INSERT INTO `rdf_resource` (`id_rs`, `rs_prefix`, `rs_propriety`, `rs_propriety_
 (61, 16, 'Expression', '', 'C', 0, '', 'ENTY', 0, ''),
 (62, 16, 'Item', '', 'C', 0, '', 'ENTY', 0, ''),
 (63, 16, 'has_date_of_the_work', '', 'P', 0, '', '', 0, ''),
-(64, 17, 'Year', '', 'C', 0, '', 'TIME', 1, ''),
+(64, 17, 'Year', '', 'C', 0, '', 'TIME', 1, 'https://www.ufrgs.br/tesauros/index.php/skos/export/10/xml'),
 (65, 16, 'has_place_of_publication', '', 'P', 0, '', '', 0, ''),
 (66, 16, 'has_date_of_publication', '', 'P', 0, '', '', 0, ''),
 (67, 16, 'has_title', 'is_title_of', 'P', 0, '', '', 0, ''),
@@ -120,7 +120,25 @@ INSERT INTO `rdf_resource` (`id_rs`, `rs_prefix`, `rs_propriety`, `rs_propriety_
 (74, 16, 'has_numeric_designation', '', 'P', 0, '', '', 0, ''),
 (75, 16, 'Numeric_designation', '', 'C', 0, '', '', 0, ''),
 (76, 16, 'has_place_of_origin_of_the_work', '', 'P', 0, '', '', 0, ''),
-(77, 16, 'Place', '', 'C', 0, '', '', 0, '');
+(77, 16, 'Place', '', 'C', 0, '', '', 1, ''),
+(78, 16, 'has_issue_designation', '', 'P', 0, '', '', 0, ''),
+(79, 16, 'Issue_designation', '', 'C', 0, '', '', 1, 'https://www.ufrgs.br/tesauros/index.php/skos/export/13/xml'),
+(80, 16, 'Publisher', '', 'C', 0, '', '', 0, ''),
+(81, 16, 'has_publisher', '', 'P', 0, '', '', 0, ''),
+(82, 16, 'Form of carrier', '', 'C', 0, '', '', 0, ''),
+(83, 16, 'has_form_of_carrier', '', 'P', 0, '', '', 0, ''),
+(85, 16, 'has_numbering', '', 'P', 0, '', '', 0, ''),
+(86, 16, 'has_form_of_expression', '', 'P', 0, '', '', 0, ''),
+(87, 16, 'has_date_of_expression', '', 'P', 0, '', '', 0, ''),
+(88, 16, 'has_language', '', 'P', 0, '', '', 0, ''),
+(89, 16, 'Language', '', 'C', 0, '', '', 0, ''),
+(90, 16, 'Technique', '', 'C', 0, '', '', 0, ''),
+(91, 16, 'has_technique', '', 'P', 0, '', '', 0, ''),
+(92, 16, 'has_other_distinguishing_characteristic', '', 'P', 0, '', '', 0, ''),
+(93, 12, 'Literal', '', 'C', 0, '', '', 0, ''),
+(94, 16, 'has_location', '', 'P', 0, '', '', 0, ''),
+(95, 16, 'has_custodial_history', '', 'P', 0, '', '', 0, ''),
+(96, 16, 'has_immediate\r\n_source_of_acquisition', '', 'P', 0, '', '', 0, '');
 
 --
 -- Indexes for dumped tables
@@ -130,7 +148,7 @@ INSERT INTO `rdf_resource` (`id_rs`, `rs_prefix`, `rs_propriety`, `rs_propriety_
 -- Indexes for table `rdf_resource`
 --
 ALTER TABLE `rdf_resource`
- ADD UNIQUE KEY `id_rs` (`id_rs`);
+  ADD UNIQUE KEY `id_rs` (`id_rs`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -140,7 +158,7 @@ ALTER TABLE `rdf_resource`
 -- AUTO_INCREMENT for table `rdf_resource`
 --
 ALTER TABLE `rdf_resource`
-MODIFY `id_rs` bigint(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=78;
+  MODIFY `id_rs` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
