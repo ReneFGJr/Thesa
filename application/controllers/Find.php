@@ -60,6 +60,9 @@ class find extends CI_controller {
 		$data['content'] = $tela;
 		$data['content'] .= $this->finds->list_data_attr($id);
 		
+		$data['content'] .= '<hr>';
+		$data['content'] .= $this->finds->list_data_values($id);
+		
 		$this -> load -> view('content', $data);
 		$this -> foot();
 	}
@@ -101,15 +104,15 @@ class find extends CI_controller {
 		$this -> foot();
 	}
 
-	function editvw($i1, $i2, $i3, $i4 = '') {
+	function editvw($i1, $i2, $i3, $i4 = '', $i5 = '') {
 		$this -> load -> model('finds');
 		$this -> cab(0);
 
-		if (strlen($i4) > 0) {
-			$this -> finds -> rdf_propriety($i1, $i2, $i3, $i4);
+		if ((strlen($i4) > 0) and (strlen($i5) > 0)) {
+			$this -> finds -> rdf_propriety($i1, $i2, $i3, $i4, $i5);
 		}
 
-		$tela = $this -> finds -> editvw($i1, $i2, $i3, $i4);
+		$tela = $this -> finds -> editvw($i1, $i2, $i3, $i4, $i5);
 		$data['content'] = $tela;
 		$data['title'] = '';
 		$this -> load -> view('content', $data);
@@ -208,7 +211,7 @@ class find extends CI_controller {
 		$file = 'xml/thesa-01.xml';
 		$table = 'rdf_resource';
 		
-		$class = 79;
+		$class = 64;
 		$tela = $this->finds->import_xml($file,$class);
 		$data['content'] = $tela;
 		$this->load->view('content',$data);

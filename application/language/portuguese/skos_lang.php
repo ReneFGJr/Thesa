@@ -85,6 +85,8 @@ $lang['save'] = 'salvar';
 
 
 /* Propriedades */
+$lang['frbroo:has_creator'] = 'Autor / criador';
+
 $lang['skos:prefLabel'] = 'Descritor preferencial';
 $lang['skos:altLabel'] = 'Variações Terminológica / Termo alternativo';
 $lang['skos:hiddenLabel'] = 'Variações léxicas (erros grafia)';

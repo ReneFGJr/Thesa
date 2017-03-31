@@ -14,37 +14,51 @@ class finds extends CI_model {
 		return ($sx);
 	}
 
-	function le_attr($id)
-		{
-			$sql = "select * from rdf_resource
+	function le_attr($id) {
+		$sql = "select * from rdf_resource
 						INNER JOIN rdf_prefix ON id_prefix = rs_prefix
-						where id_rs = ".$id;
-			$rlt = $this->db->query($sql);
-			$rlt = $rlt->result_array();
-			$line = $rlt[0];
-			return($line);
-		}
-		
-	function list_data_attr($id)
+						where id_rs = " . $id;
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+		$line = $rlt[0];
+		return ($line);
+	}
+
+	function list_data_values($id)
 		{
 			$sql = "select * from find_id
-						INNER JOIN find_literal ON f_literal = id_l 
-						WHERE f_class = $id	order by l_value
-						LIMIT 20";
+						INNER JOIN find_literal ON id_l = f_literal
+						where f_class = $id ";
 			$rlt = $this->db->query($sql);
 			$rlt = $rlt->result_array();
-			$sx = '<table width="100%" class="table">';
+			$sx = '<ul>';
 			for ($r=0;$r < count($rlt);$r++)
 				{
 					$line = $rlt[$r];
-					$sx .= '<tr>';
-					$sx .= '<td>'.$line['l_value'].' ('.$line['l_language'].')</td>';
-					$sx .= '</tr>';
+					$sx .= '<li>'.$line['l_value'].'</li>';
 				}
-			$sx .= '</table>';
+			$sx = '</ul>';
 			return($sx);
 		}
-	function import_xml($file,$class) {
+	function list_data_attr($id) {
+		$sql = "select * from find_id
+						INNER JOIN find_literal ON f_literal = id_l 
+						WHERE f_class = $id	order by l_value
+						LIMIT 210";
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+		$sx = '<table width="100%" class="table">';
+		for ($r = 0; $r < count($rlt); $r++) {
+			$line = $rlt[$r];
+			$sx .= '<tr>';
+			$sx .= '<td>' . $line['l_value'] . ' (' . $line['l_language'] . ')</td>';
+			$sx .= '</tr>';
+		}
+		$sx .= '</table>';
+		return ($sx);
+	}
+
+	function import_xml($file, $class) {
 
 		$xml = simplexml_load_file($file);
 		$sx = '';
@@ -56,17 +70,16 @@ class finds extends CI_model {
 			$reso = trim($child['resource']);
 			$update = $child['update'];
 			$lang = $child['language'];
-			echo "<br /> ->" . $type . ' ' . $id . ' ' . $prop. '==>'.$reso.' ('.round(sonumero($id)).')';
+			echo "<br /> ->" . $type . ' ' . $id . ' ' . $prop . '==>' . $reso . ' (' . round(sonumero($id)) . ')';
 
 			/* LITERAL */
 			if ((($prop == 'skos:prefLabel') OR ($prop == 'skos:altLabel')) AND (round(sonumero($id)) > 0)) {
 				if (strlen($reso) > 0) {
 					if ($lang == 'por') { $lang = 'pt_BR';
 					}
-					if ($prop == 'skos:prefLabel')
-						{
-							$this->create_id($reso, $lang, $class);
-						}
+					if ($prop == 'skos:prefLabel') {
+						$this -> create_id($reso, $lang, $class);
+					}
 				}
 			}
 		}
@@ -78,7 +91,7 @@ class finds extends CI_model {
 		$form = new form;
 
 		$form -> fd = array('id_rs', 'prefix_ref', 'rs_propriety', 'rs_type');
-		$form -> lb = array('id', msg('prefix_ref'), msg('fi_razao_social'), msg('rs_type'));
+		$form -> lb = array('id', msg('prefix_ref'), msg('cap_rs_propriety'), msg('rs_type'));
 		$form -> mk = array('', 'L', 'L', 'L');
 
 		$form -> tabela = '(select * from rdf_resource INNER JOIN rdf_prefix ON id_prefix = rs_prefix) as tabela';
@@ -97,6 +110,7 @@ class finds extends CI_model {
 	function view_propriety($id) {
 		$cp = 'RP1.prefix_ref as pr1, RS1.rs_propriety as rs1, l_value ';
 		//$cp .= 'RP2.prefix_ref as pr2, RS2.rs_propriety as rs2 ';
+		//$cp .= 'RP2.prefix_ref as pr2, RS2.rs_propriety as rs2 ';
 		$sql = "SELECT $cp FROM find_rdf
 			
 						INNER JOIN find_id as f1 ON fr_id_2 = id_f
@@ -104,18 +118,15 @@ class finds extends CI_model {
 						
 						INNER JOIN rdf_resource as RS1 ON fr_propriety = id_rs
 						INNER JOIN rdf_prefix as RP1 ON rs_prefix = id_prefix
-
 												
 						WHERE fr_id_1 = $id";
+						
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
 		$sx = '<table width="100%" class="table">';
 		for ($r = 0; $r < count($rlt); $r++) {
 			$line = $rlt[$r];
 
-			print_r($line);
-			//exit;
-			echo '<hr>';
 			$sx .= '<tr>';
 			$sx .= '<td>' . $line['pr1'] . ':' . $line['rs1'] . '</td>';
 			$sx .= '<td>' . $line['l_value'] . '</td>';
@@ -196,14 +207,14 @@ class finds extends CI_model {
 		return ($cp);
 	}
 
-	function rdf_propriety($r0, $r1, $r2, $r3) {
+	function rdf_propriety($r0, $r1, $r2, $r3, $r4) {
 		$agency = $this -> agency;
 
 		$sql = "select * from find_rdf
 						WHERE
 						fr_id_1 = $r2 AND
-						fr_id_2 = $r3 AND
-						fr_propriety = $r0";
+						fr_id_2 = $r4 AND
+						fr_propriety = $r3";
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
 
@@ -216,35 +227,54 @@ class finds extends CI_model {
 				)
 				values
 				(
-					$r2, $r3, $r0,
+					$r2, $r4, $r3,
 					$agency
 				)";
+
 			$rlt = $this -> db -> query($sql);
 		}
 		return (1);
 	}
 
-	function editvw($i1, $i2, $i3, $i4) {
-		$sql = "select * from find_class_attributes 
-						WHERE id_fcs = $i2";
+	function editvw($i1, $i2, $i3, $i4, $i5) {
+		
+		$sql = "select FCA1.fcs_range as rg1, FCA2.fcs_range as rg2 from find_class_attributes as FCA1
+					LEFT JOIN find_class_attributes as FCA2 ON FCA2.fcs_class = FCA1.fcs_range
+					WHERE FCA1.id_fcs = $i2";
 		$rlt = $this -> db -> query($sql);
+		echo $sql;
 		$rlt = $rlt -> result_array();
-		$line = $rlt[0];
+		$wh_range = '';
+		$wh_class2 = '';
+		for ($r = 0; $r < count($rlt); $r++) {
+			$line = $rlt[$r];
+			$range1 = $line['rg1'];
+			$range2 = $line['rg2'];
+			if (strlen($wh_range) > 0) { $wh_range .= ' OR ';
+			}
+			$wh_range .= "(f_class = $range1)";
 
-		$range = $line['fcs_range'];
+			/* */
+			IF ($range2 > 0) {
+				if (strlen($wh_range) > 0) { $wh_range .= ' OR ';
+				}
+				$wh_range .= "(f_class = $range2)";
+			}
+		}
 
 		$sql = "select * from find_id
 						INNER JOIN find_literal ON f_literal = id_l
-						WHERE f_class = $range						
+						WHERE $wh_range						
 						ORDER BY l_value
-						LIMIT 10";
+						LIMIT 2000";
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
 
 		$sx = '';
 		for ($r = 0; $r < count($rlt); $r++) {
 			$line = $rlt[$r];
-			$link = '<a href="' . base_url('index.php/find/editvw/' . $i1 . '/' . $i2 . '/' . $i3 . '/' . $line['id_f']) . '">';
+
+			$link = '<a href="' . base_url('index.php/find/editvw/' . $i1 . '/' . $i2 . '/' . $i3 . '/' . $i4.'/'.$line['id_f']) . '">';
 			$sx .= $link;
 			$sx .= $line['l_value'];
 			$sx .= '</a>';
@@ -254,8 +284,8 @@ class finds extends CI_model {
 	}
 
 	function class_value_edit($id, $c) {
-		$cp = 'RP1.prefix_ref as pr1, RS1.rs_propriety as rs1';
-		$cp .= ', RP2.prefix_ref as pr2, RS2.rs_propriety as rs2';
+		$cp = 'RP1.prefix_ref as pr1, RS1.rs_propriety as rs1, RS1.id_rs as idrs1';
+		$cp .= ', RP2.prefix_ref as pr2, RS2.rs_propriety as rs2, RS2.id_rs as idrs2';
 		$cp .= ', id_fcs';
 		//$cp = '*';
 		$sql = "select $cp 
@@ -274,11 +304,11 @@ class finds extends CI_model {
 						LEFT JOIN rdf_prefix as RP1 ON RP1.id_prefix = RS1.rs_prefix
 						LEFT JOIN rdf_prefix as RP2 ON RP2.id_prefix = RS2.rs_prefix
 						WHERE fcs_class = $id
-						ORDER BY fcs_group, fcs_order ";						
+						ORDER BY fcs_group, fcs_order ";
 
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
-		echo '<br><br><br><br><br><br><br><br><br><br><br>';
+		///echo '<br><br><br>';
 		$sx = '<table class="table" width="100%">';
 		$sx .= '<tr>';
 		$sx .= '<th class="small">propriety</th>';
@@ -287,13 +317,14 @@ class finds extends CI_model {
 			$line = $rlt[$r];
 			//print_r($line); exit;
 			$ida = $line['id_fcs'];
+			$idb = $line['idrs1'];
 
-			$link = '<a href="#" onclick="newwin(\'' . base_url('index.php/find/editvw/' . $id . '/' . $ida . '/' . $c) . '\');">';
+			$link = '<a href="#" onclick="newwin(\'' . base_url('index.php/find/editvw/' . $id . '/' . $ida . '/' . $c.'/'.$idb) . '\');">';
 			$link .= '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>';
 			$link .= '</a>';
 
 			$sx .= '<tr>';
-			$sx .= '<td>' . msg($line['pr1'] . ':' . $line['rs1']) . '</td>';
+			$sx .= '<td>' . msg(trim($line['pr1']) . ':' . trim($line['rs1'])) . '</td>';
 			$sx .= '<td>' . msg($line['pr2'] . ':' . $line['rs2']) . '</td>';
 			$sx .= '<td>' . $link . '</td>';
 			$sx .= '</tr>';
@@ -337,6 +368,7 @@ class finds extends CI_model {
 		$sx .= '<div class="col-md-6">';
 		$sx .= '<input type="hidden" name="name" class="form-contro" value="' . $name . '">';
 		$sx .= '<input type="radio" name="lang" value="pt_BR">' . msg('portugues');
+		$sx .= '</br><input type="radio" name="lang" value="es">' . msg('espanhol');
 		$sx .= '<br>';
 		$sx .= '</div>';
 

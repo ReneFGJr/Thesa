@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 20, 2017 at 08:47 PM
+-- Generation Time: Mar 31, 2017 at 08:29 PM
 -- Server version: 5.7.11
 -- PHP Version: 5.6.18
 
@@ -138,7 +138,10 @@ INSERT INTO `rdf_resource` (`id_rs`, `rs_prefix`, `rs_propriety`, `rs_propriety_
 (93, 12, 'Literal', '', 'C', 0, '', '', 0, ''),
 (94, 16, 'has_location', '', 'P', 0, '', '', 0, ''),
 (95, 16, 'has_custodial_history', '', 'P', 0, '', '', 0, ''),
-(96, 16, 'has_immediate\r\n_source_of_acquisition', '', 'P', 0, '', '', 0, '');
+(96, 16, 'has_immediate\r\n_source_of_acquisition', '', 'P', 0, '', '', 0, ''),
+(97, 16, 'has_creator', '', 'P', 0, '', '', 0, ''),
+(98, 16, 'has_artist', '', 'P', 0, '', '', 0, ''),
+(99, 12, 'subClass', '', 'P', 0, '', '', 0, '');
 
 --
 -- Indexes for dumped tables
@@ -158,7 +161,7 @@ ALTER TABLE `rdf_resource`
 -- AUTO_INCREMENT for table `rdf_resource`
 --
 ALTER TABLE `rdf_resource`
-  MODIFY `id_rs` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `id_rs` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

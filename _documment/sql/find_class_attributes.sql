@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 20, 2017 at 08:47 PM
+-- Generation Time: Mar 31, 2017 at 08:29 PM
 -- Server version: 5.7.11
 -- PHP Version: 5.6.18
 
@@ -66,7 +66,12 @@ INSERT INTO `find_class_attributes` (`id_fcs`, `fcs_class`, `fcs_propriety`, `fc
 (20, 61, 92, '2017-03-20 20:38:41', 0, 0, 0, '', 0, 93),
 (21, 62, 94, '2017-03-20 20:40:56', 0, 0, 0, '', 0, 77),
 (22, 62, 95, '2017-03-20 20:42:40', 0, 0, 0, '', 0, 77),
-(23, 62, 96, '2017-03-20 20:43:43', 0, 0, 0, '', 0, 77);
+(23, 62, 96, '2017-03-20 20:43:43', 0, 0, 0, '', 0, 77),
+(24, 59, 97, '2017-03-23 14:56:09', 0, 0, 0, '', 0, 46),
+(25, 59, 98, '2017-03-23 14:56:16', 0, 0, 0, '', 0, 46),
+(26, 46, 99, '2017-03-31 17:35:46', 0, 0, 0, '', 0, 56),
+(27, 46, 99, '2017-03-31 17:35:49', 0, 0, 0, '', 0, 55),
+(28, 46, 97, '2017-03-31 17:36:35', 0, 0, 0, '', 0, 48);
 
 --
 -- Indexes for dumped tables
@@ -86,7 +91,7 @@ ALTER TABLE `find_class_attributes`
 -- AUTO_INCREMENT for table `find_class_attributes`
 --
 ALTER TABLE `find_class_attributes`
-  MODIFY `id_fcs` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_fcs` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
