@@ -1,46 +1,20 @@
-	<div id="section1" class="container-fluid">
-		<h1>Section 1</h1>
-		<p>
-			Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!
-		</p>
-		<p>
-			Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!
-		</p>
+	<div id="section1" class="container middle" style="font-family: Roboto;">
+		<h1><?php echo msg('context_01_section'); ?></h1>
+		<?php echo msg('context_01'); ?>
 	</div>
-	<div id="section2" class="container-fluid">
-		<h1>Section 2</h1>
-		<p>
-			Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!
-		</p>
-		<p>
-			Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!
-		</p>
+	<div id="section2" class="container-fluid middle">
+		<div id="section2" class="container">
+		<h1><?php echo msg('context_02_section'); ?></h1>
+		<?php echo msg('context_02'); ?>
+		</div>
 	</div>
-	<div id="section3" class="container-fluid">
-		<h1>Section 3</h1>
-		<p>
-			Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!
-		</p>
-		<p>
-			Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!
-		</p>
+	<div id="section3" class="container middle">
+		<h1><?php echo msg('context_03_section'); ?></h1>
+		<?php echo msg('context_03'); ?>
 	</div>
-	<div id="section4" class="container-fluid">
-		<h1>Section 4 Submenu 1</h1>
-		<p>
-			Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!
-		</p>
-		<p>
-			Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!
-		</p>
-	</div>
-	<div id="section5" class="container-fluid">
-		<h1>Section 4 Submenu 2</h1>
-		<p>
-			Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!
-		</p>
-		<p>
-			Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!
-		</p>
+
+	<div id="section4" class="container-fluid middle">
+		<h1><?php echo msg('context_04_section'); ?></h1>
+		<?php echo msg('context_04'); ?>
 	</div>
 </body>
