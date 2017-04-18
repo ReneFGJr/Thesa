@@ -30,6 +30,10 @@ if (!function_exists(('msg')))
 	}
 
 /* Cited */
+$lang['Lowercase'] = 'Inserir em caixa baixa';
+$lnag['add'] = 'adicionar';
+$lang['Term_edit_concept'] = 'Editar descritor';
+$lang['Term_delete_concept'] = 'Excluir descritor';
 $lang['bt_thesauros'] = 'tesauros';
 $lang['how_to_cite'] = 'Como citar este trabalho';
 $lang['mes_01a'] = 'Jan.';
