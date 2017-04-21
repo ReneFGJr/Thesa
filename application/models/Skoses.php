@@ -1524,12 +1524,29 @@ class skoses extends CI_model {
 		return ($sx);
 	}
 
-	function user_email_send($para, $nome, $code) {
+	function user_forgot_password($email)
+		{
+			$email = sonumero($email);
+			$ok = $this->le_user_id($email);
+			if (ok == 0)
+				{
+					
+				} else {
+					
+				}
+			$sx = '<span class="link" onclick="newwin(\''.base_url('index.php/skos/user_forgot/'.$email.'/'.checkpost_link($email.date("Ymd"))).'\',400,200);">';
+			$sx .= msg('forgot_password');
+			$sx .= '</span>';
+			return($sx);
+		} 
+		
+	function user_email_send($para, $code) {
 		$anexos = array();
 		$texto = 'SIGNUP - Thesa<hr>';
+		$de = 0;
 		switch($code) {
 			case 'SIGNUP' :
-				$link = base_url('index.php/skos/user_valid/?dd0=' . $para . '&chk=' . checkpost_link($para . date("Ymd")));
+				$link = base_url('index.php/skos/user_password_new/?dd0=' . $para . '&chk=' . checkpost_link($para . date("Ymd")));
 				$assunto = 'Cadastro de novo usuários - Thesa';
 				$texto .= 'Para ativar seu cadastro é necessário clicar no link abaixo:';
 				$texto .= '<br><br>';
@@ -1538,15 +1555,47 @@ class skoses extends CI_model {
 				$assunto = utf8_decode($assunto);
 				$de = 1;
 				break;
+			case 'PASSWORD' :
+				$this->le_user_id($para);
+				$link = base_url('index.php/skos/user_password_new/?dd0=' . $para . '&chk=' . checkpost_link($para . date("Ymd")));
+				$assunto = 'Cadastro de novo senha - Thesa';
+				$texto = '<p>'.msg('Dear').' '.$this->line['us_nome'].'</p>';
+				$texto .= '<p>'.msg('change_new_password').'</p>';
+				$texto .= '<br><br>';
+				$texto .= '<a href="' . $link . '" target="_new">' . $link . '</a>';
+				$texto = utf8_decode($texto);
+				$assunto = utf8_decode($assunto);
+				$de = 1;
+				break;				
 			default :
 				$assunto = 'Enviado de e-mail';
 				$texto = 'texto';
 				$de = 1;
 				break;
 		}
-
-		enviaremail($para, $assunto, $texto, $de);
+		if ($de > 0)
+			{
+				$texto = $this->formatar_email($texto);
+				//enviaremail($para, $assunto, $texto, $de);		
+			} else {
+				echo 'e-mail não enviado - '.$code;
+			}
+		
 	}
+
+	function formatar_email($text)
+		{
+			$sx = '';
+			$sx .= '<div style="border: 0px solid #808080; padding: 10px; margin-left: 20%; margin-right: 20%;">';
+			$sx .= '<h3>THESA</h3>';
+			$sx .= '</div>';
+			$sx .= '<div style="border: 1px solid #808080; padding: 10px; margin-left: 20%; margin-right: 20%;">';
+			$sx .= $text;
+			$sx .= '</div>';
+			
+			echo $sx;
+			return($sx);
+		}
 
 	function user_insert_temp($email, $name) {
 		if ($this -> user_exist($email) == 0) {
@@ -1595,6 +1644,19 @@ class skoses extends CI_model {
 			return (0);
 		}
 	}
+	
+	function le_user_id($id) {
+		$id = sonumero($id);
+		$sql = "select * from users where id_us = $id ";
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+		if (count($rlt) > 0) {
+			$this -> line = $rlt[0];
+			return (1);
+		} else {
+			return (0);
+		}
+	}	
 
 	function th_collaborators($th) {
 		$sql = "select * from th_users 
