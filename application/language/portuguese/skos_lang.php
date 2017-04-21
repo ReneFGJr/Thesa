@@ -30,7 +30,9 @@ if (!function_exists(('msg')))
 	}
 
 /* Cited */
-$lang['Lowercase'] = 'Inserir em caixa baixa';
+$lang['email_already_inserted'] = 'E-mail já cadastrado!';
+$lang['forgot_password'] = 'Esqueci minha senha';
+$lang['lowercase'] = 'Inserir em caixa baixa';
 $lnag['add'] = 'adicionar';
 $lang['Term_edit_concept'] = 'Editar descritor';
 $lang['Term_delete_concept'] = 'Excluir descritor';

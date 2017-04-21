@@ -121,7 +121,9 @@ class Skos extends CI_Controller {
 			if ($ok == 1) {
 				$ok = $this -> skoses -> user_exist($email);
 				if ($ok == 1) {
+					$id = $this->skoses->line['id_us'];
 					$data['email_ok'] = '<span class="btn alert-danger">' . msg("email_already_inserted") . '</span>';
+					$data['email_ok'] .= '&nbsp;'.$this -> skoses -> user_forgot_password($id);
 				} else {
 					$data['email_ok'] = '<span class="btn alert-success">' . msg("email_inserted") . '</span>';
 					$this -> skoses -> user_insert_temp($email, $nome);
@@ -1238,6 +1240,61 @@ class Skos extends CI_Controller {
 		}
 		return (0);
 	}
+
+	function user_password_new()
+		{
+		/* Load model */
+		$this -> load -> model("skoses");		
+		$this -> cab();
+		
+		$id=get("dd0");
+		$check=get("chk");
+
+		$chk = checkpost_link($id.date("Ymd"));
+		if ($check == $chk) {
+			
+			//$this->skoses->user_email_send($email,'PASSWORD');
+			$ok = $this->skoses->le_user_id($id);
+			if ($ok == 1)
+				{
+					$data = $this->skoses->line;
+					$data['email_ok'] = 'ops';
+					$this -> load -> view('skos/thesa_sign_newpassword', $data);
+				} else {
+					$data = array();
+					$data['title'] = 'Error 534';
+					$data['content'] = 'Invalid user';
+					$this -> load -> view('skos/510', $data);					
+				}
+		} else {
+			$this -> cab(0);
+			$data = array();
+			$data['title'] = 'Error 533';
+			$data['content'] = 'Invalid checkpost';
+			$this -> load -> view('skos/510', $data);
+		}
+			
+		}
+
+	function user_forgot($email='',$check='')
+		{
+		/* Load model */
+		$this -> load -> model("skoses");		
+		$this -> cab(0);
+
+		$chk = checkpost_link($email.date("Ymd"));
+		if ($check == $chk) {
+			
+			$this->skoses->user_email_send($email,'PASSWORD');
+		} else {
+			$this -> cab(0);
+			$data = array();
+			$data['title'] = 'Error 533';
+			$data['content'] = 'Invalid checkpost';
+			$this -> load -> view('skos/510', $data);
+		}
+			
+		}
 
 	function user_revalid() {
 		/* Load model */
