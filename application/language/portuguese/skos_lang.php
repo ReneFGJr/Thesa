@@ -29,11 +29,14 @@ if (!function_exists(('msg')))
 			}
 	}
 
+/* Colaborador */	
+$lang['collaborators_add'] = 'Adicionar colaboradores';
+
 /* Cited */
 $lang['email_already_inserted'] = 'E-mail já cadastrado!';
 $lang['forgot_password'] = 'Esqueci minha senha';
 $lang['lowercase'] = 'Inserir em caixa baixa';
-$lnag['add'] = 'adicionar';
+$lang['add'] = 'adicionar';
 $lang['Term_edit_concept'] = 'Editar descritor';
 $lang['Term_delete_concept'] = 'Excluir descritor';
 $lang['bt_thesauros'] = 'tesauros';

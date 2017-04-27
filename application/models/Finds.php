@@ -24,22 +24,21 @@ class finds extends CI_model {
 		return ($line);
 	}
 
-	function list_data_values($id)
-		{
-			$sql = "select * from find_id
+	function list_data_values($id) {
+		$sql = "select * from find_id
 						INNER JOIN find_literal ON id_l = f_literal
 						where f_class = $id ";
-			$rlt = $this->db->query($sql);
-			$rlt = $rlt->result_array();
-			$sx = '<ul>';
-			for ($r=0;$r < count($rlt);$r++)
-				{
-					$line = $rlt[$r];
-					$sx .= '<li>'.$line['l_value'].'</li>';
-				}
-			$sx = '</ul>';
-			return($sx);
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+		$sx = '<ul>';
+		for ($r = 0; $r < count($rlt); $r++) {
+			$line = $rlt[$r];
+			$sx .= '<li>' . $line['l_value'] . '</li>';
 		}
+		$sx = '</ul>';
+		return ($sx);
+	}
+
 	function list_data_attr($id) {
 		$sql = "select * from find_id
 						INNER JOIN find_literal ON f_literal = id_l 
@@ -120,7 +119,7 @@ class finds extends CI_model {
 						INNER JOIN rdf_prefix as RP1 ON rs_prefix = id_prefix
 												
 						WHERE fr_id_1 = $id";
-						
+
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
 		$sx = '<table width="100%" class="table">';
@@ -214,6 +213,7 @@ class finds extends CI_model {
 						WHERE
 						fr_id_1 = $r2 AND
 						fr_id_2 = $r4 AND
+						fr_literal = $r0 AND
 						fr_propriety = $r3";
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
@@ -222,12 +222,12 @@ class finds extends CI_model {
 
 			$sql = "insert into find_rdf
 				(
-					fr_id_1, fr_id_2, fr_propriety,
+					fr_id_1, fr_id_2, fr_literal, fr_propriety,
 					fr_agency
 				)
 				values
 				(
-					$r2, $r4, $r3,
+					$r2, $r4, $r0, $r3,
 					$agency
 				)";
 
@@ -237,7 +237,7 @@ class finds extends CI_model {
 	}
 
 	function editvw($i1, $i2, $i3, $i4, $i5) {
-		
+
 		$sql = "select FCA1.fcs_range as rg1, FCA2.fcs_range as rg2 from find_class_attributes as FCA1
 					LEFT JOIN find_class_attributes as FCA2 ON FCA2.fcs_class = FCA1.fcs_range
 					WHERE FCA1.id_fcs = $i2";
@@ -274,7 +274,7 @@ class finds extends CI_model {
 		for ($r = 0; $r < count($rlt); $r++) {
 			$line = $rlt[$r];
 
-			$link = '<a href="' . base_url('index.php/find/editvw/' . $i1 . '/' . $i2 . '/' . $i3 . '/' . $i4.'/'.$line['id_f']) . '">';
+			$link = '<a href="' . base_url('index.php/find/editvw/' . $i1 . '/' . $i2 . '/' . $i3 . '/' . $i4 . '/' . $line['id_f']) . '">';
 			$sx .= $link;
 			$sx .= $line['l_value'];
 			$sx .= '</a>';
@@ -319,7 +319,7 @@ class finds extends CI_model {
 			$ida = $line['id_fcs'];
 			$idb = $line['idrs1'];
 
-			$link = '<a href="#" onclick="newwin(\'' . base_url('index.php/find/editvw/' . $id . '/' . $ida . '/' . $c.'/'.$idb) . '\');">';
+			$link = '<a href="#" onclick="newwin(\'' . base_url('index.php/find/editvw/' . $id . '/' . $ida . '/' . $c . '/' . $idb) . '\');">';
 			$link .= '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>';
 			$link .= '</a>';
 
@@ -670,8 +670,107 @@ class finds extends CI_model {
 		$sx .= '</div>';
 		$sx .= '</form>';
 		return ($sx);
-
 	}
 
+	function marc21_in($txt) {
+		$txt = troca($txt, ';', '¢');
+		$txt = troca($txt, chr(13), ';');
+		$txt = troca($txt, chr(10), '');
+
+		$ln = splitx(';', $txt);
+
+		for ($r = 0; $r < count($ln); $r++) {
+			$line = $ln[$r];
+			$field = substr($line, 0, 3);
+			switch($field) {
+				case '020' :
+					$txt = extract_marc('$a', $line);
+					$this -> marc21_020($txt);
+					break;
+			}
+		}
+
+		print_r($ln);
+		exit ;
+	}
+
+	function marc21_020($isbn = '') {
+		$isbn = troca($isbn, 'x', 'X');
+		$rlt = '';
+		for ($ki = 0; $ki < strlen($isbn); $ki++) {
+			$ord = ord(substr($isbn, $ki, 1));
+			if ((($ord >= 48) and ($ord <= 57)) or ($ord == ord('X'))) { $rlt = $rlt . substr($isbn, $ki, 1);
+			}
+		}
+		$isbn = 'ISBN' . $rlt;
+
+		$sql = "select * from find_literal where l_value = '$isbn' ";
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+
+		if (count($rlt) == 0) {
+			$sql2 = "insert into find_literal (l_value) values ('$isbn')";
+			$rlt2 = $this -> db -> query($sql2);
+			$rlt = $this -> db -> query($sql);
+			$rlt = $rlt -> result_array();
+		}
+		$line = $rlt[0];
+
+		$class = $this->find_rdf('ISBN', 'C');
+		/**************************************************************************************/
+		$ag = $this->agency;
+		$lt = $line['id_l'];
+		
+		$sql = "select * from find_id where f_literal = $lt and f_class = $class";
+		$rlt = $this->db->query($sql);
+		$rlt = $rlt->result_array();
+		
+		if (count($rlt) == 0)
+			{
+				$sql2 = "insert into find_id 
+					(f_literal, f_class, f_agency, f_source)
+					values
+					($lt,$class,$ag,0)";				
+				$rlt = $this->db->query($sql2);
+			}
+		$rlt = $this->db->query($sql);
+		$rlt = $rlt->result_array();
+		$id = $rlt[0]['id_f'];
+				
+		/**************************************************************************************/
+		$this->rdf_propriety($lt, 0, $id, $class, 0);
+		
+		exit;
+	}
+
+	function find_rdf($name = '', $tp = 'C') {
+		$sql = "select * from rdf_resource where rs_propriety = '$name' and rs_type = '$tp' ";
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+
+		if (count($rlt) == 0) {
+			echo 'OPS ' . $name;
+			exit ;
+		}
+		$line = $rlt[0];
+		$id = $line['id_rs'];
+		return ($id);
+	}
+
+}
+
+function extract_marc($f, $t) {
+	$t = troca($t, '|', '$');
+	$pos = strpos($t, $f);
+	$rt = '';
+	if ($pos > 0) {
+		$t = substr($t, $pos + 2, strlen($t));
+		$pos = strpos($t, '$');
+		if ($pos > 0) {
+			$t = substr($t, 0, $pos);
+		}
+		$rt = $t;
+	}
+	return ($rt);
 }
 ?>

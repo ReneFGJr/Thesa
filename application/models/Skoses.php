@@ -1524,6 +1524,99 @@ class skoses extends CI_model {
 		return ($sx);
 	}
 
+	function th_users()
+		{
+			$th = $_SESSION['skos'];
+			$id_user = $_SESSION['id'];
+			$user_nivel = $_SESSION['nivel'];
+			$thesa = $this->le_th($th);
+
+			
+			$sql = "select * from th_users
+						INNER JOIN users ON ust_user_id = id_us
+						WHERE ust_status = 1
+							AND ust_th = $th ";
+			$rlt = $this->db->query($sql);
+			$rlt = $rlt->result_array();
+			$sx = '<table class="table" width="100%">'.cr();
+			$sx .= '<tr class="small">';
+			$sx .= '<th width="2%">'.msg('#').'</th>';
+			$sx .= '<th width="40%">'.msg('name').'</th>';
+			$sx .= '<th width="40%">'.msg('email').'</th>';
+			$sx .= '<th width="18%">'.msg('designated').'</th>';
+			$sx .= '</tr>'.cr();
+			
+			for ($r=0;$r < count($rlt);$r++)
+				{
+					$line = $rlt[$r];
+					$sx .= '<tr>';
+					
+					$sx .= '<td>';
+					$sx .= ($r+1);
+					$sx .= '</td>';					
+
+					$sx .= '<td>';
+					$sx .= $line['us_nome'];
+					$sx .= '</td>';
+					
+					$sx .= '<td>';
+					$sx .= $line['us_email'];
+					$sx .= '</td>';
+					
+					$sx .= '<td>';
+					$sx .= stodbr($line['ust_created']);
+					$sx .= '</td>';
+					if ($thesa['pa_creator'] != $line['id_us'])
+						{
+							$sx .= '<td>';
+							$sx .= '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>';
+							$sx .= '</td>';
+						}					
+					
+					$sx .= '</tr>'.cr();
+				}
+			$sx .= '</table>'.cr();	
+			
+			if ($thesa['pa_creator'] == $id_user)
+				{
+					$sx .= '					
+							<!-- Button trigger modal -->
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+							  '.msg('collaborators_add').'
+							</button>
+							
+							<!-- Modal -->
+							<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+							  <div class="modal-dialog" role="document">
+							    <div class="modal-content">
+							      <div class="modal-header">
+							        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							        <h4 class="modal-title" id="myModalLabel">'.msg('collaborators_add').'</h4>
+							      </div>
+							      <div class="modal-body">';							        
+					$sx .= '<span class="small">'.msg('email').'</span><br/>';
+					$sx .= '<input type="text" class="form-control" aria-label="'.msg('find').'">';
+					
+					$sx .= '
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-default" data-dismiss="modal">'.msg('cancel').'</button>
+							        <button type="button" class="btn btn-primary" id="submit">'.msg('add').'</button>
+							      </div>
+							    </div>
+							  </div>
+							</div>		
+							<script>
+								$( "#submit" ).click(function() {
+								  alert( "Handler for .click() called." );
+								});
+							</script>
+					';
+				}
+				
+			return($sx);
+		}
+
 	function user_forgot_password($email)
 		{
 			$email = sonumero($email);

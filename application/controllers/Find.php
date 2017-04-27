@@ -141,6 +141,23 @@ class find extends CI_controller {
 
 		$this -> foot();
 	}
+	
+	function inport_marc()
+		{
+			$this -> load -> model('finds');
+			$this->cab();
+			$data = array();
+			
+			$tx = get("dd2");
+			if (strlen($tx) > 0)
+				{
+					$tt = $this->finds->marc21_in($tx);
+				}
+			
+			$this->load->view('find/catalog',$data);
+			
+			$this -> foot();
+		}
 
 	function v($id = '') {
 		$this -> load -> model('finds');

@@ -1079,6 +1079,19 @@ class Skos extends CI_Controller {
 		$this -> load -> view('header/footer', null);
 	}
 
+	function collaborators()
+		{
+		$this -> load -> model('skoses');
+		$this -> cab();
+		
+		$tela = $this->skoses->th_users();
+		
+		$data['title'] = msg('collaborators');
+		$data['content'] = $tela;
+		$this->load->view('content',$data);
+					
+		}
+
 	function terms($id = '', $ltr = '') {
 		$this -> load -> model('skoses');
 		$this -> cab();
@@ -1089,12 +1102,19 @@ class Skos extends CI_Controller {
 
 		$data = $this -> skoses -> le_skos($id);
 		$this -> load -> view('skos/thesa_thesaurus', $data);
+		$tela = '';
+		$tela .= $this->load->view('skos/thesa_admin_menu',null,true);
 
-		$tela = $this -> skoses -> termos_pg($id);
+		$tela .= $this -> skoses -> termos_pg($id);
 		$tela .= '<div class="row">';
+		
+		
+		
 		$tela .= '	<div class="col-md-9">';
 		$tela .= $this -> skoses -> termos_show_letter($id, $ltr);
 		$tela .= '	</div>';
+		
+		
 
 		$tela .= '	<div class="col-md-3">';
 		$tela .= $this -> skoses -> thesaurus_resume($id);
