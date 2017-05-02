@@ -1,6 +1,18 @@
 <?php
-$th = $_SESSION['skos'];
-$id = $_SESSION['id'];
+if (!isset($_SESSION['skos']))
+	{
+		$th = 0;
+		if (isset($id_pa)) { $th = $id_pa; $_SESSION['skos'] = $th; }
+	} else {
+		$th = $_SESSION['skos'];	
+	}
+
+if (!isset($_SESSION['id']))
+	{
+		$id = 0;
+	} else {
+		$id = $_SESSION['id'];
+	}
 ?>
 <div class="container">
 <nav class="navbar navbar-default">
@@ -13,7 +25,7 @@ $id = $_SESSION['id'];
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="<?php echo base_url('index.php/skos/terms/'.$_SESSION['skos']);?>"><?php echo msg('home'); ?></a>
+      <a class="navbar-brand" href="<?php echo base_url('index.php/skos/terms/'.$th);?>"><?php echo msg('home'); ?></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->

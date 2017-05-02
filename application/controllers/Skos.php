@@ -619,9 +619,9 @@ class Skos extends CI_Controller {
 				/* CAB */
 				$this -> cab();
 				$datask = $this -> skoses -> le_skos($data['c_th']);
-				$this -> load -> view('skos/view', $datask);		
-						
-				$this->load->view('skos/thesa_admin_menu',null);
+				$this -> load -> view('skos/view', $datask);								
+				$this->load->view('skos/thesa_admin_menu',$datask);
+
 				$user_id = 0;
 				$data['edit'] = '';
 				if (isset($_SESSION['id'])) {
