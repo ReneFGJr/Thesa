@@ -31,7 +31,8 @@ if (!function_exists(('msg')))
 
 /* Colaborador */	
 $lang['collaborators_add'] = 'Adicionar colaboradores';
-
+$lang['change_prefLabel'] = 'Alterar termo Preferencial';
+$lang['collaborators_info'] = 'Informe o e-mail do colaborador';
 /* Cited */
 $lang['email_already_inserted'] = 'E-mail já cadastrado!';
 $lang['forgot_password'] = 'Esqueci minha senha';
@@ -73,6 +74,8 @@ $lang['pt_BR'] = 'Português';
 $lang['en'] = 'Inglês';
 $lang['es'] = 'Espanhol';
 $lang['fr'] = 'Francês';
+
+$lang['por'] = 'Português';
 	
 $lang['oai_journals'] = 'Publicações compatíveis com OAI-PMH';
 	
@@ -126,6 +129,13 @@ $lang['change_language'] = 'Altera posição dos titulos PRINCIPAL e SECUNDÁRIO
 $lang['select_all'] = 'selecionar todos';
 $lang['showing'] = 'mostrando';
 
+$lang['conceitual_map'] = 'Mapa conceitual';
+$lang['rules'] = 'Ferramentas';
+$lang['outputs'] = 'Relatórios';
+$lang['adds'] = 'Adicionar';
+$lang['printer'] = 'Imprimir';
+$lang['check_all'] = 'Validar tudo';
+$lang['Lowercase'] = 'Forçar caixa baixa dos termos';
 
 $lang['change_old'] = 'termo anterior';
 $lang['has_prefTerm'] = 'como preferencial';

@@ -80,17 +80,6 @@ if (!isset($action)) {
 					echo '</h4>';
 					echo $this->skoses->concepts_show($terms_hd);
 				}
-			if ((count($terms_ge)  +$editar) > 0) 
-				{
-					echo '<h4>';
-					echo msg('concept_FLE');
-					echo ' <a href="#" onclick="newwin(\''.base_url('index.php/skos/tx/'.$id_c.'/'.checkpost_link($id_c)).'\',500,500);">';
-					echo '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>';
-					echo '</a>';
-					echo '</h4>';
-					echo $this->skoses->concepts_show($terms_ge);
-				}	
-											
 				?>				
 			</div>
 		<div class="col-md-2">

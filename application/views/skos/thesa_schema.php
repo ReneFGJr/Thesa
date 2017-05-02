@@ -9,7 +9,7 @@
 		</div>
 		
 		<div class="col-md-6 text-right">
-			schema: <a href="<?php echo base_url('index.php/skos/th/' . $ct_th); ?>" class="thesa"><?php echo $pa_name; ?></a>
+			schema: <a href="<?php echo base_url('index.php/skos/terms/' . $ct_th); ?>" class="thesa"><?php echo $pa_name; ?></a>
 		</div>
 	</div>
 </div>

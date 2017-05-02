@@ -1,16 +1,68 @@
-<div class="btn-group" role="group" aria-label="...">
-  <button type="button" class="btn btn-default">&nbsp;<span class="glyphicon glyphicon-print" aria-hidden="true"></span>&nbsp;</button>
-  <button type="button" class="btn btn-default">&nbsp;<span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>&nbsp;</button>
-  <button type="button" class="btn btn-default">&nbsp;<span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>&nbsp;</button>
-  
-  <div class="btn-group" role="group">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <?php echo msg('add');?>
-      <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu">
-      <li><a href="#"><?php echo msg('terms');?></a></li>
-      <li><a href="<?php echo base_url('index.php/skos/collaborators');?>"><?php echo msg('collaborators');?></a></li>
-    </ul>
-  </div>
+<?php
+$th = $_SESSION['skos'];
+$id = $_SESSION['id'];
+?>
+<div class="container">
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="<?php echo base_url('index.php/skos/terms/'.$_SESSION['skos']);?>"><?php echo msg('home'); ?></a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="<?php echo base_url('index.php/skos/terms/'.$th);?>"><?php echo msg('glossario');?></a></li>
+        <li><a href="<?php echo base_url('index.php/skos/thes/'.$th);?>"><?php echo msg('conceitual_map');?></a></li>
+        <?php if ($this -> skoses -> autho($id, $th) == 1) { ?>			
+			
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo msg('adds'); ?><span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="<?php echo base_url('index.php/skos/concept_add/'); ?>"><?php echo msg('terms'); ?></a></li>
+            <li><a href="<?php echo base_url('index.php/skos/collaborators'); ?>"><?php echo msg('collaborators'); ?></a></li>
+            <li role="separator" class="divider"></li>
+          </ul>
+        </li>
+        
+        <!-- RULES -->
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo msg('rules'); ?><span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="<?php echo base_url('index.php/skos/check_all/'); ?>"><?php echo msg('check_all'); ?></a></li>
+            <li><a href="<?php echo base_url('index.php/skos/th_edit/'.$th.'/'.checkpost_link($th)); ?>"><?php echo msg('preferences'); ?></a></li>
+          </ul>
+        </li>        
+        
+        <?php } ?>
+         
+      	<!-- RULES -->
+      	<li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo msg('outputs'); ?><span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="<?php echo base_url('index.php/skos/thrs/'.$th);?>"><?php echo msg('printer'); ?></a></li>
+          </ul>
+        </li>
+        
+        
+                
+      </ul>          
+      
+      <ul class="nav navbar-nav navbar-right">
+      <form class="navbar-form navbar-left">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default"><?php echo msg('search'); ?></button>
+      </form>
+      </ul>
+  </div><!-- /.container-fluid -->
+</nav>
 </div>

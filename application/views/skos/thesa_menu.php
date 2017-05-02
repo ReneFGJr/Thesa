@@ -8,33 +8,33 @@
 	}
 	#section1 {
 		padding-top: 50px;
-		height: 500px;
-		color: #800303;
-		background-color: #ffffff;
+		min-height: 500px;
+		color: #1f1fff;
+		background-color: #afafff;
 	}
 	#section2 {
 		padding-top: 50px;
-		height: 500px;
-		color: #fff;
-		background-color: #ff9800;
+		min-height: 500px;
+		color: #1f1fff;
+		background-color: #ffffff;
 	}
 	#section3 {
 		padding-top: 50px;
-		height: 500px;
-		color: #800303;
-		background-color: #ffffff;
+		min-height: 500px;
+		color: #1f1fff;
+		background-color: #afafff;
 	}
 	#section4 {
 		padding-top: 50px;
-		height: 500px;
-		color: #fff;
-		background-color: #ff9800;
+		min-height: 500px;
+		color: #1f1fff;
+		background-color: #ffffff;
 	}
 	#section5 {
 		padding-top: 50px;
-		height: 500px;
-		color: #800303;
-		background-color: #ffffff;
+		min-height: 500px;
+		color: #1f1fff;
+		background-color: #afafff;
 	}
 </style>
 

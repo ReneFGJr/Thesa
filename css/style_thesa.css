@@ -1,5 +1,5 @@
 .logo_title {
-	font-family: "Unica One";
+	font-family: "Verdana";
 	font-size: 700%;
 	color: #3333c0;
 	text-align: center;
@@ -81,7 +81,7 @@ a:hover {
 	color: #3333c0;
 	font-size: 15px;
 	/* font-family: "Roboto"; */
-	font-family: "Unica One";
+	font-family: "Verdana";
 	text-decoration: none;
 }
 .nav > li > a > hover {

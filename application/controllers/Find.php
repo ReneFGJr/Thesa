@@ -37,8 +37,14 @@ class find extends CI_controller {
 		$this -> load -> model('finds');
 		$this -> cab(1);
 
-		$tela = '<img src="' . base_url('img/find/logo_find.png') . '">';
-
+		$this->load->view('find/search');
+		
+		$tela = '<div class="container"><div class="row">'.cr();
+		$tela .= '<div class="col-sm-6 col-md-6 col xs-6">'.cr();
+		$tela .= '<img src="' . base_url('img/find/logo_find.png') . '" class="img-responsive">'.cr();
+		$tela .= '</div>'.cr();
+		$tela .= '</div></div>'.cr();
+		
 		$data['content'] = $tela;
 		$this -> load -> view('content', $data);
 

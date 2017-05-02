@@ -118,11 +118,11 @@ class skoses extends CI_model {
 			/* Read BT */
 			$line['terms_bt'] = $this -> le_c_broader($id, $th);
 			$line['terms_nw'] = $this -> le_c_narrowed($id, $th);
-			$line['terms_al'] = $this -> le_c_altlabel($id, $th);
+			$line['terms_al'] = $this -> le_c_propriety($id, 'FE', $th);
 			$line['terms_tr'] = $this -> le_c_associate($id, $th);
 			$line['terms_tm'] = $this -> le_c_propriety_group($id, $th, 'TE');
 			$line['terms_hd'] = $this -> le_c_hidden($id, $th);
-			$line['terms_ge'] = $this -> le_c_propriety($id, 'FE', $th);
+			$line['terms_ge'] = ARRAY();
 
 			$line['allow'] = $this -> le_c_users($th);
 
@@ -136,7 +136,7 @@ class skoses extends CI_model {
 	}
 
 	/*************************************************************************** FROM */
-	function form_concept($th, $id, $gr = 'TE') {
+	function form_concept($th, $id, $gr = 'FE') {
 		$th = round(sonumero($th));
 		$sx = '';
 
@@ -147,40 +147,44 @@ class skoses extends CI_model {
 
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
-		$sx .= '	<div class="row" style="margin-top: 12px;"><div class="col-md-10 col-md-offset-1">';
-		$sx .= '<span class="font-size: 50%">' . msg('relation_type') . '</span>';
-		$sx .= '	<select name="tr" size=4 style="width: 100%">';
-		for ($r = 0; $r < count($rlt); $r++) {
-			$line = $rlt[$r];
-			$op = '';
-			if ($line['id_rs'] == get("tr")) { $op = ' selected ';
+		$sx .= '<table width="100%" class="table">'.cr();
+		$sx .= '<tr>';
+		$sx .= '	<td width="40%">';
+		/* RELATION */
+		$sx .= '		<span class="font-size: 50%">' . msg('relation_type') . '</span>';
+		$sx .= '		<select name="tr" size=10 style="width: 100%">';
+						for ($r = 0; $r < count($rlt); $r++) {
+							$line = $rlt[$r];
+							$op = '';
+							if ($line['id_rs'] == get("tr")) { $op = ' selected ';
+							}
+							$sx .= '	<option value="' . $line['id_rs'] . '" class="middle" ' . $op . '>' . msg($line['prefix_ref'] . ':' . $line['rs_propriety']) . '</option>';
+						}
+		$sx .= '		</select>';
+		$sx .= '</td>';
+		
+		$sx .= '<td width="60%">';
+			$sx .= '<span class="font-size: 50%">' . msg('select_description') . '</span>';
+			$sql = "SELECT * FROM `rdf_literal_th`
+				INNER JOIN rdf_literal ON lt_term = id_rl
+				LEFT JOIN th_concept_term on  id_rl = ct_term and ct_th = $th
+				where lt_thesauros = $th and id_ct is null
+				order by rl_value";
+	
+			$rlt = $this -> db -> query($sql);
+			$rlt = $rlt -> result_array();
+			$sx .= '	<select name="tm" size=10 style="width: 100%">';
+			for ($r = 0; $r < count($rlt); $r++) {
+				$line = $rlt[$r];
+				$op = '';
+				if ($line['id_rl'] == get("tm")) { $op = ' selected ';
+				}
+	
+				$sx .= '	<option value="' . $line['id_rl'] . '" class="middle" ' . $op . '>' . $line['rl_value'] . '</option>';
 			}
-			$sx .= '	<option value="' . $line['id_rs'] . '" class="middle" ' . $op . '>' . msg($line['prefix_ref'] . ':' . $line['rs_propriety']) . '</option>';
-		}
-		$sx .= '	</select>';
-		$sx .= '</div></div>';
-
-		$sx .= '	<div class="row"><div class="col-md-10 col-md-offset-1">';
-		$sx .= '<span class="font-size: 50%">' . msg('select_description') . '</span>';
-		$sql = "SELECT * FROM `rdf_literal_th`
-			INNER JOIN rdf_literal ON lt_term = id_rl
-			LEFT JOIN th_concept_term on  id_rl = ct_term and ct_th = $th
-			where lt_thesauros = $th and id_ct is null
-			order by rl_value";
-
-		$rlt = $this -> db -> query($sql);
-		$rlt = $rlt -> result_array();
-		$sx .= '	<select name="tm" size=8 style="width: 100%">';
-		for ($r = 0; $r < count($rlt); $r++) {
-			$line = $rlt[$r];
-			$op = '';
-			if ($line['id_rl'] == get("tm")) { $op = ' selected ';
-			}
-
-			$sx .= '	<option value="' . $line['id_rl'] . '" class="middle" ' . $op . '>' . $line['rl_value'] . '</option>';
-		}
-		$sx .= '	</select>';
-		$sx .= '</div></div>';
+			$sx .= '	</select>';
+		$sx .= '</td></tr>';
+		$sx .= '</table>';
 
 		$sx .= '<div class="row" style="margin-top: 12px;"><div class="col-md-10 col-md-offset-1 text-right">';
 		$sx .= '	<input type="submit" name="action" class="btn btn-default " value="' . msg('save') . '">';
@@ -202,7 +206,8 @@ class skoses extends CI_model {
 		$sql = "select * from language order by lg_order ";
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
-		$sx .= '	<div class="row" style="margin-top: 12px;"><div class="col-md-10 col-md-offset-1">';
+		$sx .= '	<div class="row" style="margin-top: 12px;">
+						<div class="col-md-10 col-md-offset-1">';
 		$sx .= '	<select name="tt" size=1 style="width: 100%">';
 		$sx .= '	<option value="" class="middle">::: ' . msg('select_the_relation') . '</option>';
 		for ($r = 0; $r < count($rlt); $r++) {
@@ -272,6 +277,28 @@ class skoses extends CI_model {
 	/*************************************************************************** FROM */
 	function form_concept_tr($th, $id) {
 		$th = round(sonumero($th));
+
+		$sx = '	<table class="table" width="100%">'.cr();
+		$sx .= '<tr>';
+
+		/* ASSOCIATION TYPE */
+		$sql = "select * from rdf_resource
+					inner join rdf_prefix on id_prefix = rs_prefix 
+					where rs_group = 'TR' order by id_rs";
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+		
+		$sx .= '<td width="50%">';		
+		$sx .= '	<select name="tgr" size=10 style="width: 100%">';
+		$sx .= '	<option value="" class="middle">::: ' . msg('select_the_relation') . '</option>';
+		for ($r = 0; $r < count($rlt); $r++) {
+			$line = $rlt[$r];
+			$sx .= '	<option value="' . $line['id_rs'] . '" class="middle">' . msg($line['prefix_ref'] . ':' . $line['rs_propriety']) . '</option>';
+		}
+		$sx .= '	</select>';
+		$sx .= '</td>';
+				
+		/*****/
 		$sql = "select rl_value, id_c from " . $this -> table_concept . " 
 					INNER JOIN th_concept_term ON ct_concept = id_c
 					INNER JOIN rdf_literal ON id_rl = ct_term
@@ -280,7 +307,8 @@ class skoses extends CI_model {
 					ORDER BY rl_value";
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
-		$sx = '	<div class="row"><div class="col-md-10 col-md-offset-1">';
+				
+		$sx .= '<td width="50%">';
 		$sx .= '	<select name="tg" size=10 style="width: 100%">';
 		$sx .= '	<option value="" class="middle">::: ' . msg('select_a_concept') . '</option>';
 		for ($r = 0; $r < count($rlt); $r++) {
@@ -288,23 +316,11 @@ class skoses extends CI_model {
 			$sx .= '	<option value="' . $line['id_c'] . '" class="middle">' . $line['rl_value'] . '</option>';
 		}
 		$sx .= '	</select>';
-		$sx .= '</div></div>';
+		$sx .= '</td>';
 
-		/* ASSOCIATION TYPE */
-		$sql = "select * from rdf_resource
-					inner join rdf_prefix on id_prefix = rs_prefix 
-					where rs_group = 'TR' order by id_rs";
-		$rlt = $this -> db -> query($sql);
-		$rlt = $rlt -> result_array();
-		$sx .= '	<div class="row" style="margin-top: 12px;"><div class="col-md-10 col-md-offset-1">';
-		$sx .= '	<select name="tgr" size=4 style="width: 100%">';
-		$sx .= '	<option value="" class="middle">::: ' . msg('select_the_relation') . '</option>';
-		for ($r = 0; $r < count($rlt); $r++) {
-			$line = $rlt[$r];
-			$sx .= '	<option value="' . $line['id_rs'] . '" class="middle">' . msg($line['prefix_ref'] . ':' . $line['rs_propriety']) . '</option>';
-		}
-		$sx .= '	</select>';
-		$sx .= '</div></div>';
+		$sx .= '</tr>';
+		$sx .= '</table>';
+
 
 		$sx .= '<div class="row" style="margin-top: 12px;"><div class="col-md-10 col-md-offset-1 text-right">';
 		$sx .= '	<input type="submit" name="action" class="btn btn-default " value="' . msg('save') . '">';
@@ -596,6 +612,17 @@ class skoses extends CI_model {
 		}
 		return ( array());
 	}
+	
+	function le_propriety($id = 0) {
+		$sql = "select * from rdf_resource where id_rs = " . $id;
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+		if (count($rlt) > 0) {
+			$line = $rlt[0];
+			return ($line);
+		}
+		return ( array());
+	}	
 
 	/* Show */
 	function concepts_show($row) {
@@ -625,9 +652,26 @@ class skoses extends CI_model {
 		return ($sx);
 	}
 
-	function te_remote($id) {
-		$sql = "delete from th_concept_term where id_ct = " . round($id);
-		$this -> db -> query($sql);
+	function te_remove($id) {
+		
+		$sql = "select * from th_concept_term
+					inner join rdf_literal ON id_rl = ct_term 
+					where id_ct = " . round($id);
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt->result_array();
+		
+		if (count($rlt) > 0)
+			{
+				$line2 = $rlt[0];
+				$c = $line2['ct_concept'];
+				$th = $line2['ct_th'];
+				$desc = msg('remove_propriety') . ' - "<b>'. $line2['rl_value'] . '</b>" ' . ' (<i>' . $id . '</i>)';
+				$this -> skoses -> log_insert($c, $th, 'REMOV', $desc);			
+		
+				$sql = "delete from th_concept_term where id_ct = " . round($id);
+				$this -> db -> query($sql);
+			}
+		return(0);
 	}
 
 	function concepts_show_rp($row, $tp = '') {
@@ -827,7 +871,11 @@ class skoses extends CI_model {
 		//$t = troca($t, ',', ';');
 		$t = troca($t, '?', ';');
 		$ln = splitx(';', $t);
-		$sx = '';
+		$sx = '<table class="table" width="100%">'.cr();
+		$sx .= '<tr><th width="3%">#</th>
+					<th width="37%">'.msg('term').'</th>
+					<th width="30%">'.msg('language').'</th>
+					<th width="30%">'.msg('status').'</th></tr>'.cr();
 		for ($r = 0; $r < count($ln); $r++) {
 			$t = $ln[$r];
 			$t = $this -> prepara_termo($t, $lc);
@@ -841,7 +889,14 @@ class skoses extends CI_model {
 				/* Create Concept Into the Thesaurus */
 				$this -> concept_create($t, $th);
 			}
+			$sx .= '<tr>';
+			$sx .= '<td>'.($r+1).'</td>';
+			$sx .= '<td><b>'.$t.'</b></td>';
+			$sx .= '<td>'.msg($lang).'</td>';
+			$sx .= '<td class="alert alert-danger">'.msg('add_term').'</td>';
+			$sx .= '</tr>';
 		}
+		$sx .= '</table>';
 		return ($sx);
 	}
 
@@ -1238,7 +1293,7 @@ class skoses extends CI_model {
 		$lt = '';
 		for ($r = 0; $r < count($xrlt); $r++) {
 			$line = $xrlt[$r];
-			$lta = substr($line['rl_value'], 0, 1);
+			$lta = substr(utf8_decode(UpperCaseSql($line['rl_value'])), 0, 1);
 			if ($lta != $lt) {
 				if (strlen($lt) != '') {
 					$sx .= '<li>&nbsp;</li>' . cr();
@@ -1406,11 +1461,6 @@ class skoses extends CI_model {
 		return ($sx);
 	}
 
-	function acao_novos_termos($th = '') {
-		$sx = '<a href="' . base_url('index.php/skos/concept_add/' . $th) . '" class="btn btn-default" style="width: 100%;">' . msg('concept_add') . '</a>';
-		return ($sx);
-	}
-
 	function acao_visualizar_glossario($th = '') {
 		$sx = '';
 		$sx .= '<br/>';
@@ -1524,6 +1574,90 @@ class skoses extends CI_model {
 		return ($sx);
 	}
 
+	function th_collabotors_add($email,$th)
+		{
+			$ok = $this->le_user_email($email);
+			if ($ok == 1)
+				{
+					$id_us = $this->line['id_us'];
+					$ok = $this->insert_collaborators_add($id_us,$th);
+					if ($ok == 1)
+						{
+							$msg .= '<br/><br/><span class="btn alert-success">' . msg('collaborator_insered') . '</span>';
+							$this -> skoses -> user_thesa($th, $id_us, 'INS');
+							echo $msg;				
+							return(1);
+						}	else {
+							$msg .= '<br/><br/><span class="btn alert-success">' . msg('collaborator_updated') . '</span>';
+							$this -> skoses -> user_thesa($th, $id_us, 'UPD');
+							echo $msg;				
+							return(1);
+						}
+				} else {
+					echo '
+					<br>
+					<div class="alert alert-warning">
+					  <strong>Warning!</strong> 
+					  ';
+					  echo 'ERROR #600 - '.msg('ERRO_600'). ' - '.$email;
+					echo '
+					</div>
+					';
+				}
+						
+		}
+	function welcome_resumo()
+		{
+			$sql = "select count(*) as total from users";
+			$rlt = $this->db->query($sql);
+			$rlt = $rlt->result_array();
+			$line = $rlt[0];
+			$data['nr_users'] = $line['total'];
+			
+			$sql = "select count(*) as total from th_thesaurus";
+			$rlt = $this->db->query($sql);
+			$rlt = $rlt->result_array();
+			$line = $rlt[0];
+			$data['nr_thesaurus'] = $line['total'];
+			
+			$sql = "select count(*) as total from th_concept";
+			$rlt = $this->db->query($sql);
+			$rlt = $rlt->result_array();
+			$line = $rlt[0];
+			$data['nr_concept'] = $line['total'];
+			
+			$sql = "select count(*) as total from rdf_literal";
+			$rlt = $this->db->query($sql);
+			$rlt = $rlt->result_array();
+			$line = $rlt[0];
+			$data['nr_terms'] = $line['total'];			
+
+			return($data);
+		}
+
+	function insert_collaborators_add($id,$th)
+		{
+			$sql = "select * from th_users where ust_user_id = $id and ust_th = $th";
+			$rlt = $this->db->query($sql);
+			$rlt = $rlt->result_array();
+			if (count($rlt) == 0)
+				{
+					$sql = "insert into th_users
+							(ust_user_id, ust_user_role, ust_th, ust_status)
+							values
+							($id,1,$th,1)";
+					$rlt = $this->db->query($sql);
+					$ok = 1;
+				} else {
+					$id_ust = $rlt[0]['id_ust'];
+					
+					$sql = "update th_users set ust_status = 1 where id_ust = $id_ust";
+					$rlt = $this->db->query($sql);
+					$ok = 2;
+				}
+			return($ok);
+		}
+
 	function th_users()
 		{
 			$th = $_SESSION['skos'];
@@ -1593,22 +1727,35 @@ class skoses extends CI_model {
 							        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 							        <h4 class="modal-title" id="myModalLabel">'.msg('collaborators_add').'</h4>
 							      </div>
-							      <div class="modal-body">';							        
+							      <div class="modal-body">';
+					$sx .= '<div class="middle">'.msg('collaborators_info').'</div><br>';							        
 					$sx .= '<span class="small">'.msg('email').'</span><br/>';
-					$sx .= '<input type="text" class="form-control" aria-label="'.msg('find').'">';
+					$sx .= '<input type="text" name="email" id="email" class="form-control" aria-label="'.msg('find').'">';
 					
+					$data = '';
+					$data .= ', acao: "save" ';
+					$url = base_url('index.php/skos/ajax/collaborators_add/'.checkpost_link('hello').'/1');
 					$sx .= '
 							      </div>
 							      <div class="modal-footer">
 							        <button type="button" class="btn btn-default" data-dismiss="modal">'.msg('cancel').'</button>
-							        <button type="button" class="btn btn-primary" id="submit">'.msg('add').'</button>
+							        <button type="button" class="btn btn-primary" data-dismiss="modal" id="submit">'.msg('add').'</button>
 							      </div>
 							    </div>
 							  </div>
 							</div>		
+							<div id="status">							
+							</div>
 							<script>
 								$( "#submit" ).click(function() {
-								  alert( "Handler for .click() called." );
+									$vlr = $("#email").val();
+										$.ajax({
+											url : "' . $url . '",
+											type : "post",
+											data : { dd1: $vlr ' . $data . ' }, 
+											success : function(data) {
+												$("#status").html(data);
+										} });
 								});
 							</script>
 					';
@@ -1751,6 +1898,19 @@ class skoses extends CI_model {
 		}
 	}	
 
+	function le_user_email($email) {
+		$sql = "select * from users where us_email = '$email' ";
+		$rlt = $this -> db -> query($sql);
+		
+		$rlt = $rlt -> result_array();
+		if (count($rlt) > 0) {
+			$this -> line = $rlt[0];
+			return (1);
+		} else {
+			return (0);
+		}
+	}	
+		
 	function th_collaborators($th) {
 		$sql = "select * from th_users 
 								INNER JOIN users ON ust_user_id = id_us
@@ -1844,8 +2004,7 @@ class skoses extends CI_model {
 		$sql = "select * from  th_log 
 						INNER JOIN users ON id_us = lg_user
 					WHERE lg_c = $idc
-					ORDER BY lg_date desc
-					LIMIT 20";
+					ORDER BY lg_date";
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
 		$sx = '';

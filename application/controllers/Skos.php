@@ -33,10 +33,14 @@ class Skos extends CI_Controller {
 	}
 
 	function index() {
-		$this -> cab(2);
-
+		$this -> load -> model('skoses');
+		
+		$this -> cab(1);
 		$this -> load -> view("skos/github_fork", null);
-		$this -> load -> view("skos/welcome", null);
+		
+		$data = $this->skoses->welcome_resumo();
+		
+		$this -> load -> view("skos/welcome", $data);
 
 		$this -> load -> view("skos/thesa_home_pt", null);
 		//redirect(base_url('index.php/skos/myskos'));
@@ -307,14 +311,15 @@ class Skos extends CI_Controller {
 		$data = $this -> skoses -> le_skos($id);
 		$this -> load -> view('skos/view', $data);
 		$data['pg'] = 2;
-		$this -> load -> view('skos/skos_nav', $data);
+		//$this -> load -> view('skos/skos_nav', $data);
+		$this->load->view('skos/thesa_admin_menu',null);
 
 		$form = new form;
 		$cp = array();
 		array_push($cp, array('$A3', '', msg('terms'), False, False));
 		array_push($cp, array('$T80:8', '', msg('terms'), True, False));
 		array_push($cp, array('$M', '', '<font class="small">' . msg('terms_info') . '</font>', False, False));
-		array_push($cp, array('$Q lg_code:lg_language:select * from language where lg_active = 1 order by lg_order', '', msg('language'), True, False));
+		array_push($cp, array('$QR lg_code:lg_language:select * from language where lg_active = 1 order by lg_order', '', msg('language'), True, False));
 		array_push($cp, array('$C', '', msg('Lowercase'), False, False));
 		array_push($cp, array('$B8', '', msg('save'), False, False));
 		$tela = $form -> editar($cp, '');
@@ -368,7 +373,7 @@ class Skos extends CI_Controller {
 		$this -> cab(0);
 
 		$data = $this -> skoses -> le($c);
-		$data['form'] = $this -> skoses -> form_concept($th, $c, 'TE');
+		$data['form'] = $this -> skoses -> form_concept($th, $c, 'FE');
 		$this -> load -> view('skos/view_concept_mini', $data);
 
 		$action = get("action");
@@ -376,9 +381,16 @@ class Skos extends CI_Controller {
 		$tr = get("tr");
 
 		if ((strlen($action) > 0) and (strlen($tr) > 0) and (strlen($desc) > 0)) {
+			
 			echo 'SAVED';
 			$this -> skoses -> assign_as_propriety($c, $th, $tr, $desc);
 			$this -> load -> view('header/close', null);
+			
+			$line2 = $this->skoses->le_term($desc,$th);
+			$line3 = $this->skoses->le_propriety($tr);
+			$desc = msg('associated') . ' ' . msg($line3['rs_propriety']) .' - "<b>'. $line2['rl_value'] . '</b>" ' . ' (<i>' . $tr . '</i>)';
+			$this -> skoses -> log_insert($c, $th, 'ADDT', $desc);		
+			
 			//$this->skoes->
 		}
 
@@ -454,12 +466,13 @@ class Skos extends CI_Controller {
 	function th_edit($id = '', $chk = '') {
 		/* Load model */
 		$this -> load -> model("skoses");
-
 		$this -> skoses -> th_assosiation_users();
-
 		$this -> cab(1);
-
+		
+		$id = $_SESSION['skos'];
 		$data = $this -> skoses -> le_skos($id);
+		$this -> load -> view('skos/view', $data);		
+		$this->load->view('skos/thesa_admin_menu',null);
 
 		if (count($data) > 0) {
 			if ((isset($_SESSION['id']) and ($_SESSION['id']) == $data['pa_creator'])) {
@@ -482,26 +495,6 @@ class Skos extends CI_Controller {
 				}
 
 				$msg = '';
-
-				/* Incluir colaboradores */
-				$emailCollaborator = get("emailCollaborator");
-				$btn_emailCollaborator = get("btn_emailCollaborator");
-				if (strlen($btn_emailCollaborator) > 0) {
-					$ok = validaemail($emailCollaborator);
-					if ($ok == 1) {
-						$ok = $this -> skoses -> user_exist($emailCollaborator);
-						if ($ok == 0) {
-							$msg .= '<span class="btn alert-danger">' . msg('email_not_exist') . '</span>';
-						} else {
-							$user_c = $this -> skoses -> line['id_us'];
-							$msg .= '<span class="btn alert-success">' . msg('collaborator_insered') . '</span>';
-							$this -> skoses -> user_thesa($id, $user_c, 'INS');
-						}
-					} else {
-						$msg .= '<span class="btn alert-danger">' . msg('email_invalid') . '</span>';
-					}
-
-				}
 
 				/* Colaboradores */
 				$msg = $this -> skoses -> th_collaborators($id) . $msg;
@@ -560,32 +553,6 @@ class Skos extends CI_Controller {
 			$this -> load -> view('header/close', null);
 			//$this->skoes->
 		}
-	}
-
-	/***************************************************************************** Termo oculto */
-	function tx($c = '') {
-		$c = round($c);
-		$th = $_SESSION['skos'];
-
-		/* Load model */
-		$this -> load -> model("skoses");
-		$this -> cab(0);
-
-		$data = $this -> skoses -> le($c);
-		$data['form'] = $this -> skoses -> form_concept($th, $c, 'FE');
-		$this -> load -> view('skos/view_concept_mini', $data);
-
-		$action = get("action");
-		$desc = get("tm");
-		$tr = get("tr");
-
-		if ((strlen($action) > 0) and (strlen($tr) > 0) and (strlen($desc) > 0)) {
-			echo 'SAVED';
-			$this -> skoses -> assign_as_propriety($c, $th, $tr, $desc);
-			$this -> load -> view('header/close', null);
-			//$this->skoes->
-		}
-
 	}
 
 	/***************************************************************************** Termo oculto */
@@ -651,15 +618,16 @@ class Skos extends CI_Controller {
 			default :
 				/* CAB */
 				$this -> cab();
+				$datask = $this -> skoses -> le_skos($data['c_th']);
+				$this -> load -> view('skos/view', $datask);		
+						
+				$this->load->view('skos/thesa_admin_menu',null);
 				$user_id = 0;
 				$data['edit'] = '';
 				if (isset($_SESSION['id'])) {
 					$user_id = $_SESSION['id'];
 					$data['edit'] = isset($data['allow'][$user_id]);
 				}
-
-				$this -> load -> view('skos/thesa_thesaurus', $data);
-				$this -> load -> view('skos/thesa_breadcrumb', $data);
 
 				$this -> load -> view("skos/thesa_schema", $data);
 				$this -> load -> view("skos/thesa_concept", $data);
@@ -671,7 +639,19 @@ class Skos extends CI_Controller {
 
 	function te_remove($id = '', $chk = '') {
 		$this -> load -> model("skoses");
-		$this -> skoses -> te_remote($id);
+		$this->cab(2);
+		
+		$ok = get("confirm");
+		if ($ok == '1')
+			{
+				$this -> skoses -> te_remove($id);
+				$this->load->view('wclose');
+			} else {
+				$data['content'] = '<br><br><h1>'.msg('remove_propriety').'</h1>';
+				$data['content'] .= msg('content');
+				$data['link'] = base_url('index.php/skos/te_remove/'.$id.'/'.$chk);
+				$this->load->view('confirm.php',$data);
+			}
 	}
 
 	function cedit($c = '', $th = '') {
@@ -693,10 +673,11 @@ class Skos extends CI_Controller {
 		$data['editar'] = 1;
 
 		/* menu */
-		$this -> load -> view('skos/skos_nav', $data);
+		$this -> load -> view('skos/thesa_admin_menu', null);
 
 		/* Recupera informações sobre o Concecpt */
 		$data2 = $this -> skoses -> le_c($c, $th);
+		$data2['editar'] = $data['editar'];
 		$this -> load -> view('skos/view_concept', $data2);
 
 		$this -> load -> view('skos/thesa_concept_tools', $data2);
@@ -971,14 +952,13 @@ class Skos extends CI_Controller {
 
 		/* CAB */
 		$this -> cab();
-
+		
 		$data = $this -> skoses -> le_th($th);
 
 		$data2 = $this -> skoses -> le_term($idt, $th);
 		$data = array_merge($data, $data2);
 
-		$this -> load -> view('skos/thesa_thesaurus', $data);
-		$this -> load -> view('skos/thesa_breadcrumb', $data);
+		$this -> load -> view('skos/view', $data);
 		/******************************/
 
 		if (strlen(trim(trim($data['ct_concept']))) == 0) {
@@ -986,6 +966,7 @@ class Skos extends CI_Controller {
 			$data['action'] .= '<br/><br/><a href="' . base_url('index.php/skos/term_edit/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_rl']) . '" class="btn btn-warning" style="width: 100%;">' . msg('Term_edit_concept') . '</a></li>';
 			$data['action'] .= '<br/><br/><a href="' . base_url('index.php/skos/term_delete/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_rl']) . '" class="btn btn-danger" style="width: 100%;">' . msg('Term_delete_concept') . '</a></li>';
 		}
+		$this->load->view('skos/thesa_admin_menu',null);
 		$this -> load -> view('skos/view_term', $data);
 
 		$tela = '';
@@ -1011,8 +992,7 @@ class Skos extends CI_Controller {
 
 		$data = array_merge($data, $data2);
 
-		$this -> load -> view('skos/thesa_thesaurus', $data);
-		$this -> load -> view('skos/thesa_breadcrumb', $data);
+		$this -> load -> view('skos/view', $data);
 		/******************************/
 
 		$this -> load -> view('skos/view_term', $data);
@@ -1056,8 +1036,7 @@ class Skos extends CI_Controller {
 		$data2 = $this -> skoses -> le_term($idt, $th);
 		$data = array_merge($data, $data2);
 
-		$this -> load -> view('skos/thesa_thesaurus', $data);
-		$this -> load -> view('skos/thesa_breadcrumb', $data);
+		$this -> load -> view('skos/view', $data);
 		/******************************/
 
 		$this -> load -> view('skos/view_term', $data);
@@ -1079,11 +1058,35 @@ class Skos extends CI_Controller {
 		$this -> load -> view('header/footer', null);
 	}
 
+	function ajax($id='',$id2='',$refresh = '0')
+		{
+		$this -> load -> model('skoses');
+						
+		switch($id)
+			{
+			case 'collaborators_add':
+				$refresh = '0';
+				$email = get("dd1");
+				$th = $_SESSION['skos'];
+				$refresh = $this->skoses->th_collabotors_add($email,$th);				
+			}
+		if ($refresh=='1')
+			{		
+				echo ' <meta http-equiv="refresh" content="0">';
+			}	
+		}
+
 	function collaborators()
 		{
 		$this -> load -> model('skoses');
 		$this -> cab();
-		
+		$id = $_SESSION['skos'];
+		$data = $this -> skoses -> le_skos($id);
+		$this -> load -> view('skos/view', $data);
+		$data['pg'] = 2;
+		//$this -> load -> view('skos/skos_nav', $data);
+		$this->load->view('skos/thesa_admin_menu',null);
+			
 		$tela = $this->skoses->th_users();
 		
 		$data['title'] = msg('collaborators');
@@ -1101,7 +1104,8 @@ class Skos extends CI_Controller {
 		}
 
 		$data = $this -> skoses -> le_skos($id);
-		$this -> load -> view('skos/thesa_thesaurus', $data);
+		$this -> load -> view('skos/view', $data);
+
 		$tela = '';
 		$tela .= $this->load->view('skos/thesa_admin_menu',null,true);
 
@@ -1120,9 +1124,6 @@ class Skos extends CI_Controller {
 		$tela .= $this -> skoses -> thesaurus_resume($id);
 		if ($this -> skoses -> autho('', $id) == 1) {
 			/* TERMO PERDIDOS */
-			$tela .= $this -> skoses -> acao_novos_termos($id);
-			$tela .= $this -> skoses -> acao_visualizar_glossario($id);
-
 			$tela .= $this -> skoses -> termos_sem_conceito($id, $ltr);
 		}
 		$tela .= '	</div>';
