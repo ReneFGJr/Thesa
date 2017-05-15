@@ -32,6 +32,22 @@ class Skos extends CI_Controller {
 		//		$this -> security();
 	}
 
+	function user_manual() {
+		$this -> load -> model('skoses');
+		
+		$this -> cab(1);
+		$data = array();
+		$idioma = 'pt';
+
+		$tela = '';
+		$tela .= $this -> load -> view("skos/manual/".$idioma."/index", $data, true);
+		$tela .= $this -> load -> view("skos/manual/".$idioma."/cap-01", $data, true);
+		
+		$data['content'] = $tela;
+		$data['title'] = '';
+		$this->load->view('content',$data);
+	}
+
 	function index() {
 		$this -> load -> model('skoses');
 		
@@ -163,7 +179,18 @@ class Skos extends CI_Controller {
 		
 		$tela = $this -> skoses -> myskoses($us);
 		$data['content'] = $tela;
-		$data['content'] .= $this -> load -> view('skos/thesa_btn_new', $data, true);
+		
+		$total = $this -> skoses -> myskoses_total($us);
+		
+		if (isset($_SESSION['nivel']))
+			{
+				if (	(($_SESSION['nivel'] >= 0) and ($total == 0)) or 
+						($_SESSION['nivel']) == 9)
+				{
+					$data['content'] .= $this -> load -> view('skos/thesa_btn_new', $data, true);		
+				}
+			}
+		
 
 		$data['title'] = msg('my_thesauros');
 		$this -> load -> view('content', $data);
@@ -362,6 +389,51 @@ class Skos extends CI_Controller {
 		$this -> load -> view('content', $data);
 
 	}
+	
+	function bug_report()
+		{
+		/* Load model */
+		$this -> load -> model("skoses");
+		$this -> cab();
+		
+		if (!isset($_SESSION['id']) > 0)
+			{
+				redirect(base_url('index.php/skos'));
+			}
+		
+		$nome = $_SESSION['nome'];
+		$email = $_SESSION['user'];	
+		$id = $_SESSION['id'];	
+		
+		$form = new form;
+		$form->table = 'bugs';
+		$_POST['dd1'] = $nome;
+		$_POST['dd3'] = $email;
+		
+		$cp = array();
+		array_push($cp,array('$H8','','',false,FALSE));
+		array_push($cp,array('$A','',$nome,false,false));
+		array_push($cp,array('$HV','bug_user',$id,true,true));
+		
+		array_push($cp,array('$A','',$email,false,false));
+		
+		array_push($cp,array('$T80:7','bug_text',msg('report_the_bug'),TRUE,True));
+		array_push($cp,array('$B','',msg('send_bug'),false,True));
+		
+		$tela = '<div class="col-md-3 cols-xs-12"><img src="'.base_url('img/icone/bug.png').'" class="img-responsive"></div>';
+		$tela2 = '<div class="col-md-9 cols-xs-12">'.$form->editar($cp,$form->table).'</div>';
+		
+		if ($form->saved > 0)
+			{
+				$tela2 .= '<div class="alert alert-success" role="alert">
+							'.msg('your_bug_has_reported').'
+							</div>';
+			}
+		$tela .= $tela2;
+		$data['content'] = $tela;
+		$data['title'] = msg('report_a_bug');
+		$this->load->view('content',$data);		
+		}
 
 	/***************************************************************************** Termo equivalente */
 	function te($c = '') {
@@ -467,15 +539,22 @@ class Skos extends CI_Controller {
 		/* Load model */
 		$this -> load -> model("skoses");
 		$this -> skoses -> th_assosiation_users();
+			
 		$this -> cab(1);
 		
-		$id = $_SESSION['skos'];
+		if (!isset($_SESSION['skos']))
+			{
+				$_SESSION['skos'] = $id;
+			}
+	
+		$id = $_SESSION['skos'];		
 		$data = $this -> skoses -> le_skos($id);
+				
 		$this -> load -> view('skos/view', $data);		
 		$this->load->view('skos/thesa_admin_menu',null);
 
-		if (count($data) > 0) {
-			if ((isset($_SESSION['id']) and ($_SESSION['id']) == $data['pa_creator'])) {
+		if ((count($data) > 0)) {
+			if ((isset($_SESSION['id']) and ($_SESSION['id']) == $data['pa_creator']) and ($data['id_pa'] == $id)) {
 				$cp = $this -> skoses -> cp_th($id);
 				$form = new form;
 				$form -> table = $this -> skoses -> table_thesaurus;
@@ -500,6 +579,12 @@ class Skos extends CI_Controller {
 				$msg = $this -> skoses -> th_collaborators($id) . $msg;
 				$data['content'] = $msg;
 				$this -> load -> view('skos/thesa_users', $data);
+			} else {
+				$tela = '	<div class="alert alert-danger" role="alert">
+								'.msg('Unauthorized_access').'
+							</div>';
+				$data['content'] = $tela;
+				$this->load->view('content',$data);
 			}
 		}
 		$this -> load -> view('header/footer', null);

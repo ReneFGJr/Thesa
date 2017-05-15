@@ -829,6 +829,15 @@ class skoses extends CI_model {
 	}
 
 	/* RESUMO DO THESAURUS */
+	function myskoses_total()
+		{
+			$id = $_SESSION['id'];
+			$sql = "select count(*) as total from th_thesaurus where pa_creator = $id";	
+			$xrlt = $this -> db -> query($sql);
+			$xrlt = $xrlt -> result_array();
+			$line = $xrlt[0];
+			return($line['total']);		
+		}
 	function thesaurus_resume($id) {
 		$sql = "select count(*) as total from rdf_literal_th where lt_thesauros = $id";
 
@@ -893,7 +902,7 @@ class skoses extends CI_model {
 			$sx .= '<td>'.($r+1).'</td>';
 			$sx .= '<td><b>'.$t.'</b></td>';
 			$sx .= '<td>'.msg($lang).'</td>';
-			$sx .= '<td class="alert alert-danger">'.msg('add_term').'</td>';
+			$sx .= '<td class="alert alert-success">'.msg('add_term').'</td>';
 			$sx .= '</tr>';
 		}
 		$sx .= '</table>';
@@ -1583,12 +1592,12 @@ class skoses extends CI_model {
 					$ok = $this->insert_collaborators_add($id_us,$th);
 					if ($ok == 1)
 						{
-							$msg .= '<br/><br/><span class="btn alert-success">' . msg('collaborator_insered') . '</span>';
+							$msg = '<br/><br/><span class="btn alert-success">' . msg('collaborator_insered') . '</span>';
 							$this -> skoses -> user_thesa($th, $id_us, 'INS');
 							echo $msg;				
 							return(1);
 						}	else {
-							$msg .= '<br/><br/><span class="btn alert-success">' . msg('collaborator_updated') . '</span>';
+							$msg = '<br/><br/><span class="btn alert-success">' . msg('collaborator_updated') . '</span>';
 							$this -> skoses -> user_thesa($th, $id_us, 'UPD');
 							echo $msg;				
 							return(1);
@@ -1702,8 +1711,11 @@ class skoses extends CI_model {
 					$sx .= '</td>';
 					if ($thesa['pa_creator'] != $line['id_us'])
 						{
+							$link = '<a href="#">';
 							$sx .= '<td>';
+							$sx .= $link;
 							$sx .= '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>';
+							$sx .= '</a>';
 							$sx .= '</td>';
 						}					
 					

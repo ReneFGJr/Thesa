@@ -29,7 +29,26 @@ if (!function_exists(('msg')))
 			}
 	}
 
-/* Colaborador */	
+/* Colaborador */
+$lang['language'] = 'idioma';
+$lang['Portuguese'] = 'Português';	
+$lang['English'] = 'Inglês';
+
+$lang['report_a_bug'] = 'Notifique um problema';
+$lang['your_name'] = 'Seu nome';
+$lang['your_email'] = 'e-mail';
+$lang['report_the_bug'] = 'Descreva o problema';
+$lang['send_bug'] = 'Reportar o problema'; 
+$lang['your_bug_has_reported'] = 'Obrigado, <br><br>Seu erro foi reportado com sucesso!';
+$lang['Unauthorized_access'] = 'Acesso não autorizado';
+$lang['add_term'] = 'Termo adicionado com sucesso!';
+$lang['associated  altLabel'] = 'Associado';
+$lang['remove_propriety'] = 'Remover propriedade';
+$lang['MANUAL'] = 'MANUEL';
+$lang['ERRO_600'] = 'E-mail não cadastrado no sistema';
+
+$lang['terms_info'] = 'Qualificação dos termos';
+
 $lang['collaborators_add'] = 'Adicionar colaboradores';
 $lang['change_prefLabel'] = 'Alterar termo Preferencial';
 $lang['collaborators_info'] = 'Informe o e-mail do colaborador';

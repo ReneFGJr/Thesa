@@ -74,6 +74,14 @@
 						<li>
 							<a href="<?php echo base_url('index.php/skos'); ?>#section4"><?php echo msg('contact'); ?></a>
 						</li>
+						<?php if (isset($_SESSION['id']) and (strlen($_SESSION['id']) > 0)) { ?>
+						<li>
+							<a href="<?php echo base_url('index.php/skos/bug_report'); ?>" title="<?php echo msg('report_a_bug');?>"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span></a>
+						</li>										
+						<?php } ?>
+						<li>
+							<a href="<?php echo base_url('index.php/skos/user_manual'); ?>#section2"><?php echo msg('MANUAL'); ?></a>
+						</li>						
 					</ul>
 					
 				      <ul class="nav navbar-nav navbar-right">

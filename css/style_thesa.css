@@ -4,6 +4,14 @@
 	color: #3333c0;
 	text-align: center;
 }
+.roboto
+	{
+	font-family: "Tahoma", "Roboto", "Verdana", "Arial";	
+	}
+.blue
+	{
+		color: #7070a0;		
+	}
 .logo_subtitle {
 	font-family: "Roboto";
 	font-size: 150%;
