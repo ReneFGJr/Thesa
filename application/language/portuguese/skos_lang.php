@@ -44,8 +44,9 @@ $lang['Unauthorized_access'] = 'Acesso não autorizado';
 $lang['add_term'] = 'Termo adicionado com sucesso!';
 $lang['associated  altLabel'] = 'Associado';
 $lang['remove_propriety'] = 'Remover propriedade';
-$lang['MANUAL'] = 'MANUEL';
+$lang['MANUAL'] = 'MANUAL';
 $lang['ERRO_600'] = 'E-mail não cadastrado no sistema';
+$lang['user_invalid_password'] = 'Usuário ou senha incorretos';
 
 $lang['terms_info'] = 'Qualificação dos termos';
 
@@ -226,6 +227,15 @@ $lang['skosxl:isFeminine'] = 'feminino de';
 $lang['skosxl:literalForm'] = 'extenso de ';
 $lang['skosxl:abbreviation_of'] = 'abreviatura de';
 $lang['skosxl:acronym'] = 'sigla';
+
+$lang['skosxl:has_gerund'] = 'tem como gerundio';
+$lang['skosxl:verbal_inflection'] = 'tem como flexão verbal';
+$lang['skosxl:synonymous'] = 'tem como variação';
+$lang['skosxl:is_gerund'] = 'é gerundio de';
+$lang['skosxl:is_verbal_inflection'] = 'é flexão verbal de';
+$lang['skosxl:is_synonymous'] = 'é variação de';
+$lang['skosxl:hiddenLabel'] = 'tem com termo oculto';
+$lang['ex:unionOf'] = 'equivalente a';
 
 
 $lang['skos:definition'] = 'Definição do conceito';
