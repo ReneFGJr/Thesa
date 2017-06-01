@@ -1780,7 +1780,7 @@ class skoses extends CI_model {
 		{
 			$email = sonumero($email);
 			$ok = $this->le_user_id($email);
-			if (ok == 0)
+			if ($ok == 0)
 				{
 					
 				} else {
@@ -1828,7 +1828,7 @@ class skoses extends CI_model {
 		if ($de > 0)
 			{
 				$texto = $this->formatar_email($texto);
-				//enviaremail($para, $assunto, $texto, $de);		
+				enviaremail($para, $assunto, $texto, $de);		
 			} else {
 				echo 'e-mail não enviado - '.$code;
 			}
