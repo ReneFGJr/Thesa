@@ -336,7 +336,7 @@ th {
 .glyphicon-ok:before {
   content: "\e013";
 }
-.glyphicon-remove:before {
+.glyphicon-remove-circle:before {
   content: "\e014";
 }
 .glyphicon-zoom-in:before {
@@ -540,7 +540,7 @@ th {
 .glyphicon-minus-sign:before {
   content: "\e082";
 }
-.glyphicon-remove-sign:before {
+.glyphicon-remove-circle:before {
   content: "\e083";
 }
 .glyphicon-ok-sign:before {
@@ -555,7 +555,7 @@ th {
 .glyphicon-screenshot:before {
   content: "\e087";
 }
-.glyphicon-remove-circle:before {
+.glyphicon-remove-circle-circle:before {
   content: "\e088";
 }
 .glyphicon-ok-circle:before {

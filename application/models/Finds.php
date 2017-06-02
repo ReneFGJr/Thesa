@@ -163,7 +163,7 @@ class finds extends CI_model {
 			$sx .= '<tr>';
 			$sx .= '<td>' . $line['rp1'] . ':' . $line['rs1'] . '</td>';
 			$sx .= '<td>' . $line['rp2'] . ':' . $line['rs2'] . '</td>';
-			$link = '<span class="glyphicon glyphicon-remove-sign" aria-hidden="true" style="color: red;"></span>';
+			$link = '<span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style="color: red;"></span>';
 			$link = '<a href="#">' . $link . '</a>';
 			$sx .= '<td align="center">' . $link . '</td>';
 			$sx .= '</tr>';

@@ -4,6 +4,7 @@ class foaf extends CI_Controller
 function __construct() {
 		parent::__construct();
 		$this -> lang -> load("foaf", "portuguese");
+		$this -> lang -> load("skos", "portuguese");
 		$this -> load -> library('form_validation');
 		$this -> load -> database();
 		$this -> load -> helper('form');

@@ -492,8 +492,33 @@ class Skos extends CI_Controller {
 			$this -> load -> view('header/close', null);
 			//$this->skoes->
 		}
-
 	}
+	
+	function tf_edit($id = '',$check='') {
+		$id = round($id);
+		$th = $_SESSION['skos'];
+
+		/* Load model */
+		$this -> load -> model("skoses");
+		$this -> cab(0);
+
+		$data = $this -> skoses -> le($c);
+		$data['form'] = $this -> skoses -> form_concept_tf($th, $c);
+		$this -> load -> view('skos/view_concept_mini', $data);
+
+		$action = get("action");
+		$texto = get("nt");
+		$idioma = get("tt");
+		$tr = get("tr");
+
+		if ((strlen($action) > 0) and (strlen($tr) > 0) and (strlen($idioma) > 0) and (strlen($tr) > 0)) {
+
+			$this -> skoses -> assign_as_note($c, $th, $tr, $texto, $idioma);
+			$this -> load -> view('header/close', null);
+			//$this->skoes->
+		}
+
+	}	
 
 	/***************************************************************************** TG Geral */
 	function tg($c = '') {
@@ -738,6 +763,24 @@ class Skos extends CI_Controller {
 				$this->load->view('confirm.php',$data);
 			}
 	}
+	
+	function ntedit($id='',$chk='')
+		{
+		/* Load model */
+		$edit = true;
+		$this -> load -> model("skoses");
+		$this -> cab(0);
+		
+		$data['content'] = $this->skoses->edit_nt($id);
+		$data['title'] = '';
+		$this->load->view('content',$data);
+		
+		if (strlen($data['content']) == 0)
+			{
+				$this->load->view('wclose');
+			}
+
+		}
 
 	function cedit($c = '', $th = '') {
 
