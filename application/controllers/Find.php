@@ -201,6 +201,24 @@ class find extends CI_controller {
 		}
 
 	}
+    
+    function cataloging() {
+        $this -> load -> model('finds');
+        $this -> cab(1);
+        
+        $cp = array();
+        array_push($cp,array('$H8','','',false,false));
+        array_push($cp,array('$S100','',msg('work_title'),True,True));
+        
+        $form = new form;
+        $tela = $form->editar($cp,'');
+        
+        $data['content'] = $tela;
+        $this->load->view('content',$data);
+        $this->foot();
+
+
+    }    
 
 	function nomen() {
 		$this -> load -> model('finds');

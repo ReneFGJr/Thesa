@@ -54,9 +54,25 @@
 			<div>
 				<div class="collapse navbar-collapse" id="myNavbar">
 					<ul class="nav navbar-nav">
-						<li>
-							<a href="<?php echo base_url('index.php/authority/find'); ?>" class="menu_sk"><?php echo msg('authority_find'); ?></a>
-						</li>
+						<?php 
+						/***************************************************************/
+						/* ADMIN *******************************************************/
+						/***************************************************************/
+						if (isset($_SESSION['nivel']))
+                        {
+                            $nivel = $_SESSION['nivel'];    
+                        } else {
+                            $nivel = 0;
+                        }
+                        						
+						if ($nivel > 0) {  
+						?>
+                        <li>
+                            <a href="<?php echo base_url('index.php/find/cataloging'); ?>" class="menu_sk"><?php echo msg('cataloging'); ?></a>
+                        </li>						
+                        <li>
+                            <a href="<?php echo base_url('index.php/authority/find'); ?>" class="menu_sk"><?php echo msg('authority_find'); ?></a>
+                        </li>					
 						<li>
 							<a href="<?php echo base_url('index.php/find/work'); ?>" class="menu_sk"><?php echo msg('work'); ?></a>
 						</li>										
@@ -65,7 +81,8 @@
 						</li>
 						<li>
 							<a href="<?php echo base_url('index.php/find/classes'); ?>" class="menu_sk"><?php echo msg('classes'); ?></a>
-						</li>																
+						</li>
+						<?php } ?>																
 					</ul>
 					
 				      <ul class="nav navbar-nav navbar-right">
