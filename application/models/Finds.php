@@ -336,11 +336,11 @@ class finds extends CI_model {
 	function le($id = 0) {
 		$work = $this -> work;
 		$sql = "select * from find_literal
-						INNER JOIN find_id ON f_literal = id_l AND f_class = $work
-						INNER JOIN find_rdf ON fr_id_1 = id_f						
+						INNER JOIN find_rdf ON fr_literal = id_l
+						INNER JOIN find_id ON f_literal = id_l
 						INNER JOIN rdf_resource ON id_rs = f_class
-						INNER JOIN rdf_prefix ON rs_prefix = id_prefix					
-						WHERE id_f = $id ";
+						INNER JOIN rdf_prefix ON rs_prefix = id_prefix						
+				WHERE id_f = $id ";
 
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
@@ -393,11 +393,41 @@ class finds extends CI_model {
 		return ($sx);
 	}
 
+	function le_propriery($prop) {
+		$sql = "select * from rdf_resource where rs_propriety = '$prop' ";
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+		if (count($rlt) > 0) {
+			$line2 = $rlt[0];
+			$prop_class = $line2['id_rs'];
+		} else {
+			$prop_class = 0;
+		}
+		return ($prop_class);
+	}
+
 	function create_id($name, $lang, $class) {
 
 		$agency = $this -> agency;
-		$prop_class = $this -> prop_class;
 
+		/* literal */
+		$class_id = round($class);
+		if ($class_id == 0) {
+			$prop_class = $this -> le_propriery('Literal');
+		}
+
+		$class_id = round($class);
+		if ($class_id == 0) {
+			$sql = "select * from rdf_resource where rs_propriety = '$class' ";
+			$rlt = $this -> db -> query($sql);
+			$rlt = $rlt -> result_array();
+			$line3 = $rlt[0];
+			$class_id = $line3['id_rs'];
+		}
+		if ($class_id == 0) {
+			echo 'Classe não localizada ' . $class;
+			exit ;
+		}
 		$sql = "select * from find_literal where l_value = '$name' and l_language = '$lang' ";
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
@@ -415,7 +445,7 @@ class finds extends CI_model {
 		$line = $rlt[0];
 		$id = $line['id_l'];
 
-		$sqlz = "select * from find_id where f_literal = $id and f_class=$class ";
+		$sqlz = "select * from find_id where f_literal = $id and f_class=$class_id ";
 		$rltz = $this -> db -> query($sqlz);
 		$rltz = $rltz -> result_array();
 
@@ -425,7 +455,7 @@ class finds extends CI_model {
 							f_literal, f_class,
 							f_agency, f_source
 							) values (
-							$id, $class,
+							$id, $class_id,
 							$agency, 0
 							)";
 			$rltq = $this -> db -> query($sqlq);
@@ -451,6 +481,7 @@ class finds extends CI_model {
 							)";
 			$rltz = $this -> db -> query($sql);
 		}
+		return($idc);
 	}
 
 	function incorpore($name = '') {
@@ -509,8 +540,8 @@ class finds extends CI_model {
 		$work = $this -> work;
 
 		$sql = "select * from find_literal
-						INNER JOIN find_id ON f_literal = id_l AND f_class = $work
-						INNER JOIN find_rdf ON fr_id_1 = id_f						
+						INNER JOIN find_rdf ON fr_literal = id_l
+						INNER JOIN find_id ON f_literal = id_l
 						INNER JOIN rdf_resource ON id_rs = f_class
 						INNER JOIN rdf_prefix ON rs_prefix = id_prefix						
 				WHERE l_value like '%$name%' ";
@@ -534,13 +565,13 @@ class finds extends CI_model {
 					}
 				}
 			} else {
-				$wh = "(l_value = '%" . $wd . "%')";
+				$wh = "(l_value like '%" . $wd . "%')";
 			}
 			$sql = "select * from find_literal
-						INNER JOIN find_id ON f_literal = id_l AND f_class = $work
-						INNER JOIN find_rdf ON fr_id_1 = id_f						
+						INNER JOIN find_rdf ON fr_literal = id_l
+						INNER JOIN find_id ON f_literal = id_l
 						INNER JOIN rdf_resource ON id_rs = f_class
-						INNER JOIN rdf_prefix ON rs_prefix = id_prefix					
+						INNER JOIN rdf_prefix ON rs_prefix = id_prefix						
 						WHERE " . $wh;
 
 			$rlt = $this -> db -> query($sql);
@@ -558,6 +589,11 @@ class finds extends CI_model {
 			$sx .= '<td>';
 			$sx .= $link . $line['l_value'] . '</a>';
 			$sx .= '</td>';
+
+			$sx .= '<td align="right">';
+			$sx .= $link . '<i>' . $line['prefix_ref'] . ':' . $line['rs_propriety'] . '</i>' . '</a>';
+			$sx .= '</td>';
+
 			$sx .= '</tr>';
 		}
 		$sx .= '</table>';
@@ -716,31 +752,30 @@ class finds extends CI_model {
 		}
 		$line = $rlt[0];
 
-		$class = $this->find_rdf('ISBN', 'C');
+		$class = $this -> find_rdf('ISBN', 'C');
 		/**************************************************************************************/
-		$ag = $this->agency;
+		$ag = $this -> agency;
 		$lt = $line['id_l'];
-		
+
 		$sql = "select * from find_id where f_literal = $lt and f_class = $class";
-		$rlt = $this->db->query($sql);
-		$rlt = $rlt->result_array();
-		
-		if (count($rlt) == 0)
-			{
-				$sql2 = "insert into find_id 
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+
+		if (count($rlt) == 0) {
+			$sql2 = "insert into find_id 
 					(f_literal, f_class, f_agency, f_source)
 					values
-					($lt,$class,$ag,0)";				
-				$rlt = $this->db->query($sql2);
-			}
-		$rlt = $this->db->query($sql);
-		$rlt = $rlt->result_array();
+					($lt,$class,$ag,0)";
+			$rlt = $this -> db -> query($sql2);
+		}
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
 		$id = $rlt[0]['id_f'];
-				
+
 		/**************************************************************************************/
-		$this->rdf_propriety($lt, 0, $id, $class, 0);
-		
-		exit;
+		$this -> rdf_propriety($lt, 0, $id, $class, 0);
+
+		exit ;
 	}
 
 	function find_rdf($name = '', $tp = 'C') {

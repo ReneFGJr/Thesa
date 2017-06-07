@@ -209,9 +209,20 @@ class find extends CI_controller {
         $cp = array();
         array_push($cp,array('$H8','','',false,false));
         array_push($cp,array('$S100','',msg('work_title'),True,True));
+		$sql = "select * from language where lg_active = 1";
+		array_push($cp,array('$Q lg_code;lg_language;'.$sql,'',msg('work_language'),True,True));
         
         $form = new form;
         $tela = $form->editar($cp,'');
+		
+		if ($form->saved > 0)
+			{
+				$dd1 = get("dd1");
+				$dd2 = get("dd2");
+				$id = $this->finds->create_id($dd1,$dd2,'nomen');
+				echo $id;
+				exit;
+			}
         
         $data['content'] = $tela;
         $this->load->view('content',$data);
