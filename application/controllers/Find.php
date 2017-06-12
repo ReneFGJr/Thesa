@@ -202,6 +202,33 @@ class find extends CI_controller {
 
 	}
     
+    function authority()
+        {
+        $this -> load -> model('finds');
+        $this -> load -> model('authorities');
+        $this -> cab(1);
+        /* https://viaf.org/viaf/68040144/viaf.xml */
+        
+        $cp = array();
+        array_push($cp,array('$H8','','',false,false));
+        array_push($cp,array('$A1','',msg('authority'),false,false));
+        array_push($cp,array('$T80:10','',msg('marc'),True,True));
+        
+        $form = new form;
+        $tela = $form->editar($cp,'');
+        
+        if ($form->saved > 0)
+            {
+                $txt = get("dd2");
+                $this->authorities->inport_marc_auth($txt);
+            }
+        
+        $data['content'] = $tela;
+        $this->load->view('content',$data);
+        $this->foot();               
+            
+        }
+    
     function cataloging() {
         $this -> load -> model('finds');
         $this -> cab(1);
@@ -219,9 +246,13 @@ class find extends CI_controller {
 			{
 				$dd1 = get("dd1");
 				$dd2 = get("dd2");
+                $dd3 = get("dd3");
+                
 				$id = $this->finds->create_id($dd1,$dd2,'nomen');
-				echo $id;
-				exit;
+                /* work class */
+                $class = $this->finds->le_propriery('Work');
+                $prop = $this->finds->le_propriery('Class');                
+                $this->finds->rdf($id,$prop,$class);
 			}
         
         $data['content'] = $tela;

@@ -1,41 +1,41 @@
 <style>
-	body {
-		position: relative;
-	}
-	.navbar {
-		background-color: #fefefe;
-		border-bottom: 2px solid
-	}
-	#section1 {
-		padding-top: 50px;
-		height: 500px;
-		color: #800303;
-		background-color: #ffffff;
-	}
-	#section2 {
-		padding-top: 50px;
-		height: 500px;
-		color: #fff;
-		background-color: #ff9800;
-	}
-	#section3 {
-		padding-top: 50px;
-		height: 500px;
-		color: #800303;
-		background-color: #ffffff;
-	}
-	#section4 {
-		padding-top: 50px;
-		height: 500px;
-		color: #fff;
-		background-color: #ff9800;
-	}
-	#section5 {
-		padding-top: 50px;
-		height: 500px;
-		color: #800303;
-		background-color: #ffffff;
-	}
+    body {
+        position: relative;
+    }
+    .navbar {
+        background-color: #fefefe;
+        border-bottom: 2px solid
+    }
+    #section1 {
+        padding-top: 50px;
+        height: 500px;
+        color: #800303;
+        background-color: #ffffff;
+    }
+    #section2 {
+        padding-top: 50px;
+        height: 500px;
+        color: #fff;
+        background-color: #ff9800;
+    }
+    #section3 {
+        padding-top: 50px;
+        height: 500px;
+        color: #800303;
+        background-color: #ffffff;
+    }
+    #section4 {
+        padding-top: 50px;
+        height: 500px;
+        color: #fff;
+        background-color: #ff9800;
+    }
+    #section5 {
+        padding-top: 50px;
+        height: 500px;
+        color: #800303;
+        background-color: #ffffff;
+    }
 </style>
 
 <body data-spy="scroll" data-target=".navbar" data-offset="50">
@@ -67,8 +67,18 @@
                         						
 						if ($nivel > 0) {  
 						?>
-                        <li>
-                            <a href="<?php echo base_url('index.php/find/cataloging'); ?>" class="menu_sk"><?php echo msg('cataloging'); ?></a>
+                         <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo msg('cataloging'); ?><span class="caret"></span></a>
+                      
+                          <ul class="dropdown-menu">
+                                <li>
+                                <a href="<?php echo base_url('index.php/find/cataloging'); ?>" class="menu_sk"><?php echo msg('bibliografic'); ?></a>
+                                </li>
+                                <li>
+                                <a href="<?php echo base_url('index.php/find/authority'); ?>" class="menu_sk"><?php echo msg('authority'); ?></a>
+                                </li>
+                                
+                          </ul>
                         </li>						
                         <li>
                             <a href="<?php echo base_url('index.php/authority/find'); ?>" class="menu_sk"><?php echo msg('authority_find'); ?></a>
@@ -87,10 +97,10 @@
 					
 				      <ul class="nav navbar-nav navbar-right">
 				      	<?php
-						if (isset($_SESSION['check'])) {
-							//echo '<li class="active"><a href="#">' . $_SESSION['nome'] . '</a></li>';
-							echo ' <li class="dropdown">
-							          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.UpperCase($_SESSION['nome']).'<span class="caret"></span></a>
+                        if (isset($_SESSION['check'])) {
+                            //echo '<li class="active"><a href="#">' . $_SESSION['nome'] . '</a></li>';
+                            echo ' <li class="dropdown">
+							          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">' . UpperCase($_SESSION['nome']) . '<span class="caret"></span></a>
 							          <ul class="dropdown-menu">
 							          	<!--
 							            <li><a href="#">Action</a></li>
@@ -100,12 +110,12 @@
 							            <li><a href="#">Separated link</a></li>
 							            <li role="separator" class="divider"></li>
 							            -->
-							            <li><a href="'.base_url('index.php/skos/login/out').'">'.msg('logout').'</a></li>
+							            <li><a href="' . base_url('index.php/skos/login/out') . '">' . msg('logout') . '</a></li>
 							          </ul>
 							        </li>';
-						} else {
-							echo '<li style="background-color: orange;"><a href="' . base_url('index.php/skos/login') . '" style="color: white;">' . msg('sign_in') . '</a></li>';
-						}
+                        } else {
+                            echo '<li style="background-color: orange;"><a href="' . base_url('index.php/skos/login') . '" style="color: white;">' . msg('sign_in') . '</a></li>';
+                        }
 				        ?>
 				      </ul>
 				</div>
