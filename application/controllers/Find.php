@@ -85,6 +85,26 @@ class find extends CI_controller {
 		$this -> foot();
 	}
 
+	function classes_ed($id='')
+		{
+		/* Edit attribute */
+		$this -> load -> model('finds');
+		$this -> cab(1);
+		$tabela = 'rdf_resource';
+
+		$cp = $this->finds->cp_class($id);
+		$form = new form;
+		$form->id = $id;
+		$tela = $form->editar($cp,$tabela);
+		$data['content'] = $tela;
+		$this->load->view('content',$data);
+				
+		if ($form->saved > 0)
+			{
+				redirect(base_url('index.php/find/classes'));
+			}
+		}
+
 	function tp($action = '') {
 		/* Technical preparation */
 		$this -> load -> model('finds');
@@ -236,8 +256,12 @@ class find extends CI_controller {
         $cp = array();
         array_push($cp,array('$H8','','',false,false));
         array_push($cp,array('$S100','',msg('work_title'),True,True));
+		
 		$sql = "select * from language where lg_active = 1";
 		array_push($cp,array('$Q lg_code;lg_language;'.$sql,'',msg('work_language'),True,True));
+		
+		$sql = "select * from rdf_resource where rs_type = 'C'";
+		array_push($cp,array('$Q id_rs;rs_propriety;'.$sql,'',msg('class'),True,True));
         
         $form = new form;
         $tela = $form->editar($cp,'');
@@ -247,6 +271,7 @@ class find extends CI_controller {
 				$dd1 = get("dd1");
 				$dd2 = get("dd2");
                 $dd3 = get("dd3");
+				$dd4 = get("dd4");
                 
 				$id = $this->finds->create_id($dd1,$dd2,'nomen');
                 /* work class */

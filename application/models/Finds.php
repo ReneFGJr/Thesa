@@ -116,7 +116,7 @@ class finds extends CI_model {
         $form -> edit = true;
         $form -> pre_where = " rs_type = 'C' ";
 
-        $form -> row_edit = base_url('index.php/find/classes');
+        $form -> row_edit = base_url('index.php/find/classes_ed');
         $form -> row_view = base_url('index.php/find/attribute');
         $form -> row = base_url('index.php/find/classes');
 
@@ -254,6 +254,28 @@ class finds extends CI_model {
         }
         return ($tela);
     }
+
+	function cp_class($id=0)
+		{
+        $cp = array();
+        array_push($cp, array('$H8', 'id_rs', '', false, true));
+
+        /* prefix */
+        $sql = "select * from rdf_prefix WHERE prefix_ativo = 1";
+        array_push($cp, array('$Q id_prefix:prefix_ref:' . $sql, 'rs_prefix', msg('rs_prefix'), true, true));
+
+        /* range */
+        array_push($cp, array('$S100', 'rs_propriety', msg('rs_propriety'), true, true));
+		array_push($cp, array('$S100', 'rs_propriety_inverse', msg('rs_propriety_inverse'), false, true));
+		array_push($cp, array('$O C:Class&P:Propriety', 'rs_type', msg('rs_type'), true, true));
+		
+        /* is part of */
+        $sql = "SELECT * FROM rdf_resource where rs_type='C'";
+        array_push($cp, array('$Q id_rs:rs_propriety:' . $sql, 'rs_part_of', msg('rs_part_of'), False, true));		
+
+        array_push($cp, array('$B8', '', msg('save'), false, true));
+        return ($cp);				
+		}
 
     function cp_attr($id) {
         $cp = array();
