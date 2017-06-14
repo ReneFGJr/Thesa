@@ -7,12 +7,13 @@ class Authorities extends CI_model {
         $txt = troca($txt, chr(10), '');
         $ln = splitx(';', $txt);
         $auth = array();
-
+		
+		/* phase I */
         for ($r = 0; $r < count($ln); $r++) {
             $l = $ln[$r];
             $fld = substr(troca($l, ' ', ''), 0, 5);
             $fd = substr($fld, 0, 3);
-            switch ($fd) {
+            switch ($fd) {          	
                 case '100' :
                     $ds = $this -> extract_marc($l);
                     array_push($auth, $ds);
@@ -28,32 +29,83 @@ class Authorities extends CI_model {
             }
         }
         $ida = 0;
+		$idc = 0;
         /*******************************/
         for ($r=0;$r < count($auth);$r++)
             {
                 $nm = $auth[$r]['a'];
                 if ($r==0)
                     {
-                        $ida = $this->find_literal($nm,1);        
+                        $ida = $this->find_literal($nm);        
                     }
                 $id = $this->find_literal($nm,0);
                 $auth[$r]['ida'] = $ida;
                 $auth[$r]['id'] = $id;
             }
-            
-        $a = $this->create_id($auth,'Person');
+		$idc = $this->create_id($auth,'Person');			
+			
+
+		/* phase II */
+        for ($r = 0; $r < count($ln); $r++) {
+            $l = $ln[$r];
+            $fld = substr(troca($l, ' ', ''), 0, 5);
+            $fd = substr($fld, 0, 3);
+            switch ($fd) {
+                case '040' :
+					/* autoridade */
+                    $ds = $this -> extract_marc($l);
+					if (isset($ds['a']))
+						{
+							$source = 'Catalog by '.$ds['a'];						
+							$class = $this->finds->find_rdf('Organization','C');
+							$idb = $this->finds->create_range('Organization',$source);
+							
+							$prop = $this->finds->find_rdf('is_agencyCatalog','P');									
+							$this->finds->insert_relation($idc,0,$prop,$idb);							
+						}
+                case '100' :
+					$born = '';
+					$dead = '';
+                    $ds = $this -> extract_marc($l);
+                    if (isset($ds['d']))
+						{
+							$dt = $ds['d'];
+							if (strpos($dt,'-') > 0)
+								{
+									$born = trim(substr($dt,0,strpos($dt,'-')));
+									$dead = trim(substr($dt,strpos($dt,'-')+1,strlen($dt)));
+								} else {
+									$born = trim(substr($dt,0,strpos($dt,'-')));
+									$dead = '';
+								}							
+							
+							if (strlen($born) != '')
+								{
+									$class = $this->finds->find_rdf('Date','C');
+									$idb = $this->finds->create_range('Date',$born);
+									
+									$prop = $this->finds->find_rdf('wasBorn','P');									
+									$this->finds->insert_relation($idc,0,$prop,$idb);
+								}
+							if (strlen($dead) != '')
+								{
+									$class = $this->finds->find_rdf('Date','C');
+									$idb = $this->finds->create_range('Date',$dead);
+									
+									$prop = $this->finds->find_rdf('wasDead','P');
+									$this->finds->insert_relation($idc,0,$prop,$idb);
+								}
+						}
+                    break;            	
+            }
+        }			
     }
     
-    function find_literal($name='',$nbr=1)
+    function find_literal($name='')
         {
-            if ($nbr==1)
-                {
-                    $nome = nbr_autor($name,7);        
-                } else {
-                    $nome = $name;
-                }
+			$nome = $name;       
             
-            $sql = "select * from find_literal where l_value = '$nome' ";
+            $sql = "select * from find_literal where l_value = '$nome'";
             $rlt = $this->db->query($sql);
             $rlt = $rlt->result_array();
             
@@ -72,9 +124,36 @@ class Authorities extends CI_model {
         }
         
     function create_id($names, $class) {
-        print_r($names);
-        exit;
-        
+    	$wh = '';
+		$class = $this->finds->find_rdf('prefLabel','P');
+		for ($r=0;$r < count($names);$r++)
+			{
+				if (strlen($wh) > 0)
+					{
+						$wh .= ' OR ';
+					}
+				$wh .= '(fr_literal = '.$names[$r]['id'].')';
+			}
+		
+		$sql = "select * from find_rdf where ($wh)  AND (fr_propriety = $class)";
+		$rlt = $this->db->query($sql);
+		$rlt = $rlt->result_array();
+		
+		if (count($rlt) == 0)
+			{
+				$this->finds->create_id($names[0]['a'],'','Person');
+				$rlt = $this->db->query($sql);
+				$rlt = $rlt->result_array();
+			}
+		$auth = $rlt[0]['fr_id_1'];
+		$class = $this->finds->find_rdf('altLabel','P');
+		
+		for ($r=1;$r < count($names);$r++)
+			{
+				$this->finds->insert_relation($auth,$names[$r]['id'],$class);
+			}
+
+        return($auth);        
     }        
 
     function extract_marc($t)
