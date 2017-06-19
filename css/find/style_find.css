@@ -10,3 +10,9 @@ body
 	{
 		font-family: 'Titillium Web', Tahoma, Verdana, Geneva, Arial, Helvetica, sans-serif;
 	}
+
+.list li
+    {
+    padding-left: 10px;
+    list-style: none;       
+    }

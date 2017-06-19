@@ -75,7 +75,7 @@
                                 <a href="<?php echo base_url('index.php/find/cataloging'); ?>" class="menu_sk"><?php echo msg('bibliografic'); ?></a>
                                 </li>
                                 <li>
-                                <a href="<?php echo base_url('index.php/find/authority'); ?>" class="menu_sk"><?php echo msg('authority'); ?></a>
+                                <a href="<?php echo base_url('index.php/find/inport_marc21'); ?>" class="menu_sk"><?php echo msg('inport_marc'); ?></a>
                                 </li>
                                 
                           </ul>

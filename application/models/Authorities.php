@@ -17,7 +17,7 @@ class Authorities extends CI_model {
                 case '100' :
                     $ds = $this -> extract_marc($l);
                     array_push($auth, $ds);
-                    break;
+                    break;                   
                 case '400' :
                     $ds = $this -> extract_marc($l);
                     array_push($auth, $ds);
@@ -31,19 +31,32 @@ class Authorities extends CI_model {
         $ida = 0;
 		$idc = 0;
         /*******************************/
+        /* importa os autores **********/
+        /*******************************/
         for ($r=0;$r < count($auth);$r++)
             {
-                $nm = $auth[$r]['a'];
+                $nm = trim($auth[$r]['a']);
+                if (substr($nm,strlen($nm),1) == ',')
+                {
+                    $nm = trim(substr($nm,0,strlen($nm)-1));
+                }
+                
                 if ($r==0)
                     {
-                        $ida = $this->find_literal($nm);        
+                        if (strpos($nm,','))
+                            {
+                                $nn = trim(substr($nm,0,strpos($nm,',')));
+                                $nn = trim(trim(substr($nm,strpos($nm,',')+1,strlen($nm))).' '.$nn);
+                                $nn = troca($nn,',','');
+                                $ida = $this->find_literal($nn,1);
+                                array_push($auth,array('a'=>$nn)); 
+                            }
                     }
                 $id = $this->find_literal($nm,0);
                 $auth[$r]['ida'] = $ida;
                 $auth[$r]['id'] = $id;
             }
 		$idc = $this->create_id($auth,'Person');			
-			
 
 		/* phase II */
         for ($r = 0; $r < count($ln); $r++) {
@@ -63,6 +76,8 @@ class Authorities extends CI_model {
 							$prop = $this->finds->find_rdf('is_agencyCatalog','P');									
 							$this->finds->insert_relation($idc,0,$prop,$idb);							
 						}
+                    break;
+                      
                 case '100' :
 					$born = '';
 					$dead = '';

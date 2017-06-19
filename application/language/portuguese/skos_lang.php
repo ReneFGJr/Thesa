@@ -28,6 +28,10 @@ if (!function_exists(('msg')))
 					}
 			}
 	}
+    
+/* FIND */
+$lang['dc:creator'] = 'Agente(s)';
+$lang['action_not_defined'] = 'Ação não definida no sistema';
 
 /* Colaborador */
 $lang['language'] = 'idioma';
