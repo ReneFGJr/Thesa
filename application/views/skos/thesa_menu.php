@@ -99,6 +99,7 @@
 							            <li><a href="#">Separated link</a></li>
 							            <li role="separator" class="divider"></li>
 							            -->
+							            <li><a href="'.base_url('index.php/skos/login_change').'">'.msg('change_my_data').'</a></li>
 							            <li><a href="'.base_url('index.php/skos/login/out').'">'.msg('logout').'</a></li>
 							          </ul>
 							        </li>';

@@ -38,6 +38,11 @@ $lang['language'] = 'idioma';
 $lang['Portuguese'] = 'Português';	
 $lang['English'] = 'Inglês';
 
+$lang['resend_password'] = 'Reenviar senha';
+$lang['cancel'] = 'cancelar';
+$lang['send_password'] = 'enviar senha';
+$lang['resend_password_text'] = 'Sua senha será enviar para seu e-mail cadastrado, cheque sua caixa de entrada ou a lista de Spam para localizar o link de acesso ao sistemas';
+$lang['change_my_data'] = 'Meus dados';
 $lang['report_a_bug'] = 'Notifique um problema';
 $lang['your_name'] = 'Seu nome';
 $lang['your_email'] = 'e-mail';

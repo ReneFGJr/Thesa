@@ -111,7 +111,49 @@ function enviaremail($para, $assunto, $texto, $de, $anexos = array()) {
 	}
 }
 
-function sendmail($para, $titulo, $texto) {
+function sendmail($para,$titulo,$texto)
+	{
+	        //Recupera os dados do formulário
+	        $dados = $this->input->post();
+	         
+	        //Inicia o processo de configuração para o envio do email
+	        $config['protocol'] = 'mail'; // define o protocolo utilizado
+	        $config['wordwrap'] = TRUE; // define se haverá quebra de palavra no texto
+	        $config['validate'] = TRUE; // define se haverá validação dos endereços de email
+            $config['mailtype'] = 'html';
+            
+	        // Inicializa a library Email, passando os parâmetros de configuração
+	        $this->email->initialize($config);
+	        
+	        // Define remetente e destinatário
+	        $this->email->from('renefgj@gmail.com', 'Thesa - UFRGS'); // Remetente
+	        $this->email->to($para['email'],$para['nome']); // Destinatário
+	 
+	        // Define o assunto do email
+	        $this->email->subject($titulo);
+	 
+	        /*
+	         * Se o usuário escolheu o envio com template, passa o conteúdo do template para a mensagem
+	         * caso contrário passa somente o conteúdo do campo 'mensagem'
+	         */
+            $this->email->message($texto);
+	        /*
+	         * Se o envio foi feito com sucesso, define a mensagem de sucesso
+	         * caso contrário define a mensagem de erro, e carrega a view home
+	         */
+	        if($this->email->send())
+	        {
+	            $this->session->set_flashdata('success','Email enviado com sucesso!');
+	            echo "OK";
+	        }
+	        else
+	        {
+	            $this->session->set_flashdata('error',$this->email->print_debugger());
+	            echo "ERRO";
+	        }
+	}
+
+function sendmail_smtp($para, $titulo, $texto) {
 	global $email_from, $email_from_name, $email_port, $email_smtp, $email_pass, $email_user, $email_auth, $email_debug, $email_replay, $email_sign;
 	
 	
