@@ -8,7 +8,7 @@ class finds extends CI_model {
 
     var $agency = 1;
     var $prop_class = 1;
-    var $idioma = 'pt_BR';
+    var $idioma = 'por';
 
     function find_literal($name = '') {
         $sx = $this -> sugestoes($name);
@@ -90,7 +90,7 @@ class finds extends CI_model {
             /* LITERAL */
             if ((($prop == 'skos:prefLabel') OR ($prop == 'skos:altLabel')) AND (round(sonumero($id)) > 0)) {
                 if (strlen($reso) > 0) {
-                    if ($lang == 'por') { $lang = 'pt_BR';
+                    if ($lang == 'por') { $lang = 'por';
                     }
                     if ($prop == 'skos:prefLabel') {
                         $this -> create_id($reso, $lang, $class);
@@ -565,7 +565,7 @@ class finds extends CI_model {
         $sx .= '<div class="row">';
         $sx .= '<div class="col-md-6">';
         $sx .= '<input type="hidden" name="name" class="form-contro" value="' . $name . '">';
-        $sx .= '<input type="radio" name="lang" value="pt_BR">' . msg('portugues');
+        $sx .= '<input type="radio" name="lang" value="por">' . msg('portugues');
         $sx .= '</br><input type="radio" name="lang" value="es">' . msg('espanhol');
         $sx .= '<br>';
         $sx .= '</div>';
@@ -1061,8 +1061,8 @@ class finds extends CI_model {
         exit ;
     }
 
-    function create_range($class, $value, $idioma = 'pt_BR') {
-        if ($idioma == 'por') { $idioma = 'pt_BR';
+    function create_range($class, $value, $idioma = 'por') {
+        if ($idioma == 'por') { $idioma = 'por';
         }
 
         $class_id = $this -> find_rdf($class, 'C');

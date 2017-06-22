@@ -21,7 +21,7 @@ if (strlen($dd12) == 0) { $dd12 = date("Y"); }
 			<br>
 			<?php echo msg('language'); ?>
 			<select name="dd10" size="1" class="table">
-				<option value="pt"><?php echo msg('pt_BR'); ?></option>
+				<option value="pt"><?php echo msg('por'); ?></option>
 			</select>
 			<?php echo msg('year'); ?>
 			<div class="input-group" style="padding: 5px;">

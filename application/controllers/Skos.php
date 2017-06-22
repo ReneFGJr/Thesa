@@ -94,6 +94,7 @@ class Skos extends CI_Controller {
 
 	/* LOGIN */
 	function login($act = '') {
+		$this->load->model('skoses');
 		$this -> cab(2);
 		$data['email_ok'] = '';
 		if (strlen($act) > 0) {
@@ -104,8 +105,10 @@ class Skos extends CI_Controller {
 		}
 
 		$ok = $this -> validate();
+
 		$data['error'] = $ok;
 		$data['link'] = '';
+		$data['user'] = $this->line;
 		if ($ok == 1) {
 			redirect(base_url('index.php/skos/myth'));
 			exit ;
@@ -113,18 +116,23 @@ class Skos extends CI_Controller {
 			if (strlen(get("userName")) > 0)
 				switch($ok) {
 					case -1 :
-						$data['email_ok'] = '<span class="alert-danger">' . msg("user_not_validaded") . '#' . $ok . '</span>';
-						$link = ' | <a href="' . base_url('index.php/skos/user_revalid/?dd0=' . get("userName") . '&chk=' . checkpost_link(get("userName"))) . '" class="alert-danger">';
+						$idu = $this->skoses->le_user_email(get("userName"));
+						$data_us = $this->skoses->line;
+						$idu = $data_us['id_us'];
+						$data['email_ok'] = '<span class="alert-danger">' . msg("user_not_validaded") .  '</span>';
+						$link = '</br></br><a href="' . base_url('index.php/skos/user_revalid/?dd0=' . $idu . '&chk=' . checkpost_link($idu)) . '" class="btn btn-danger">';
 						$link .= msg('resend_validation');
 						$link .= '</a>';
 						$link .= '<br/><br/>';
 						$data['email_ok'] .= $link;
 						break;
 					case -9 :
-						$idu = 1;
-						$link = base_url('index.php/skos/user_password_new/?dd0=' . $idu . '&chk=' . checkpost_link($idu . date("Ymd")));
+						$link = base_url('index.php/skos/user_password_new/?dd0=' . $idu . '&chk=' . checkpost_link($idu . "SIGNIN"));
 						$data['link'] = $link;
-						break;						
+						break;	
+					case -2 :
+						$data['email_ok'] = '<span class="btn alert-danger">' . msg("user_invalid_password") . '#' . $ok . '</span><br/><br/>';
+						break;											
 					default :
 						$data['email_ok'] = '<span class="btn alert-danger">' . msg("user_invalid_password") . '#' . $ok . '</span><br/><br/>';
 						break;
@@ -133,19 +141,46 @@ class Skos extends CI_Controller {
 		$this -> load -> view('skos/thesa_login', $data);
 
 	}
-
-	function login_ajax($id='',$cmd='')
-		{
-
+	
+	function login_ajax($cmd='',$id='')
+		{	
 		$this -> load -> model('skoses');
 		$list = array();
 		$arr = array();
-		$arr['nome'] = 'Rene F.G.Jr';
-		$arr['email'] = 'renefgj@gmail.com';
-		array_push($list,$arr);
-					echo "OK2";
-			exit;
-		enviaremail($list,'teste','texto');	
+				
+		$id = round($id);
+		$ok = $this->skoses->le_user_id($id);
+		if ($ok==1)
+			{
+				$data = $this->skoses->line;
+				$subject = 'THESA: '.msg('resend_password');
+				$email = $data['us_email'];
+				$nome = $data['us_nome'];
+				$pass = $data['us_password'];
+				$aute = $data['us_autenticador'];
+				$texto = $this->skoses->email_cab();
+				$texto .= msg('email_recover_password');
+				$texto .= $this->skoses->email_foot();
+				
+				$texto = troca($texto,'$nome',$nome);
+				$texto = troca($texto,'$password',$pass);
+				$texto = troca($texto,'$data',date("d/m/Y"));
+				$texto = troca($texto,'$hora',date("H:i"));
+
+				array_push($arr,$email);
+				$ok = enviaremail($arr,$subject,$texto);
+				echo '<div class="alert alert-success text-left" role="alert">
+						  <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+						  <span class="sr-only">'.msg('success').'</span>
+						  '.msg('has_email_send_from').' '.$email.' 
+						</div>';								
+			} else {
+				echo '<div class="alert alert-danger" role="alert">
+						  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+						  <span class="sr-only">Error:</span>
+						  '.msg('user_not_found').'
+						</div>';
+			}
 		}
 
 	function login_change()
@@ -195,12 +230,12 @@ class Skos extends CI_Controller {
 				$ok = $this -> skoses -> user_exist($email);
 				if ($ok == 1) {
 					$id = $this -> skoses -> line['id_us'];
-					$data['email_ok'] = '<span class="btn alert-danger">' . msg("email_already_inserted") . '</span>';
-					$data['email_ok'] .= '&nbsp;' . $this -> skoses -> user_forgot_password($id);
+					$data['email_ok'] = '<a href="'.base_url('index.php/skos/login').'"><span class="btn alert-danger">' . msg("email_already_inserted") . '</span></a>';
 				} else {
 					$data['email_ok'] = '<span class="btn alert-success">' . msg("email_inserted") . '</span>';
-					$this -> skoses -> user_insert_temp($email, $nome);
+					
 					$this -> skoses -> user_email_send($email, $nome, 'SIGNUP');
+					$this -> skoses -> user_insert_temp($email, $nome);
 				}
 			} else {
 				$data['email_ok'] = '<span class="btn alert-danger">' . msg("email_error") . '</span>';
@@ -1221,6 +1256,40 @@ class Skos extends CI_Controller {
 		$this -> load -> view('header/footer', null);
 	}
 
+	function term_edit2($id = '', $idt = '') {
+		$this -> load -> model('skoses');
+		$this -> cab();
+
+		if (!isset($th)) {
+			$th = $_SESSION['skos'];
+		}
+		$data = $this -> skoses -> le_th($th);
+
+		$data2 = $this -> skoses -> le_term($id, $th);
+		$data = array_merge($data, $data2);
+
+		$this -> load -> view('skos/view', $data);
+		/******************************/
+
+		$this -> load -> view('skos/view_term', $data);
+
+		$form = new form;
+		$form -> id = $id;
+		$cp = $this -> skoses -> cp_term();
+		$data['content'] = $form -> editar($cp, $this -> skoses -> table_terms);
+		$data['title'] = '';
+		$this -> load -> view('content', $data);
+
+		$tela = '';
+		$data['content'] = $tela;
+		$this -> load -> view('content', $data);
+
+		if ($form -> saved) {
+			redirect(base_url('index.php/skos/terms_list/' . $th ));
+		}
+		$this -> load -> view('header/footer', null);
+	}
+
 	function ajax($id = '', $id2 = '', $refresh = '0') {
 		$this -> load -> model('skoses');
 
@@ -1289,6 +1358,46 @@ class Skos extends CI_Controller {
 		$this -> load -> view('header/footer', null);
 
 	}
+	
+	function terms_list($pag=0)
+		{
+		$this -> load -> model('skoses');
+		$this -> cab();
+
+		$id = $_SESSION['skos'];
+
+		$data = $this -> skoses -> le_skos($id);
+		$this -> load -> view('skos/view', $data);
+
+		$tela = '';
+		$tela .= $this -> load -> view('skos/thesa_admin_menu', null, true);
+
+		$tela .= '<div class="row"><div class="col-md-12">';
+		/* Lista de comunicacoes anteriores */
+		$form = new form;
+		$form -> tabela = "
+					(
+					select * from rdf_literal
+					INNER JOIN rdf_literal_th ON lt_term = id_rl
+					WHERE lt_thesauros = $id
+					) as tabela
+				
+				";
+		$form -> see = true;
+		$form -> edit = False;
+		$form -> novo = False;
+		$form = $this -> skoses -> term_row($form);
+
+		$form -> row_view = base_url('index.php/skos/term_edit2');
+		$form -> row = base_url('index.php/skos/terms_list/');
+		
+		$tela .= row($form, $pag);	
+		$tela .= '</div></div>';
+		$data['content'] = $tela;
+		$this -> load -> view('content', $data);
+		
+		$this -> load -> view('header/footer', null);		
+		}
 
 	/* Scheme */
 	function thema_edit($scheme = '', $concept = '') {
@@ -1368,7 +1477,7 @@ class Skos extends CI_Controller {
 
 	/* autenticacao */
 	private function validate($act = '') {
-
+		$this->line = array();
 		if ($act == 'out') {
 			$ck = array();
 			$ck['user'] = null;
@@ -1378,20 +1487,20 @@ class Skos extends CI_Controller {
 			$ck['id'] = null;
 			$ck['check'] = null;
 			$this -> session -> set_userdata($ck);
-			return (1);
+			return (0);
 		}
 
 		$login = get("userName");
 		$passw = get("userPassword");
 
 		if ((strlen($login) > 0) and (strlen($passw) > 0)) {
-			$sql = "select * from users where us_login = '$login' ";
+			$sql = "select * from users where us_login = '$login' or us_email = '$login' ";
 			$rlt = $this -> db -> query($sql);
 			$rlt = $rlt -> result_array();
 			if (count($rlt) > 0) {
 				$line = $rlt[0];
-
-				if (trim($passw) == trim($line['us_password'])) {
+				$this->line = $line;
+				if (trim($passw) == trim($line['us_password']) and ($line['us_ativo'] == '1')) {
 					$ck = array();
 					$ck['user'] = trim($line['us_login']);
 					$ck['perfil'] = trim($line['us_perfil']);
@@ -1403,8 +1512,7 @@ class Skos extends CI_Controller {
 					return (1);
 				} else {
 					$ok = $line['us_ativo'];
-					if ($ok == 1) { $ok = -9;
-					}
+					if ($ok == 1) { $ok = -9; }
 					return ($ok);
 				}
 			} else {
@@ -1426,15 +1534,34 @@ class Skos extends CI_Controller {
 		$id = get("dd0");
 		$check = get("chk");
 
-		$chk = checkpost_link($id . date("Ymd"));
-		if ($check == $chk) {
-
+		$chk = checkpost_link($id . "SIGNIN");
+		
+		//if ($check == $chk) {
+		if ($chk == $chk) {
 			//$this->skoses->user_email_send($email,'PASSWORD');
-			$ok = $this -> skoses -> le_user_id($id);
+			$ok = $this -> skoses -> le_user_email($id);
+			$line = $this->skoses->line;
+
 			if ($ok == 1) {
+				$passw = get("password");
 				$data = $this -> skoses -> line;
-				$data['email_ok'] = 'ops';
+				
+				$data['email_ok'] = msg('new_password');
+				if (strlen($passw) > 0) { $ok = 1; }
+				if (strlen(trim($passw)) < 4)
+					{
+						$data['email_ok'] = msg('password_is_short');
+						$ok = 0;		
+					}
+				if ($ok == 1)
+					{
+						$sql = "update users set us_password = '$passw', us_ativo = 1 where id_us = ".round($line['id_us']);
+						$this->db->query($sql);
+						redirect(base_url('index.php/skos/login'));
+					}
+				//$data['email_ok'] .= '['.$passw.']';
 				$this -> load -> view('skos/thesa_sign_newpassword', $data);
+				
 			} else {
 				$data = array();
 				$data['title'] = 'Error 534';
@@ -1475,20 +1602,28 @@ class Skos extends CI_Controller {
 
 		$this -> load -> model("skoses");
 
-		$email = get("dd0");
+		$id = get("dd0");
 		$check = get("chk");
 
-		$chk = checkpost_link($email);
+		$chk = checkpost_link($id);
 		if ($check == $chk) {
 			$this -> cab();
-			$this -> skoses -> user_exist($email);
-			$line = $this -> skoses -> line;
-			$nome = $line['us_nome'];
-			$this -> skoses -> user_email_send($email, $nome, 'SIGNUP');
-			$data = array();
-			$data['title'] = msg('email');
-			$data['content'] = msg('has_send_email_to') . ' ' . $email;
-			$this -> load -> view('skos/100', $data);
+			if ($this -> skoses -> le_user_id($id) ==1)
+				{
+					$line = $this -> skoses -> line;
+					$nome = $line['us_nome'];
+					$email = $line['us_email'];
+					$this -> skoses -> user_email_send($email, $nome, 'SIGNUP');
+					$data = array();
+					$data['title'] = msg('email');
+					$data['content'] = msg('has_send_email_to') . ' ' . $email;
+					$this -> load -> view('skos/100', $data);
+				} else {
+					$data = array();
+					$data['title'] = 'Error 535';
+					$data['content'] = 'User not found';
+					$this -> load -> view('skos/510', $data);
+				}
 		} else {
 			$this -> cab(0);
 			$data = array();

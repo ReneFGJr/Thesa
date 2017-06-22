@@ -5,7 +5,11 @@ if (!isset($action)) {
 ?>
 <div class="container">
 	<div class="row">
-		<div class="col-md-10"><?php echo msg('pref_term'); ?></br><font class="xxxbig"><?php echo $rl_value; ?></font></div>
+		<div class="col-md-10"><?php echo msg('pref_term'); ?></br><font class="xxxbig"><?php echo $rl_value; ?>
+			<sup>(<?php echo $rl_lang;?>)</sup>
+		</font>
+			
+		</div>
 		<div class="col-md-2"><?php echo msg('concept'); ?></br><font class="xxxbig"><?php echo $c_concept; ?></font></div>
 	</div>
 </div>
@@ -36,12 +40,9 @@ if (!isset($action)) {
 			if ((count($terms_tr) +$editar)  > 0) {
 				echo '<h4>';
 				echo msg('concept_TR');
-				if (count($terms_tr) == 0)
-					{
-					echo ' <a href="#" onclick="newwin(\''.base_url('index.php/skos/tr/'.$id_c.'/'.checkpost_link($id_c)).'\',500,500);">';
-					echo '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>';
-					echo '</a>';
-					}				
+				echo ' <a href="#" onclick="newwin(\''.base_url('index.php/skos/tr/'.$id_c.'/'.checkpost_link($id_c)).'\',500,500);">';
+				echo '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>';
+				echo '</a>';
 				echo '</h4>';
 				echo $this -> skoses -> concepts_show($terms_tr);
 			}
@@ -84,8 +85,21 @@ if (!isset($action)) {
 			</div>
 		<div class="col-md-2">
 			<a href="<?php echo base_url('index.php/skos/json/'.$c_concept);?>" target="_new" class="btn btn-default">JSON</a>
-			<h4><?php echo msg('concept_IMG'); ?></h4>
-			<img src="<?php echo base_url('_acervo/thumb/0000000_287px.jpg');?>" border=1 class="img-rounded" style="width: 100%">
+			<h4><?php echo msg('concept_IMG'); ?>
+			<?php
+			if ($editar == 1)
+				{
+				echo ' <a href="#" onclick="newwin(\''.base_url('index.php/skos/te/'.$id_c.'/'.checkpost_link($id_c)).'\',500,500);">';
+				echo '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>';
+				echo '</a>';
+				}
+			?>				
+			</h4>
+			<?php for ($r=0;$r < count($images);$r++)
+				{
+					echo '<img src="'.$images[$r].'" border=1 class="img-rounded" style="width: 100%">';		
+				}
+			?>
 		</div>
 	</div>
 </div>

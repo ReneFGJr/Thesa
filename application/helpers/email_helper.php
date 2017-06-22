@@ -21,7 +21,7 @@ $email_adm = '';
 
 require_once ("libs/email/PHPMailerAutoload.php");
 
-function enviaremail($para, $assunto, $texto, $de, $anexos = array()) {
+function enviaremail($para, $assunto, $texto, $de=1, $anexos = array()) {
 	global $sem_copia;
 
 	if (!isset($sem_copia)) { $sem_copia = 0;
@@ -74,7 +74,7 @@ function enviaremail($para, $assunto, $texto, $de, $anexos = array()) {
 		$CI -> email -> to($para[0]);
 		$CI -> email -> subject($assunto);
 		$CI -> email -> message($email_header . $texto . $email_footer);
-
+		$CI -> email -> mailtype = 'html';
 		if ($sem_copia != 1) {
 			array_push($para, trim($line['m_email']));
 			//array_push($para, 'renefgj@gmail.com');
@@ -102,9 +102,28 @@ function enviaremail($para, $assunto, $texto, $de, $anexos = array()) {
 				setTimeout(function() {	$(\'#email_enviado\').fadeOut(\'fast\');}, 3000);
 				</script>
 				';
-
-		$CI -> email -> send();
-		return ('ok');
+		$proto = $CI->email->protocol;
+		switch($proto)
+			{
+			case 'ufrgs':
+				$to      = 'renefgj@gmail.com';
+				$subject = 'Assunto sem caracteres especiais';
+				$message = 'conteudo do email. 
+				Atencao para codificacao do texto, clientes de email podem interpretar errado';
+				
+				$headers = 'From: Thesa <00282381@ufrgs.br> ' . "\r\n" .
+				           'Reply-To: endereco_de_contato_ao_fazer_reply_to@ufrgs.br' . "\r\n" .
+				           'X-Mailer: PHP/' . phpversion();
+				
+				$real_sender = '-f 00282381@ufrgs.br';
+				
+				mail($to, $subject, $message, $headers, $real_sender);
+				break;				
+			default:
+				return($CI -> email -> send());
+				break;
+			}
+		return (1);
 	} else {
 		echo('<font color="red">Proprietário do e-mail (' . $de . ') não configurado (veja mensagem_own)</font>');
 		exit ;
@@ -156,7 +175,7 @@ function sendmail($para,$titulo,$texto)
 function sendmail_smtp($para, $titulo, $texto) {
 	global $email_from, $email_from_name, $email_port, $email_smtp, $email_pass, $email_user, $email_auth, $email_debug, $email_replay, $email_sign;
 	
-	
+	$email_debug = 1;
 	
 	if (strlen($email_from) == 0) {
 		echo '<H1>Erro #120#</h1>';

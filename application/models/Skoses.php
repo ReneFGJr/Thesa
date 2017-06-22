@@ -101,6 +101,12 @@ class skoses extends CI_model {
 			return ( array());
 		}
 	}
+	
+	function le_images($id)
+		{
+			$img = array();
+			return($img);
+		}
 
 	/* Read Concept */
 	function le_c($id, $th = '') {
@@ -123,7 +129,13 @@ class skoses extends CI_model {
 			$line['terms_tm'] = $this -> le_c_propriety_group($id, $th, 'TE');
 			$line['terms_hd'] = $this -> le_c_hidden($id, $th);
 			$line['terms_ge'] = ARRAY();
-
+			
+			$line['images'] = $this->le_images($id);
+			if (count($line['images']) == 0)
+				{
+					$img = array(base_url('_acervo/thumb/0000000_287px.jpg'));
+					$line['images'] = $img;					
+				}
 			$line['allow'] = $this -> le_c_users($th);
 
 			$line['notes'] = $this -> le_c_note($id, $th);
@@ -693,6 +705,22 @@ class skoses extends CI_model {
 		$sx .= '</ul>' . cr();
 		return ($sx);
 	}
+	/***** EMAIL */
+	function email_cab()
+		{
+			$sx = '<table width="600" align="center"><tr><td>';
+			$sx .= '<font style="font-family: Tahoma, Verdana, Arial; font-size: 14px;">'.cr();
+			$sx .= '<font color="blue">THESA</font>'.cr();
+			$sx .= '<hr>';
+			return($sx);
+		}
+	function email_foot()
+		{
+			$sx = '';
+			$sx .= '<hr>';
+			$sx .= '</td></tr></table>';
+			return($sx);
+		}
 
 	/* Export to json */
 	function to_json($id) {
@@ -1071,8 +1099,8 @@ class skoses extends CI_model {
 	function cp_term($id = '') {
 		$cp = array();
 		array_push($cp, array('$H8', 'id_rl', '', true, true));
-		array_push($cp, array('$S80', 'rl_value', msg('term_name'), true, true));
-
+		array_push($cp, array('$S100', 'rl_value', msg('term_name'), false, false));
+		
 		$sql = "select * from language order by lg_order";
 		array_push($cp, array('$Q  lg_code:lg_language:' . $sql, 'rl_lang', msg('language'), true, true));
 		array_push($cp, array('$B8', '', msg('save'), false, true));
@@ -1323,8 +1351,7 @@ class skoses extends CI_model {
 		$terms = count($xrlt);
 		if ($terms > 2) { $cols = 2;
 		}
-		if ($terms > 30) { $cols = 3;
-		}
+
 
 		$sx = '<div class="row" style="-moz-column-count: ' . $cols . '; -webkit-column-count: ' . $cols . ';">' . cr();
 		$sx .= '<ul class="thesa">';
@@ -1795,74 +1822,52 @@ class skoses extends CI_model {
 		return ($sx);
 	}
 
-	function user_forgot_password($email) {
-		$email = sonumero($email);
-		$ok = $this -> le_user_id($email);
-		if ($ok == 0) {
 
-		} else {
-
-		}
-		$sx = '<span class="link" onclick="newwin(\'' . base_url('index.php/skos/user_forgot/' . $email . '/' . checkpost_link($email . date("Ymd"))) . '\',400,200);">';
-		$sx .= msg('forgot_password');
-		$sx .= '</span>';
-		return ($sx);
-	}
-
-	function user_email_send($para, $code) {
+	function user_email_send($para, $nome, $code) {
 		$anexos = array();
-		$texto = 'SIGNUP - Thesa<hr>';
+		$texto = $this->email_cab();
 		$de = 0;
 		switch($code) {
 			case 'SIGNUP' :
 				$link = base_url('index.php/skos/user_password_new/?dd0=' . $para . '&chk=' . checkpost_link($para . date("Ymd")));
 				$assunto = 'Cadastro de novo usuários - Thesa';
-				$texto .= 'Para ativar seu cadastro é necessário clicar no link abaixo:';
+				$texto .= '<p>' . msg('Dear') . ' <b>' . $nome . ',</b></p>';
+				$texto .= '<p>Para ativar seu cadastro é necessário clicar no link abaixo:';
 				$texto .= '<br><br>';
-				$texto .= '<a href="' . $link . '" target="_new">' . $link . '</a>';
-				$texto = utf8_decode($texto);
-				$assunto = utf8_decode($assunto);
+				$texto .= '<a href="' . $link . '" target="_new">' . $link . '</a></p>';
 				$de = 1;
 				break;
 			case 'PASSWORD' :
 				$this -> le_user_id($para);
 				$link = base_url('index.php/skos/user_password_new/?dd0=' . $para . '&chk=' . checkpost_link($para . date("Ymd")));
-				$assunto = 'Cadastro de novo senha - Thesa';
-				$texto = '<p>' . msg('Dear') . ' ' . $this -> line['us_nome'] . '</p>';
+				$assunto = msg('Cadastro de novo senha').' - Thesa';
+				$texto .= '<p>' . msg('Dear') . ' ' . $this -> line['us_nome'] . '</p>';
 				$texto .= '<p>' . msg('change_new_password') . '</p>';
 				$texto .= '<br><br>';
 				$texto .= '<a href="' . $link . '" target="_new">' . $link . '</a>';
-				$texto = utf8_decode($texto);
-				$assunto = utf8_decode($assunto);
 				$de = 1;
 				break;
 			default :
 				$assunto = 'Enviado de e-mail';
-				$texto = 'texto';
+				$texto .= ' Vinculo não informado '.$code;
 				$de = 1;
 				break;
 		}
+		$texto .= $this->email_foot();
 		if ($de > 0) {
-			$texto = $this -> formatar_email($texto);
 			enviaremail($para, $assunto, $texto, $de);
 		} else {
 			echo 'e-mail não enviado - ' . $code;
 		}
-
 	}
 
-	function formatar_email($text) {
-		$sx = '';
-		$sx .= '<div style="border: 0px solid #808080; padding: 10px; margin-left: 20%; margin-right: 20%;">';
-		$sx .= '<h3>THESA</h3>';
-		$sx .= '</div>';
-		$sx .= '<div style="border: 1px solid #808080; padding: 10px; margin-left: 20%; margin-right: 20%;">';
-		$sx .= $text;
-		$sx .= '</div>';
-
-		echo $sx;
-		return ($sx);
-	}
+	function term_row($obj)
+		{
+		$obj -> fd = array('id_rl', 'rl_value','rl_lang');
+		$obj -> lb = array('ID', msg('value'),msg('language'));
+		$obj -> mk = array('', 'L', 'C');
+		return ($obj);
+		}
 
 	function user_insert_temp($email, $name) {
 		if ($this -> user_exist($email) == 0) {
@@ -1926,7 +1931,7 @@ class skoses extends CI_model {
 	}
 
 	function le_user_email($email) {
-		$sql = "select * from users where us_email = '$email' ";
+		$sql = "select * from users where us_email = '$email' or us_login = '$email' ";
 		$rlt = $this -> db -> query($sql);
 
 		$rlt = $rlt -> result_array();

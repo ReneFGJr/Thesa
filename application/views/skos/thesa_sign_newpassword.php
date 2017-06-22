@@ -16,16 +16,16 @@
 					<input readonly type="string" name="email" value="<?php echo $us_login;?>" id="email" class="form-control input-sm chat-input" placeholder="<?php echo msg('email'); ?>" style="font-size: 200%; height: 250%;  color: #808080;" />
 					</br>
 					
+					<span><?php echo msg('Informe sua NOVA senha'); ?></span>
+					<input  type="password" name="password" value="" id="email" class="form-control input-sm chat-input" placeholder="<?php echo msg('password'); ?>" style="font-size: 200%; height: 250%;  color: #808080;" />
+					</br>					
+					
 					<span><?php echo $email_ok;?></span>
 					</br></br>
 					
 					<div class="wrapper">
-						<span class="group-btn" id="signup"> <a href="#" class="btn btn-primary btn-md"><?php echo msg('Sign Up Send'); ?>
-							<i class="fa fa-sign-in"></i></a> </span>
-
-						<span class="group-btn" id="return"> <a href="#" class="btn btn-default btn-md"><?php echo msg('Return'); ?>
-							<i class="fa fa-sign-in"></i></a> </span>
-							
+						<span class="group-btn" id="signup"> <a href="#" class="btn btn-primary btn-md"><?php echo msg('Save_password'); ?>
+							<i class="fa fa-sign-in"></i></a> </span>						
 					</div>
 				</form>
 				<br>

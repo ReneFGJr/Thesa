@@ -28,15 +28,25 @@ if (!function_exists(('msg')))
 					}
 			}
 	}
-    
+$lang['bt_search'] = 'filtrar';
+$lang['bt_clear'] = 'limpar filtro';
 /* FIND */
 $lang['dc:creator'] = 'Agente(s)';
 $lang['action_not_defined'] = 'Ação não definida no sistema';
-
+$lang['user_not_found'] = 'Usuário não localizado no cadastro';
+$lang['email_recover_password'] = 'Prezado <b>$nome</b>, </br></br><p>Você solicitou o envio de sua senha para esse e-mail em $data $hora.<p></br></br>Sua senha é <b>$password</b></p>';
+$lang['resend_validation'] = 'Reenviar validação';
+$lang['user_not_validaded'] = 'Usuário não validado';
+$lang['terms_list'] = 'Descritores do tesauro';
+$lang['preferences'] = 'Dados do tesauro';
+$lang['userName'] = 'Nome do usuário';
+$lang['userEmail'] = 'e-mail';
+$lang['thesaurus_status'] = 'Tipo';
 /* Colaborador */
 $lang['language'] = 'idioma';
 $lang['Portuguese'] = 'Português';	
 $lang['English'] = 'Inglês';
+$lang['close'] = 'fechar';
 
 $lang['resend_password'] = 'Reenviar senha';
 $lang['cancel'] = 'cancelar';
@@ -99,7 +109,7 @@ $lang['finished'] = 'finalizado';
 $lang['revised'] = 'revisado';
 $lang['to review'] = 'para revisão';
 
-$lang['pt_BR'] = 'Português';
+$lang['por'] = 'Português';
 $lang['en'] = 'Inglês';
 $lang['es'] = 'Espanhol';
 $lang['fr'] = 'Francês';

@@ -1,3 +1,21 @@
+#npag ul {
+	border: 1px solid #000000;
+}
+#npag li {
+	border: 1px solid #000000;
+	background-color: #EEE;
+	width: 30px;
+	text-align: center;
+	margin-left: 2px;
+	list-style-type: none;
+	display: inline-block;
+	cursor: pointer;
+}
+#npag li:hover {
+	background-color: #333;
+	color: #EEEEEE;
+}
+
 .btn-social {
     width: 90%;
     position: relative;

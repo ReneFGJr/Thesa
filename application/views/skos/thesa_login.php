@@ -45,7 +45,7 @@
 			        <?php echo msg('resend_password_text');?>
 			      </div>
 			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo msg('cancel');?></button>
+			        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo msg('close');?></button>
 			        <button type="button" id="sendmail" class="btn btn-primary"><?php echo msg('send_password');?></button>
 			      </div>
 			      <div class="modal-footer" id="email" style="display: none;">
@@ -72,15 +72,17 @@
 	$("#signin").click(function() {
 		$("#form").submit();
 	});
+	<?php if (isset($user['id_us'])) { ?>
 	$("#sendmail").click(function() {
 		$("#email").fadeIn("slow");
 		$.ajax({
-		  url: '<?php echo base_url('index.php/skos/login_ajax/email/');?>',
+		  url: '<?php echo base_url('index.php/skos/login_ajax/email/'.$user['id_us'].'/'.checkpost_link($user['id_us'].'password'));?>',
 		  success: function(data) {
 		      $('#email').html(data);
 		  }
 		});
 	});	
+	<?php } ?>
 	$("#signup").click(function() {
 		$(location).attr('href', '<?php echo base_url('index.php/skos/login_sign_up'); ?>
 			');

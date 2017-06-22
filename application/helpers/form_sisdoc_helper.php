@@ -9,7 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @category	Helpers
  * @author		Rene F. Gabriel Junior <renefgj@gmail.com>
  * @link		http://www.sisdoc.com.br/CodIgniter
- * @version		v0.17.06.11
+ * @version		v0.17.06.21
  */
 $dd = array();
 
@@ -2356,7 +2356,7 @@ if (!function_exists('form_edit')) {
 				if ($required == 1) { $tela .= ' <font color="red">*</font> ';
 				}
 
-				$dados = array('name' => $dn, 'id' => $dn, 'value' => $vlr, 'maxlenght' => $max, 'size' => $size, 'class' => 'form_string ');
+				$dados = array('name' => $dn, 'id' => $dn, 'value' => $vlr, 'maxlenght' => $max, 'size' => $size, 'class' => 'form-control ');
 				$tela .= $td . form_password($dados);
 				$tela .= $tdn . $trn;
 				break;
