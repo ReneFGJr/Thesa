@@ -38,7 +38,13 @@ if (strlen($file) > 0)
 }
 
 </style>
-<svg width="960" height="2000"></svg>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <svg width="960" height="800"></svg>
+        </div>
+    </div>
+</div>
 <script src="<?php echo base_url('js/d3.v4.min.js');?>"></script>
 <script>
 

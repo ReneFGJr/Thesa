@@ -621,12 +621,21 @@ class Skos extends CI_Controller {
 
 	/***************************************************************************** Conecpt */
 	function th($th = '') {
+        /* Load model */
+        $this -> load -> model("skoses");
+        $this -> cab();
+	    
 		if (strlen($th) == 0) {
 			$th = $_SESSION['skos'];
 		}
-		/* Load model */
-		$this -> load -> model("skoses");
-		$this -> cab();
+        $data = $this -> skoses -> le_skos($th);
+        $this -> load -> view('skos/view', $data);
+
+        $tela = '';
+        $tela .= $this -> load -> view('skos/thesa_admin_menu', null, true);
+        $data['content'] = $tela;
+        $this->load->view('content',$data);
+                
 		$data['file'] = $th;
 		//$this->load->view('grapho/mind_tree',null);
 		//$this->load->view('grapho/mind_map',null);

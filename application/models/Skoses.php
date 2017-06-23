@@ -558,6 +558,8 @@ class skoses extends CI_model {
 
 			$tc = $tt;
 			foreach ($desc as $key => $value) {
+			    $value = troca($value,'.',' ');
+                $value = troca($value,',',' ');
 				$tt = troca($tt, '[' . $key . ']', $value . '.');
 			}
 			$tt = troca($tt, '.,', ',');
