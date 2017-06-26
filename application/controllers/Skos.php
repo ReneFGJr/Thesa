@@ -127,6 +127,9 @@ class Skos extends CI_Controller {
                         $data['email_ok'] .= $link;
                         break;
                     case -9 :
+                        $idu = $this -> skoses -> le_user_email(get("userName"));
+                        $data_us = $this -> skoses -> line;
+                        $idu = $data_us['id_us'];						
                         $link = base_url('index.php/skos/user_password_new/?dd0=' . $idu . '&chk=' . checkpost_link($idu . "SIGNIN"));
                         $data['link'] = $link;
                         break;
@@ -1438,6 +1441,38 @@ class Skos extends CI_Controller {
         $this -> load -> view('header/footer', null);
 
     }
+
+	function terms_from_to($id='')
+		{
+        $this -> load -> model('skoses');
+        $this -> cab();
+
+        if (strlen($id) == 0) {
+            $id = $_SESSION['skos'];
+        }
+
+        $data = $this -> skoses -> le_skos($id);
+        $this -> load -> view('skos/view', $data);
+
+        $tela = '';
+        $tela .= $this -> load -> view('skos/thesa_admin_menu', null, true);
+
+        $tela .= '<div class="row">';
+		$tela .= msg('export_to');
+		$tela .= ' <a href="'.base_url('index.php/skos/terms_from_to/'.$id.'/csv').'" class="btn btn-default">CSV</a> ';
+		$tela .= ' <a href="'.base_url('index.php/skos/terms_from_to/'.$id.'/sql').'" class="btn btn-default">SQL</a> ';
+		$tela .= ' <a href="'.base_url('index.php/skos/terms_from_to/'.$id.'/rdf').'" class="btn btn-default">RDF</a> ';
+		$tela .= '<br>';
+		$tela .= '<br>';
+		
+		$tela .= '<pre>'.$this->skoses->from_to($id,'=>').'</pre>';
+
+        $tela .= '</div>';
+        $data['content'] = $tela;
+        $this -> load -> view('content', $data);
+
+        $this -> load -> view('header/footer', null);	
+		}
 
     function terms_list($pag = 0) {
         $this -> load -> model('skoses');

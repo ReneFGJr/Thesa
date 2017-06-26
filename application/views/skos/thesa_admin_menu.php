@@ -50,7 +50,8 @@ if (!isset($_SESSION['id']))
           <ul class="dropdown-menu">
             <li><a href="<?php echo base_url('index.php/skos/check_all/'); ?>"><?php echo msg('check_all'); ?></a></li>
             <li><a href="<?php echo base_url('index.php/skos/th_edit/'.$th.'/'.checkpost_link($th)); ?>"><?php echo msg('preferences'); ?></a></li>
-			<li><a href="<?php echo base_url('index.php/skos/terms_list/');?>"><?php echo msg('terms_list'); ?></a></li>            
+			<li><a href="<?php echo base_url('index.php/skos/terms_list/');?>"><?php echo msg('terms_list'); ?></a></li>
+			<li><a href="<?php echo base_url('index.php/skos/terms_from_to/');?>"><?php echo msg('remissiva_de_para'); ?></a></li>                
           </ul>
         </li>        
         

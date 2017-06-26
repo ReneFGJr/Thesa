@@ -30,6 +30,7 @@ if (!function_exists(('msg')))
 	}
 $lang['bt_search'] = 'filtrar';
 $lang['bt_clear'] = 'limpar filtro';
+$lang['export_to'] = 'Exportar para';
 /* FIND */
 $lang['dc:creator'] = 'Agente(s)';
 $lang['action_not_defined'] = 'Ação não definida no sistema';

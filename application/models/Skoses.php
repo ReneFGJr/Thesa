@@ -1552,6 +1552,34 @@ class skoses extends CI_model {
 							)";
 		}	$rlt = $this -> db -> query($sql);
 	}
+	
+	function from_to($th=0,$separador='=>')
+		{
+			$sql = "select * from th_concept_term 
+						INNER JOIN rdf_literal ON ct_term = id_rl
+						where ct_th = $th and ct_term > 0
+						order by ct_concept, ct_propriety";
+			$rlt = $this->db->query($sql);
+			$rlt = $rlt->result_array();
+			$mst = '';
+			$sx = '';
+			for ($r=0;$r < count($rlt);$r++)
+				{
+					$line = $rlt[$r];
+					$idcx = $line['ct_concept'];
+					$prop = $line['ct_propriety'];
+					$valo = trim($line['rl_value']);
+					if ($prop == 25)
+						{
+							$mst = trim($line['rl_value']);	
+						}	
+					if ($valo != $mst)
+						{
+							$sx .= $line['rl_value'].$separador.$mst.cr();
+						} 
+				}
+			return($sx);
+		}
     
     function image_concept($c,$img)
         {
@@ -1566,10 +1594,12 @@ class skoses extends CI_model {
                                 values
                                 ($c,'$img',1)";
                 } else {
+                	$line = $rlt[0];
                     $id = $line['id_ic'];
-                    $sql = "update rdf_image_concept
+                    $sql = "update rdf_image_concept set
                                 ic_url = '$img'
                                 where id_ic = $id ";
+
                 }
                 $this->db->query($sql);
         }
