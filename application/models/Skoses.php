@@ -105,6 +105,16 @@ class skoses extends CI_model {
 	function le_images($id)
 		{
 			$img = array();
+            $id = round($id);
+            $sql = "select * from rdf_image_concept where ic_concept = $id";
+            $rlt = $this->db->query($sql);
+            $rlt = $rlt->result_array();
+            
+            for ($r=0;$r < count($rlt);$r++)
+                {
+                    $line = $rlt[$r];
+                    array_push($img,$line['ic_url']);
+                }            
 			return($img);
 		}
 
@@ -133,7 +143,7 @@ class skoses extends CI_model {
 			$line['images'] = $this->le_images($id);
 			if (count($line['images']) == 0)
 				{
-					$img = array(base_url('_acervo/thumb/0000000_287px.jpg'));
+					$img = array('_acervo/thumb/0000000_287px.jpg');
 					$line['images'] = $img;					
 				}
 			$line['allow'] = $this -> le_c_users($th);
@@ -577,6 +587,91 @@ class skoses extends CI_model {
 		}
 	}
 
+    function le_tree_sistematic($th = 0) {
+        $th = round(sonumero($th));
+        $sql = "select l1.id_rl as id1, l1.rl_value as lt1,
+                       l2.id_rl as id2, l2.rl_value as lt2
+                    FROM th_concept_term as t1
+                    INNER JOIN th_concept_term as t2 ON t1.ct_concept_2 = t2.ct_concept and t2.ct_propriety = " . $this -> CO . "
+                    INNER JOIN th_concept_term as t3 ON t1.ct_concept = t3.ct_concept and t3.ct_propriety = " . $this -> CO . " 
+                    INNER JOIN rdf_literal as l1 ON l1.id_rl = t2.ct_term
+                    LEFT JOIN rdf_literal as l2 ON l2.id_rl = t3.ct_term
+                        WHERE t1.ct_th = $th and t1.ct_propriety = " . $this -> TG;
+        $rlt = $this -> db -> query($sql);
+        $rlt = $rlt -> result_array();
+        $desc = array();
+        $h = array();
+        if (count($rlt) > 0) {
+            /* Read BT */
+            $tr = array();
+            for ($r = 0; $r < count($rlt); $r++) {
+                $line = $rlt[$r];
+
+                /* Lista dos descritores */
+                $id1 = $line['id1'];
+                $desc[$id1] = $line['lt1'];
+                $id2 = $line['id2'];
+                $desc[$id2] = $line['lt2'];
+
+                $h[$id2]['name'] = $line['lt2'];
+                $h[$id2][$id1]['name'] = $line['lt1'];
+
+                $tr[$id1] = $id2;
+            }
+            $tt = '';
+            $i = 0;
+            foreach ($tr as $v1 => $v2) {
+                $tx = '';
+                $vm = $v2;
+                $vb = $v1;
+                $tx = '[' . $vm . '][' . $vb . ']';
+                $esc = 50;
+
+                while ((isset($tr[$vm])) and ($esc-- > 0)) {
+                    $vm = $tr[$vm];
+                    $tx = '[' . $vm . ']' . $tx;
+                }
+                if ($i == 0) {
+                    $tt .= $desc[$vm] . cr();
+                    $i++;
+                }
+                $tt .= $tx . ',1' . cr();
+            }
+            $tc = $tt;
+            foreach ($desc as $key => $value) {
+                $value = troca($value,'.',' ');
+                $value = troca($value,',',' ');
+                $tt = troca($tt, '[' . $key . ']', $value . '.');
+            }
+            $tt = troca($tt, '.,', ',');
+            
+            $tt = troca($tt,chr(13),';');
+            $tt = troca($tt,',1','');
+            $ln = splitx(';',$tt);
+            asort($ln);
+            /******************************/
+            $tt = '';
+            foreach ($ln as $key => $l) {
+                    $ll = $l;
+                    $i = 0;
+                    while (strpos($l,'.'))
+                        {
+                            $i++;
+                            $l = substr($l,strpos($l,'.')+1,strlen($l));
+                        }
+                    for ($y=0;$y < ($i);$y++)
+                        {
+                            $l = '.'.$l;
+                        }
+                    $tt .= $l.'<br>'.cr();
+                    
+                }
+            return ($tt);
+        } else {
+            return ( array());
+        }
+    }
+
 	function le_report($th = 0) {
 		$th = round(sonumero($th));
 		$sql = "select *
@@ -586,7 +681,6 @@ class skoses extends CI_model {
 					ORDER BY rl_value
 				";
 		$rlt = $this -> db -> query($sql);
-		echo $sql;
 		$rlt = $rlt -> result_array();
 		$desc = array();
 		$h = array();
@@ -1458,6 +1552,27 @@ class skoses extends CI_model {
 							)";
 		}	$rlt = $this -> db -> query($sql);
 	}
+    
+    function image_concept($c,$img)
+        {
+            $sql = "select * from rdf_image_concept where ic_concept = ".round($c);
+            $rlt = $this->db->query($sql);
+            $rlt = $rlt->result_array();
+            
+            if (count($rlt) == 0)
+                {
+                    $sql = "insert into rdf_image_concept
+                                (ic_concept, ic_url, ic_status)
+                                values
+                                ($c,'$img',1)";
+                } else {
+                    $id = $line['id_ic'];
+                    $sql = "update rdf_image_concept
+                                ic_url = '$img'
+                                where id_ic = $id ";
+                }
+                $this->db->query($sql);
+        }
 
 	function glossario($th = '') {
 		$sql = "select r1.rl_value as rl1, r2.rl_value as rl2,note0.rs_propriety as prop,

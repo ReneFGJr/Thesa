@@ -1,4 +1,4 @@
-<div class="container-fluid bg_thesa" style="margin-top: 50px;">
+<div class="container-fluid bg_thesa nopr" style="margin-top: 50px;">
 	<div class="row" style="height: 70px;">
 		<div class="col-md-12">
 			<form method="post" action="<?php echo base_url('index.php/skos/search/');?>">

@@ -89,7 +89,7 @@ if (!isset($action)) {
 			<?php
 			if ($editar == 1)
 				{
-				echo ' <a href="#" onclick="newwin(\''.base_url('index.php/skos/te/'.$id_c.'/'.checkpost_link($id_c)).'\',500,500);">';
+				echo ' <a href="#" onclick="newwin(\''.base_url('index.php/skos/timg/'.$id_c.'/'.checkpost_link($id_c)).'\',500,500);">';
 				echo '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>';
 				echo '</a>';
 				}
@@ -97,7 +97,7 @@ if (!isset($action)) {
 			</h4>
 			<?php for ($r=0;$r < count($images);$r++)
 				{
-					echo '<img src="'.$images[$r].'" border=1 class="img-rounded" style="width: 100%">';		
+					echo '<img src="'.base_url($images[$r]).'" border=1 class="img-rounded" style="width: 100%">';		
 				}
 			?>
 		</div>

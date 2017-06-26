@@ -306,8 +306,18 @@ if (!function_exists('dir')) {
 		}
 		return ($ok);
 	}
-
 }
+    function dircheck($dir) {
+        $ok = 0;
+        if (is_dir($dir)) { $ok = 1;
+        } else {
+            mkdir($dir);
+            $rlt = fopen($dir . '/index.php', 'w');
+            fwrite($rlt, 'acesso restrito');
+            fclose($rlt);
+        }
+        return ($ok);
+    }
 
 function mst($txt) {
 	$txt = troca($txt, chr(13), '<br/>');

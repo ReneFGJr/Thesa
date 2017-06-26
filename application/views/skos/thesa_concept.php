@@ -142,6 +142,13 @@ $linkr .= '/skos/c/' . $id_c . '/rdf';
 
 		}
 				?>
+		</div>
+		<div class="col-md-2">
+            <?php for ($r=0;$r < count($images);$r++)
+                {
+                    echo '<img src="'.base_url($images[$r]).'" border=1 class="img-rounded img-responsive">';      
+                }
+            ?>
 		</div>		
 	</div>
 </div>

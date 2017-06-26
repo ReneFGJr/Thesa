@@ -1,3 +1,9 @@
+@media print {
+    .nopr {
+        display: none;
+    }
+}
+
 #npag ul {
 	border: 1px solid #000000;
 }
