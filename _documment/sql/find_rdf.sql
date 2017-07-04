@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `find_rdf` (
   `fr_propriety` int(11) NOT NULL,
   `fr_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `fr_agency` int(11) NOT NULL
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `find_rdf`

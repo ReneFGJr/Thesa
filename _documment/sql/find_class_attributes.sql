@@ -37,7 +37,7 @@ CREATE TABLE `find_class_attributes` (
   `fcs_group` char(20) NOT NULL,
   `fcs_rule` int(11) NOT NULL,
   `fcs_range` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB	DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `find_class_attributes`

@@ -72,6 +72,9 @@
                       
                           <ul class="dropdown-menu">
                                 <li>
+                                <a href="<?php echo base_url('index.php/find/authority'); ?>" class="menu_sk"><?php echo msg('authority'); ?></a>
+                                </li>
+                                <li>
                                 <a href="<?php echo base_url('index.php/find/cataloging'); ?>" class="menu_sk"><?php echo msg('bibliografic'); ?></a>
                                 </li>
                                 <li>

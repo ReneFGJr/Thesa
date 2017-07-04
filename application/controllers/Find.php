@@ -115,6 +115,39 @@ class find extends CI_controller {
         $this -> load -> view('content', $data);
     }
 
+    function authority()
+        {
+        /* Edit attribute */
+        $this -> load -> model('finds');
+        $this -> cab();
+        
+        $cp = array();
+        array_push($cp,array('$H8','','',false,false));
+        array_push($cp,array('$A1','',msg('Viaf import'),false,true));
+        array_push($cp,array('$S100','','link',false,true));
+        
+        array_push($cp,array('$B8','',msg('import link >>>'),false,true));
+        
+        $id = '';
+        $form = new form;
+        $form->id = $id;
+        
+        $tela = $form->editar($cp,'');
+        
+        if ($form->saved > 0)
+            {
+                $link = get("dd2");
+                $this->finds->authority_fiaf_import($link);
+            }
+        
+        $data['content'] = $tela;
+        $data['title'] = '';
+        $this->load->view('content',$data);
+        
+        $this->foot();
+           
+        }
+
     function attribute($id = '', $chk = '', $act = '', $idc = '') {
         /* Edit attribute */
         $this -> load -> model('finds');
@@ -438,10 +471,6 @@ class find extends CI_controller {
         if (strlen($data['dd2']) > 0) {
             $tela = $this -> finds -> literal($data['dd2']);
             $rst = $this -> finds -> result;
-
-            if ($rst == -1) {
-                $tela .= $this -> finds -> incorpore_id($data['dd2'], 'frad');
-            }
 
             $data['content'] = $tela . $rst;
             $this -> load -> view('content', $data);

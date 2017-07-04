@@ -1,0 +1,1396 @@
+<mx:record xmlns:v="http://viaf.org/viaf/terms#" xmlns:srw="http://www.loc.gov/zing/srw/"
+           xmlns:mx="http://www.loc.gov/MARC21/slim">
+   <mx:leader>00000nz##a22.....n..4500</mx:leader>
+   <mx:controlfield tag="001">viaf9850131</mx:controlfield>
+   <mx:controlfield tag="003">OCoLC</mx:controlfield>
+   <mx:controlfield tag="008">170521n||azznnabbn##########|a#aaa####|#</mx:controlfield>
+   <mx:datafield tag="024" ind1="7" ind2=" ">
+      <mx:subfield code="a">http://viaf.org/viaf/9850131</mx:subfield>
+      <mx:subfield code="2">uri</mx:subfield>
+   </mx:datafield>
+   <mx:datafield tag="040" ind1=" " ind2=" ">
+      <mx:subfield code="a">VIAF</mx:subfield>
+      <mx:subfield code="c">VIAF</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="0" ind2=" " tag="700">
+      <mx:subfield code="a">Alberto Manguel</mx:subfield>
+      <mx:subfield code="c">argentinischer Schriftsteller</mx:subfield>
+      <mx:subfield code="0">(WKP)Q554406</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1=" " ind2="1" tag="700">
+      <mx:subfield code="a">Manguel, Alberto</mx:subfield>
+      <mx:subfield code="0">(ICCU)RAVV088551</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1=" " ind2="|" tag="700">
+      <mx:subfield code="a">Manguel, Alberto</mx:subfield>
+      <mx:subfield code="d">1948-....</mx:subfield>
+      <mx:subfield code="0">(BNF)11914260</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, A.</mx:subfield>
+      <mx:subfield code="0">(ISNI)0000000121201061</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto</mx:subfield>
+      <mx:subfield code="0">(BAV)ADV12213513</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto</mx:subfield>
+      <mx:subfield code="0">(DBC)87097968679532</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto</mx:subfield>
+      <mx:subfield code="0">(LC)n  80013377</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto</mx:subfield>
+      <mx:subfield code="0">(N6I)vtls000293428</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto</mx:subfield>
+      <mx:subfield code="0">(NLA)000035138970</mx:subfield>
+      <mx:subfield code="9">Sparse</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto</mx:subfield>
+      <mx:subfield code="0">(NLI)000088448</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto</mx:subfield>
+      <mx:subfield code="0">(NSK)000236547</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto</mx:subfield>
+      <mx:subfield code="0">(NII)DA00061275</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto</mx:subfield>
+      <mx:subfield code="0">(BIBSYS)90180077</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto</mx:subfield>
+      <mx:subfield code="d">(1948- ).</mx:subfield>
+      <mx:subfield code="0">(NUKAT)n  96033052</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto</mx:subfield>
+      <mx:subfield code="d">(1948-)</mx:subfield>
+      <mx:subfield code="0">(NLP)a10612324</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2="0" tag="700">
+      <mx:subfield code="a">Manguel, Alberto</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="0">(BNE)XX1155622</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="0">(DNB)120166712</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="0">(KRNLK)KAC200401944</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="0">(SWNL)vtls008160840</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto,</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="0">(B2Q)0000027477</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto,</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="0">(BNC)a10644568</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto,</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="0">(LAC)0009D4222</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto,</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="0">(LNB)LNC10-000034647</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto,</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="0">(NDL)00448684</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto,</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="0">(NKC)jo2006376649</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto,</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="0">(NTA)069141886</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto,</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="0">(SELIBR)225433</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto,</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="0">(ERRR)a11532695</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Manguel, Alberto,</mx:subfield>
+      <mx:subfield code="d">1948-....</mx:subfield>
+      <mx:subfield code="0">(SUDOC)027005941</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1=" " ind2="1" tag="700">
+      <mx:subfield code="a">Manguel, Alberto,</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="0">(PTBNP)813646</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">Мангуэль, Альберто,</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="0">(ERRR)a11532701</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">מנגל, אלברטו,</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="0">(NLI)000088448</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="700">
+      <mx:subfield code="a">مانغويل، ألبرتو</mx:subfield>
+      <mx:subfield code="0">(EGAXA)vtls000968192</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="370">
+      <mx:subfield code="a">CA</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>
+      <mx:subfield code="2">DNB</mx:subfield>
+      <mx:subfield code="2">ICCU</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>
+      <mx:subfield code="2">PTBNP</mx:subfield>
+      <mx:subfield code="2">SELIBR</mx:subfield>
+      <mx:subfield code="2">WKP</mx:subfield>
+      <mx:subfield code="2">SWNL</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="370">
+      <mx:subfield code="a">AR</mx:subfield>
+      <mx:subfield code="2">DNB</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+      <mx:subfield code="2">SELIBR</mx:subfield>
+      <mx:subfield code="2">WKP</mx:subfield>
+      <mx:subfield code="2">SWNL</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="370">
+      <mx:subfield code="a">IL</mx:subfield>
+      <mx:subfield code="2">DNB</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+      <mx:subfield code="2">WKP</mx:subfield>
+      <mx:subfield code="2">SWNL</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="370">
+      <mx:subfield code="a">FR</mx:subfield>
+      <mx:subfield code="2">DNB</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+      <mx:subfield code="2">SWNL</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="377">
+      <mx:subfield code="a">spa</mx:subfield>
+      <mx:subfield code="2">BNE</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>
+      <mx:subfield code="2">DNB</mx:subfield>
+      <mx:subfield code="2">LC</mx:subfield>
+      <mx:subfield code="2">NLI</mx:subfield>
+      <mx:subfield code="2">SWNL</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="377">
+      <mx:subfield code="a">eng</mx:subfield>
+      <mx:subfield code="2">B2Q</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>
+   </mx:datafield>
+   <mx:datafield tag="375" ind1=" " ind2=" ">
+      <mx:subfield code="a">male</mx:subfield>
+      <mx:subfield code="2">1</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="0" ind2=" " tag="400">
+      <mx:subfield code="a">Alberto Manguel</mx:subfield>
+      <mx:subfield code="c">Canadees auteur</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+      <mx:subfield code="2">WKP</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="0" ind2=" " tag="400">
+      <mx:subfield code="a">Alberto Manguel</mx:subfield>
+      <mx:subfield code="c">Escritor</mx:subfield>
+      <mx:subfield code="2">WKP</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="0" ind2=" " tag="400">
+      <mx:subfield code="a">Alberto Manguel</mx:subfield>
+      <mx:subfield code="c">Writer</mx:subfield>
+      <mx:subfield code="2">WKP</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="0" ind2=" " tag="400">
+      <mx:subfield code="a">Alberto Manguel</mx:subfield>
+      <mx:subfield code="c">argentinischer Schriftsteller</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="0" ind2=" " tag="400">
+      <mx:subfield code="a">Alberto Manguel</mx:subfield>
+      <mx:subfield code="c">argentyński pisarz, tłumacz i redaktor</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+      <mx:subfield code="2">WKP</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="0" ind2=" " tag="400">
+      <mx:subfield code="a">Alberto Manguel</mx:subfield>
+      <mx:subfield code="c">scrittore e traduttore argentino</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+      <mx:subfield code="2">WKP</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="0" ind2=" " tag="400">
+      <mx:subfield code="a">Alberto Manguel</mx:subfield>
+      <mx:subfield code="c">écrivain canadien d'origine argentine</mx:subfield>
+      <mx:subfield code="2">WKP</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="0" ind2=" " tag="400">
+      <mx:subfield code="a">Albertus Manguel</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+      <mx:subfield code="2">WKP</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="400">
+      <mx:subfield code="a">Manguel, A.</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+      <mx:subfield code="2">SWNL</mx:subfield>
+      <mx:subfield code="2">DNB</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="400">
+      <mx:subfield code="a">Manguel, Alberto</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+      <mx:subfield code="2">NII</mx:subfield>
+      <mx:subfield code="2">BNC</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="400">
+      <mx:subfield code="a">Mānġuwīl, Ālbirtū,</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="2">NTA</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="400">
+      <mx:subfield code="a">Mānġuwīl, Ālbirtū</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="400">
+      <mx:subfield code="a">Мангель, Альберто</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+      <mx:subfield code="2">WKP</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="400">
+      <mx:subfield code="a">Мангуэль, Альберто,</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="2">LNB</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="400">
+      <mx:subfield code="a">Мангуэль, Альберто</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="400">
+      <mx:subfield code="a">מנגל, אלברטו</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+      <mx:subfield code="2">LC</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="400">
+      <mx:subfield code="a">מנגל, אלברטו</mx:subfield>
+      <mx:subfield code="c">סופר ישראלי</mx:subfield>
+      <mx:subfield code="2">WKP</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="0" ind2=" " tag="400">
+      <mx:subfield code="a">آلبرتو مانگوئل</mx:subfield>
+      <mx:subfield code="c">زبان‌شناس، نویسنده، و مترجم کانادایی</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+      <mx:subfield code="2">WKP</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="0" ind2=" " tag="400">
+      <mx:subfield code="a">ألبرتو مانغويل</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+      <mx:subfield code="2">EGAXA</mx:subfield>
+      <mx:subfield code="2">WKP</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="0" ind2=" " tag="400">
+      <mx:subfield code="a">مانجويل، ألبرتو</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="400">
+      <mx:subfield code="a">مانجويل، ألبرتو</mx:subfield>
+      <mx:subfield code="2">EGAXA</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="0" ind2=" " tag="400">
+      <mx:subfield code="a">アルベルト・マングェル</mx:subfield>
+      <mx:subfield code="2">WKP</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="400">
+      <mx:subfield code="a">マングェル, アルベルト</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+      <mx:subfield code="2">NDL</mx:subfield>
+      <mx:subfield code="2">NII</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="0" ind2=" " tag="400">
+      <mx:subfield code="a">阿尓畏托.曼古埃尓</mx:subfield>
+      <mx:subfield code="2">NII</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="0" ind2=" " tag="400">
+      <mx:subfield code="a">阿爾維托.曼古埃爾</mx:subfield>
+      <mx:subfield code="2">NII</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="0" ind2=" " tag="400">
+      <mx:subfield code="a">阿爾維托·曼古埃爾</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+      <mx:subfield code="2">WKP</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="400">
+      <mx:subfield code="a">망겔, 알베르토</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+      <mx:subfield code="2">KRNLK</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="400">
+      <mx:subfield code="a">망구엘, 알베르토</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+      <mx:subfield code="2">KRNLK</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="0" ind2=" " tag="400">
+      <mx:subfield code="a">알베르토 망구엘</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>
+      <mx:subfield code="2">WKP</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="551">
+      <mx:subfield code="a">Buenos Aires</mx:subfield>
+      <mx:subfield code="0">(VIAF)155960902</mx:subfield>
+      <mx:subfield code="2">SWNL</mx:subfield>
+      <mx:subfield code="2">DNB</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="2" ind2=" " tag="510">
+      <mx:subfield code="a">London</mx:subfield>
+      <mx:subfield code="0">(VIAF)542145858153123022415</mx:subfield>
+      <mx:subfield code="2">SWNL</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="551">
+      <mx:subfield code="a">London</mx:subfield>
+      <mx:subfield code="0">(VIAF)123345041</mx:subfield>
+      <mx:subfield code="2">DNB</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="551">
+      <mx:subfield code="a">Mailand</mx:subfield>
+      <mx:subfield code="0">(VIAF)157818740</mx:subfield>
+      <mx:subfield code="2">SWNL</mx:subfield>
+      <mx:subfield code="2">DNB</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="500">
+      <mx:subfield code="a">Manguel, Alberto,</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="2">ERRR</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="551">
+      <mx:subfield code="a">Paris</mx:subfield>
+      <mx:subfield code="0">(VIAF)180145858272123022578</mx:subfield>
+      <mx:subfield code="2">SWNL</mx:subfield>
+      <mx:subfield code="2">DNB</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="551">
+      <mx:subfield code="a">Toronto</mx:subfield>
+      <mx:subfield code="0">(VIAF)105856875</mx:subfield>
+      <mx:subfield code="2">SWNL</mx:subfield>
+      <mx:subfield code="2">DNB</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1="1" ind2=" " tag="500">
+      <mx:subfield code="a">Мангуэль, Альберто,</mx:subfield>
+      <mx:subfield code="d">1948-</mx:subfield>
+      <mx:subfield code="2">ERRR</mx:subfield>
+   </mx:datafield>
+   <mx:datafield tag="856" ind1="4" ind2="0">
+      <mx:subfield code="u">http://viaf.org/viaf/9850131</mx:subfield>
+   </mx:datafield>
+   <mx:datafield tag="856" ind1="4" ind2="2">
+      <mx:subfield code="u">http://viaf.org/viaf/data</mx:subfield>
+      <mx:subfield code="z">Dataset description</mx:subfield>
+   </mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="950">
+      <mx:subfield code="a">Le Bœuf, Christine</mx:subfield>
+      <mx:subfield code="9">80</mx:subfield>
+      <mx:subfield code="2">SWNL</mx:subfield>SWNL|vtls008160840<mx:subfield code="2">ISNI</mx:subfield>ISNI|0000000121201061<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="950">
+      <mx:subfield code="a">Guadalupi, Gianni, 1943-</mx:subfield>
+      <mx:subfield code="9">69</mx:subfield>
+      <mx:subfield code="2">LNB</mx:subfield>LNB|LNC10-000034647<mx:subfield code="2">NDL</mx:subfield>NDL|00448684<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">DNB</mx:subfield>DNB|120166712<mx:subfield code="2">ISNI</mx:subfield>ISNI|0000000121201061<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="950">
+      <mx:subfield code="a">Carrasco, Alexandra, 1963-</mx:subfield>
+      <mx:subfield code="9">15</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>ISNI|0000000121201061<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="950">
+      <mx:subfield code="a">Gaudry, François</mx:subfield>
+      <mx:subfield code="9">12</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>ISNI|0000000121201061<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="950">
+      <mx:subfield code="a">Reumaux, Patrick 1942-....</mx:subfield>
+      <mx:subfield code="9">11</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>ISNI|0000000121201061<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="950">
+      <mx:subfield code="a">Touchard, Olivier</mx:subfield>
+      <mx:subfield code="9">9</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>ISNI|0000000121201061<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="950">
+      <mx:subfield code="a">Touchard, Michel-Claude</mx:subfield>
+      <mx:subfield code="9">9</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>ISNI|0000000121201061<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="950">
+      <mx:subfield code="a">Greenfield, Graham</mx:subfield>
+      <mx:subfield code="9">9</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>ISNI|0000000121201061<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">NTA</mx:subfield>NTA|069141886</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="950">
+      <mx:subfield code="a">Cook, James 1728-1779</mx:subfield>
+      <mx:subfield code="9">9</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>ISNI|0000000121201061<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">NTA</mx:subfield>NTA|069141886</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="950">
+      <mx:subfield code="a">López Muñoz, José Luis</mx:subfield>
+      <mx:subfield code="9">8</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>ISNI|0000000121201061<mx:subfield code="2">NKC</mx:subfield>NKC|jo2006376649<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="950">
+      <mx:subfield code="a">Eklöf, Margareta, 1930-</mx:subfield>
+      <mx:subfield code="9">5</mx:subfield>
+      <mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="950">
+      <mx:subfield code="a">Simões, Rita</mx:subfield>
+      <mx:subfield code="9">4</mx:subfield>
+      <mx:subfield code="2">PTBNP</mx:subfield>PTBNP|813646</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="950">
+      <mx:subfield code="a">강수정</mx:subfield>
+      <mx:subfield code="9">3</mx:subfield>
+      <mx:subfield code="2">KRNLK</mx:subfield>KRNLK|KAC200401944</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="950">
+      <mx:subfield code="a">Hirte, Chris 1948-</mx:subfield>
+      <mx:subfield code="9">3</mx:subfield>
+      <mx:subfield code="2">DNB</mx:subfield>DNB|120166712</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="950">
+      <mx:subfield code="a">高橋, 康也, 1932-2002.</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">NDL</mx:subfield>NDL|00448684</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="951">
+      <mx:subfield code="a">Muza SA.</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="950">
+      <mx:subfield code="a">Jankowska, Hanna (tłumacz).</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">NLP</mx:subfield>NLP|a10612324</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="950">
+      <mx:subfield code="a">שחם, דוד, 1923-</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">NLI</mx:subfield>NLI|000088448</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="951">
+      <mx:subfield code="a">Volume Gallery.</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">N6I</mx:subfield>N6I|vtls000293428</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="950">
+      <mx:subfield code="a">Ujević, Ante A.</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">NSK</mx:subfield>NSK|000236547</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="950">
+      <mx:subfield code="a">Trávníčková, Olga</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">NKC</mx:subfield>NKC|jo2006376649</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">070</mx:subfield>
+      <mx:subfield code="9">73</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">075</mx:subfield>
+      <mx:subfield code="9">3</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">080</mx:subfield>
+      <mx:subfield code="9">20</mx:subfield>
+      <mx:subfield code="2">PTBNP</mx:subfield>PTBNP|813646<mx:subfield code="2">BNF</mx:subfield>BNF|11914260</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">220</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">340</mx:subfield>
+      <mx:subfield code="9">6</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">460</mx:subfield>
+      <mx:subfield code="9">4</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">570</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">aui</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">LNB</mx:subfield>LNB|LNC10-000034647<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">aut</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">auteur</mx:subfield>
+      <mx:subfield code="9">12</mx:subfield>
+      <mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">autor del comentario adicional</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">collaborateur</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">comp</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">compilador</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">ctb</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">DNB</mx:subfield>DNB|120166712</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">directeur de la publication</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">director de la publicacion</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">ed</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">LC</mx:subfield>LC|n  80013377</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">edc</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">editeur scientifique</mx:subfield>
+      <mx:subfield code="9">10</mx:subfield>
+      <mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">editor</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">editor literario</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">edt</mx:subfield>
+      <mx:subfield code="9">7</mx:subfield>
+      <mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">DNB</mx:subfield>DNB|120166712</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">hrsg</mx:subfield>
+      <mx:subfield code="9">3</mx:subfield>
+      <mx:subfield code="2">DNB</mx:subfield>DNB|120166712</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">oth</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">DNB</mx:subfield>DNB|120166712</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">participant</mx:subfield>
+      <mx:subfield code="9">3</mx:subfield>
+      <mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">pbd</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">posl</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">postface</mx:subfield>
+      <mx:subfield code="9">7</mx:subfield>
+      <mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">preface</mx:subfield>
+      <mx:subfield code="9">19</mx:subfield>
+      <mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">prologuista</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">red</mx:subfield>
+      <mx:subfield code="9">3</mx:subfield>
+      <mx:subfield code="2">LNB</mx:subfield>LNB|LNC10-000034647<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">tl</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">traduction</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">translator</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">LC</mx:subfield>LC|n  80013377</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">vorr</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">DNB</mx:subfield>DNB|120166712</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">wac</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">win</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">NTA</mx:subfield>NTA|069141886</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">wpr</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">NTA</mx:subfield>NTA|069141886</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">writer of introduction</mx:subfield>
+      <mx:subfield code="9">3</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">writer of supplementary textual content</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">LC</mx:subfield>LC|n  80013377</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">wstep</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="941">
+      <mx:subfield code="a">wybor</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="944">
+      <mx:subfield code="a">a</mx:subfield>
+      <mx:subfield code="9">3</mx:subfield>
+      <mx:subfield code="2">DBC</mx:subfield>DBC|87097968679532<mx:subfield code="2">ICCU</mx:subfield>ICCU|RAVV088551</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="944">
+      <mx:subfield code="a">aa</mx:subfield>
+      <mx:subfield code="9">9</mx:subfield>
+      <mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="944">
+      <mx:subfield code="a">am</mx:subfield>
+      <mx:subfield code="9">781</mx:subfield>
+      <mx:subfield code="2">NDL</mx:subfield>NDL|00448684<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">NKC</mx:subfield>NKC|jo2006376649<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">PTBNP</mx:subfield>PTBNP|813646<mx:subfield code="2">BAV</mx:subfield>BAV|ADV12213513<mx:subfield code="2">NLP</mx:subfield>NLP|a10612324<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">EGAXA</mx:subfield>EGAXA|vtls000968192<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">N6I</mx:subfield>N6I|vtls000293428<mx:subfield code="2">NSK</mx:subfield>NSK|000236547<mx:subfield code="2">NLI</mx:subfield>NLI|000088448<mx:subfield code="2">LNB</mx:subfield>LNB|LNC10-000034647<mx:subfield code="2">SWNL</mx:subfield>SWNL|vtls008160840<mx:subfield code="2">DNB</mx:subfield>DNB|120166712<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">KRNLK</mx:subfield>KRNLK|KAC200401944<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">NTA</mx:subfield>NTA|069141886</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="944">
+      <mx:subfield code="a">as</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="944">
+      <mx:subfield code="a">dm</mx:subfield>
+      <mx:subfield code="9">14</mx:subfield>
+      <mx:subfield code="2">LC</mx:subfield>LC|n  80013377</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="944">
+      <mx:subfield code="a">gm</mx:subfield>
+      <mx:subfield code="9">8</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="944">
+      <mx:subfield code="a">ia</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="944">
+      <mx:subfield code="a">im</mx:subfield>
+      <mx:subfield code="9">11</mx:subfield>
+      <mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="944">
+      <mx:subfield code="a">km</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="944">
+      <mx:subfield code="a">mm</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">KRNLK</mx:subfield>KRNLK|KAC200401944</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="944">
+      <mx:subfield code="a">om</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9780300139143</mx:subfield>
+      <mx:subfield code="9">12</mx:subfield>
+      <mx:subfield code="2">LNB</mx:subfield>LNB|LNC10-000034647<mx:subfield code="2">NLP</mx:subfield>NLP|a10612324<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">N6I</mx:subfield>N6I|vtls000293428<mx:subfield code="2">NKC</mx:subfield>NKC|jo2006376649<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">BAV</mx:subfield>BAV|ADV12213513</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9780300159820</mx:subfield>
+      <mx:subfield code="9">8</mx:subfield>
+      <mx:subfield code="2">LNB</mx:subfield>LNB|LNC10-000034647<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9780006546818</mx:subfield>
+      <mx:subfield code="9">8</mx:subfield>
+      <mx:subfield code="2">LNB</mx:subfield>LNB|LNC10-000034647<mx:subfield code="2">NLP</mx:subfield>NLP|a10612324<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9782742723997</mx:subfield>
+      <mx:subfield code="9">7</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9780300184785</mx:subfield>
+      <mx:subfield code="9">7</mx:subfield>
+      <mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">NKC</mx:subfield>NKC|jo2006376649<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9780002550062</mx:subfield>
+      <mx:subfield code="9">7</mx:subfield>
+      <mx:subfield code="2">LNB</mx:subfield>LNB|LNC10-000034647<mx:subfield code="2">SWNL</mx:subfield>SWNL|vtls008160840<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9788498673401</mx:subfield>
+      <mx:subfield code="9">6</mx:subfield>
+      <mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9782760926141</mx:subfield>
+      <mx:subfield code="9">6</mx:subfield>
+      <mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9782742763160</mx:subfield>
+      <mx:subfield code="9">6</mx:subfield>
+      <mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9782742715435</mx:subfield>
+      <mx:subfield code="9">6</mx:subfield>
+      <mx:subfield code="2">SWNL</mx:subfield>SWNL|vtls008160840<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">PTBNP</mx:subfield>PTBNP|813646</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9789722323390</mx:subfield>
+      <mx:subfield code="9">3</mx:subfield>
+      <mx:subfield code="2">PTBNP</mx:subfield>PTBNP|813646</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9789026320798</mx:subfield>
+      <mx:subfield code="9">3</mx:subfield>
+      <mx:subfield code="2">NTA</mx:subfield>NTA|069141886</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9782760921078</mx:subfield>
+      <mx:subfield code="9">3</mx:subfield>
+      <mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9789876092432</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">BNC</mx:subfield>BNC|a10644568</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9782742731701</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9780676970227</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9780156008723</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9789877280784</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">LC</mx:subfield>LC|n  80013377</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9789872530198</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">NLI</mx:subfield>NLI|000088448</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9789536460465</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">NSK</mx:subfield>NSK|000236547</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9789173248631</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9789173246071</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">DNB</mx:subfield>DNB|120166712</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9789172473690</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9788997235889</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">KRNLK</mx:subfield>KRNLK|KAC200401944</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9788896529959</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">SWNL</mx:subfield>SWNL|vtls008160840</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9788703001203</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">DBC</mx:subfield>DBC|87097968679532</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9788420672618</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">NKC</mx:subfield>NKC|jo2006376649</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9788415009085</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">LNB</mx:subfield>LNB|LNC10-000034647</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9788374957267</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">NLP</mx:subfield>NLP|a10612324</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9784760142194</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">NDL</mx:subfield>NDL|00448684</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9782890525252</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="901">
+      <mx:subfield code="a">9781855165489</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">EGAXA</mx:subfield>EGAXA|vtls000968192</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">All men are liars</mx:subfield>
+      <mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LC</mx:subfield>LC|n  80013377</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Un amant très vétilleux</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Anatomía de la melancolía</mx:subfield>
+      <mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Bestiario</mx:subfield>
+      <mx:subfield code="0">(VIAF)176673116</mx:subfield>
+      <mx:subfield code="2">BNE</mx:subfield>BNE|XX4879964</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">La Biblioteca de noche</mx:subfield>
+      <mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Die Bibliothek bei Nacht. -</mx:subfield>
+      <mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">DNB</mx:subfield>DNB|120166712</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">La bibliothèque, la nuit : essai</mx:subfield>
+      <mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Bilder lesen</mx:subfield>
+      <mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">DNB</mx:subfield>DNB|120166712</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Black water : the book of fantastic literature</mx:subfield>
+      <mx:subfield code="0">(VIAF)312342103</mx:subfield>
+      <mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">XR</mx:subfield>XR|VIAFWORK11865099<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">NTA</mx:subfield>NTA|069141886</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Breve guía de lugares imaginarios</mx:subfield>
+      <mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Bride of Frankenstein</mx:subfield>
+      <mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LC</mx:subfield>LC|n  80013377</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">By the light of the glow-worm lamp : three centuries of reflections on nature</mx:subfield>
+      <mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">LC</mx:subfield>LC|n  80013377</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Ça et 25 centimes.</mx:subfield>
+      <mx:subfield code="0">(VIAF)1497147270636135700004</mx:subfield>
+      <mx:subfield code="2">XR</mx:subfield>XR|VIAFWORKLCno2016104288</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">City of words</mx:subfield>
+      <mx:subfield code="0">(VIAF)308012502</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">XR</mx:subfield>XR|VIAFWORK153913292<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">NSK</mx:subfield>NSK|000236547</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">La Ciudad de las palabras</mx:subfield>
+      <mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Conversaciones con un amigo</mx:subfield>
+      <mx:subfield code="2">NLI</mx:subfield>NLI|000088448<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Curiosity</mx:subfield>
+      <mx:subfield code="0">(VIAF)317270450</mx:subfield>
+      <mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">DNB</mx:subfield>DNB|120166712<mx:subfield code="2">NKC</mx:subfield>NKC|jo2006376649<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">XR</mx:subfield>XR|VIAFWORK890614482<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Dans la forêt du miroir : essais sur les mots et sur le monde</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Dějiny čtení</mx:subfield>
+      <mx:subfield code="2">NKC</mx:subfield>NKC|jo2006376649</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Dernières nouvelles d'une terre abandonnée : roman</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Diario de lecturas</mx:subfield>
+      <mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">DNB</mx:subfield>DNB|120166712</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">The Dictionary of imaginary places</mx:subfield>
+      <mx:subfield code="2">LNB</mx:subfield>LNB|LNC10-000034647<mx:subfield code="2">NDL</mx:subfield>NDL|00448684<mx:subfield code="2">KRNLK</mx:subfield>KRNLK|KAC200401944<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">ICCU</mx:subfield>ICCU|RAVV088551</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Dictionnaire des lieux imaginaires</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">NTA</mx:subfield>NTA|069141886</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Echelles du Levant.</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Fathers and sons</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Från fjärran land det kom ett bud</mx:subfield>
+      <mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Frankenstein, o, el moderno Prometeo</mx:subfield>
+      <mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Gates of paradise : the anthology of erotic short fiction</mx:subfield>
+      <mx:subfield code="0">(VIAF)312416455</mx:subfield>
+      <mx:subfield code="2">XR</mx:subfield>XR|VIAFWORK27680804</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Eine Geschichte des Lesens. -</mx:subfield>
+      <mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">DNB</mx:subfield>DNB|120166712</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Een geschiedenis van het lezen</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">NTA</mx:subfield>NTA|069141886</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Une histoire de la lecture</mx:subfield>
+      <mx:subfield code="2">SWNL</mx:subfield>SWNL|vtls008160840<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">NKC</mx:subfield>NKC|jo2006376649<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">PTBNP</mx:subfield>PTBNP|813646<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">En historie om lesning</mx:subfield>
+      <mx:subfield code="2">DBC</mx:subfield>DBC|87097968679532<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">History of reading</mx:subfield>
+      <mx:subfield code="0">(VIAF)8124148574286324430000</mx:subfield>
+      <mx:subfield code="2">XR</mx:subfield>XR|VIAFWORK34633305</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Homer's The Iliad and the Odyssey : a biography</mx:subfield>
+      <mx:subfield code="0">(VIAF)308018271</mx:subfield>
+      <mx:subfield code="2">NLP</mx:subfield>NLP|a10612324<mx:subfield code="2">KRNLK</mx:subfield>KRNLK|KAC200401944<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">XR</mx:subfield>XR|VIAFWORK156834861<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Im siebten Kreis. -</mx:subfield>
+      <mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">DNB</mx:subfield>DNB|120166712</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Im Spiegelreich. -</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">DNB</mx:subfield>DNB|120166712</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">In another part of the forest : the Flamingo anthology of gay literature</mx:subfield>
+      <mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">NTA</mx:subfield>NTA|069141886</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Into the looking-glass wood</mx:subfield>
+      <mx:subfield code="0">(VIAF)1621145424672986830166</mx:subfield>
+      <mx:subfield code="2">DNB</mx:subfield>DNB|120166712<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">XR</mx:subfield>XR|VIAFWORK39380931<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Journal d'un lecteur</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Kipling : a brief biography for young adults</mx:subfield>
+      <mx:subfield code="0">(VIAF)1751145424656086830746</mx:subfield>
+      <mx:subfield code="2">LNB</mx:subfield>LNB|LNC10-000034647<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">XR</mx:subfield>XR|VIAFWORK44263082</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Kipling : une brève biographie</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Kunstlezen : over het kijken naar beeldende kunst</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">NTA</mx:subfield>NTA|069141886</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Leer imágenes : una historia privada del arte</mx:subfield>
+      <mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">La leyenda dorada</mx:subfield>
+      <mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Library at night</mx:subfield>
+      <mx:subfield code="0">(VIAF)307996860</mx:subfield>
+      <mx:subfield code="2">LNB</mx:subfield>LNB|LNC10-000034647<mx:subfield code="2">NDL</mx:subfield>NDL|00448684<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">N6I</mx:subfield>N6I|vtls000293428<mx:subfield code="2">NKC</mx:subfield>NKC|jo2006376649<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">XR</mx:subfield>XR|VIAFWORK132306035<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">BAV</mx:subfield>BAV|ADV12213513<mx:subfield code="2">NLP</mx:subfield>NLP|a10612324<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">KRNLK</mx:subfield>KRNLK|KAC200401944<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">NTA</mx:subfield>NTA|069141886</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Le livre d'images</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Mishima: a vision of the void</mx:subfield>
+      <mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">NTA</mx:subfield>NTA|069141886</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Moja historia czytania</mx:subfield>
+      <mx:subfield code="2">NLP</mx:subfield>NLP|a10612324<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Mothers and daughters</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Nattens bibliotek</mx:subfield>
+      <mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">News from a foreign country came</mx:subfield>
+      <mx:subfield code="0">(VIAF)186800889</mx:subfield>
+      <mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">XR</mx:subfield>XR|VIAFWORK22734538<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Noticias del extranjero</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Nouvel éloge de la folie : essais, édits &amp; inédits</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Nuevo elogio de la locura</mx:subfield>
+      <mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">On lying in bed and other essays.</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Other fires : short fiction by Latin American women</mx:subfield>
+      <mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">LC</mx:subfield>LC|n  80013377</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Overdiscriminating lover.</mx:subfield>
+      <mx:subfield code="0">(VIAF)309478831</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">XR</mx:subfield>XR|VIAFWORKLAC1015B5382E<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">The Oxford book of Canadian ghost stories</mx:subfield>
+      <mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">LC</mx:subfield>LC|n  80013377</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Pages de mémoire Bibliothèque humaniste de Sélestat</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">El País imaginado</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Para cada tiempo hay un libro</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">paradoxe ambulant 59 essais</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">pièces d'identité d'Antonio Segui</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">La porte d'ivoire : [roman]</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Ports of call</mx:subfield>
+      <mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">NTA</mx:subfield>NTA|069141886</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Las Puertas del paraíso : antología del relato erótico</mx:subfield>
+      <mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Reader on reading</mx:subfield>
+      <mx:subfield code="0">(VIAF)308135507</mx:subfield>
+      <mx:subfield code="2">XR</mx:subfield>XR|VIAFWORK449854334</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Reading diary</mx:subfield>
+      <mx:subfield code="0">(VIAF)1425149068565765730001</mx:subfield>
+      <mx:subfield code="2">LNB</mx:subfield>LNB|LNC10-000034647<mx:subfield code="2">NDL</mx:subfield>NDL|00448684<mx:subfield code="2">XR</mx:subfield>XR|VIAFWORK54349914<mx:subfield code="2">SWNL</mx:subfield>SWNL|vtls008160840<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">NLP</mx:subfield>NLP|a10612324<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">KRNLK</mx:subfield>KRNLK|KAC200401944<mx:subfield code="2">DBC</mx:subfield>DBC|87097968679532<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">NSK</mx:subfield>NSK|000236547<mx:subfield code="2">ICCU</mx:subfield>ICCU|RAVV088551</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Reading pictures : a history of love and hate</mx:subfield>
+      <mx:subfield code="0">(VIAF)1574145424620286830771</mx:subfield>
+      <mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">XR</mx:subfield>XR|VIAFWORK44152273<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Reading pictures : what we think about when we look at art</mx:subfield>
+      <mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Regreso</mx:subfield>
+      <mx:subfield code="0">(VIAF)1050145424634686830382</mx:subfield>
+      <mx:subfield code="2">XR</mx:subfield>XR|VIAFWORK186460706<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Un retour : roman</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">S Borgesom</mx:subfield>
+      <mx:subfield code="2">NSK</mx:subfield>NSK|000236547</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Short stories.</mx:subfield>
+      <mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">NTA</mx:subfield>NTA|069141886</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Sig. Bovary &amp; altri personaggi</mx:subfield>
+      <mx:subfield code="2">SWNL</mx:subfield>SWNL|vtls008160840</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Stevenson beneath the palm trees.</mx:subfield>
+      <mx:subfield code="0">(VIAF)312528594</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">XR</mx:subfield>XR|VIAFWORKLCnr2001011978<mx:subfield code="2">LC</mx:subfield>LC|n  80013377</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Stevenson sous les palmiers : roman</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Stevenson under the palm trees</mx:subfield>
+      <mx:subfield code="0">(VIAF)1147145424570386830972</mx:subfield>
+      <mx:subfield code="2">XR</mx:subfield>XR|VIAFWORK52459874</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Una storia della lettura / Alberto Manguel ; traduzione di Gianni Guadalupi</mx:subfield>
+      <mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">ICCU</mx:subfield>ICCU|RAVV088551</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">El sueño del Rey Rojo : lecturas y relecturas sobre las palabras y el mundo</mx:subfield>
+      <mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Tagebuch eines Lesers. -</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">DNB</mx:subfield>DNB|120166712</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Todos los hombres son mentirosos.</mx:subfield>
+      <mx:subfield code="0">(VIAF)261149844986302960005</mx:subfield>
+      <mx:subfield code="2">XR</mx:subfield>XR|VIAFWORKLCn 2010083200<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Tous les hommes sont menteurs : roman</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Traveler, the tower, and the worm.</mx:subfield>
+      <mx:subfield code="0">(VIAF)317271884</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">NKC</mx:subfield>NKC|jo2006376649<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">XR</mx:subfield>XR|VIAFWORKB2Q0001121677</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Uma história da leitura</mx:subfield>
+      <mx:subfield code="2">PTBNP</mx:subfield>PTBNP|813646<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">vent dans les saules roman</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Vicios solitarios : lecturas, relecturas y otras cuestiones éticas</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Vida de los números</mx:subfield>
+      <mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">Von Atlantis bis Utopia</mx:subfield>
+      <mx:subfield code="2">DNB</mx:subfield>DNB|120166712</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">With Borges</mx:subfield>
+      <mx:subfield code="0">(VIAF)4405147484333549360003</mx:subfield>
+      <mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">KRNLK</mx:subfield>KRNLK|KAC200401944<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">XR</mx:subfield>XR|VIAFWORK54206282<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">תולדות הקריאה</mx:subfield>
+      <mx:subfield code="2">NLI</mx:subfield>NLI|000088448</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">تاريخ القراءة</mx:subfield>
+      <mx:subfield code="2">EGAXA</mx:subfield>EGAXA|vtls000968192</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">밤의 도서관</mx:subfield>
+      <mx:subfield code="2">WKP</mx:subfield>WKP|Q554406</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">보르헤스에게 가는 길  열여섯 소년, 거장 보르헤스와 함께 책을 읽다</mx:subfield>
+      <mx:subfield code="2">KRNLK</mx:subfield>KRNLK|KAC200401944</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">世界文学にみる架空地名大事典</mx:subfield>
+      <mx:subfield code="2">NDL</mx:subfield>NDL|00448684<mx:subfield code="2">NII</mx:subfield>NII|DA00061275</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">図書館愛書家の楽園</mx:subfield>
+      <mx:subfield code="2">NDL</mx:subfield>NDL|00448684<mx:subfield code="2">NII</mx:subfield>NII|DA00061275</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">奇想の美術館 : イメージを読み解く12章</mx:subfield>
+      <mx:subfield code="2">NDL</mx:subfield>NDL|00448684<mx:subfield code="2">NII</mx:subfield>NII|DA00061275</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="910">
+      <mx:subfield code="a">読書の歴史 : あるいは読者の歴史</mx:subfield>
+      <mx:subfield code="2">NDL</mx:subfield>NDL|00448684<mx:subfield code="2">NII</mx:subfield>NII|DA00061275</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="921">
+      <mx:subfield code="a">Actes sud ; Leméac</mx:subfield>
+      <mx:subfield code="9">130</mx:subfield>
+      <mx:subfield code="2">SWNL</mx:subfield>SWNL|vtls008160840<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">ISNI</mx:subfield>ISNI|0000000121201061<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">PTBNP</mx:subfield>PTBNP|813646<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="921">
+      <mx:subfield code="a">Alianza</mx:subfield>
+      <mx:subfield code="9">68</mx:subfield>
+      <mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">DNB</mx:subfield>DNB|120166712<mx:subfield code="2">ISNI</mx:subfield>ISNI|0000000121201061<mx:subfield code="2">NKC</mx:subfield>NKC|jo2006376649<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="921">
+      <mx:subfield code="a">Yale University Press</mx:subfield>
+      <mx:subfield code="9">34</mx:subfield>
+      <mx:subfield code="2">LNB</mx:subfield>LNB|LNC10-000034647<mx:subfield code="2">NLP</mx:subfield>NLP|a10612324<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">N6I</mx:subfield>N6I|vtls000293428<mx:subfield code="2">ISNI</mx:subfield>ISNI|0000000121201061<mx:subfield code="2">NKC</mx:subfield>NKC|jo2006376649<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">BIBSYS</mx:subfield>BIBSYS|90180077<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">BAV</mx:subfield>BAV|ADV12213513</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="921">
+      <mx:subfield code="a">l'Escampette</mx:subfield>
+      <mx:subfield code="9">22</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>ISNI|0000000121201061<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="921">
+      <mx:subfield code="a">Ambo</mx:subfield>
+      <mx:subfield code="9">13</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>ISNI|0000000121201061<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">NTA</mx:subfield>NTA|069141886</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="921">
+      <mx:subfield code="a">Fischer-Taschenbuch-Verl.</mx:subfield>
+      <mx:subfield code="9">11</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>ISNI|0000000121201061<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">DNB</mx:subfield>DNB|120166712</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="921">
+      <mx:subfield code="a">&#152;S.&#156; Fischer</mx:subfield>
+      <mx:subfield code="9">11</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>ISNI|0000000121201061<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">DNB</mx:subfield>DNB|120166712</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="921">
+      <mx:subfield code="a">Vintage Canada</mx:subfield>
+      <mx:subfield code="9">9</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>ISNI|0000000121201061<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="921">
+      <mx:subfield code="a">Rowohlt-Taschenbuch-Verl.</mx:subfield>
+      <mx:subfield code="9">7</mx:subfield>
+      <mx:subfield code="2">ISNI</mx:subfield>ISNI|0000000121201061<mx:subfield code="2">DNB</mx:subfield>DNB|120166712</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="921">
+      <mx:subfield code="a">[Bibliothèque nationale de France [prod.]]</mx:subfield>
+      <mx:subfield code="9">6</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="921">
+      <mx:subfield code="a">세종서적</mx:subfield>
+      <mx:subfield code="9">4</mx:subfield>
+      <mx:subfield code="2">KRNLK</mx:subfield>KRNLK|KAC200401944</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="921">
+      <mx:subfield code="a">講談社</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">NDL</mx:subfield>NDL|00448684</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="921">
+      <mx:subfield code="a">Prometej</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">NSK</mx:subfield>NSK|000236547</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="921">
+      <mx:subfield code="a">دار الساقى،</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">EGAXA</mx:subfield>EGAXA|vtls000968192</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="921">
+      <mx:subfield code="a">כתר</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">NLI</mx:subfield>NLI|000088448</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="921">
+      <mx:subfield code="a">Gyldendals Bogklubber</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">DBC</mx:subfield>DBC|87097968679532</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="921">
+      <mx:subfield code="a">Bruno Mondadori</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">ICCU</mx:subfield>ICCU|RAVV088551</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">FR</mx:subfield>
+      <mx:subfield code="9">194</mx:subfield>
+      <mx:subfield code="2">SWNL</mx:subfield>SWNL|vtls008160840<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">ES</mx:subfield>
+      <mx:subfield code="9">124</mx:subfield>
+      <mx:subfield code="2">LNB</mx:subfield>LNB|LNC10-000034647<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">DNB</mx:subfield>DNB|120166712<mx:subfield code="2">NKC</mx:subfield>NKC|jo2006376649<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">CA</mx:subfield>
+      <mx:subfield code="9">104</mx:subfield>
+      <mx:subfield code="2">LNB</mx:subfield>LNB|LNC10-000034647<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">B2Q</mx:subfield>B2Q|0000027477<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">US</mx:subfield>
+      <mx:subfield code="9">89</mx:subfield>
+      <mx:subfield code="2">LNB</mx:subfield>LNB|LNC10-000034647<mx:subfield code="2">NLP</mx:subfield>NLP|a10612324<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">N6I</mx:subfield>N6I|vtls000293428<mx:subfield code="2">NKC</mx:subfield>NKC|jo2006376649<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">BAV</mx:subfield>BAV|ADV12213513<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">GB</mx:subfield>
+      <mx:subfield code="9">61</mx:subfield>
+      <mx:subfield code="2">LNB</mx:subfield>LNB|LNC10-000034647<mx:subfield code="2">NLP</mx:subfield>NLP|a10612324<mx:subfield code="2">SWNL</mx:subfield>SWNL|vtls008160840<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052<mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">NSK</mx:subfield>NSK|000236547<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">DE</mx:subfield>
+      <mx:subfield code="9">51</mx:subfield>
+      <mx:subfield code="2">LNB</mx:subfield>LNB|LNC10-000034647<mx:subfield code="2">SWNL</mx:subfield>SWNL|vtls008160840<mx:subfield code="2">DNB</mx:subfield>DNB|120166712<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">PT</mx:subfield>
+      <mx:subfield code="9">21</mx:subfield>
+      <mx:subfield code="2">PTBNP</mx:subfield>PTBNP|813646<mx:subfield code="2">LC</mx:subfield>LC|n  80013377</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">NL</mx:subfield>
+      <mx:subfield code="9">18</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">NTA</mx:subfield>NTA|069141886</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">AR</mx:subfield>
+      <mx:subfield code="9">18</mx:subfield>
+      <mx:subfield code="2">BNC</mx:subfield>BNC|a10644568<mx:subfield code="2">NLI</mx:subfield>NLI|000088448<mx:subfield code="2">NTA</mx:subfield>NTA|069141886<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">SE</mx:subfield>
+      <mx:subfield code="9">10</mx:subfield>
+      <mx:subfield code="2">SELIBR</mx:subfield>SELIBR|225433<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">IT</mx:subfield>
+      <mx:subfield code="9">8</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">LC</mx:subfield>LC|n  80013377<mx:subfield code="2">NTA</mx:subfield>NTA|069141886</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">SV</mx:subfield>
+      <mx:subfield code="9">6</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">JP</mx:subfield>
+      <mx:subfield code="9">6</mx:subfield>
+      <mx:subfield code="2">NDL</mx:subfield>NDL|00448684</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">CZ</mx:subfield>
+      <mx:subfield code="9">6</mx:subfield>
+      <mx:subfield code="2">NKC</mx:subfield>NKC|jo2006376649<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">PL</mx:subfield>
+      <mx:subfield code="9">5</mx:subfield>
+      <mx:subfield code="2">NLP</mx:subfield>NLP|a10612324<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">NUKAT</mx:subfield>NUKAT|n  96033052</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">BR</mx:subfield>
+      <mx:subfield code="9">5</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">CH</mx:subfield>
+      <mx:subfield code="9">4</mx:subfield>
+      <mx:subfield code="2">SWNL</mx:subfield>SWNL|vtls008160840<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">KI</mx:subfield>
+      <mx:subfield code="9">3</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">IL</mx:subfield>
+      <mx:subfield code="9">3</mx:subfield>
+      <mx:subfield code="2">NLI</mx:subfield>NLI|000088448</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">DK</mx:subfield>
+      <mx:subfield code="9">3</mx:subfield>
+      <mx:subfield code="2">DBC</mx:subfield>DBC|87097968679532<mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">CO</mx:subfield>
+      <mx:subfield code="9">3</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNC</mx:subfield>BNC|a10644568</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">TW</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">TR</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222<mx:subfield code="2">BNE</mx:subfield>BNE|XX1155622</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">MX</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260<mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">HR</mx:subfield>
+      <mx:subfield code="9">2</mx:subfield>
+      <mx:subfield code="2">NSK</mx:subfield>NSK|000236547</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">RU</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">LNB</mx:subfield>LNB|LNC10-000034647</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">RS</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">NO</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">NC</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">MM</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">BNF</mx:subfield>BNF|11914260</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">MC</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">SUDOC</mx:subfield>SUDOC|027005941</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">LB</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">EGAXA</mx:subfield>EGAXA|vtls000968192</mx:datafield>
+   <mx:datafield ind1=" " ind2=" " tag="922">
+      <mx:subfield code="a">BG</mx:subfield>
+      <mx:subfield code="9">1</mx:subfield>
+      <mx:subfield code="2">LAC</mx:subfield>LAC|0009D4222</mx:datafield>
+   <mx:datafield tag="943" ind1=" " ind2=" ">
+      <mx:subfield code="a">196.</mx:subfield>
+      <mx:subfield code="9">4</mx:subfield>
+   </mx:datafield>
+   <mx:datafield tag="943" ind1=" " ind2=" ">
+      <mx:subfield code="a">197.</mx:subfield>
+      <mx:subfield code="9">12</mx:subfield>
+   </mx:datafield>
+   <mx:datafield tag="943" ind1=" " ind2=" ">
+      <mx:subfield code="a">198.</mx:subfield>
+      <mx:subfield code="9">54</mx:subfield>
+   </mx:datafield>
+   <mx:datafield tag="943" ind1=" " ind2=" ">
+      <mx:subfield code="a">199.</mx:subfield>
+      <mx:subfield code="9">182</mx:subfield>
+   </mx:datafield>
+   <mx:datafield tag="943" ind1=" " ind2=" ">
+      <mx:subfield code="a">200.</mx:subfield>
+      <mx:subfield code="9">405</mx:subfield>
+   </mx:datafield>
+   <mx:datafield tag="943" ind1=" " ind2=" ">
+      <mx:subfield code="a">201.</mx:subfield>
+      <mx:subfield code="9">13</mx:subfield>
+   </mx:datafield>
+   <mx:datafield tag="997" ind1=" " ind2=" ">
+      <mx:subfield code="a">1948-03-13</mx:subfield>
+      <mx:subfield code="b">0</mx:subfield>
+      <mx:subfield code="c">lived</mx:subfield>
+   </mx:datafield>
+</mx:record>

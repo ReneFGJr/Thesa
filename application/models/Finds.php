@@ -204,16 +204,16 @@ class finds extends CI_model {
 
     function isbn($i = '') {
         $i = sonumero($i);
-  
+
         if ((strlen($i) == 10) or (strlen($i) == 9)) {
-            $i = '978' . substr($i,0,9);
-            $i = $this->ean13_check_digit($i);
-            $i = substr($i,0,3).'-'.substr($i,3,2).'-'.substr($i,5,5).'-'.substr($i,10,2).'-'.substr($i,12,2);
-            return($i);
+            $i = '978' . substr($i, 0, 9);
+            $i = $this -> ean13_check_digit($i);
+            $i = substr($i, 0, 3) . '-' . substr($i, 3, 2) . '-' . substr($i, 5, 5) . '-' . substr($i, 10, 2) . '-' . substr($i, 12, 2);
+            return ($i);
         } else {
-            $i = $this->ean13_check_digit(substr($i,0,12));
-            $i = substr($i,0,3).'-'.substr($i,3,2).'-'.substr($i,5,5).'-'.substr($i,10,2).'-'.substr($i,12,2);
-            return($i);            
+            $i = $this -> ean13_check_digit(substr($i, 0, 12));
+            $i = substr($i, 0, 3) . '-' . substr($i, 3, 2) . '-' . substr($i, 5, 5) . '-' . substr($i, 10, 2) . '-' . substr($i, 12, 2);
+            return ($i);
         }
     }
 
@@ -283,6 +283,150 @@ class finds extends CI_model {
             $tela .= '=== SAVED ===';
         }
         return ($tela);
+    }
+
+    function authority_fiaf_import($lk) {
+        /******************************************/
+        if (strpos($lk, '#')) {
+            $lk = substr($lk, 0, strpos($lk, '#'));
+        }
+        $link = $lk;
+
+        $lk .= 'marc21.xml';
+
+        //$lk = 'd:/projeto/thesa/xml/marc21.xml';
+
+        /******************************************/
+        if (substr($lk, 0, 4) == 'http') {
+            $t = load_page($lk);
+            $tt = $t['content'];
+            $xml = simplexml_load_string($tt);
+        } else {
+            $xml = simplexml_load_file($lk);
+        }
+        $names = array();
+        $codes = array();
+        $dates = array();
+
+        foreach ($xml->children('mx', true) as $auth) {
+            foreach ($auth->children('mx', true) as $auth2) {
+                $tag = '';
+                foreach ($auth->attributes() as $field => $fieldn) {
+                    if ($field == 'tag') { $tag = $fieldn;
+                    }
+                }
+                //echo '<br>' . $tag . ' ';
+                /* TAG 375 ************************************************************/
+                if ($tag == '375') {
+                    foreach ($auth2->attributes() as $name => $v) {
+                        $label = $name;
+                    }
+                    $auth2 = trim($auth2);
+                    echo '<br>[';
+                    echo '$' . $tag . ' ';
+                    echo '<b>' . $auth2 . '</b>';
+                    echo ']';
+                }
+
+                /* TAG 100 ************************************************************/
+                if (($tag == '100') or ($tag == '700') or ($tag == '400')) {
+                    foreach ($auth2->attributes() as $name => $v) {
+                        $label = $name;
+                    }
+                    $auth2 = trim($auth2);
+                    switch($v) {
+                        case 'a' :
+                            $nm = $auth2;
+                            if (substr($nm, (strlen($nm)-1), 1) == ',') { $nm = substr($nm, 0, strlen($nm) - 1);
+                            }
+                            $nm = troca($nm,"'",'´');
+                            $names[$nm] = 1;
+                            break;
+                        case '0' :
+                            $o1 = 0;
+                            if (strpos($auth2, 'ISNI')) { $o1 = 1;
+                            }
+                            if (strpos($auth2, 'LC)')) { $o1 = 1;
+                            }
+                            if ($o1 == 1) {
+                                $codes[$auth2] = 1;
+                            }
+                            break;
+                        case 'd' :
+                            $dates[$auth2] = 1;
+                            break;
+                    }
+                }
+            }
+        }
+
+        /* Busca autores */
+        $sql = "select * from find_literal where ";
+        $wh = '';
+        $nome = '';
+        if (count($names) > 0)
+            {
+            $r = 0;
+            foreach ($names as $nm => $v3) {
+                    if ($r==0) { $nome = $nm; }
+                    if ($r > 0) { $wh .= ' OR '; }
+                    $wh .= " (l_value = '$nm') ";
+                    $r++;
+                }
+            /*********************** PREF TERM *****************************/
+            $sql = "select * from ($sql $wh) as tabela ";
+            $sql .= "inner join find_id ON f_literal = id_l ";
+
+            $rlt = $this->db->query($sql);
+            $rlt = $rlt->result_array();
+            if (count($rlt) == 0)
+                {
+                    $id = $this->create_id($nome, 'por', 'Person',$link);
+                } else {
+                    $line = $rlt[0];
+                    $id = $line['id_f'];
+                }
+                
+            // Link
+            $prop = $this->le_propriery('source');
+            if ($prop == 0)
+                {
+                    echo "ops 'source'";
+                    exit;
+                }
+            // Link
+            if (strlen($link) > 0)
+                {
+                $prop = $this->le_propriery('source');
+                if ($prop == 0)
+                    {
+                        echo "ops 'source'";
+                        exit;
+                    }
+                $idlk = $this->create_literal($link);
+                $this->insert_relation($idlk, $ida, $prop, 0);
+                }                 
+                            
+            
+            //altLabel
+            
+            $prop = $this->le_propriery('altLabel');
+            if ($prop == 0)
+                {
+                    echo "ops 'altLabel'";
+                    exit;
+                }
+            $r = 0;   
+            foreach ($names as $nm => $v3) {
+                if ($r > 0)
+                    {
+                        $ida = $this->create_literal($nm);
+                        $this->insert_relation($id, $ida, $prop, 0);
+                    }
+                $r++;
+                }
+            }
+        return($nome);
     }
 
     function cp_class($id = 0) {
@@ -403,73 +547,70 @@ class finds extends CI_model {
         return ($sx);
     }
 
-    function ajax_autocomplete($id='')
-        {
-            
-            $sx = '
+    function ajax_autocomplete($id = '') {
+
+        $sx = '
                    <div class="ui-widget">
                       <label for="tags">Busca: </label>
-                      <input type="text" class="form-control" name="auto-'.$id.'-2" id="auto-'.$id.'-2">
+                      <input type="text" class="form-control" name="auto-' . $id . '-2" id="auto-' . $id . '-2">
                       <div id="suggesstion-box"></div>
                     </div>';
-                                
-            $sx .= '
+
+        $sx .= '
                 <script>           
                     $(document).ready(function(){
                         
-                        $("#auto-'.$id.'-2").keyup(function(){
+                        $("#auto-' . $id . '-2").keyup(function(){
                             
                             $.ajax({
                             type: "POST",
-                            url: "'.base_url('index.php/find/ajaxdt/range/').'",
+                            url: "' . base_url('index.php/find/ajaxdt/range/') . '",
                             data:"keyword="+$(this).val(),
                             beforeSend: function(){
-                                $("#auto-'.$id.'-2").css("background","#FFF url('.base_url('img/LoaderIcon.gif').' no-repeat 165px");
+                                $("#auto-' . $id . '-2").css("background","#FFF url(' . base_url('img/LoaderIcon.gif') . ' no-repeat 165px");
                             },
                             success: function(data){
                                 $("#suggesstion-box").show();
                                 $("#suggesstion-box").html(data);
-                                $("#auto-'.$id.'-2").css("background","#FFF");
+                                $("#auto-' . $id . '-2").css("background","#FFF");
                             }
                             });
                         });
                     });
                     
                     //To select country name
-                        function select'.$id.'(val) {
-                            $("#auto-'.$id.'-2").val(val);
+                        function select' . $id . '(val) {
+                            $("#auto-' . $id . '-2").val(val);
                             $("#suggesstion-box").hide();
                         }                    
-                </script>'.cr();
-             return($sx);
-        }
+                </script>' . cr();
+        return ($sx);
+    }
 
-    function class_edit_value($id, $c)
-        {
-            $sql = "select * from find_class_attributes
+    function class_edit_value($id, $c) {
+        $sql = "select * from find_class_attributes
                         INNER JOIN rdf_resource ON fcs_propriety = id_rs 
                         INNER JOIN rdf_prefix ON id_prefix = rs_prefix
                         WHERE fcs_class = $c";
-            $rlt = $this->db->query($sql);
-            $rlt = $rlt->result_array();
-            $sx = '';
-            
-            for ($r=0;$r < count($rlt);$r++)
-                {
-                    $line = $rlt[$r];
-                    $sx .= msg($line['prefix_ref'].':'.$line['rs_propriety']).cr(); 
-                    $sx .= '<span onclick="cpif(\'cpdv'.$line['id_fcs'].'\');" id="cp'.$line['id_fcs'].'" class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>'.cr();
-                    $sx .= '<div id="cpdv'.$line['id_fcs'].'" style="display: none">'.cr();
-                    $sx .= '<span style="color: orange">'.msg('loading').'... '.msg('wait').'...</span>'.cr();
-                    $sx .= '</div>'.cr();       
-                }
-            $sx .= '
+        $rlt = $this -> db -> query($sql);
+        $rlt = $rlt -> result_array();
+        $sx = '';
+
+        for ($r = 0; $r < count($rlt); $r++) {
+            $line = $rlt[$r];
+            $sx .= msg($line['prefix_ref'] . ':' . $line['rs_propriety']) . cr();
+            $sx .= '<span onclick="cpif(\'cpdv' . $line['id_fcs'] . '\');" id="cp' . $line['id_fcs'] . '" class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>' . cr();
+            $sx .= '<div id="cpdv' . $line['id_fcs'] . '" style="display: none">' . cr();
+            $sx .= '<span style="color: orange">' . msg('loading') . '... ' . msg('wait') . '...</span>' . cr();
+            $sx .= '</div>' . cr();
+        }
+        $sx .= '
             <script>
                 function cpif($div)
                     {
                         $ediv = "#"+$div;
                         $($ediv).fadeIn();
-                        $.ajax({url: "'.base_url('index.php/find/ajax/ed_range/'.$id.'/'.$c.'/'.checkpost_link($id.'ed'.$c)).'", 
+                        $.ajax({url: "' . base_url('index.php/find/ajax/ed_range/' . $id . '/' . $c . '/' . checkpost_link($id . 'ed' . $c)) . '", 
                             success: function(result){
                                 $($ediv).html(result); }, 
                             fail: function() {
@@ -478,8 +619,8 @@ class finds extends CI_model {
                     }
             </script>
             ';
-            return($sx);
-        }
+        return ($sx);
+    }
 
     function class_value_edit($id, $c) {
         $cp = 'RP1.prefix_ref as pr1, RS1.rs_propriety as rs1, RS1.id_rs as idrs1';
@@ -617,58 +758,26 @@ class finds extends CI_model {
         return ($au);
     }
 
-    function viaf_inport($link) {
-        //$link = substr($link, 0, strpos($link, '#')) . 'viaf.xml';
-        //$link = substr($link, 0, strpos($link, '#')) . 'marc21.xml';
-        //$txt = load_page($link);
-        $xml = simplexml_load_file('e:/lixo/marc21.xml');
-
-        $kids = $xml -> children('mx', true);
-        echo '<pre>';
-
-        //Get attributes of current node
-        for ($r = 0; $r < count($kids); $r++) {
-            $data = $kids -> datafield[$r];
-
-            foreach ($data->attributes() as $name => $v) {
-                switch ($v) {
-                    case '700' :
-                        echo '<br>==>' . $name . '=' . $v;
-                        print_r($data);
-                        foreach ($v->attributes() as $x1 => $x2)
-                            echo '<br>===' . $x1 . '--' . $x2;
-                        break;
-                    case '100' :
-                        echo '<br>==>' . $name . '=' . $v;
-                        print_r($data);
-                        break;
-                }
-
-            }
-        }
-        exit ;
-    }
-
-    function insert_relation($name, $auth, $class, $res2 = 0) {
+    function insert_relation($concept, $literal, $class, $concept2 = 0) {
         $agency = $this -> finds -> agency;
         $sql = "select * from find_rdf 
-						where fr_id_1 = $name
-						AND fr_literal = $auth
-						AND fr_propriety = $class ";
+						where fr_id_1 = $concept
+						AND fr_literal = $literal
+						";
         $rlt = $this -> db -> query($sql);
         $rlt = $rlt -> result_array();
         if (count($rlt) == 0) {
             $sql = "insert into find_rdf
 							(fr_id_1, fr_id_2, fr_literal, fr_propriety,fr_agency)
 							values
-							($name,$res2,$auth,$class,$agency)";
+							($concept,$concept2,$literal,$class,$agency)";
             $rlt = $this -> db -> query($sql);
             return (1);
         }
         return (0);
     }
 
-    function create_id($name, $lang, $class) {
+    function create_id($name, $lang, $class, $url='') {
 
         $agency = $this -> agency;
         $prop_class = $this -> le_propriery('prefLabel');
@@ -715,8 +824,13 @@ class finds extends CI_model {
 							f_agency, f_source
 							) values (
 							$id, $class_id,
-							$agency, 0
+							$agency, '$url'
 							)";
+            $rltq = $this -> db -> query($sqlq);
+        } else {
+            $linez = $rltz[0];
+            $idf = $linez['id_f'];
+            $sql = "update find_id set f_source = '$url' where id_f = $idf";
             $rltq = $this -> db -> query($sqlq);
         }
         /* recupera IDC */
@@ -828,6 +942,19 @@ class finds extends CI_model {
 						INNER JOIN rdf_resource ON id_rs = f_class
 						INNER JOIN rdf_prefix ON rs_prefix = id_prefix						
 				WHERE l_value like '%$name%' ";
+                
+       $sql = "select * from 
+                        (select fr_id_1 from find_literal
+                        INNER JOIN find_rdf ON fr_literal = id_l
+                        WHERE l_value like '%$name%'
+                        GROUP BY fr_id_1
+                        ) as tabela
+                INNER JOIN find_id ON fr_id_1 = id_f
+                INNER JOIN find_literal ON f_literal = id_l
+                INNER JOIN rdf_resource ON id_rs = f_class
+                INNER JOIN rdf_prefix ON rs_prefix = id_prefix
+                ORDER BY l_value";
+                                
         $rlt = $this -> db -> query($sql);
         $rlt = $rlt -> result_array();
 
@@ -1085,8 +1212,7 @@ class finds extends CI_model {
     }
 
     function create_literal($value) {
-        $idioma = $this -> idioma;
-        ;
+        $idioma = $this -> idioma; ;
         $t = $this -> le_literal($value);
         if ($t == 0) {
             $sql = "insert into find_literal
