@@ -668,7 +668,7 @@ class skoses extends CI_model {
                 }
             return ($tt);
         } else {
-            return ( array());
+            return ( '');
         }
     }
 
@@ -1195,7 +1195,7 @@ class skoses extends CI_model {
 	function cp_term($id = '') {
 		$cp = array();
 		array_push($cp, array('$H8', 'id_rl', '', true, true));
-		array_push($cp, array('$S100', 'rl_value', msg('term_name'), false, false));
+		array_push($cp, array('$S100', 'rl_value', msg('term_name'), true, true));
 		
 		$sql = "select * from language order by lg_order";
 		array_push($cp, array('$Q  lg_code:lg_language:' . $sql, 'rl_lang', msg('language'), true, true));
@@ -1538,7 +1538,7 @@ class skoses extends CI_model {
 		/* Verifica */
 		$tm = 0;
 		$sql = "select * from th_concept_term 
-						WHERE (ct_concept_2 = $c2 and ct_propriety = $tr)";
+						WHERE (ct_concept_2 = $c2 and ct_propriety = $tr and ct_concept = $c1)";
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
 		if (count($rlt) == 0) {
@@ -1550,7 +1550,11 @@ class skoses extends CI_model {
 								$c1, $th, $tm,
 								$c2,'.$tr.'
 							)";
-		}	$rlt = $this -> db -> query($sql);
+		} else {
+
+		}	
+		
+		$rlt = $this -> db -> query($sql);
 	}
 	
 	function from_to($th=0,$separador='=>')
