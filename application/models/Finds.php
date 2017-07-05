@@ -336,7 +336,11 @@ class finds extends CI_model {
                     $auth2 = trim($auth2);
                     switch($v) {
                         case 'a' :
-                            $nm = $auth2;
+                            $nm = trim($auth2);
+                            $nm = troca($nm,'  ',' ');
+                            $nm = troca($nm,'  ',' ');
+                            $nm = trim($nm);
+                            
                             if (substr($nm, (strlen($nm)-1), 1) == ',') { $nm = substr($nm, 0, strlen($nm) - 1);
                             }
                             $nm = troca($nm,"'",'´');
@@ -388,13 +392,6 @@ class finds extends CI_model {
                 }
                 
             // Link
-            $prop = $this->le_propriery('source');
-            if ($prop == 0)
-                {
-                    echo "ops 'source'";
-                    exit;
-                }
-            // Link
             if (strlen($link) > 0)
                 {
                 $prop = $this->le_propriery('source');
@@ -404,7 +401,7 @@ class finds extends CI_model {
                         exit;
                     }
                 $idlk = $this->create_literal($link);
-                $this->insert_relation($idlk, $ida, $prop, 0);
+                $this->insert_relation($id, $idlk, $prop, 0);
                 }                 
                             
             
