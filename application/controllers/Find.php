@@ -137,7 +137,7 @@ class find extends CI_controller {
         if ($form->saved > 0)
             {
                 $link = get("dd2");
-                $this->finds->authority_fiaf_import($link);
+                $tela .= '<h3><font color="blue">'.msg('inported').':</font> <b>'.$this->finds->authority_fiaf_import($link).'</b></h3>';
             }
         
         $data['content'] = $tela;

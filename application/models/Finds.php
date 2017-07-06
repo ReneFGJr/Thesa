@@ -307,6 +307,7 @@ class finds extends CI_model {
         $names = array();
         $codes = array();
         $dates = array();
+        $name_pref = '';
 
         foreach ($xml->children('mx', true) as $auth) {
             foreach ($auth->children('mx', true) as $auth2) {
@@ -333,7 +334,8 @@ class finds extends CI_model {
                     foreach ($auth2->attributes() as $name => $v) {
                         $label = $name;
                     }
-                    $auth2 = trim($auth2);
+                    $auth2 = trim(html_entity_decode($auth2));
+                    //echo '<br>=>'.$v.' '.$tag.' '.$auth2;
                     switch($v) {
                         case 'a' :
                             $nm = trim($auth2);
@@ -372,6 +374,11 @@ class finds extends CI_model {
             {
             $r = 0;
             foreach ($names as $nm => $v3) {
+                    $nm = trim($nm);
+                    $nm = troca($nm,'  ',' ');
+                    $nm = troca($nm,'  ',' ');
+                    $nm = trim($nm);
+                
                     if ($r==0) { $nome = $nm; }
                     if ($r > 0) { $wh .= ' OR '; }
                     $wh .= " (l_value = '$nm') ";
@@ -796,19 +803,19 @@ class finds extends CI_model {
         $sql = "select * from find_literal where l_value = '$name' and l_language = '$lang' ";
         $rlt = $this -> db -> query($sql);
         $rlt = $rlt -> result_array();
+        
+        $idrlt = $this->le_literal($name);
 
-        if (count($rlt) == 0) {
+        if ($idrlt == 0) {
             /* INSERT NEW LITERAL VALUE */
             $sqlx = "insert into find_literal
 								(l_value, l_language)
 								value
-								('$name','$lang')";
+								('$name','$lang');";
             $rltx = $this -> db -> query($sqlx);
-            $rlt = $this -> db -> query($sql);
-            $rlt = $rlt -> result_array();
+            $idrlt = $this->le_literal($name);
         }
-        $line = $rlt[0];
-        $id = $line['id_l'];
+        $id = $idrlt;
 
         $sqlz = "select * from find_id where f_literal = $id and f_class=$class_id ";
         $rltz = $this -> db -> query($sqlz);
@@ -1172,7 +1179,7 @@ class finds extends CI_model {
             $sql2 = "insert into find_id 
 					(f_literal, f_class, f_agency, f_source)
 					values
-					($lt,$class,$ag,0)";
+					($lt,$class,$ag,0);;";
             $rlt = $this -> db -> query($sql2);
         }
         $rlt = $this -> db -> query($sql);
@@ -1209,13 +1216,19 @@ class finds extends CI_model {
     }
 
     function create_literal($value) {
-        $idioma = $this -> idioma; ;
+        $idioma = $this -> idioma;
+        $value = trim($value);
+        $value = troca($value,'  ',' ');
+        $value = troca($value,'  ',' ');
+        $value = trim($value);
+        
         $t = $this -> le_literal($value);
+        echo '===<br>'.$value;
         if ($t == 0) {
             $sql = "insert into find_literal
 								(l_value, l_language)
 							values
-								('$value','$idioma')";
+								('$value','$idioma');";
             $rlt = $this -> db -> query($sql);
             $t = $this -> le_literal($value);
         }
