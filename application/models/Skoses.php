@@ -840,9 +840,8 @@ class skoses extends CI_model {
 			return($tela);
 		}
 
-	function notes_show($l) {
+	function notes_show($l,$edit = 0) {
 		$sx = '';
-		$edit = 0;
 		if (isset($_SESSION['nivel'])) {
 			if ($_SESSION['nivel'] > 0) {
 				$edit = 1;
@@ -1557,7 +1556,7 @@ class skoses extends CI_model {
 		$rlt = $this -> db -> query($sql);
 	}
 	
-	function from_to($th=0,$separador='=>')
+	function from_to($th=0,$separador='=>',$capc='')
 		{
 			$sql = "select * from th_concept_term 
 						INNER JOIN rdf_literal ON ct_term = id_rl
@@ -1579,7 +1578,7 @@ class skoses extends CI_model {
 						}	
 					if ($valo != $mst)
 						{
-							$sx .= $line['rl_value'].$separador.$mst.cr();
+							$sx .= $capc.$line['rl_value'].$capc.$separador.$capc.$mst.$capc.cr();
 						} 
 				}
 			return($sx);

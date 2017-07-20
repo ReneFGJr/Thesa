@@ -58,7 +58,7 @@ if (!isset($action)) {
 					echo '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>';
 					echo '</a>';
 					echo '</h4>';
-					echo $this->skoses->notes_show($notes);
+					echo $this->skoses->notes_show($notes,$editar);
 				}
 			
 			if ((count($terms_al)  +$editar) > 0) 

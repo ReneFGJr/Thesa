@@ -1442,15 +1442,35 @@ class Skos extends CI_Controller {
 
     }
 
-	function terms_from_to($id='')
+	function terms_from_to($id='',$exp='')
 		{
-        $this -> load -> model('skoses');
-        $this -> cab();
-
         if (strlen($id) == 0) {
             $id = $_SESSION['skos'];
         }
+					
+		$tp = 1;
+        $this -> load -> model('skoses');
+        switch ($exp)
+			{
+			case 'csv':
+				$arquivo = "teste.csv";
+				// Configurações header para forçar o download
+			header ("Expires: Mon, ".gmdate("D,d M YH:i:s")." GMT");
+			header ("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+			header ("Cache-Control: no-cache, must-revalidate");
+			header ("Pragma: no-cache");
+			header ("Content-type: application/x-msexcel");
+			header ("Content-Disposition: attachment; filename=\"{$arquivo}\"" );
+			header ("Content-Description: PHP Generated Data" );
+				echo utf8_decode($this->skoses->from_to($id,';','"'));
+				return('');
+				break;	
+			}
 
+
+
+
+		$this -> cab($tp);
         $data = $this -> skoses -> le_skos($id);
         $this -> load -> view('skos/view', $data);
 
