@@ -16,3 +16,9 @@ body
     padding-left: 10px;
     list-style: none;       
     }
+    
+.foot
+    {
+        border-top: 3px solid #ff0000;
+        background-color: #e0e0e0;
+    }

@@ -28,8 +28,11 @@ class find extends CI_controller {
     }
 
     function foot() {
-        $sx = '<hr>Rodape<br><br><br><br><br><br><br><br>';
+        $sx = 'Rodape<br><br><br><br>';
         $data['content'] = $sx;
+        $data['title'] = '';
+        $data['fluid'] = true;
+        $data['class'] = 'foot';
         $this -> load -> view('content', $data);
     }
 
@@ -121,11 +124,35 @@ class find extends CI_controller {
         $this -> load -> model('finds');
         $this -> cab();
         
+        $tela = '';
+        $tela .= '<h1>'.msg('Authoriry_control').'</h1>';
+        $tela .= '<a href="'.base_url('index.php/find/authority_viaf').'" class="btn btn-default">'.msg('inport_viaf').'</a>';
+        $tela .= ' ' ;
+        $tela .= '<a href="'.base_url('index.php/find/authority_viaf_file').'" class="btn btn-default">'.msg('inport_viaf_file').'</a>';
+        
+        
+        $data['content'] = $tela;
+        
+        $this->load->view('content',$data);
+        
+        
+        $this->foot();  
+        }
+
+    function authority_viaf()
+        {
+        /* Edit attribute */
+        $this -> load -> model('finds');
+        $this -> cab();
+        
         $cp = array();
         array_push($cp,array('$H8','','',false,false));
         array_push($cp,array('$A1','',msg('Viaf import'),false,true));
         array_push($cp,array('$S100','','link',false,true));
         
+        $txt = msg('link_sample').': https://viaf.org/viaf/12305881/#Bradbury,_Ray,_1920-2012<br>';
+        $txt .= '<a href="https://viaf.org/" target="_new">'.msg('access').' '.msg('Viaf - Virtual International Authority File').'</a>';
+        array_push($cp,array('$M','',$txt,false,true));        
         array_push($cp,array('$B8','',msg('import link >>>'),false,true));
         
         $id = '';
@@ -143,6 +170,27 @@ class find extends CI_controller {
         
         $data['content'] = $tela;
         $data['title'] = '';
+        $this->load->view('content',$data);        
+        
+        $this->foot();
+           
+        }
+
+   function authority_viaf_file()
+        {
+        /* Edit attribute */
+        $this -> load -> model('finds');
+        $this -> cab();
+               
+        /* */
+        $form = new form;
+        $cp = array();        
+        array_push($cp,array('$SFILE','','',true,true));
+        array_push($cp,array('$B8','',msg('import file >>>'),false,true));
+        $tela = $form->editar($cp,'');
+        $data['content'] = $tela;
+        $data['title'] = msg('Viaf import file - MARC-21 record');
+        
         $this->load->view('content',$data);
         
         $this->foot();

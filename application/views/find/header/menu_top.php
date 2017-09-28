@@ -84,7 +84,7 @@
                           </ul>
                         </li>						
                         <li>
-                            <a href="<?php echo base_url('index.php/authority/find'); ?>" class="menu_sk"><?php echo msg('authority_find'); ?></a>
+                            <a href="<?php echo base_url('index.php/find/authority'); ?>" class="menu_sk"><?php echo msg('authority_find'); ?></a>
                         </li>					
 						<li>
 							<a href="<?php echo base_url('index.php/find/work'); ?>" class="menu_sk"><?php echo msg('work'); ?></a>
