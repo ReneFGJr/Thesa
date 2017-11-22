@@ -1470,8 +1470,9 @@ class skoses extends CI_model {
 			} else {
 				if (strlen(trim($line['altTerm'])) > 0) {
 					$link = '<a href="' . base_url('index.php/skos/c/' . $line['ct_concept']) . '/' . $th . '/" class="term">';
-					$sa = '<i>';
-					$saf = '</i> -> ' . $line['altTerm'];
+					$sa = ' ';
+					$saf = ' <span style="color: #808080"><i>USE</i></span> ' . $line['altTerm'];
+					
 				}
 			}
 			$sx .= '<li>' . $link . $sa . ' ' . $line['rl_value'];
