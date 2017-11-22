@@ -1571,6 +1571,32 @@ class Skos extends CI_Controller {
         $data = array();
 
     }
+	
+    function thas() {
+        $th = $_SESSION['skos'];
+        if (strlen($th) == 0) {
+            redirect(base_url('index.php/skos'));
+        }
+        /* Load model */
+        
+        $this -> load -> model('skoses');
+        $this -> cab();
+
+        if (strlen($th) == 0) {
+            $th = $_SESSION['skos'];
+        }
+
+        $data = $this -> skoses -> le_skos($th);
+        $this -> load -> view('skos/view', $data);
+
+        $tela = '';
+        $tela .= $this -> load -> view('skos/thesa_admin_menu', null, true);
+        $data['content'] = $tela;
+        $this -> load -> view('content', $data);
+        
+        /*************/        
+        $data = $this -> skoses -> le_report_thas($th);
+    }	
 
     function thrs() {
         $th = $_SESSION['skos'];

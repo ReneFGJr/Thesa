@@ -692,6 +692,27 @@ class skoses extends CI_model {
 			$this -> load -> view("skos/report_conecpt", $data2);
 		}
 	}
+	
+	function le_report_thas($th = 0) {
+		$th = round(sonumero($th));
+		$sql = "select *
+					FROM th_concept_term 
+					INNER JOIN rdf_literal ON id_rl = ct_term
+						WHERE ct_th = $th and ct_propriety = " . $this -> CO . "
+					ORDER BY rl_value
+				";
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+		$desc = array();
+		$h = array();
+		for ($r = 0; $r < count($rlt); $r++) {
+			$data = $rlt[$r];
+			/* Recupera informações sobre o Concecpt */
+			$c = $data['ct_concept'];
+			$data2 = $this -> skoses -> le_c($c, $th);
+			$this -> load -> view("skos/report_conecpt_2", $data2);
+		}
+	}	
 
 	function le_c_users($th = '') {
 		$sql = "select * from th_users where ust_th = $th and ust_status = 1";

@@ -61,6 +61,7 @@ if (!isset($_SESSION['id']))
       	<li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo msg('outputs'); ?><span class="caret"></span></a>
           <ul class="dropdown-menu">
+          	<li><a href="<?php echo base_url('index.php/skos/thas/'.$th);?>"><?php echo msg('printer_alfabetic'); ?></a></li>
             <li><a href="<?php echo base_url('index.php/skos/thrs/'.$th);?>"><?php echo msg('printer'); ?></a></li>
             <li><a href="<?php echo base_url('index.php/skos/thri/'.$th);?>"><?php echo msg('printer_sistematic'); ?></a></li>
           </ul>
