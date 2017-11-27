@@ -10,7 +10,7 @@ if (isset($fluid) == 1) {
     echo '<div class="container" class="'.$class.'">' . cr();
 }
 /*********** TITLE ************/
-if (isset($title)) {
+if (isset($title) and (strlen($title) > 0)) {
     echo '<h1>' . $title;
     if (isset($submenu)) {
         echo '<br>' . $submenu . '</br>';
