@@ -1225,6 +1225,13 @@ class Skos extends CI_Controller {
         }
 
     }
+    
+    function rdf($id='',$ltr='')
+        {
+            $this -> load -> model("skoses");
+            $tela = $this -> skoses -> termos_show_rdf($id, $ltr);
+            echo $tela;
+        }
 
     /* Terms */
     function term($th = '', $idt = '') {
