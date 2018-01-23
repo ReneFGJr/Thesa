@@ -48,6 +48,12 @@
 	background-color: #3333c0;
 	color: #ffffff;
 }
+
+.bgthesa {
+    background-color: #d0d0f0;
+    color: #000000;
+}
+
 .thesa_tree {
 	width: 100%;
 	border: 1px solid #C0C0C0;

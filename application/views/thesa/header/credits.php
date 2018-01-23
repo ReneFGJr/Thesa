@@ -1,0 +1,1 @@
+<div style="position:absolute; left: 10px; bottom:10px; width:100%; color: #888888; z-index: 99999;" class="small">All rights reserved for RENE F. GABRIEL JUNIOR - &copy 2008-<?php echo date("Y");?></div>

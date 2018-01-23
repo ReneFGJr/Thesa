@@ -3,7 +3,7 @@
 		<div class="col-md-6">
 			<?php
 			if ($edit == 1) {
-				echo '<a href="' . base_url("index.php/skos/cedit/" . $id_c) . '" class="btn btn-default">editar</a>' . cr();
+				echo '<a href="' . base_url("index.php/skos/cedit/" . $id_c) . '" class="btn btn-secondary">editar</a>' . cr();
 			}
 			?>
 		</div>

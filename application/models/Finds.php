@@ -731,7 +731,7 @@ class finds extends CI_model {
         }
         $sx .= '</div>';
 
-        $sx .= '<input type="submit" class="btn btn-default" value="' . msg("insert_" . $type) . '">';
+        $sx .= '<input type="submit" class="btn btn-secondary" value="' . msg("insert_" . $type) . '">';
         $sx .= '</form>';
         return ($sx);
     }
@@ -908,7 +908,7 @@ class finds extends CI_model {
         $sx .= '</span>';
         $sx .= '<br>' . cr();
 
-        $sx .= '<input type="submit" value="' . msg('create_literal_value') . '" class="btn btn-default">';
+        $sx .= '<input type="submit" value="' . msg('create_literal_value') . '" class="btn btn-secondary">';
         $sx .= '<input type="hidden" value="' . $dd2 . '">';
 
         $sx .= '<br>' . date("d-m-Y H:i:s");

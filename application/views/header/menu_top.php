@@ -8,7 +8,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="<?php echo base_url('index.php');?>"><img src="<?php echo base_url('img/logo/logo.png');?>" height="50"></a>
+      <a class="navbar-brand" href="<?php echo base_url('index.php');?>"><img src="<?php echo base_url('img/logo/logo_thesa.png');?>" height="50"></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -25,7 +25,7 @@
 				print_r($_SESSION);
 				echo '<li style="background-color: orange;">'.$_SESSION['nome'].'</li>';
 			} else {
-				echo '<li style="background-color: orange;"><a href="'.base_url('index.php/login').'" style="color: white;">Acesso</a></li>';		
+				echo '<li style="background-color: orange;"><a href="'.base_url('index.php/login').'" style="color: white;">Acesso2</a></li>';		
 			}        
         ?>
       </ul>

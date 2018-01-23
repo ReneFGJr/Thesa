@@ -34,7 +34,7 @@ class skoses extends CI_model {
     function th($th = '') {
         if (strlen($th) == 0) {
             if (!isset($_SESSION['skos'])) {
-                redirect(base_url('index.php/skos'));
+                redirect(base_url('index.php/thesa'));
             }
             $th = $_SESSION['skos'];
         }
@@ -81,7 +81,7 @@ class skoses extends CI_model {
             return ($line);
         } else {
             /* Thesaurus Not Found */
-            redirect(base_url('index.php/skos'));
+            redirect(base_url('index.php/thesa'));
         }
     }
 
@@ -119,11 +119,12 @@ class skoses extends CI_model {
     /* Read Concept */
     function le_c($id, $th = '') {
         $th = round(sonumero($th));
+        $prop = 25;
         $sql = "select * from " . $this -> table_concept . " 
 					INNER JOIN th_concept_term ON ct_concept = id_c
 					INNER JOIN rdf_literal ON id_rl = ct_term
 					INNER JOIN th_thesaurus ON id_pa = ct_th
-						WHERE ct_concept = $id and ct_th = $th and ct_propriety = 25";
+						WHERE ct_concept = $id and ct_th = $th and ct_propriety = $prop";
         $rlt = $this -> db -> query($sql);
         $rlt = $rlt -> result_array();
         if (count($rlt) > 0) {
@@ -206,7 +207,7 @@ class skoses extends CI_model {
         $sx .= '</table>';
 
         $sx .= '<div class="row" style="margin-top: 12px;"><div class="col-md-10 col-md-offset-1 text-right">';
-        $sx .= '	<input type="submit" name="action" class="btn btn-default " value="' . msg('save') . '">';
+        $sx .= '	<input type="submit" name="action" class="btn btn-secondary " value="' . msg('save') . '">';
         $sx .= '</div></div>';
         return ($sx);
         return ($sx);
@@ -259,7 +260,7 @@ class skoses extends CI_model {
         $sx .= '</div></div>';
 
         $sx .= '<div class="row" style="margin-top: 12px;"><div class="col-md-10 col-md-offset-1 text-right">';
-        $sx .= '	<input type="submit" name="action" class="btn btn-default " value="' . msg('save') . '">';
+        $sx .= '	<input type="submit" name="action" class="btn btn-secondary " value="' . msg('save') . '">';
         $sx .= '</div></div>';
         return ($sx);
         return ($sx);
@@ -287,7 +288,7 @@ class skoses extends CI_model {
         $sx .= '	</select>';
         $sx .= '</div></div>';
         $sx .= '<div class="row" style="margin-top: 12px;"><div class="col-md-10 col-md-offset-1 text-right">';
-        $sx .= '	<input type="submit" name="action" class="btn btn-default " value="' . msg('save') . '">';
+        $sx .= '	<input type="submit" name="action" class="btn btn-secondary " value="' . msg('save') . '">';
         $sx .= '</div></div>';
         return ($sx);
 
@@ -341,7 +342,7 @@ class skoses extends CI_model {
         $sx .= '</table>';
 
         $sx .= '<div class="row" style="margin-top: 12px;"><div class="col-md-10 col-md-offset-1 text-right">';
-        $sx .= '	<input type="submit" name="action" class="btn btn-default " value="' . msg('save') . '">';
+        $sx .= '	<input type="submit" name="action" class="btn btn-secondary " value="' . msg('save') . '">';
         $sx .= '</div></div>';
         return ($sx);
 
@@ -498,9 +499,11 @@ class skoses extends CI_model {
 
     function le_c_hidden($id = '', $th = '') {
         $th = round(sonumero($th));
+        /************* Mudar **********/
+        $thp = 34;
         $sql = "select * from th_concept_term as t1
 					INNER JOIN rdf_literal ON id_rl = t1.ct_term
-						WHERE t1.ct_concept = $id and t1.ct_th = $th and t1.ct_propriety = " . $this -> TH;
+						WHERE t1.ct_concept = $id and t1.ct_th = $th and t1.ct_propriety = " . $thp;
         $rlt = $this -> db -> query($sql);
         $rlt = $rlt -> result_array();
         if (count($rlt) > 0) {
@@ -516,8 +519,8 @@ class skoses extends CI_model {
         $sql = "select l1.id_rl as id1, l1.rl_value as lt1,
 					   l2.id_rl as id2, l2.rl_value as lt2
 					FROM th_concept_term as t1
-					INNER JOIN th_concept_term as t2 ON t1.ct_concept_2 = t2.ct_concept and t2.ct_propriety = " . $this -> CO . "
-					INNER JOIN th_concept_term as t3 ON t1.ct_concept = t3.ct_concept and t3.ct_propriety = " . $this -> CO . " 
+					INNER JOIN th_concept_term as t2 ON t1.ct_concept_2 = t2.ct_concept and t2.ct_propriety = " . $co . "
+					INNER JOIN th_concept_term as t3 ON t1.ct_concept = t3.ct_concept and t3.ct_propriety = " . $co . " 
 					INNER JOIN rdf_literal as l1 ON l1.id_rl = t2.ct_term
 					LEFT JOIN rdf_literal as l2 ON l2.id_rl = t3.ct_term
 						WHERE t1.ct_th = $th and t1.ct_propriety = " . $this -> TG;
@@ -576,7 +579,7 @@ class skoses extends CI_model {
             $file = fopen('xml/flare_' . $th . '.csv', 'w+');
             fwrite($file, $tt) / fclose($file);
 
-            redirect(base_url('index.php/skos/th'));
+            redirect(base_url('index.php/thesa/th'));
 
             return ($rlt);
         } else {
@@ -589,8 +592,8 @@ class skoses extends CI_model {
         $sql = "select l1.id_rl as id1, l1.rl_value as lt1,
                        l2.id_rl as id2, l2.rl_value as lt2
                     FROM th_concept_term as t1
-                    INNER JOIN th_concept_term as t2 ON t1.ct_concept_2 = t2.ct_concept and t2.ct_propriety = " . $this -> CO . "
-                    INNER JOIN th_concept_term as t3 ON t1.ct_concept = t3.ct_concept and t3.ct_propriety = " . $this -> CO . " 
+                    INNER JOIN th_concept_term as t2 ON t1.ct_concept_2 = t2.ct_concept and t2.ct_propriety = " . $co . "
+                    INNER JOIN th_concept_term as t3 ON t1.ct_concept = t3.ct_concept and t3.ct_propriety = " . $co . " 
                     INNER JOIN rdf_literal as l1 ON l1.id_rl = t2.ct_term
                     LEFT JOIN rdf_literal as l2 ON l2.id_rl = t3.ct_term
                         WHERE t1.ct_th = $th and t1.ct_propriety = " . $this -> TG;
@@ -672,7 +675,7 @@ class skoses extends CI_model {
         $sql = "select *
 					FROM th_concept_term 
 					INNER JOIN rdf_literal ON id_rl = ct_term
-						WHERE ct_th = $th and ct_propriety = " . $this -> CO . "
+						WHERE ct_th = $th and ct_propriety = " . $co . "
 					ORDER BY rl_value
 				";
         $rlt = $this -> db -> query($sql);
@@ -693,7 +696,7 @@ class skoses extends CI_model {
         $sql = "select *
 					FROM th_concept_term 
 					INNER JOIN rdf_literal ON id_rl = ct_term
-						WHERE ct_th = $th and ct_propriety = " . $this -> CO . "
+						WHERE ct_th = $th and ct_propriety = " . $co . "
 					ORDER BY rl_value
 				";
         $rlt = $this -> db -> query($sql);
@@ -760,11 +763,11 @@ class skoses extends CI_model {
                 if (isset($line['rs_propriety'])) {
                     $sx .= '<span style="font-size: 75%;">' . msg($line['prefix_ref'] . ':' . $line['rs_propriety']) . ' - </span>';
                 }
-                $link = '<a href="' . base_url('index.php/skos/c/' . $line['ct_concept']) . '">';
+                $link = '<a href="' . base_url('index.php/thesa/c/' . $line['ct_concept']) . '">';
                 $sx .= $link . $line['rl_value'] . '</a> <sup class="supersmall">(' . $line['rl_lang'] . ')</sup>';
 
                 $sx .= ' ';
-                $link = base_url('index.php/skos/te_remove/' . $line['id_ct'] . '/' . checkpost_link($line['id_ct'] . $this -> chave));
+                $link = base_url('index.php/thesa/te_remove/' . $line['id_ct'] . '/' . checkpost_link($line['id_ct'] . $this -> chave));
                 $sx .= '<a href="#" style="color: red" title="Remove" onclick="newwin(\'' . $link . '\',600,300);">';
                 $sx .= '<span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>';
                 $sx .= '</a>';
@@ -867,7 +870,7 @@ class skoses extends CI_model {
             $line = $l[$r];
             $ed = '';
             if ($edit == 1) {
-                $ed = '<a href="#" onclick="newxy(\'' . base_url('index.php/skos/ntedit/' . $line['id_rl'] . '/' . checkpost_link($line['id_rl'])) . '\',800,400);"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>' . cr();
+                $ed = '<a href="#" onclick="newxy(\'' . base_url('index.php/thesa/ntedit/' . $line['id_rl'] . '/' . checkpost_link($line['id_rl'])) . '\',800,400);"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>' . cr();
             }
             $sx .= '<span style="font-size: 75%;">' . msg($line['prefix_ref'] . ':' . $line['rs_propriety']) . '</span>
 					<p>' . $ed . $line['rl_value'] . '</p>';
@@ -905,7 +908,7 @@ class skoses extends CI_model {
 						LEFT JOIN th_users ON ust_th = id_pa
 							where (pa_creator = $user) or (ust_user_id = $user)
 							group by  id_pa, pa_name, pa_created, pa_status, pa_avaliacao, pa_creator
-							order by pa_status desc, pa_name ";
+							order by pa_name, pa_status desc  ";
         }
         $rlt = $this -> db -> query($sql);
         $rlt = $rlt -> result_array();
@@ -919,7 +922,7 @@ class skoses extends CI_model {
         $sx .= '</tr>' . cr();
         for ($r = 0; $r < count($rlt); $r++) {
             $line = $rlt[$r];
-            $link = '<a href="' . base_url('index.php/skos/select/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'])) . '">';
+            $link = '<a href="' . base_url('index.php/thesa/select/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'])) . '">';
             $sx .= '<tr>';
             $sx .= '<td>';
             $sx .= $link . $line['pa_name'] . '</a>';
@@ -928,20 +931,23 @@ class skoses extends CI_model {
             $sx .= $link . stodbr($line['pa_created']) . '</a>';
             $sx .= '</td>';
             $sx .= '<td>';
-            $btn = 'btn-default';
+            $btn = 'btn-secondary';
             switch ($line['pa_status']) {
-                case '2' :
+                case '1' :
                     $btn = 'btn-warning';
+                    break;                
+                case '2' :
+                    $btn = 'btn-success';
                     break;
             }
-            $sx .= '<span class="btn ' . $btn . ' small">' . msg('status_' . $line['pa_status']) . '</span>';
+            $sx .= '<div class="btn ' . $btn . ' small" style="width: 100%;">' . msg('status_' . $line['pa_status']) . '</div>';
             $sx .= '</td>';
             $sx .= '<td align="center">';
             $av = $line['pa_avaliacao'];
             if ($av == 0) {
                 $av = "sem avaliação";
             } else {
-                $av = '<span class="btn btn-default">' . $av . '</span>';
+                $av = '<div class="btn btn-secondary" style="width: 100%;">' . $av . '</div>';
             }
             $sx .= $link . $av . '</a>';
             $sx .= '</td>';
@@ -949,7 +955,7 @@ class skoses extends CI_model {
             if (isset($_SESSION['id'])) {
                 if ($line['pa_creator'] == $_SESSION['id']) {
                     $sx .= '<td>';
-                    $sx .= '<a href="' . base_url('index.php/skos/th_edit/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'] . $this -> chave)) . '" class="btn btn-default">' . msg('edit') . '</a>';
+                    $sx .= '<a href="' . base_url('index.php/thesa/th_edit/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'] . $this -> chave)) . '" class="btn btn-secondary">' . msg('edit') . '</a>';
                     $sx .= '</td>';
                 }
             }
@@ -982,14 +988,14 @@ class skoses extends CI_model {
         $xrlt = $this -> db -> query($sql);
         $xrlt = $xrlt -> result_array();
         $sx = '<nav aria-label="Page navigation text-center"><ul class="pagination">';
-        $sx .= '<li><a href="' . base_url('index.php/skos/terms/' . $id . '/') . '">' . msg('all') . '</a></li>';
+        $sx .= '<li class="page-item"><a href="' . base_url('index.php/thesa/terms/' . $id . '/') . '" class="page-link">' . msg('all') . '</a></li>';
         for ($r = 0; $r < count($xrlt); $r++) {
             $line = $xrlt[$r];
-            $sx .= '<li><a href="' . base_url('index.php/skos/terms/' . $id . '/' . $line['letra']) . '">' . $line['letra'] . '</a></li>';
+            $sx .= '<li><a href="' . base_url('index.php/thesa/terms/' . $id . '/' . $line['letra']) . '" class="page-link">' . $line['letra'] . '</a></li>';
         }
 
         if (($ed == 1) and ($this -> autho('', $id))) {
-            $sx .= '<li><a href="' . base_url('index.php/skos/concept_add/' . $id . '/') . '">' . msg('add') . '</a></li>';
+            $sx .= '<li><a href="' . base_url('index.php/thesa/concept_add/' . $id . '/') . '" class="page-link">' . msg('add') . '</a></li>';
         }
         $sx .= '</ul></nav>	';
         return ($sx);
@@ -1006,6 +1012,8 @@ class skoses extends CI_model {
     }
 
     function thesaurus_resume($id) {
+        $co = $this->find_class('Concept'); 
+        
         $sql = "select count(*) as total from rdf_literal_th where lt_thesauros = $id";
 
         /*** TERMS WIDTHOUT CONCEPT ***/
@@ -1022,7 +1030,7 @@ class skoses extends CI_model {
 
         /***/
         $sql = "select count(*) as total from th_concept_term 
-					where ct_th = $id and ct_propriety = " . $this -> CO;
+					where ct_th = $id and ct_propriety = " . $co;
 
         $xrlt = $this -> db -> query($sql);
         $xrlt = $xrlt -> result_array();
@@ -1063,7 +1071,7 @@ class skoses extends CI_model {
                 $idt = $this -> association_term_th($t, $lang, $id);
 
                 /* Create Concept Into the Thesaurus */
-                $this -> concept_create($t, $th);
+                $concept_create($t, $th);
             }
             $sx .= '<tr>';
             $sx .= '<td>' . ($r + 1) . '</td>';
@@ -1360,7 +1368,7 @@ class skoses extends CI_model {
             if (strlen(trim($line['l1'])) > 0) {
                 $link = '<a href="#">';
                 if ($line['c2'] > 0) {
-                    $link = '<a href="' . base_url('index.php/skos/c/' . $line['c2']) . '">';
+                    $link = '<a href="' . base_url('index.php/thesa/c/' . $line['c2']) . '">';
                 }
                 $sx .= '<tr>';
 
@@ -1402,7 +1410,25 @@ class skoses extends CI_model {
         }
     }
 
+/******************* classes *************/
+    function find_class($class) {
+        $sql = "select * from rdf_class
+                        WHERE c_class = '$class' ";
+        $rlt = $this -> db -> query($sql);
+        $rlt = $rlt -> result_array();
+        if (count($rlt) == 0) {
+            echo '<h1>Ops, ' . $class . ' não localizada';
+            exit ;
+        }
+        $line = $rlt[0];
+        return ($line['id_c']);
+    }
+    
+/*********************************************/
+
     function termos_show_letter($th, $ltr) {
+        $co = $this->find_class('Concept');        
+        
         if (strleN($ltr) == 0) {
             $wh = '';
         } else {
@@ -1424,7 +1450,6 @@ class skoses extends CI_model {
 							ORDER BY rl_value
 						";
         } else {
-            //echo '<br><br><br><br>RULE 2';
             $sql = "SELECT id_rl, ct_concept, ct_propriety, rl_value, rl_lang, 
 								rs_propriety , rs_public , '' as altTerm
 							FROM th_concept_term 
@@ -1432,7 +1457,7 @@ class skoses extends CI_model {
 							INNER JOIN rdf_resource ON ct_propriety = id_rs
 							WHERE 
 								$wh
-								ct_th = $th and rs_public = 1 and ct_propriety = " . $this -> CO . "
+								ct_th = $th and rs_public = 1 and ct_propriety = " . $co . "
 						";
             $sql .= " UNION ";
             $sql .= "SELECT D1.id_rl, T1.ct_concept, T1.ct_propriety, D1.rl_value, D1.rl_lang, 
@@ -1477,20 +1502,18 @@ class skoses extends CI_model {
             }
             $sa = '';
             $saf = '';
-            $link = '<a href="' . base_url('index.php/skos/term/' . $th . '/' . $line['id_rl']) . '" class="term_word">';
-            if (round($line['ct_propriety']) == $this -> CO) {
-                $sa = '<span class="glyphicon glyphicon-tag" aria-hidden="true"></span>';
-                $link = '<a href="' . base_url('index.php/skos/c/' . $line['ct_concept']) . '/' . $th . '/" class="term">';
+            $link = '<a href="' . base_url('index.php/thesa/term/' . $th . '/' . $line['id_rl']) . '" class="term_word">';
+            if (round($line['ct_propriety']) == $co) {
+                $sa = '-';
+                $link = '<a href="' . base_url('index.php/thesa/c/' . $line['ct_concept']) . '/' . $th . '/" class="term">';
             } else {
                 if (strlen(trim($line['altTerm'])) > 0) {
-                    $link = '<a href="' . base_url('index.php/skos/c/' . $line['ct_concept']) . '/' . $th . '/" class="term">';
+                    $link = '<a href="' . base_url('index.php/thesa/c/' . $line['ct_concept']) . '/' . $th . '/" class="term">';
                     $sa = ' ';
-                    $saf = ' <span style="color: #808080"><i>USE</i></span> ' . $line['altTerm'];
-
+                    $saf = ' </a><span style="color: #808080"><i>USE</i></span> ' . $link. $line['altTerm'];
                 }
             }
             $sx .= '<li>' . $link . $sa . ' ' . $line['rl_value'];
-            //$sx .= ' ('.$line['ct_propriety'].')';
             $sx .= $saf;
             $sx .= '</a></li>';
         }
@@ -1680,7 +1703,7 @@ class skoses extends CI_model {
                 $ltr = $xltr;
                 $sx .= '<span class="big">~' . substr($ltr, 0, 1) . '~</span>';
             }
-            $link = '<a href="' . base_url('index.php/skos/c/' . $line['c']) . '">';
+            $link = '<a href="' . base_url('index.php/thesa/c/' . $line['c']) . '">';
 
             if ($c != $xc) {
                 if ($ix > 0) { $sx .= '</li>' . cr();
@@ -1719,13 +1742,13 @@ class skoses extends CI_model {
         $sx = '';
         $sx .= '<br/>';
         $sx .= '<br/>';
-        $sx .= '<a href="' . base_url('index.php/skos/glossario/' . $th) . '" class="btn btn-default" style="width: 100%;">' . msg('glossario') . '</a>';
+        $sx .= '<a href="' . base_url('index.php/thesa/glossario/' . $th) . '" class="btn btn-secondary" style="width: 100%;">' . msg('glossario') . '</a>';
         $sx .= '<br/>';
         $sx .= '<br/>';
-        $sx .= '<a href="' . base_url('index.php/skos/thes/' . $th) . '" class="btn btn-default" style="width: 100%;">' . msg('Conceitual map') . '</a>';
+        $sx .= '<a href="' . base_url('index.php/thesa/thes/' . $th) . '" class="btn btn-secondary" style="width: 100%;">' . msg('Conceitual map') . '</a>';
         $sx .= '<br/>';
         $sx .= '<br/>';
-        $sx .= '<a href="' . base_url('index.php/skos/thrs/' . $th) . '" class="btn btn-default" style="width: 100%;">' . msg('Report Thesaurus') . '</a>';
+        $sx .= '<a href="' . base_url('index.php/thesa/thrs/' . $th) . '" class="btn btn-secondary" style="width: 100%;">' . msg('Report Thesaurus') . '</a>';
 
         return ($sx);
     }
@@ -1742,7 +1765,7 @@ class skoses extends CI_model {
         $sx = '<ul>' . cr();
         for ($r = 0; $r < count($rlt); $r++) {
             $line = $rlt[$r];
-            $link = '<a href="' . base_url('index.php/skos/term/' . $th . '/' . $line['lt_term']) . '">';
+            $link = '<a href="' . base_url('index.php/thesa/term/' . $th . '/' . $line['lt_term']) . '">';
             $sx .= '<li>';
             $sx .= $link;
             $sx .= $line['rl_value'];
@@ -1981,11 +2004,11 @@ class skoses extends CI_model {
 
             $data = '';
             $data .= ', acao: "save" ';
-            $url = base_url('index.php/skos/ajax/collaborators_add/' . checkpost_link('hello') . '/1');
+            $url = base_url('index.php/thesa/ajax/collaborators_add/' . checkpost_link('hello') . '/1');
             $sx .= '
 							      </div>
 							      <div class="modal-footer">
-							        <button type="button" class="btn btn-default" data-dismiss="modal">' . msg('cancel') . '</button>
+							        <button type="button" class="btn btn-secondary" data-dismiss="modal">' . msg('cancel') . '</button>
 							        <button type="button" class="btn btn-primary" data-dismiss="modal" id="submit">' . msg('add') . '</button>
 							      </div>
 							    </div>
@@ -2017,7 +2040,7 @@ class skoses extends CI_model {
         $de = 0;
         switch($code) {
             case 'SIGNUP' :
-                $link = base_url('index.php/skos/user_password_new/?dd0=' . $para . '&chk=' . checkpost_link($para . date("Ymd")));
+                $link = base_url('index.php/thesa/user_password_new/?dd0=' . $para . '&chk=' . checkpost_link($para . date("Ymd")));
                 $assunto = 'Cadastro de novo usuários - Thesa';
                 $texto .= '<p>' . msg('Dear') . ' <b>' . $nome . ',</b></p>';
                 $texto .= '<p>Para ativar seu cadastro é necessário clicar no link abaixo:';
@@ -2027,7 +2050,7 @@ class skoses extends CI_model {
                 break;
             case 'PASSWORD' :
                 $this -> le_user_id($para);
-                $link = base_url('index.php/skos/user_password_new/?dd0=' . $para . '&chk=' . checkpost_link($para . date("Ymd")));
+                $link = base_url('index.php/thesa/user_password_new/?dd0=' . $para . '&chk=' . checkpost_link($para . date("Ymd")));
                 $assunto = msg('Cadastro de novo senha') . ' - Thesa';
                 $texto .= '<p>' . msg('Dear') . ' ' . $this -> line['us_nome'] . '</p>';
                 $texto .= '<p>' . msg('change_new_password') . '</p>';
@@ -2200,7 +2223,7 @@ class skoses extends CI_model {
         $sx = '<table width="100%" class="table">';
         for ($r = 0; $r < count($rlt); $r++) {
             $line = $rlt[$r];
-            $link = '<a href="' . base_url('index.php/skos/c/' . $line['ct_concept'] . '/' . $line['ct_th']) . '" class="link">';
+            $link = '<a href="' . base_url('index.php/thesa/c/' . $line['ct_concept'] . '/' . $line['ct_th']) . '" class="link">';
             $sx .= '<tr>';
             $sx .= '<td>';
             $sx .= $link;
@@ -2227,8 +2250,8 @@ class skoses extends CI_model {
         $rlt = $this -> db -> query($sql);
         $rlt = $rlt -> result_array();
         $sx = '';
-        $sx .= '<span class="btn btn-default" id="view_log">' . msg('view_log') . '</span>';
-        $sx .= '<span class="btn btn-default" id="hidden_log" style="display: none;">' . msg('hidden_log') . '</span>';
+        $sx .= '<span class="btn btn-secondary" id="view_log">' . msg('view_log') . '</span>';
+        $sx .= '<span class="btn btn-secondary" id="hidden_log" style="display: none;">' . msg('hidden_log') . '</span>';
         $sx .= '<br><br>';
         $sx .= '<table width="100%" style="display: none;" id="table_log" class="table small">';
         $sx .= '<tr>';

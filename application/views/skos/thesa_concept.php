@@ -19,11 +19,11 @@ $linkr .= '/skos/c/' . $id_c . '/rdf';
 		</div>
 		<div class="col-md-2 text-right">
 			<nobr>
-			<a href="<?php echo $linkc; ?>" class="btn btn-default"><?php echo $this -> skoses -> prefix . ':' . $c_concept; ?></a>
-			<button class="btnc btn btn-default" data-clipboard-target="#cpc" title="<?php echo msg('copy_to_clipboard'); ?>" style="font-size: 140%;">
+			<a href="<?php echo $linkc; ?>" class="btn btn-secondary"><?php echo $this -> skoses -> prefix . ':' . $c_concept; ?></a>
+			<button class="btnc btn btn-secondary" data-clipboard-target="#cpc" title="<?php echo msg('copy_to_clipboard'); ?>" style="font-size: 140%;">
     			<span class="glyphicon glyphicon-copy" aria-hidden="true"></span>
 			</button>
-			<a href="<?php echo $linkr; ?>" class="btn btn-default" title="<?php echo msg("rdf_link");?>">
+			<a href="<?php echo $linkr; ?>" class="btn btn-secondary" title="<?php echo msg("rdf_link");?>">
 			<img src="<?php echo base_url('img/icone/rdf_w3c.svg');?>" height="18">
 			</a>
 			</nobr>

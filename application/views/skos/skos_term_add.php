@@ -1,5 +1,5 @@
-<botton class="btn btn-default"><?php echo msg('term_add'); ?></botton>
-<botton class="btn btn-default"><?php echo msg('term_add_icon'); ?></botton>
+<botton class="btn btn-secondary"><?php echo msg('term_add'); ?></botton>
+<botton class="btn btn-secondary"><?php echo msg('term_add_icon'); ?></botton>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
   Launch demo modal
 </button>
@@ -22,7 +22,7 @@
         <font class="small"><?php echo msg("associate_new_term_inf");?></font>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo msg('cancel');?></button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo msg('cancel');?></button>
         <input type="submit" class="btn btn-primary" value="<?php echo msg('associate_new_term');?>"></button>
       </div>
     </div>

@@ -222,9 +222,9 @@ class Authority extends CI_Controller {
 
 		$tela .= '	<div class="col-md-3">';
 		$tela .= $this -> Authorities -> thesaurus_resume($id);
-		$tela .= '<a href="' . base_url('index.php/skos/thes/') . '" class="btn btn-default" style="width: 100%;">' . msg('Conceitual map') . '</a>' . cr();
+		$tela .= '<a href="' . base_url('index.php/skos/thes/') . '" class="btn btn-secondary" style="width: 100%;">' . msg('Conceitual map') . '</a>' . cr();
 		$tela .= '<br><br>';
-		$tela .= '<a href="' . base_url('index.php/skos/thrs/') . '" class="btn btn-default" style="width: 100%;">' . msg('Report Thesaurus') . '</a>' . cr();
+		$tela .= '<a href="' . base_url('index.php/skos/thrs/') . '" class="btn btn-secondary" style="width: 100%;">' . msg('Report Thesaurus') . '</a>' . cr();
 		$tela .= '	</div>';
 		$tela .= '</div>';
 		$data['content'] = $tela;
@@ -1205,7 +1205,7 @@ class Authority extends CI_Controller {
 						$data = array();
 						$data['title'] = msg('change_password');
 						$data['content'] = msg('change_password_successful');
-						$data['content'] .= '<br/><br/><a href="' . base_url('index.php/skos/login') . '" class="btn btn-default">' . msg('return') . '</a>';
+						$data['content'] .= '<br/><br/><a href="' . base_url('index.php/skos/login') . '" class="btn btn-secondary">' . msg('return') . '</a>';
 						$this -> load -> view('skos/100', $data);
 						return (0);
 					}

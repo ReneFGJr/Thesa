@@ -1,93 +1,43 @@
-@media print {
-    .nopr {
-        display: none;
+/* Corpo */
+body {
+    margin: 0px;
+    padding: 0px;
+    background-color: #FFFFFF;
+    /* font-family: 'Open Sans Condensed', sans-serif; */
+    font-family: 'Titillium Web', sans-serif;
+    /* font-size: 100%; */
+    color: #333333;
+}
+
+/* Font size */
+.small, .small a {
+    font-size: 70%;
+}
+.std, .std a {
+    font-size: 100%;
+}
+.middle, .middle a {
+    font-size: 150%;
+    color: #4040ef;
+}
+.big, .big a {
+    font-size: 200%;
+}
+
+a {
+  color: #444444;
+  text-decoration: none;
+  line-height: 150%;
+}
+
+a:focus, a:hover {
+  color: #000000;
+  text-decoration: underline;
+}
+
+.img-person
+    {
+        border: 2px solid #808080;
+        border-radius: 10px;
+        box-shadow: 2px 2px;
     }
-}
-
-#npag ul {
-	border: 1px solid #000000;
-}
-#npag li {
-	border: 1px solid #000000;
-	background-color: #EEE;
-	width: 30px;
-	text-align: center;
-	margin-left: 2px;
-	list-style-type: none;
-	display: inline-block;
-	cursor: pointer;
-}
-#npag li:hover {
-	background-color: #333;
-	color: #EEEEEE;
-}
-
-.btn-social {
-    width: 90%;
-    position: relative;
-    opacity: 1;
-    transition: 0.3s ease;
-    cursor: pointer;
-    box-shadow: 2px 2px 5px grey;
-    padding: 0px;
-    margin: 10px;
-}
-
-.btn-social:hover {
-    transform: scale(1.1, 1.1);
-    opacity: 1;
-    box-shadow: 2px 2px 15px grey;
-}
-
-.btn-mini {
-    width: 130px;
-    /*height: 80%; */
-    position: relative;
-    opacity: 1;
-    transition: 0.3s ease;
-    cursor: pointer;
-    box-shadow: 2px 2px 5px grey;
-    padding: 0px;
-    margin: 10px 0px;
-    border-radius: 20%;
-}
-
-.btn-mini:hover {
-    transform: scale(1.1, 1.1);
-    opacity: 1;
-    box-shadow: 2px 2px 5px grey;
-}
-.term_item
-	{
-		font-size: 150%;
-	}
-.supersmall
-	{
-		font-size: 65%;
-	}
-.small
-	{
-		font-size: 85%;
-	}
-.middle
-	{
-		font-size: 120%;
-	}
-.big
-	{
-		font-size: 200%;
-	}
-.xxxbig
-	{
-		font-size: 300%;
-	}	
-
-.treeview
-	{
-		font-size: 125%;
-	}
-	
-.h4, h4
-	{
-		color: #c0c0c0;
-	}

@@ -14,7 +14,7 @@
 			<input type="submit" class="btn btn-primary" value="Confirmar">
 			<input type="hidden" value="1" name="confirm">
 			<input type="hidden" value="<?php echo get("dd0");?>" name="dd0">
-			<button class="btn btn-default" onclick="wclose();">Cancelar</button>
+			<button class="btn btn-secondary" onclick="wclose();">Cancelar</button>
 		</div>
 	</div>
 </div>

@@ -23,7 +23,7 @@
 						<span class="group-btn" id="signup"> <a href="#" class="btn btn-primary btn-md"><?php echo msg('Sign Up Send'); ?>
 							<i class="fa fa-sign-in"></i></a> </span>
 
-						<span class="group-btn" id="return"> <a href="#" class="btn btn-default btn-md"><?php echo msg('Return'); ?>
+						<span class="group-btn" id="return"> <a href="#" class="btn btn-secondary btn-md"><?php echo msg('Return'); ?>
 							<i class="fa fa-sign-in"></i></a> </span>
 							
 					</div>

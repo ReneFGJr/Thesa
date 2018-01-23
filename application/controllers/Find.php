@@ -126,9 +126,9 @@ class find extends CI_controller {
         
         $tela = '';
         $tela .= '<h1>'.msg('Authoriry_control').'</h1>';
-        $tela .= '<a href="'.base_url('index.php/find/authority_viaf').'" class="btn btn-default">'.msg('inport_viaf').'</a>';
+        $tela .= '<a href="'.base_url('index.php/find/authority_viaf').'" class="btn btn-secondary">'.msg('inport_viaf').'</a>';
         $tela .= ' ' ;
-        $tela .= '<a href="'.base_url('index.php/find/authority_viaf_file').'" class="btn btn-default">'.msg('inport_viaf_file').'</a>';
+        $tela .= '<a href="'.base_url('index.php/find/authority_viaf_file').'" class="btn btn-secondary">'.msg('inport_viaf_file').'</a>';
         
         
         $data['content'] = $tela;
@@ -341,7 +341,7 @@ class find extends CI_controller {
 
         if (isset($_SESSION['nivel'])) {
             if ($_SESSION['nivel'] > 0) {
-                $tela = '<form action="' . base_url('index.php/find/e/' . $id) . '"><input type="submit" class="btn btn-default" value="' . msg('edit') . '"></form>';
+                $tela = '<form action="' . base_url('index.php/find/e/' . $id) . '"><input type="submit" class="btn btn-secondary" value="' . msg('edit') . '"></form>';
                 $data['content'] .= $tela;
             }
         }

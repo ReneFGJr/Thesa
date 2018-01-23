@@ -346,9 +346,9 @@ class Skos extends CI_Controller {
 
         $tela .= '	<div class="col-md-3">';
         $tela .= $this -> skoses -> thesaurus_resume($id);
-        $tela .= '<a href="' . base_url('index.php/skos/thes/') . '" class="btn btn-default" style="width: 100%;">' . msg('Conceitual map') . '</a>' . cr();
+        $tela .= '<a href="' . base_url('index.php/skos/thes/') . '" class="btn btn-secondary" style="width: 100%;">' . msg('Conceitual map') . '</a>' . cr();
         $tela .= '<br><br>';
-        $tela .= '<a href="' . base_url('index.php/skos/thrs/') . '" class="btn btn-default" style="width: 100%;">' . msg('Report Thesaurus') . '</a>' . cr();
+        $tela .= '<a href="' . base_url('index.php/skos/thrs/') . '" class="btn btn-secondary" style="width: 100%;">' . msg('Report Thesaurus') . '</a>' . cr();
         $tela .= '	</div>';
         $tela .= '</div>';
         $data['content'] = $tela;
@@ -1486,9 +1486,9 @@ class Skos extends CI_Controller {
 
         $tela .= '<div class="row">';
 		$tela .= msg('export_to');
-		$tela .= ' <a href="'.base_url('index.php/skos/terms_from_to/'.$id.'/csv').'" class="btn btn-default">CSV</a> ';
-		$tela .= ' <a href="'.base_url('index.php/skos/terms_from_to/'.$id.'/sql').'" class="btn btn-default">SQL</a> ';
-		$tela .= ' <a href="'.base_url('index.php/skos/terms_from_to/'.$id.'/rdf').'" class="btn btn-default">RDF</a> ';
+		$tela .= ' <a href="'.base_url('index.php/skos/terms_from_to/'.$id.'/csv').'" class="btn btn-secondary">CSV</a> ';
+		$tela .= ' <a href="'.base_url('index.php/skos/terms_from_to/'.$id.'/sql').'" class="btn btn-secondary">SQL</a> ';
+		$tela .= ' <a href="'.base_url('index.php/skos/terms_from_to/'.$id.'/rdf').'" class="btn btn-secondary">RDF</a> ';
 		$tela .= '<br>';
 		$tela .= '<br>';
 		
@@ -1876,7 +1876,7 @@ class Skos extends CI_Controller {
                         $data = array();
                         $data['title'] = msg('change_password');
                         $data['content'] = msg('change_password_successful');
-                        $data['content'] .= '<br/><br/><a href="' . base_url('index.php/skos/login') . '" class="btn btn-default">' . msg('return') . '</a>';
+                        $data['content'] .= '<br/><br/><a href="' . base_url('index.php/skos/login') . '" class="btn btn-secondary">' . msg('return') . '</a>';
                         $this -> load -> view('skos/100', $data);
                         return (0);
                     }

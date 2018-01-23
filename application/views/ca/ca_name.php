@@ -7,7 +7,7 @@
 			</tt>
 		</div>
 		<div class="col-md-2 col-xs-2 col-sm-2">
-			<a href="#" class="btn btn-default"><?php echo $notation;?></a>
+			<a href="#" class="btn btn-secondary"><?php echo $notation;?></a>
 		</div>
 	</div>
 </div>

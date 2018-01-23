@@ -76,7 +76,7 @@ if (!isset($_SESSION['id']))
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search">
         </div>
-        <button type="submit" class="btn btn-default"><?php echo msg('search'); ?></button>
+        <button type="submit" class="btn btn-secondary"><?php echo msg('search'); ?></button>
       </form>
       </ul>
   </div><!-- /.container-fluid -->

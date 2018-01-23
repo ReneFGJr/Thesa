@@ -6,7 +6,7 @@
 			<div class="input-group" style="padding: 5px; ">
 				<input type="text" class="form-control selector" name="search" id="search" placeholder="Busca por..." value="">
 				<span class="input-group-btn">
-					<input type="submit" class="btn btn-default" value="pesquisar">
+					<input type="submit" class="btn btn-secondary" value="pesquisar">
 				</span>
 			</div>
 			</form>

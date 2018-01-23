@@ -84,7 +84,7 @@ if (!isset($action)) {
 				?>				
 			</div>
 		<div class="col-md-2">
-			<a href="<?php echo base_url('index.php/skos/json/'.$c_concept);?>" target="_new" class="btn btn-default">JSON</a>
+			<a href="<?php echo base_url('index.php/skos/json/'.$c_concept);?>" target="_new" class="btn btn-secondary">JSON</a>
 			<h4><?php echo msg('concept_IMG'); ?>
 			<?php
 			if ($editar == 1)

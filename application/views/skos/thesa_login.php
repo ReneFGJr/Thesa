@@ -45,7 +45,7 @@
 			        <?php echo msg('resend_password_text');?>
 			      </div>
 			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo msg('close');?></button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo msg('close');?></button>
 			        <button type="button" id="sendmail" class="btn btn-primary"><?php echo msg('send_password');?></button>
 			      </div>
 			      <div class="modal-footer" id="email" style="display: none;">
@@ -60,7 +60,7 @@
 				<span class="group-btn" id="signin"> <a href="#" class="btn btn-primary btn-md"><?php echo msg('Sign In'); ?>
 					<i class="fa fa-sign-in"></i></a> </span>
 
-				<span class="group-btn" id="signup"> <a href="#" class="btn btn-default btn-md"><?php echo msg('Sign Up'); ?>
+				<span class="group-btn" id="signup"> <a href="#" class="btn btn-secondary btn-md"><?php echo msg('Sign Up'); ?>
 					<i class="fa fa-sign-in"></i></a> </span>
 			</div>
 			</form>					

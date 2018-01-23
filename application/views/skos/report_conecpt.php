@@ -5,7 +5,7 @@ if (!isset($action)) {
 ?>
 <div class="container">
 	<div class="row">
-		<div class="col-md-1 col-xs-2 col-sm-2 text-right"><span class="btn btn-default"><?php echo $c_concept; ?></span></div>
+		<div class="col-md-1 col-xs-2 col-sm-2 text-right"><span class="btn btn-secondary"><?php echo $c_concept; ?></span></div>
 		<div class="col-md-11 col-xs-10 col-sm-10"><tt><font class="big"><?php echo $rl_value; ?></font></tt></div>		
 	</div>
 </div>

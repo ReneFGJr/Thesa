@@ -30,7 +30,7 @@
 		<?php echo form_open(); ?>
 		<textarea name="dd2" class="form-control" style="height: 400px;"><?php echo get("dd2");?></textarea>
 		<br/>
-		<input type="submit" value="<?php echo msg('send');?>" class="btn btn-default">
+		<input type="submit" value="<?php echo msg('send');?>" class="btn btn-secondary">
 		<?php echo form_close(); ?>
 	</div>
 </div>
