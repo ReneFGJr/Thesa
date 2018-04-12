@@ -169,7 +169,7 @@ class CI_Exceptions {
 		}
 		else
 		{
-			set_status_header($status_code);
+			//set_status_header($status_code);
 			$message = '<p>'.(is_array($message) ? implode('</p><p>', $message) : $message).'</p>';
 			$template = 'html'.DIRECTORY_SEPARATOR.$template;
 		}
@@ -207,7 +207,7 @@ class CI_Exceptions {
 		}
 		else
 		{
-			set_status_header(500);
+			//set_status_header(500);
 			$templates_path .= 'html'.DIRECTORY_SEPARATOR;
 		}
 

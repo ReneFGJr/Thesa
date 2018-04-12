@@ -1640,6 +1640,7 @@ class skoses extends CI_model {
             $valo = trim($line['rl_value']);
             if ($prop == 25) {
                 $mst = trim($line['rl_value']);
+				$sx .= $capc . UpperCase($line['rl_value']) . $capc . $separador . $capc . $line['rl_value'] . $capc . cr();
             }
             if ($valo != $mst) {
                 $sx .= $capc . $line['rl_value'] . $capc . $separador . $capc . $mst . $capc . cr();
