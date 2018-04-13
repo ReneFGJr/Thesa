@@ -50,17 +50,7 @@ class Skos extends CI_Controller {
     }
 
     function index() {
-        $this -> load -> model('skoses');
-
-        $this -> cab(1);
-        $this -> load -> view("skos/github_fork", null);
-
-        $data = $this -> skoses -> welcome_resumo();
-
-        $this -> load -> view("skos/welcome", $data);
-
-        $this -> load -> view("skos/thesa_home_pt", null);
-        //redirect(base_url('index.php/skos/myskos'));
+        redirect(base_url('index.php/thesa'));
     }
 
     function cab($nb = 1) {

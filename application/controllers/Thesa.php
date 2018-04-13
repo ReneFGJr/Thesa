@@ -16,6 +16,7 @@ class Thesa extends CI_Controller {
         $this -> load -> library('email');
 
         date_default_timezone_set('America/Sao_Paulo');
+		$this -> load -> model('socials');
         /* Security */
         //      $this -> security();
     }
@@ -27,9 +28,9 @@ class Thesa extends CI_Controller {
 
         $data = $this -> skoses -> welcome_resumo();
 
-        $this -> load -> view("skos/welcome", $data);
+        $this -> load -> view("thesa/home/welcome", $data);
 
-        $this -> load -> view("skos/thesa_home_pt", null);
+        $this -> load -> view("thesa/home/spots", null);
         //redirect(base_url('index.php/skos/myskos'));
     }
 
@@ -156,6 +157,79 @@ class Thesa extends CI_Controller {
         }
 
         //redirect(base_url('index.php/skos/myskos'));
+    }
+
+    /* LOGIN */
+    function social($act='')
+		{
+			switch($act)
+				{
+				case 'logout':
+					$this->socials->logout();
+					break;
+				case 'login':
+					$this->socials->login_local();
+					break;
+				default:
+					echo "Function not found";
+					break;
+				}
+		}
+    function login($act = '') {
+        $this -> load -> model('skoses');
+		$this->socials->login_local();
+		break;
+		redirect(base_url('index.php/thesa'));
+		exit;
+		
+        $this -> cab(2);
+        $data['email_ok'] = '';
+        if (strlen($act) > 0) {
+            $rs = $this -> validate($act);
+            if ($rs == 1) {
+                redirect(base_url('index.php/thesa/'));
+            }
+        }
+
+        $ok = $this -> socials-> validate();
+
+        $data['error'] = $ok;
+        $data['link'] = '';
+        $data['user'] = $this -> line;
+        if ($ok == 1) {
+            redirect(base_url('index.php/skos/myth'));
+            exit ;
+        } else {
+            if (strlen(get("userName")) > 0)
+                switch($ok) {
+                    case -1 :
+                        $idu = $this -> skoses -> le_user_email(get("userName"));
+                        $data_us = $this -> skoses -> line;
+                        $idu = $data_us['id_us'];
+                        $data['email_ok'] = '<span class="alert-danger">' . msg("user_not_validaded") . '</span>';
+                        $link = '</br></br><a href="' . base_url('index.php/skos/user_revalid/?dd0=' . $idu . '&chk=' . checkpost_link($idu)) . '" class="btn btn-danger">';
+                        $link .= msg('resend_validation');
+                        $link .= '</a>';
+                        $link .= '<br/><br/>';
+                        $data['email_ok'] .= $link;
+                        break;
+                    case -9 :
+                        $idu = $this -> skoses -> le_user_email(get("userName"));
+                        $data_us = $this -> skoses -> line;
+                        $idu = $data_us['id_us'];						
+                        $link = base_url('index.php/skos/user_password_new/?dd0=' . $idu . '&chk=' . checkpost_link($idu . "SIGNIN"));
+                        $data['link'] = $link;
+                        break;
+                    case -2 :
+                        $data['email_ok'] = '<span class="btn alert-danger">' . msg("user_invalid_password") . '#' . $ok . '</span><br/><br/>';
+                        break;
+                    default :
+                        $data['email_ok'] = '<span class="btn alert-danger">' . msg("user_invalid_password") . '#' . $ok . '</span><br/><br/>';
+                        break;
+                }
+        }
+        $this -> load -> view('skos/thesa_login', $data);
+
     }
 
 }

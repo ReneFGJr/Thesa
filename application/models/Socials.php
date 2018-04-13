@@ -155,8 +155,8 @@ class socials extends CI_Model {
                 $sx = '
                 <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> '.$name.' </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="'.base_url('index.php/main/social/perfil').'">'.msg('user_perfil').'</a>
-                    <a class="dropdown-item" href="'.base_url('index.php/main/social/logout').'">'.msg('user_logout').'</a>
+                    <a class="dropdown-item" href="'.base_url('index.php/thesa/social/perfil').'">'.msg('user_perfil').'</a>
+                    <a class="dropdown-item" href="'.base_url('index.php/thesa/social/logout').'">'.msg('user_logout').'</a>
                 </div>                
                 ';
             } else {
@@ -180,7 +180,7 @@ class socials extends CI_Model {
                         </button>
                       </div>
                       <div class="modal-body">
-                        <form method="post" action="' . base_url('index.php/main/social/login') . '">
+                        <form method="post" action="' . base_url('index.php/thesa/login') . '">
                             <span>' . msg("form_user_name") . '</span><br>
                             <input type="text" name="user_login" value="' . get("user_login") . '" class="form-control">
                             <br>
