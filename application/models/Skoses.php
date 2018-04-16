@@ -1899,13 +1899,13 @@ class skoses extends CI_model {
         $rlt = $this -> db -> query($sql);
         $rlt = $rlt -> result_array();
         $line = $rlt[0];
-        $data['nr_concept'] = $line['total'];
+        $data['nr_terms'] = $line['total'];
 
         $sql = "select count(*) as total from rdf_literal";
         $rlt = $this -> db -> query($sql);
         $rlt = $rlt -> result_array();
         $line = $rlt[0];
-        $data['nr_terms'] = $line['total'];
+        $data['nr_concept'] = $line['total'];
 
         return ($data);
     }

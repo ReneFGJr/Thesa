@@ -1,30 +1,26 @@
-<div class="container-fluid footer">
-	<div class="row">
-		<div class="col-md-12">
-		    <div class="container">
-			footer
-			<ul style="list-style: none;">
-			    <li><a href="#" class="link">contact</a></li>
-			</ul>
+<div class="parallax parallax_background_3"  style="height: 300px;">
+	<div class="container" style="padding-top: 50px;">
+		<div class="row">
+			<div class="col-md-3 text-left white">
+				<span class="big" style="family: RobotoThin;">THESA</span>
+				<span class="">Semantic Thesaurus</span>
+                
+				
 			</div>
+			<div class="col-md-3 text-center white"></div>
+			<div class="col-md-6 text-center white">
+			    <span class="white">
+				Universidade Federal do Rio Grande do Sul - UFRGS
+				</span>
+                <br>
+                <span class="small"><?php echo msg('contact'); ?>:</span> 
+                <a href="mailto:rene.gabriel@ufrgs.br" >rene.gabriel@ufrgs.br</a>
+                <br>
+                <br>
+                <span class="small">Copyright &copy; <?php echo '2016-' . date("Y"); ?></span>
+				
+			</div>
+
 		</div>
 	</div>
 </div>
-<style>
-    .footer
-    {
-        border-top: 1px solid #c0c0c0; 
-        margin-top: 150px; 
-        background-color: #ffc0ff;  min-height: 200px;"    
-    }
-    .link
-        {
-            color: #808080;
-            margin: 0px;
-            padding: 0px;
-        }
-    .link:hover
-        {
-            color: #000000;
-        }
-</style>

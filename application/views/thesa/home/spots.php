@@ -23,7 +23,27 @@
 	</div>
 </div>
 
-<div class="parallax parallax_background_2"  style="height: 300px;"></div>
+<div class="parallax parallax_background_2"  style="padding: 100px;">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3 text-center box">
+			    <span class="small"><b><?php echo msg("thesauros");?></b></span>
+			    <br>
+				<span class="big"><b><?php echo $nr_thesaurus; ?></b></span>
+			</div>
+			<div class="col-md-3 text-center box">
+			    <span class="small"><b><?php echo msg("concepts");?></b></span>
+			    <br>
+				<span class="big"><b><?php echo $nr_concept; ?></b></span>
+			</div>
+			<div class="col-md-3 text-center box">
+			    <span class="small"><b><?php echo msg("terms");?></b></span>
+			    <br>
+				<span class="big"><b><?php echo $nr_terms; ?></b></span>
+			</div>
+		</div>
+	</div>
+</div>
 
 <!-- Container element -->
 <div style="background-color:#ffffff; padding: 20px;">

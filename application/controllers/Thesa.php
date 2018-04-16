@@ -25,13 +25,10 @@ class Thesa extends CI_Controller {
         $this -> load -> model('skoses');
 
         $this -> cab(1);
-
         $data = $this -> skoses -> welcome_resumo();
-
         $this -> load -> view("thesa/home/welcome", $data);
-
-        $this -> load -> view("thesa/home/spots", null);
-        //redirect(base_url('index.php/skos/myskos'));
+        $this -> load -> view("thesa/home/spots", $data);
+        $this->footer();
     }
 
     private function cab($navbar = 1) {
@@ -43,6 +40,11 @@ class Thesa extends CI_Controller {
         }
         $_SESSION['id'] = 1;
     }
+    
+    private function footer() {
+        $data = array();
+        $this -> load -> view('thesa/header/footer', $data);
+    }    
 
     function myth() {
         $this -> load -> model('skoses');
