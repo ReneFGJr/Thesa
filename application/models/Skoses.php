@@ -952,7 +952,7 @@ class skoses extends CI_model {
             $sx .= $link . $av . '</a>';
             $sx .= '</td>';
             //$sx .= '<td>'.$_SESSION['id'];
-            if (isset($_SESSION['id'])) {
+            if ((isset($_SESSION['id']) and ($line['pa_creator'] == $_SESSION['id']))) {
                 if ($line['pa_creator'] == $_SESSION['id']) {
                     $sx .= '<td>';
                     $sx .= '<a href="' . base_url('index.php/thesa/th_edit/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'] . $this -> chave)) . '" class="btn btn-secondary">' . msg('edit') . '</a>';
@@ -1003,7 +1003,7 @@ class skoses extends CI_model {
 
     /* RESUMO DO THESAURUS */
     function myskoses_total() {
-        $id = $_SESSION['id'];
+        $id = $this->socials->user_id();
         $sql = "select count(*) as total from th_thesaurus where pa_creator = $id";
         $xrlt = $this -> db -> query($sql);
         $xrlt = $xrlt -> result_array();

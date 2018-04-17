@@ -1,3 +1,9 @@
+<style>
+    .parallax_background_3 {
+        /* The image used */
+        background-image: url("<?php echo base_url('img/background/background_3.jpg');?>");
+    }    	
+</style>
 <div class="parallax parallax_background_3"  style="height: 300px;">
 	<div class="container" style="padding-top: 50px;">
 		<div class="row">
