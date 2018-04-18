@@ -174,11 +174,14 @@ class Thesa extends CI_Controller {
             $data['action'] .= '<br/><br/><a href="' . base_url('index.php/thesa/term_delete/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_rl']) . '" class="btn btn-danger" style="width: 100%;">' . msg('Term_delete_concept') . '</a></li>';
         }
         $this -> load -> view('thesa/header/navbar_tools', null);
-        $this -> load -> view('thesa/view/thesaurus_term', $data);
+        $this -> load -> view('thesa/view/term', $data);
 
         $tela = '';
-        $data['content'] = $tela;
+		$data['title'] = '';
+        $data['content'] = $tela.'<br><br><br>';
         $this -> load -> view('content', $data);
+        
+        $this->footer();
 
     }
 
@@ -197,13 +200,15 @@ class Thesa extends CI_Controller {
         $tela = $this -> skoses -> th_users();
 
         $data['title'] = msg('collaborators');
-        $data['content'] = $tela;
+        $data['content'] = $tela.'<br><br>';
         $this -> load -> view('content', $data);
+        
+		$this->footer();
 
     }
 
     /***************************************************************************** Conecpt */
-    function c($c = '', $proto = '') {
+    function c($c = '', $proto = '', $proto2 = '') {
         $this -> load -> model("skoses");
 
         $data = $this -> skoses -> le($c);
@@ -218,6 +223,10 @@ class Thesa extends CI_Controller {
                 header('Content-type: text/xml');
                 $this -> skoses -> xml($data);
                 break;
+            case 'rdf' :
+                header('Content-type: text/asc');
+                $this -> skoses -> rdf($data);
+                break;				
             default :
                 /* CAB */
                 $this -> cab();
@@ -242,6 +251,7 @@ class Thesa extends CI_Controller {
         }
 
         //redirect(base_url('index.php/thesa/myskos'));
+        $this->footer();
     }
 
     function cedit($c = '', $th = '') {
@@ -285,6 +295,7 @@ class Thesa extends CI_Controller {
         $this -> load -> view('skos/thesa_concept_tools', $data2);
 
         $data['content'] = $data2['logs'];
+		$data['title'] = '';
         $this -> load -> view('content', $data);
 
         $this -> footer();
@@ -314,7 +325,61 @@ class Thesa extends CI_Controller {
                 break;
         }
     }
+    /***************************************************************************** Termo equivalente */
+    function te($c = '') {
+        $c = round($c);
+        $th = $_SESSION['skos'];
 
+        /* Load model */
+        $this -> load -> model("skoses");
+        $this -> cab(0);
+
+        $data = $this -> skoses -> le($c);
+        $data['form'] = $this -> skoses -> form_concept($th, $c, 'FE');
+        $this -> load -> view('thesa/view/concept_mini', $data);
+
+        $action = get("action");
+        $desc = get("tm");
+        $tr = get("tr");
+
+        if ((strlen($action) > 0) and (strlen($tr) > 0) and (strlen($desc) > 0)) {
+
+            echo 'SAVED';
+            $this -> skoses -> assign_as_propriety($c, $th, $tr, $desc);
+            $this -> load -> view('header/close', null);
+
+            $line2 = $this -> skoses -> le_term($desc, $th);
+            $line3 = $this -> skoses -> le_propriety($tr);
+            $desc = msg('associated') . ' ' . msg($line3['rs_propriety']) . ' - "<b>' . $line2['rl_value'] . '</b>" ' . ' (<i>' . $tr . '</i>)';
+            $this -> skoses -> log_insert($c, $th, 'ADDT', $desc);
+
+            //$this->skoes->
+        }
+    }
+    /***************************************************************************** Termo oculto */
+    function tz($c = '') {
+        $c = round($c);
+        $th = $_SESSION['skos'];
+
+        /* Load model */
+        $this -> load -> model("skoses");
+        $this -> cab(0);
+
+        $data = $this -> skoses -> le($c);
+        $data['form'] = $this -> skoses -> form_concept($th, $c, 'TH');
+        $this -> load -> view('thesa/view/concept_mini', $data);
+
+        $action = get("action");
+        $desc = get("tm");
+        $tr = get("tr");
+
+        if ((strlen($action) > 0) and (strlen($tr) > 0) and (strlen($desc) > 0)) {
+            echo 'SAVED';
+            $this -> skoses -> assign_as_propriety($c, $th, $tr, $desc);
+            $this -> load -> view('header/close', null);
+            //$this->skoes->
+        }
+    }
     /***************************************************************************** TG Geral */
     function tg($c = '') {
         $c = round($c);
@@ -326,7 +391,7 @@ class Thesa extends CI_Controller {
 
         $data = $this -> skoses -> le($c);
         $data['form'] = $this -> skoses -> form_concept_tg($th, $c);
-        $this -> load -> view('thesa/view/thesaurus_concept_mini', $data);
+        $this -> load -> view('thesa/view/concept_mini', $data);
 
         $action = get("action");
         $tg = get("tg");
@@ -338,6 +403,281 @@ class Thesa extends CI_Controller {
         }
 
     }
+    /***************************************************************************** Notas de definição */
+    function tf($c = '') {
+        $c = round($c);
+        $th = $_SESSION['skos'];
 
+        /* Load model */
+        $this -> load -> model("skoses");
+        $this -> cab(0);
+
+        $data = $this -> skoses -> le($c);
+        $data['form'] = $this -> skoses -> form_concept_tf($th, $c);
+        $this -> load -> view('thesa/view/concept_mini', $data);
+
+        $action = get("action");
+        $texto = get("nt");
+        $idioma = get("tt");
+        $tr = get("tr");
+
+        if ((strlen($action) > 0) and (strlen($tr) > 0) and (strlen($idioma) > 0) and (strlen($tr) > 0)) {
+
+            $this -> skoses -> assign_as_note($c, $th, $tr, $texto, $idioma);
+            $this -> load -> view('header/close', null);
+            //$this->skoes->
+        }
+    }
+    /***************************************************************************** TR Relacionado */
+    function tr($c = '') {
+        $c = round($c);
+        $th = $_SESSION['skos'];
+
+        /* Load model */
+        $this -> load -> model("skoses");
+        $this -> cab(0);
+
+        $data = $this -> skoses -> le($c);
+        $data['form'] = $this -> skoses -> form_concept_tr($th, $c);
+        $this -> load -> view('thesa/view/concept_mini', $data);
+
+        $action = get("action");
+        $tg = get("tg");
+        $tgr = get("tgr");
+        if ((strlen($action) > 0) and (strlen($tg) > 0) and (strlen($tgr) > 0)) {
+            echo $this -> TG;
+            $this -> skoses -> assign_as_relation($tg, $c, $th, $tgr);
+            $this -> load -> view('header/close', null);
+            //$this->skoes->
+        }
+
+    }
+	
+    function timg($c = '', $chk = '') {
+        $c = round($c);
+        $th = $_SESSION['skos'];
+
+        /* Load model */
+        $this -> load -> model("skoses");
+        $this -> cab(0);
+        
+        $form = new form;
+        $tela = form_open_multipart().cr();
+        $tela .= '<!-- MAX_FILE_SIZE deve preceder o campo input -->
+                    <input type="hidden" name="MAX_FILE_SIZE" value="3000000" />
+                    <!-- O Nome do elemento input determina o nome da array $_FILES -->
+                    Enviar esse arquivo: <input name="userfile" type="file" class="control-form" />
+                    <input type="submit" value="Enviar arquivo" />'.cr();
+        $tela .= '</form>'.cr();
+        
+        if (isset($_FILES['userfile']['tmp_name']))
+            {
+                $fl = $_FILES['userfile']['name'];
+
+                /* ACERVO */
+                $temp = '_acervo';
+                dircheck($temp);
+                 
+                /* IMAGES */
+                $temp = '_acervo/image';
+                echo '<hr>'.$temp;
+                dircheck($temp); 
+                                               
+                /* IMAGES - DATA */
+                $temp = '_acervo/image/'.date("Y");
+                dircheck($temp); 
+
+                /* IMAGES - DATA */
+                $temp = '_acervo/image/'.date("Y").'/'.date("m").'/';
+                dircheck($temp); 
+                
+                $img = strzero($c,7);
+                $ext = substr($fl,strlen($fl)-4,5);
+                $ext = troca($ext,'.','');
+                
+                $uploadfile = $temp.'img-'.$img.'-'.substr(checkpost_link($img),2,10).'.'.$ext;
+
+                switch($ext)
+                    {
+                    case 'png':
+                        $ok = 1;
+                        break;                        
+                    case 'jpg':
+                        $ok = 1;
+                        break;
+                    default:
+                        $ok = 0;
+                        echo 'Formato não suportado "'.$ext.'"!';
+                        
+                    }
+                if ($ok==1)
+                    {
+                        if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
+                            echo "Arquivo válido e enviado com sucesso.\n";
+                            $this->skoses->image_concept($c,$uploadfile);
+                            $tela = 'Sucesso!';
+                            $tela .= $this->load->view('wclose');
+                        } else {
+                            echo "Possível ataque de upload de arquivo!\n";
+                        }                        
+                    }
+                
+
+            }
+        
+        $data['content'] = $tela;
+        $data['title'] = '';
+        $this->load->view('content',$data);
+    }
+	
+    function concept_add() {
+        $this -> load -> model('skoses');
+        $this -> cab();
+        $id = $_SESSION['skos'];
+        $data = $this -> skoses -> le_skos($id);
+        $this -> load -> view('thesa/view/thesaurus', $data);
+        $data['pg'] = 2;
+        //$this -> load -> view('skos/skos_nav', $data);
+        $this -> load -> view('thesa/header/navbar_tools', null);
+
+        $form = new form;
+        $cp = array();
+        array_push($cp, array('$A3', '', msg('terms'), False, False));
+        array_push($cp, array('$T80:8', '', msg('terms'), True, False));
+        array_push($cp, array('$M', '', '<font class="small">' . msg('terms_info') . '</font>', False, False));
+        array_push($cp, array('$QR lg_code:lg_language:select * from language where lg_active = 1 order by lg_order', '', msg('language'), True, False));
+        array_push($cp, array('$C', '', msg('Lowercase'), False, False));
+        array_push($cp, array('$B8', '', msg('save'), False, False));
+        $tela = $form -> editar($cp, '');
+
+        if ($form -> saved > 0) {
+            $lc = get("dd4");
+            $data['content'] = $this -> skoses -> incorpore_terms(get("dd1"), $id, get("dd3"), $lc);
+            $data['title'] = '';
+            $this -> load -> view('content', $data);
+        } else {
+            $data['content'] = $tela;
+            $data['title'] = '';
+            $this -> load -> view('content', $data);
+        }
+        $this -> load -> view('header/footer', null);
+    }
+	
+    function concept_change_preflabel($id = '', $th = '', $chk = '') {
+        $this -> load -> model('skoses');
+        $this -> cab(0);
+
+        $chk2 = checkpost_link($id . $th);
+        if ($chk2 != $chk) {
+            $data['title'] = 'Checksum error';
+            $data['content'] = 'action canceled';
+            $this -> load -> view('skos/510', $data);
+            return ('');
+        }
+
+        $data = $this -> skoses -> le_c($id, $th);
+
+        /*************** action *********************/
+        $idn = get("dd5");
+        if (strlen($idn) > 0) {
+            //echo '===>' . $idn;
+            //echo '<br>===>' . $data['ct_term'];
+            //echo '<br>===>' . $id;
+            $ok = $this -> skoses -> concept_chage($id, $idn, $data['ct_term'], $data['c_th']);
+            if ($ok == 1) {
+                $this -> load -> view('wclose');
+                //$this->load->
+                return ('ok');
+            } else {
+                $data['title'] = 'Fail';
+                $data['content'] = 'Error on save';
+                $this -> load -> view('skos/510', $data);
+                return ('');
+            }
+        }
+
+        $sx = '<h1>' . $data['rl_value'] . '</h1>';
+        $sx .= '<form method="post">';
+        $sx .= '<ul style="list-style-type: none;">';
+        $terms = array_merge($data['terms_al'], $data['terms_hd'], $data['terms_ge']);
+
+        for ($r = 0; $r < count($terms); $r++) {
+            $line = $terms[$r];
+            $rd = '<input type="radio" name="dd5" value="' . $line['ct_term'] . '">';
+            $sx .= '<li>' . $rd . ' ' . $line['rl_value'] . '</li>';
+        }
+        $sx .= '</ul>';
+        $sx .= '<input type="submit" value="' . msg('change') . '">';
+        $sx .= '</form>';
+        $data['content'] = $sx;
+		$data['title'] = '';
+        $this -> load -> view('content', $data);
+
+    }
+
+
+    /***************************************************************************** Conecpt */
+    function json($id = '') {
+        /* Load model */
+        $this -> load -> model("skoses");
+        $this -> cab();
+
+        $this -> skoses -> to_json($id);
+
+    }
+
+
+   /* Terms */
+    function term_delete($th = '', $chk = '', $idt = '', $act = '', $chk2 = '') {
+        $this -> load -> model('skoses');
+        $this -> cab();
+
+        if (strlen($th) == 0) {
+            $th = $_SESSION['skos'];
+        }
+        $data = $this -> skoses -> le_th($th);
+
+        $data2 = $this -> skoses -> le_term($idt, $th);
+
+        if (count($data2) == 0) {
+            redirect(base_url('index.php/thesa/terms/' . $th));
+        }
+
+        $data = array_merge($data, $data2);
+
+        $this -> load -> view('thesa/view/thesaurus', $data);
+        /******************************/
+
+        $this -> load -> view('thesa/view/thesaurus_term', $data);
+
+        $chk3 = checkpost_link($th . 'DEL' . $idt);
+        if ($chk2 == $chk3) {
+
+            $rs = $this -> skoses -> delete_term_from_th($th, $idt);
+
+            if ($rs == 1) {
+                $tela = $this -> load -> view('success', $data, true);
+                $data['content'] = $tela;
+                $this -> load -> view('content', $data);
+            } else {
+                $data['content'] = msg('item_already_deleted');
+                $tela = $this -> load -> view('success', $data, true);
+                $data['content'] = $tela;
+                $this -> load -> view('content', $data);
+            }
+
+        } else {
+            $data['link'] = base_url('index.php/thesa/term_delete/' . $th . '/' . $chk . '/' . $idt . '/DEL/' . $chk3);
+            $data['content'] = msg('delete_term_confirm');
+            $tela = $this -> load -> view('confirm', $data, True);
+            $data['content'] = $tela;
+            $this -> load -> view('content', $data);
+        }
+
+        $this -> load -> view('header/footer', null);
+    }
+		
 }
+
+
 ?>    

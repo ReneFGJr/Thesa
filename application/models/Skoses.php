@@ -1072,7 +1072,7 @@ class skoses extends CI_model {
                 $idt = $this -> association_term_th($t, $lang, $id);
 
                 /* Create Concept Into the Thesaurus */
-                $concept_create($t, $th);
+                $this->concept_create($t, $th);
             }
             $sx .= '<tr>';
             $sx .= '<td>' . ($r + 1) . '</td>';
@@ -1850,6 +1850,14 @@ class skoses extends CI_model {
 
         echo $dom -> saveXML();
         exit ;
+        return ($sx);
+    }
+
+    function rdf($data) {
+
+        //create a new document
+        // 1st param takes version and 2nd param takes encoding;
+        print_r($data);
         return ($sx);
     }
 
