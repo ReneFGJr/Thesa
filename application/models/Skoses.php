@@ -78,6 +78,7 @@ class skoses extends CI_model {
         $rlt = $rlt -> result_array();
         if (count($rlt) > 0) {
             $line = $rlt[0];
+            $line['allow'] = $this -> le_c_users($th);
             return ($line);
         } else {
             /* Thesaurus Not Found */
@@ -1934,7 +1935,7 @@ class skoses extends CI_model {
     function th_users() {
         $th = $_SESSION['skos'];
         $id_user = $_SESSION['id'];
-        $user_nivel = $_SESSION['nivel'];
+        $user_nivel = 0;
         $thesa = $this -> le_th($th);
 
         $sql = "select * from th_users

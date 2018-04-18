@@ -113,11 +113,11 @@
 							            <li><a href="#">Separated link</a></li>
 							            <li role="separator" class="divider"></li>
 							            -->
-							            <li><a href="' . base_url('index.php/skos/login/out') . '">' . msg('logout') . '</a></li>
+							            <li><a href="' . base_url('index.php/thesa/login/out') . '">' . msg('logout') . '</a></li>
 							          </ul>
 							        </li>';
                         } else {
-                            echo '<li style="background-color: orange;"><a href="' . base_url('index.php/skos/login') . '" style="color: white;">' . msg('sign_in') . '</a></li>';
+                            echo '<li style="background-color: orange;"><a href="' . base_url('index.php/thesa/login') . '" style="color: white;">' . msg('sign_in') . '</a></li>';
                         }
 				        ?>
 				      </ul>

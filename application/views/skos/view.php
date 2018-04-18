@@ -9,7 +9,7 @@ $pa = '';
 	</div>
 	<div class="row">
 		<div class="col-xs-8 big">
-		<a href="<?php echo base_url('index.php/skos/terms/'.$id_pa.'#'.$pa_name); ?>" class="supersmall">
+		<a href="<?php echo base_url('index.php/thesa/terms/'.$id_pa.'#'.$pa_name); ?>" class="supersmall">
 		    <span class="small"><?php echo 'thesa:'.'th/'.$id_pa.'#'.$pa_name; ?></span></a>
 		</div>
 		<div class="col-xs-4 col-md-4 text-right">
@@ -28,7 +28,7 @@ $pa = '';
 		    <br><font class="middle"><?php echo stodbr($pa_update); ?></font></div>
 		<div class="col-md-6"><span class="supersmall"><?php echo msg('URI'); ?></span>
 		    <br><font class="middle">
-		    <?php echo base_url('index.php/skos/terms/'.$id_pa); ?></font></div>
+		    <?php echo base_url('index.php/thesa/terms/'.$id_pa); ?></font></div>
 	</div>
 </div>
 <br>

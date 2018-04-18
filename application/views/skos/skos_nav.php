@@ -22,8 +22,8 @@ switch($pg)
 ?>
 <div class="container">
 <ul class="nav nav-tabs">
-  <li role="presentation" class="<?php echo $pga[0];?>"><a href="<?php echo base_url('index.php/skos/show');?>"><?php echo msg('Home');?></a></li>
-  <li role="presentation" class="<?php echo $pga[1];?>"><a href="<?php echo base_url('index.php/skos/terms');?>"><?php echo msg('Terms');?></a></li>
+  <li role="presentation" class="<?php echo $pga[0];?>"><a href="<?php echo base_url('index.php/thesa/show');?>"><?php echo msg('Home');?></a></li>
+  <li role="presentation" class="<?php echo $pga[1];?>"><a href="<?php echo base_url('index.php/thesa/terms');?>"><?php echo msg('Terms');?></a></li>
  <!---
   <li role="presentation" class="dropdown">
     <a class="dropdown-toggle <?php echo $pga[2];?>" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
@@ -34,6 +34,6 @@ switch($pg)
     </ul>
   </li>
    --->
-  <li role="presentation" class="<?php echo $pga[3];?>"><a href="<?php echo base_url('index.php/skos/concept_add');?>"><?php echo msg('Concept_add');?></a></li>
+  <li role="presentation" class="<?php echo $pga[3];?>"><a href="<?php echo base_url('index.php/thesa/concept_add');?>"><?php echo msg('Concept_add');?></a></li>
 </ul>
 </div>

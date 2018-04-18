@@ -24,7 +24,7 @@ class Authority extends CI_Controller {
 		$this -> load -> view("ca/welcome", null);
 
 		$this -> load -> view("ca/ca_home", null);
-		//redirect(base_url('index.php/skos/myskos'));
+		//redirect(base_url('index.php/thesa/myskos'));
 	}
 	
 	function find() {
@@ -33,7 +33,7 @@ class Authority extends CI_Controller {
 		$this -> load -> view("ca/welcome", null);
 
 		$this -> load -> view("ca/ca_home", null);
-		//redirect(base_url('index.php/skos/myskos'));
+		//redirect(base_url('index.php/thesa/myskos'));
 	}	
 
 	function cab($nb = 1) {
@@ -73,20 +73,20 @@ class Authority extends CI_Controller {
 			$rs = $this -> validate($act);
 			if ($rs == 1) {
 
-				redirect(base_url('index.php/skos/'));
+				redirect(base_url('index.php/thesa/'));
 			}
 		}
 
 		$ok = $this -> validate();
 		if ($ok == 1) {
-			redirect(base_url('index.php/skos/myth'));
+			redirect(base_url('index.php/thesa/myth'));
 			exit ;
 		} else {
 			if (strlen(get("userName")) > 0)
 				switch($ok) {
 					case -1 :
 						$data['email_ok'] = '<span class="btn alert-danger">' . msg("user_not_validaded") . '#' . $ok . '</span>';
-						$link = ' | <a href="' . base_url('index.php/skos/user_revalid/?dd0=' . get("userName") . '&chk=' . checkpost_link(get("userName"))) . '" class="btn alert-danger">';
+						$link = ' | <a href="' . base_url('index.php/thesa/user_revalid/?dd0=' . get("userName") . '&chk=' . checkpost_link(get("userName"))) . '" class="btn alert-danger">';
 						$link .= msg('resend_validation');
 						$link .= '</a>';
 						$link .= '<br/><br/>';
@@ -174,7 +174,7 @@ class Authority extends CI_Controller {
 
 			$this -> Authorities -> th_assosiation_users();
 
-			redirect(base_url('index.php/skos/myth/'));
+			redirect(base_url('index.php/thesa/myth/'));
 		}
 
 	}
@@ -195,7 +195,7 @@ class Authority extends CI_Controller {
 		if (checkpost_link($id) == $chk) {
 			$this -> Authorities -> Authorities_select($id);
 		}
-		redirect(base_url('index.php/skos/terms/' . $id));
+		redirect(base_url('index.php/thesa/terms/' . $id));
 	}
 
 	function show($id = '', $chk = '', $ltr = '') {
@@ -222,9 +222,9 @@ class Authority extends CI_Controller {
 
 		$tela .= '	<div class="col-md-3">';
 		$tela .= $this -> Authorities -> thesaurus_resume($id);
-		$tela .= '<a href="' . base_url('index.php/skos/thes/') . '" class="btn btn-secondary" style="width: 100%;">' . msg('Conceitual map') . '</a>' . cr();
+		$tela .= '<a href="' . base_url('index.php/thesa/thes/') . '" class="btn btn-secondary" style="width: 100%;">' . msg('Conceitual map') . '</a>' . cr();
 		$tela .= '<br><br>';
-		$tela .= '<a href="' . base_url('index.php/skos/thrs/') . '" class="btn btn-secondary" style="width: 100%;">' . msg('Report Thesaurus') . '</a>' . cr();
+		$tela .= '<a href="' . base_url('index.php/thesa/thrs/') . '" class="btn btn-secondary" style="width: 100%;">' . msg('Report Thesaurus') . '</a>' . cr();
 		$tela .= '	</div>';
 		$tela .= '</div>';
 		$data['content'] = $tela;
@@ -278,7 +278,7 @@ class Authority extends CI_Controller {
 		$data['pg'] = 1;
 		$this -> load -> view('skos/skos_nav_term', $data);
 		if (strlen(trim(trim($data['ct_concept']))) == 0) {
-			$data['action'] = '<a href="' . base_url('index.php/skos/concept_create/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_lt']) . '" class="btn btn-primary">' . msg('Term_create_concept') . '</a></li>';
+			$data['action'] = '<a href="' . base_url('index.php/thesa/concept_create/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_lt']) . '" class="btn btn-primary">' . msg('Term_create_concept') . '</a></li>';
 		}
 		$this -> load -> view('skos/view_term', $data);
 
@@ -406,9 +406,9 @@ class Authority extends CI_Controller {
 
 				if ($form -> saved > 0) {
 					if (strlen($id) > 0) {
-						redirect(base_url('index.php/skos/myth/' . $id));
+						redirect(base_url('index.php/thesa/myth/' . $id));
 					} else {
-						redirect(base_url('index.php/skos/myth'));
+						redirect(base_url('index.php/thesa/myth'));
 					}
 				}
 
@@ -560,7 +560,7 @@ class Authority extends CI_Controller {
 			$this -> Authorities -> association_term_th($ta, $lang, $th);
 			$this -> Authorities -> association_term_concept($idt, $c, $th, $type);
 		}
-		redirect(base_url('index.php/skos/c/' . $c));
+		redirect(base_url('index.php/thesa/c/' . $c));
 	}
 
 	/***************************************************************************** Conecpt */
@@ -568,10 +568,10 @@ class Authority extends CI_Controller {
 		$this -> load -> model("Authorities");
 
 		$data = $this -> Authorities -> le($c);
-		if (count($data) == 0) { redirect(base_url('index.php/skos/error/c'));
+		if (count($data) == 0) { redirect(base_url('index.php/thesa/error/c'));
 		}
 		$data = $this -> Authorities -> le_c($data['id_c'], $data['ct_th']);
-		if (count($data) == 0) { redirect(base_url('index.php/skos/error/c'));
+		if (count($data) == 0) { redirect(base_url('index.php/thesa/error/c'));
 		}
 
 		switch ($proto) {
@@ -591,7 +591,7 @@ class Authority extends CI_Controller {
 				break;
 		}
 
-		//redirect(base_url('index.php/skos/myskos'));
+		//redirect(base_url('index.php/thesa/myskos'));
 	}
 
 	function te_remove($id = '', $chk = '') {
@@ -658,7 +658,7 @@ class Authority extends CI_Controller {
 			$sx .= $this -> load -> view('skos/skos_term_add', $data2, true);
 
 			/* BROADER */
-			$sx .= '<form action="' . base_url('index.php/skos/c/' . $c) . '">';
+			$sx .= '<form action="' . base_url('index.php/thesa/c/' . $c) . '">';
 			$sx .= '<font class="middle">' . msg('select_a_concept_to_assign') . '</font>';
 			$sx .= '<input type="hidden" value="assign_as_narrower" name="dd11">';
 			$sx .= '<input type="hidden" value="' . $c . '" name="dd12">';
@@ -864,7 +864,7 @@ class Authority extends CI_Controller {
 
 		if ($is_active == 0) {
 			$id = $this -> Authorities -> concept_create($t, $th);
-			redirect(base_url('index.php/skos/c/' . $id));
+			redirect(base_url('index.php/thesa/c/' . $id));
 		}
 
 	}
@@ -887,9 +887,9 @@ class Authority extends CI_Controller {
 		/******************************/
 
 		if (strlen(trim(trim($data['ct_concept']))) == 0) {
-			$data['action'] = '<a href="' . base_url('index.php/skos/concept_create/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_rl']) . '" class="btn btn-primary" style="width: 100%;">' . msg('Term_create_concept') . '</a></li>';
-			$data['action'] .= '<br/><br/><a href="' . base_url('index.php/skos/term_edit/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_rl']) . '" class="btn btn-warning" style="width: 100%;">' . msg('Term_edit_concept') . '</a></li>';
-			$data['action'] .= '<br/><br/><a href="' . base_url('index.php/skos/term_delete/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_rl']) . '" class="btn btn-danger" style="width: 100%;">' . msg('Term_delete_concept') . '</a></li>';
+			$data['action'] = '<a href="' . base_url('index.php/thesa/concept_create/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_rl']) . '" class="btn btn-primary" style="width: 100%;">' . msg('Term_create_concept') . '</a></li>';
+			$data['action'] .= '<br/><br/><a href="' . base_url('index.php/thesa/term_edit/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_rl']) . '" class="btn btn-warning" style="width: 100%;">' . msg('Term_edit_concept') . '</a></li>';
+			$data['action'] .= '<br/><br/><a href="' . base_url('index.php/thesa/term_delete/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_rl']) . '" class="btn btn-danger" style="width: 100%;">' . msg('Term_delete_concept') . '</a></li>';
 		}
 		$this -> load -> view('skos/view_term', $data);
 
@@ -911,7 +911,7 @@ class Authority extends CI_Controller {
 		$data2 = $this -> Authorities -> le_term($idt, $th);
 
 		if (count($data2) == 0) {
-			redirect(base_url('index.php/skos/terms/' . $th));
+			redirect(base_url('index.php/thesa/terms/' . $th));
 		}
 
 		$data = array_merge($data, $data2);
@@ -939,7 +939,7 @@ class Authority extends CI_Controller {
 			}
 
 		} else {
-			$data['link'] = base_url('index.php/skos/term_delete/' . $th . '/' . $chk . '/' . $idt . '/DEL/' . $chk3);
+			$data['link'] = base_url('index.php/thesa/term_delete/' . $th . '/' . $chk . '/' . $idt . '/DEL/' . $chk3);
 			$data['content'] = msg('delete_term_confirm');
 			$tela = $this -> load -> view('confirm', $data, True);
 			$data['content'] = $tela;
@@ -979,7 +979,7 @@ class Authority extends CI_Controller {
 		$this -> load -> view('content', $data);
 
 		if ($form -> saved) {
-			redirect(base_url('index.php/skos/term/' . $th . '/' . $idt));
+			redirect(base_url('index.php/thesa/term/' . $th . '/' . $idt));
 		}
 		$this -> load -> view('header/footer', null);
 	}
@@ -1084,7 +1084,7 @@ class Authority extends CI_Controller {
 		if (strlen($scheme) > 0) {
 			if ($this -> Authorities -> scheme_set($scheme) == 1) {
 				$tema = $this -> session -> userdata('sh_initials');
-				redirect(base_url('index.php/skos/thema/' . $tema));
+				redirect(base_url('index.php/thesa/thema/' . $tema));
 			}
 		}
 
@@ -1205,7 +1205,7 @@ class Authority extends CI_Controller {
 						$data = array();
 						$data['title'] = msg('change_password');
 						$data['content'] = msg('change_password_successful');
-						$data['content'] .= '<br/><br/><a href="' . base_url('index.php/skos/login') . '" class="btn btn-secondary">' . msg('return') . '</a>';
+						$data['content'] .= '<br/><br/><a href="' . base_url('index.php/thesa/login') . '" class="btn btn-secondary">' . msg('return') . '</a>';
 						$this -> load -> view('skos/100', $data);
 						return (0);
 					}

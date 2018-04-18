@@ -1,7 +1,7 @@
 <div class="container-fluid bg_thesa nopr" style="margin-top: 50px;">
 	<div class="row" style="height: 70px;">
 		<div class="col-md-12">
-			<form method="post" action="<?php echo base_url('index.php/skos/search/');?>">
+			<form method="post" action="<?php echo base_url('index.php/thesa/search/');?>">
 			pesquisar
 			<div class="input-group" style="padding: 5px; ">
 				<input type="text" class="form-control selector" name="search" id="search" placeholder="Busca por..." value="">

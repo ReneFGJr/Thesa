@@ -15,7 +15,7 @@
 	<!--
 	<div class="row" style="padding-top: 50px;">
 		<div class="col-md-12 text-center">
-			<a href="<?php echo base_url('index.php/skos/myskos');?>" class="btn btn-secondary">ENTRAR</a>			
+			<a href="<?php echo base_url('index.php/thesa/myskos');?>" class="btn btn-secondary">ENTRAR</a>			
 		</div>
 	</div>
 	-->

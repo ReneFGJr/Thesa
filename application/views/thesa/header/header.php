@@ -16,8 +16,9 @@ if (!isset($title)) { $title = ':: Title ::';}
   <script type="text/javascript" src="<?php echo base_url('js/utils.js');?>"></script>
   <script type="text/javascript" src="<?php echo base_url('js/tether.js');?>"></script>
   <script type="text/javascript" src="<?php echo base_url('js/bootstrap.js');?>"></script>
-  <script type="text/javascript" src="<?php echo base_url('js/jquery-ui.js');?>"></script>  
+  <script type="text/javascript" src="<?php echo base_url('js/jquery-ui.js');?>"></script>
+  <script type="text/javascript" src="<?php echo base_url('js/clipboard.js');?>"></script>  
   <script type="text/javascript" src="<?php echo base_url('js/form_sisdoc.js');?>"></script>
-  <script type="text/javascript" src="<?php echo base_url('js/clipboard.js');?>"></script>
+  
   
 </head>

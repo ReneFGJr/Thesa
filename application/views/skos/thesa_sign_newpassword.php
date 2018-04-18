@@ -51,7 +51,7 @@
 		$("#form").submit();
 	});
 	$("#return").click(function() {
-		$(location).attr('href', '<?php echo base_url('index.php/skos/login');?>');
+		$(location).attr('href', '<?php echo base_url('index.php/thesa/login');?>');
 	});	
 </script>
 

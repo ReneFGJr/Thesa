@@ -1,5 +1,5 @@
 <?php
-$onclick = ' onclick="newxy2(\''.base_url('index.php/skos/concept_change_preflabel/'.$id_c.'/'.$c_th.'/'.checkpost_link($id_c.$c_th)).'\',600,600);" ';
+$onclick = ' onclick="newxy2(\''.base_url('index.php/thesa/concept_change_preflabel/'.$id_c.'/'.$c_th.'/'.checkpost_link($id_c.$c_th)).'\',600,600);" ';
 ?>
 <div class="container">
 	<div class="row">

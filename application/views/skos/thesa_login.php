@@ -76,7 +76,7 @@
 	$("#sendmail").click(function() {
 		$("#email").fadeIn("slow");
 		$.ajax({
-		  url: '<?php echo base_url('index.php/skos/login_ajax/email/'.$user['id_us'].'/'.checkpost_link($user['id_us'].'password'));?>',
+		  url: '<?php echo base_url('index.php/thesa/login_ajax/email/'.$user['id_us'].'/'.checkpost_link($user['id_us'].'password'));?>',
 		  success: function(data) {
 		      $('#email').html(data);
 		  }
@@ -84,7 +84,7 @@
 	});	
 	<?php } ?>
 	$("#signup").click(function() {
-		$(location).attr('href', '<?php echo base_url('index.php/skos/login_sign_up'); ?>
+		$(location).attr('href', '<?php echo base_url('index.php/thesa/login_sign_up'); ?>
 			');
 			});
 </script>

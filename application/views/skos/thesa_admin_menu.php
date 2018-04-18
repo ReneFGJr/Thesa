@@ -25,21 +25,21 @@ if (!isset($_SESSION['id']))
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="<?php echo base_url('index.php/skos/terms/'.$th);?>"><?php echo msg('home'); ?></a>
+      <a class="navbar-brand" href="<?php echo base_url('index.php/thesa/terms/'.$th);?>"><?php echo msg('home'); ?></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="<?php echo base_url('index.php/skos/terms/'.$th);?>"><?php echo msg('glossario');?></a></li>
-        <li><a href="<?php echo base_url('index.php/skos/thes/'.$th);?>"><?php echo msg('conceitual_map');?></a></li>
+        <li><a href="<?php echo base_url('index.php/thesa/terms/'.$th);?>"><?php echo msg('glossario');?></a></li>
+        <li><a href="<?php echo base_url('index.php/thesa/thes/'.$th);?>"><?php echo msg('conceitual_map');?></a></li>
         <?php if ($this -> skoses -> autho($id, $th) == 1) { ?>			
 			
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo msg('adds'); ?><span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="<?php echo base_url('index.php/skos/concept_add/'); ?>"><?php echo msg('terms'); ?></a></li>
-            <li><a href="<?php echo base_url('index.php/skos/collaborators'); ?>"><?php echo msg('collaborators'); ?></a></li>
+            <li><a href="<?php echo base_url('index.php/thesa/concept_add/'); ?>"><?php echo msg('terms'); ?></a></li>
+            <li><a href="<?php echo base_url('index.php/thesa/collaborators'); ?>"><?php echo msg('collaborators'); ?></a></li>
             <li role="separator" class="divider"></li>
           </ul>
         </li>
@@ -48,10 +48,10 @@ if (!isset($_SESSION['id']))
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo msg('rules'); ?><span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="<?php echo base_url('index.php/skos/check_all/'); ?>"><?php echo msg('check_all'); ?></a></li>
-            <li><a href="<?php echo base_url('index.php/skos/th_edit/'.$th.'/'.checkpost_link($th)); ?>"><?php echo msg('preferences'); ?></a></li>
-			<li><a href="<?php echo base_url('index.php/skos/terms_list/');?>"><?php echo msg('terms_list'); ?></a></li>
-			<li><a href="<?php echo base_url('index.php/skos/terms_from_to/');?>"><?php echo msg('remissiva_de_para'); ?></a></li>                
+            <li><a href="<?php echo base_url('index.php/thesa/check_all/'); ?>"><?php echo msg('check_all'); ?></a></li>
+            <li><a href="<?php echo base_url('index.php/thesa/th_edit/'.$th.'/'.checkpost_link($th)); ?>"><?php echo msg('preferences'); ?></a></li>
+			<li><a href="<?php echo base_url('index.php/thesa/terms_list/');?>"><?php echo msg('terms_list'); ?></a></li>
+			<li><a href="<?php echo base_url('index.php/thesa/terms_from_to/');?>"><?php echo msg('remissiva_de_para'); ?></a></li>                
           </ul>
         </li>        
         
@@ -61,9 +61,9 @@ if (!isset($_SESSION['id']))
       	<li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo msg('outputs'); ?><span class="caret"></span></a>
           <ul class="dropdown-menu">
-          	<li><a href="<?php echo base_url('index.php/skos/thas/'.$th);?>"><?php echo msg('printer_alfabetic'); ?></a></li>
-            <li><a href="<?php echo base_url('index.php/skos/thrs/'.$th);?>"><?php echo msg('printer'); ?></a></li>
-            <li><a href="<?php echo base_url('index.php/skos/thri/'.$th);?>"><?php echo msg('printer_sistematic'); ?></a></li>
+          	<li><a href="<?php echo base_url('index.php/thesa/thas/'.$th);?>"><?php echo msg('printer_alfabetic'); ?></a></li>
+            <li><a href="<?php echo base_url('index.php/thesa/thrs/'.$th);?>"><?php echo msg('printer'); ?></a></li>
+            <li><a href="<?php echo base_url('index.php/thesa/thri/'.$th);?>"><?php echo msg('printer_sistematic'); ?></a></li>
           </ul>
         </li>
         

@@ -5,7 +5,7 @@
 </button>
 
 <!-- Modal -->
-<form method="post" action="<?php echo base_url('index.php/skos/ti/'.$id_c.'/'.$c_th);?>">
+<form method="post" action="<?php echo base_url('index.php/thesa/ti/'.$id_c.'/'.$c_th);?>">
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">

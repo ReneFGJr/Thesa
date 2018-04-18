@@ -53,11 +53,11 @@
 				<div class="collapse navbar-collapse" id="myNavbar">
 					<ul class="nav navbar-nav">
 						<li>
-							<a href="<?php echo base_url('index.php/skos/thesa'); ?>" class="menu_sk"><?php echo msg('thesaurus_open'); ?></a>
+							<a href="<?php echo base_url('index.php/thesa/thesa'); ?>" class="menu_sk"><?php echo msg('thesaurus_open'); ?></a>
 						</li>
 						<? if (isset($_SESSION['check'])) { ?>
 						<li>
-							<a href="<?php echo base_url('index.php/skos/myth'); ?>"><?php echo msg('thesaurus_myth'); ?></a>
+							<a href="<?php echo base_url('index.php/thesa/myth'); ?>"><?php echo msg('thesaurus_myth'); ?></a>
 						</li>
 						<? } ?>
 						<li>
@@ -76,11 +76,11 @@
 						</li>
 						<?php if (isset($_SESSION['id']) and (strlen($_SESSION['id']) > 0)) { ?>
 						<li>
-							<a href="<?php echo base_url('index.php/skos/bug_report'); ?>" title="<?php echo msg('report_a_bug');?>"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span></a>
+							<a href="<?php echo base_url('index.php/thesa/bug_report'); ?>" title="<?php echo msg('report_a_bug');?>"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span></a>
 						</li>										
 						<?php } ?>
 						<li>
-							<a href="<?php echo base_url('index.php/skos/user_manual'); ?>#section2"><?php echo msg('MANUAL'); ?></a>
+							<a href="<?php echo base_url('index.php/thesa/user_manual'); ?>#section2"><?php echo msg('MANUAL'); ?></a>
 						</li>						
 					</ul>
 					
@@ -99,12 +99,12 @@
 							            <li><a href="#">Separated link</a></li>
 							            <li role="separator" class="divider"></li>
 							            -->
-							            <li><a href="'.base_url('index.php/skos/login_change').'">'.msg('change_my_data').'</a></li>
-							            <li><a href="'.base_url('index.php/skos/login/out').'">'.msg('logout').'</a></li>
+							            <li><a href="'.base_url('index.php/thesa/login_change').'">'.msg('change_my_data').'</a></li>
+							            <li><a href="'.base_url('index.php/thesa/login/out').'">'.msg('logout').'</a></li>
 							          </ul>
 							        </li>';
 						} else {
-							echo '<li style="background-color: orange;"><a href="' . base_url('index.php/skos/login') . '" style="color: white;">' . msg('sign_in') . '</a></li>';
+							echo '<li style="background-color: orange;"><a href="' . base_url('index.php/thesa/login') . '" style="color: white;">' . msg('sign_in') . '</a></li>';
 						}
 				        ?>
 				      </ul>

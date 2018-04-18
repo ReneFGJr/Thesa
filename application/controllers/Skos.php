@@ -90,7 +90,7 @@ class Skos extends CI_Controller {
         if (strlen($act) > 0) {
             $rs = $this -> validate($act);
             if ($rs == 1) {
-                redirect(base_url('index.php/skos/'));
+                redirect(base_url('index.php/thesa/'));
             }
         }
 
@@ -100,7 +100,7 @@ class Skos extends CI_Controller {
         $data['link'] = '';
         $data['user'] = $this -> line;
         if ($ok == 1) {
-            redirect(base_url('index.php/skos/myth'));
+            redirect(base_url('index.php/thesa/myth'));
             exit ;
         } else {
             if (strlen(get("userName")) > 0)
@@ -110,7 +110,7 @@ class Skos extends CI_Controller {
                         $data_us = $this -> skoses -> line;
                         $idu = $data_us['id_us'];
                         $data['email_ok'] = '<span class="alert-danger">' . msg("user_not_validaded") . '</span>';
-                        $link = '</br></br><a href="' . base_url('index.php/skos/user_revalid/?dd0=' . $idu . '&chk=' . checkpost_link($idu)) . '" class="btn btn-danger">';
+                        $link = '</br></br><a href="' . base_url('index.php/thesa/user_revalid/?dd0=' . $idu . '&chk=' . checkpost_link($idu)) . '" class="btn btn-danger">';
                         $link .= msg('resend_validation');
                         $link .= '</a>';
                         $link .= '<br/><br/>';
@@ -120,7 +120,7 @@ class Skos extends CI_Controller {
                         $idu = $this -> skoses -> le_user_email(get("userName"));
                         $data_us = $this -> skoses -> line;
                         $idu = $data_us['id_us'];						
-                        $link = base_url('index.php/skos/user_password_new/?dd0=' . $idu . '&chk=' . checkpost_link($idu . "SIGNIN"));
+                        $link = base_url('index.php/thesa/user_password_new/?dd0=' . $idu . '&chk=' . checkpost_link($idu . "SIGNIN"));
                         $data['link'] = $link;
                         break;
                     case -2 :
@@ -198,7 +198,7 @@ class Skos extends CI_Controller {
         $this -> load -> view('content', $data);
 
         if ($form -> saved > 0) {
-            redirect(base_url('index.php/skos/myth'));
+            redirect(base_url('index.php/thesa/myth'));
         }
     }
 
@@ -217,7 +217,7 @@ class Skos extends CI_Controller {
                 $ok = $this -> skoses -> user_exist($email);
                 if ($ok == 1) {
                     $id = $this -> skoses -> line['id_us'];
-                    $data['email_ok'] = '<a href="' . base_url('index.php/skos/login') . '"><span class="btn alert-danger">' . msg("email_already_inserted") . '</span></a>';
+                    $data['email_ok'] = '<a href="' . base_url('index.php/thesa/login') . '"><span class="btn alert-danger">' . msg("email_already_inserted") . '</span></a>';
                 } else {
                     $data['email_ok'] = '<span class="btn alert-success">' . msg("email_inserted") . '</span>';
 
@@ -247,7 +247,7 @@ class Skos extends CI_Controller {
         $this -> load -> model('skoses');
         $this -> cab(1);
         if (!isset($_SESSION['id'])) {
-            redirect(base_url('index.php/skos/login'));
+            redirect(base_url('index.php/thesa/login'));
         }
         $us = $_SESSION['id'];
 
@@ -288,7 +288,7 @@ class Skos extends CI_Controller {
 
             $this -> skoses -> th_assosiation_users();
 
-            redirect(base_url('index.php/skos/myth/'));
+            redirect(base_url('index.php/thesa/myth/'));
         }
 
     }
@@ -309,7 +309,7 @@ class Skos extends CI_Controller {
         if (checkpost_link($id) == $chk) {
             $this -> skoses -> skoses_select($id);
         }
-        redirect(base_url('index.php/skos/terms/' . $id));
+        redirect(base_url('index.php/thesa/terms/' . $id));
     }
 
     function show($id = '', $chk = '', $ltr = '') {
@@ -321,7 +321,7 @@ class Skos extends CI_Controller {
         }
 
         $data = $this -> skoses -> le_skos($id);
-        $this -> load -> view('skos/view', $data);
+        $this -> load -> view('thesa/view/thesaurus', $data);
 
         $this -> load -> view('skos/skos_nav', $data);
 
@@ -336,9 +336,9 @@ class Skos extends CI_Controller {
 
         $tela .= '	<div class="col-md-3">';
         $tela .= $this -> skoses -> thesaurus_resume($id);
-        $tela .= '<a href="' . base_url('index.php/skos/thes/') . '" class="btn btn-secondary" style="width: 100%;">' . msg('Conceitual map') . '</a>' . cr();
+        $tela .= '<a href="' . base_url('index.php/thesa/thes/') . '" class="btn btn-secondary" style="width: 100%;">' . msg('Conceitual map') . '</a>' . cr();
         $tela .= '<br><br>';
-        $tela .= '<a href="' . base_url('index.php/skos/thrs/') . '" class="btn btn-secondary" style="width: 100%;">' . msg('Report Thesaurus') . '</a>' . cr();
+        $tela .= '<a href="' . base_url('index.php/thesa/thrs/') . '" class="btn btn-secondary" style="width: 100%;">' . msg('Report Thesaurus') . '</a>' . cr();
         $tela .= '	</div>';
         $tela .= '</div>';
         $data['content'] = $tela;
@@ -401,10 +401,10 @@ class Skos extends CI_Controller {
         $this -> cab();
         $id = $_SESSION['skos'];
         $data = $this -> skoses -> le_skos($id);
-        $this -> load -> view('skos/view', $data);
+        $this -> load -> view('thesa/view/thesaurus', $data);
         $data['pg'] = 2;
         //$this -> load -> view('skos/skos_nav', $data);
-        $this -> load -> view('skos/thesa_admin_menu', null);
+        $this -> load -> view('thesa/header/navbar_tools', null);
 
         $form = new form;
         $cp = array();
@@ -438,15 +438,15 @@ class Skos extends CI_Controller {
         }
 
         $data = $this -> skoses -> le_skos($th);
-        $this -> load -> view('skos/view', $data);
+        $this -> load -> view('thesa/view/thesaurus', $data);
 
         $data = $this -> skoses -> le_term($idt, $th);
         $data['pg'] = 1;
         $this -> load -> view('skos/skos_nav_term', $data);
         if (strlen(trim(trim($data['ct_concept']))) == 0) {
-            $data['action'] = '<a href="' . base_url('index.php/skos/concept_create/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_lt']) . '" class="btn btn-primary">' . msg('Term_create_concept') . '</a></li>';
+            $data['action'] = '<a href="' . base_url('index.php/thesa/concept_create/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_lt']) . '" class="btn btn-primary">' . msg('Term_create_concept') . '</a></li>';
         }
-        $this -> load -> view('skos/view_term', $data);
+        $this -> load -> view('thesa/view/thesaurus_term', $data);
 
         $this -> skoses -> th_concept_subordinate($idt, $th);
         $tela = '';
@@ -585,7 +585,7 @@ class Skos extends CI_Controller {
 
         $data = $this -> skoses -> le($c);
         $data['form'] = $this -> skoses -> form_concept($th, $c, 'FE');
-        $this -> load -> view('skos/view_concept_mini', $data);
+        $this -> load -> view('thesa/view/thesaurus_concept_mini', $data);
 
         $action = get("action");
         $desc = get("tm");
@@ -618,7 +618,7 @@ class Skos extends CI_Controller {
 
         $data = $this -> skoses -> le($c);
         $data['form'] = $this -> skoses -> form_concept_tf($th, $c);
-        $this -> load -> view('skos/view_concept_mini', $data);
+        $this -> load -> view('thesa/view/thesaurus_concept_mini', $data);
 
         $action = get("action");
         $texto = get("nt");
@@ -643,7 +643,7 @@ class Skos extends CI_Controller {
 
         $data = $this -> skoses -> le($c);
         $data['form'] = $this -> skoses -> form_concept_tf($th, $c);
-        $this -> load -> view('skos/view_concept_mini', $data);
+        $this -> load -> view('thesa/view/thesaurus_concept_mini', $data);
 
         $action = get("action");
         $texto = get("nt");
@@ -670,7 +670,7 @@ class Skos extends CI_Controller {
 
         $data = $this -> skoses -> le($c);
         $data['form'] = $this -> skoses -> form_concept_tg($th, $c);
-        $this -> load -> view('skos/view_concept_mini', $data);
+        $this -> load -> view('thesa/view/thesaurus_concept_mini', $data);
 
         $action = get("action");
         $tg = get("tg");
@@ -693,10 +693,10 @@ class Skos extends CI_Controller {
             $th = $_SESSION['skos'];
         }
         $data = $this -> skoses -> le_skos($th);
-        $this -> load -> view('skos/view', $data);
+        $this -> load -> view('thesa/view/thesaurus', $data);
 
         $tela = '';
-        $tela .= $this -> load -> view('skos/thesa_admin_menu', null, true);
+        $tela .= $this -> load -> view('thesa/header/navbar_tools', null, true);
         $data['content'] = $tela;
         $this -> load -> view('content', $data);
 
@@ -722,8 +722,8 @@ class Skos extends CI_Controller {
         $id = $_SESSION['skos'];
         $data = $this -> skoses -> le_skos($id);
 
-        $this -> load -> view('skos/view', $data);
-        $this -> load -> view('skos/thesa_admin_menu', null);
+        $this -> load -> view('thesa/view/thesaurus', $data);
+        $this -> load -> view('thesa/header/navbar_tools', null);
 
         if ((count($data) > 0)) {
             if ((isset($_SESSION['id']) and ($_SESSION['id']) == $data['pa_creator']) and ($data['id_pa'] == $id)) {
@@ -739,9 +739,9 @@ class Skos extends CI_Controller {
 
                 if ($form -> saved > 0) {
                     if (strlen($id) > 0) {
-                        redirect(base_url('index.php/skos/myth/' . $id));
+                        redirect(base_url('index.php/thesa/myth/' . $id));
                     } else {
-                        redirect(base_url('index.php/skos/myth'));
+                        redirect(base_url('index.php/thesa/myth'));
                     }
                 }
 
@@ -773,7 +773,7 @@ class Skos extends CI_Controller {
 
         $data = $this -> skoses -> le($c);
         $data['form'] = $this -> skoses -> form_concept_tr($th, $c);
-        $this -> load -> view('skos/view_concept_mini', $data);
+        $this -> load -> view('thesa/view/thesaurus_concept_mini', $data);
 
         $action = get("action");
         $tg = get("tg");
@@ -798,7 +798,7 @@ class Skos extends CI_Controller {
 
         $data = $this -> skoses -> le($c);
         $data['form'] = $this -> skoses -> form_concept($th, $c, 'TH');
-        $this -> load -> view('skos/view_concept_mini', $data);
+        $this -> load -> view('thesa/view/thesaurus_concept_mini', $data);
 
         $action = get("action");
         $desc = get("tm");
@@ -853,7 +853,7 @@ class Skos extends CI_Controller {
             $this -> skoses -> association_term_th($ta, $lang, $th);
             $this -> skoses -> association_term_concept($idt, $c, $th, $type);
         }
-        redirect(base_url('index.php/skos/c/' . $c));
+        redirect(base_url('index.php/thesa/c/' . $c));
     }
 
     /***************************************************************************** Conecpt */
@@ -861,10 +861,10 @@ class Skos extends CI_Controller {
         $this -> load -> model("skoses");
 
         $data = $this -> skoses -> le($c);
-        if (count($data) == 0) { redirect(base_url('index.php/skos/error/c'));
+        if (count($data) == 0) { redirect(base_url('index.php/thesa/error/c'));
         }
         $data = $this -> skoses -> le_c($data['id_c'], $data['ct_th']);
-        if (count($data) == 0) { redirect(base_url('index.php/skos/error/c'));
+        if (count($data) == 0) { redirect(base_url('index.php/thesa/error/c'));
         }
 
         switch ($proto) {
@@ -876,8 +876,8 @@ class Skos extends CI_Controller {
                 /* CAB */
                 $this -> cab();
                 $datask = $this -> skoses -> le_skos($data['c_th']);
-                $this -> load -> view('skos/view', $datask);
-                $this -> load -> view('skos/thesa_admin_menu', $datask);
+                $this -> load -> view('thesa/view/thesaurus', $datask);
+                $this -> load -> view('thesa/header/navbar_tools', $datask);
 
                 $user_id = 0;
                 $data['edit'] = '';
@@ -891,7 +891,7 @@ class Skos extends CI_Controller {
                 break;
         }
 
-        //redirect(base_url('index.php/skos/myskos'));
+        //redirect(base_url('index.php/thesa/myskos'));
     }
 
     function te_remove($id = '', $chk = '') {
@@ -905,7 +905,7 @@ class Skos extends CI_Controller {
         } else {
             $data['content'] = '<br><br><h1>' . msg('remove_propriety') . '</h1>';
             $data['content'] .= msg('content');
-            $data['link'] = base_url('index.php/skos/te_remove/' . $id . '/' . $chk);
+            $data['link'] = base_url('index.php/thesa/te_remove/' . $id . '/' . $chk);
             $this -> load -> view('confirm.php', $data);
         }
     }
@@ -926,40 +926,6 @@ class Skos extends CI_Controller {
 
     }
 
-    function cedit($c = '', $th = '') {
-
-        /* Load model */
-        $edit = true;
-        $this -> load -> model("skoses");
-        $this -> cab();
-
-        /* RECUPERA SCHEMA */
-        if (strlen($th) == 0) {
-            $th = $_SESSION['skos'];
-        }
-
-        /* LE DADOS SOBRE O SCHEMA */
-        $data = $this -> skoses -> le_skos($th);
-        $this -> load -> view('skos/view', $data);
-        $data['pg'] = 4;
-        $data['editar'] = 1;
-
-        /* menu */
-        $this -> load -> view('skos/thesa_admin_menu', null);
-
-        /* Recupera informações sobre o Concecpt */
-        $data2 = $this -> skoses -> le_c($c, $th);
-        $data2['editar'] = $data['editar'];
-        $this -> load -> view('skos/view_concept', $data2);
-
-        $this -> load -> view('skos/thesa_concept_tools', $data2);
-
-        $data['content'] = $data2['logs'];
-        $this -> load -> view('content', $data);
-
-        $this -> load -> view('header/footer', null);
-
-    }
 
     function c2($c = '', $th = '') {
 
@@ -982,7 +948,7 @@ class Skos extends CI_Controller {
         }
 
         print_r($data2);
-        $tela = $this -> load -> view('skos/view_concept', $data2, true);
+        $tela = $this -> load -> view('thesa/view/thesaurus_concept', $data2, true);
         $sx = '';
         $sx .= $this -> skoses -> concept_show($c);
 
@@ -993,7 +959,7 @@ class Skos extends CI_Controller {
             $sx .= $this -> load -> view('skos/skos_term_add', $data2, true);
 
             /* BROADER */
-            $sx .= '<form action="' . base_url('index.php/skos/c/' . $c) . '">';
+            $sx .= '<form action="' . base_url('index.php/thesa/c/' . $c) . '">';
             $sx .= '<font class="middle">' . msg('select_a_concept_to_assign') . '</font>';
             $sx .= '<input type="hidden" value="assign_as_narrower" name="dd11">';
             $sx .= '<input type="hidden" value="' . $c . '" name="dd12">';
@@ -1013,7 +979,7 @@ class Skos extends CI_Controller {
             /* */
 
             $data['form_terms'] = $sx;
-            //$tela .= $this -> load -> view('skos/view_concept_add_broader', $data, true);
+            //$tela .= $this -> load -> view('thesa/view/thesaurus_concept_add_broader', $data, true);
         }
 
         $data['content'] = $tela;
@@ -1211,7 +1177,7 @@ class Skos extends CI_Controller {
             $id = $this -> skoses -> concept_create($t, $th);
             $this -> skoses -> log_insert($id, $th, $act, $desc);
 
-            redirect(base_url('index.php/skos/c/' . $id));
+            redirect(base_url('index.php/thesa/c/' . $id));
         }
 
     }
@@ -1236,16 +1202,16 @@ class Skos extends CI_Controller {
         $data2 = $this -> skoses -> le_term($idt, $th);
         $data = array_merge($data, $data2);
 
-        $this -> load -> view('skos/view', $data);
+        $this -> load -> view('thesa/view/thesaurus', $data);
         /******************************/
 
         if (strlen(trim(trim($data['ct_concept']))) == 0) {
-            $data['action'] = '<a href="' . base_url('index.php/skos/concept_create/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_rl']) . '" class="btn btn-primary" style="width: 100%;">' . msg('Term_create_concept') . '</a></li>';
-            $data['action'] .= '<br/><br/><a href="' . base_url('index.php/skos/term_edit/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_rl']) . '" class="btn btn-warning" style="width: 100%;">' . msg('Term_edit_concept') . '</a></li>';
-            $data['action'] .= '<br/><br/><a href="' . base_url('index.php/skos/term_delete/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_rl']) . '" class="btn btn-danger" style="width: 100%;">' . msg('Term_delete_concept') . '</a></li>';
+            $data['action'] = '<a href="' . base_url('index.php/thesa/concept_create/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_rl']) . '" class="btn btn-primary" style="width: 100%;">' . msg('Term_create_concept') . '</a></li>';
+            $data['action'] .= '<br/><br/><a href="' . base_url('index.php/thesa/term_edit/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_rl']) . '" class="btn btn-warning" style="width: 100%;">' . msg('Term_edit_concept') . '</a></li>';
+            $data['action'] .= '<br/><br/><a href="' . base_url('index.php/thesa/term_delete/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_rl']) . '" class="btn btn-danger" style="width: 100%;">' . msg('Term_delete_concept') . '</a></li>';
         }
-        $this -> load -> view('skos/thesa_admin_menu', null);
-        $this -> load -> view('skos/view_term', $data);
+        $this -> load -> view('thesa/header/navbar_tools', null);
+        $this -> load -> view('thesa/view/thesaurus_term', $data);
 
         $tela = '';
         $data['content'] = $tela;
@@ -1265,15 +1231,15 @@ class Skos extends CI_Controller {
         $data2 = $this -> skoses -> le_term($idt, $th);
 
         if (count($data2) == 0) {
-            redirect(base_url('index.php/skos/terms/' . $th));
+            redirect(base_url('index.php/thesa/terms/' . $th));
         }
 
         $data = array_merge($data, $data2);
 
-        $this -> load -> view('skos/view', $data);
+        $this -> load -> view('thesa/view/thesaurus', $data);
         /******************************/
 
-        $this -> load -> view('skos/view_term', $data);
+        $this -> load -> view('thesa/view/thesaurus_term', $data);
 
         $chk3 = checkpost_link($th . 'DEL' . $idt);
         if ($chk2 == $chk3) {
@@ -1292,7 +1258,7 @@ class Skos extends CI_Controller {
             }
 
         } else {
-            $data['link'] = base_url('index.php/skos/term_delete/' . $th . '/' . $chk . '/' . $idt . '/DEL/' . $chk3);
+            $data['link'] = base_url('index.php/thesa/term_delete/' . $th . '/' . $chk . '/' . $idt . '/DEL/' . $chk3);
             $data['content'] = msg('delete_term_confirm');
             $tela = $this -> load -> view('confirm', $data, True);
             $data['content'] = $tela;
@@ -1314,10 +1280,10 @@ class Skos extends CI_Controller {
         $data2 = $this -> skoses -> le_term($idt, $th);
         $data = array_merge($data, $data2);
 
-        $this -> load -> view('skos/view', $data);
+        $this -> load -> view('thesa/view/thesaurus', $data);
         /******************************/
 
-        $this -> load -> view('skos/view_term', $data);
+        $this -> load -> view('thesa/view/thesaurus_term', $data);
 
         $form = new form;
         $form -> id = $idt;
@@ -1331,7 +1297,7 @@ class Skos extends CI_Controller {
         $this -> load -> view('content', $data);
 
         if ($form -> saved) {
-            redirect(base_url('index.php/skos/term/' . $th . '/' . $idt));
+            redirect(base_url('index.php/thesa/term/' . $th . '/' . $idt));
         }
         $this -> load -> view('header/footer', null);
     }
@@ -1348,10 +1314,10 @@ class Skos extends CI_Controller {
         $data2 = $this -> skoses -> le_term($id, $th);
         $data = array_merge($data, $data2);
 
-        $this -> load -> view('skos/view', $data);
+        $this -> load -> view('thesa/view/thesaurus', $data);
         /******************************/
 
-        $this -> load -> view('skos/view_term', $data);
+        $this -> load -> view('thesa/view/thesaurus_term', $data);
 
         $form = new form;
         $form -> id = $id;
@@ -1365,7 +1331,7 @@ class Skos extends CI_Controller {
         $this -> load -> view('content', $data);
 
         if ($form -> saved) {
-            redirect(base_url('index.php/skos/terms_list/' . $th));
+            redirect(base_url('index.php/thesa/terms_list/' . $th));
         }
         $this -> load -> view('header/footer', null);
     }
@@ -1390,10 +1356,10 @@ class Skos extends CI_Controller {
         $this -> cab();
         $id = $_SESSION['skos'];
         $data = $this -> skoses -> le_skos($id);
-        $this -> load -> view('skos/view', $data);
+        $this -> load -> view('thesa/view/thesaurus', $data);
         $data['pg'] = 2;
         //$this -> load -> view('skos/skos_nav', $data);
-        $this -> load -> view('skos/thesa_admin_menu', null);
+        $this -> load -> view('thesa/header/navbar_tools', null);
 
         $tela = $this -> skoses -> th_users();
 
@@ -1412,10 +1378,10 @@ class Skos extends CI_Controller {
         }
 
         $data = $this -> skoses -> le_skos($id);
-        $this -> load -> view('skos/view', $data);
+        $this -> load -> view('thesa/view/thesaurus', $data);
 
         $tela = '';
-        $tela .= $this -> load -> view('skos/thesa_admin_menu', null, true);
+        $tela .= $this -> load -> view('thesa/header/navbar_tools', null, true);
 
         $tela .= $this -> skoses -> termos_pg($id);
         $tela .= '<div class="row">';
@@ -1469,16 +1435,16 @@ class Skos extends CI_Controller {
 
 		$this -> cab($tp);
         $data = $this -> skoses -> le_skos($id);
-        $this -> load -> view('skos/view', $data);
+        $this -> load -> view('thesa/view/thesaurus', $data);
 
         $tela = '';
-        $tela .= $this -> load -> view('skos/thesa_admin_menu', null, true);
+        $tela .= $this -> load -> view('thesa/header/navbar_tools', null, true);
 
         $tela .= '<div class="row">';
 		$tela .= msg('export_to');
-		$tela .= ' <a href="'.base_url('index.php/skos/terms_from_to/'.$id.'/csv').'" class="btn btn-secondary">CSV</a> ';
-		$tela .= ' <a href="'.base_url('index.php/skos/terms_from_to/'.$id.'/sql').'" class="btn btn-secondary">SQL</a> ';
-		$tela .= ' <a href="'.base_url('index.php/skos/terms_from_to/'.$id.'/rdf').'" class="btn btn-secondary">RDF</a> ';
+		$tela .= ' <a href="'.base_url('index.php/thesa/terms_from_to/'.$id.'/csv').'" class="btn btn-secondary">CSV</a> ';
+		$tela .= ' <a href="'.base_url('index.php/thesa/terms_from_to/'.$id.'/sql').'" class="btn btn-secondary">SQL</a> ';
+		$tela .= ' <a href="'.base_url('index.php/thesa/terms_from_to/'.$id.'/rdf').'" class="btn btn-secondary">RDF</a> ';
 		$tela .= '<br>';
 		$tela .= '<br>';
 		
@@ -1498,10 +1464,10 @@ class Skos extends CI_Controller {
         $id = $_SESSION['skos'];
 
         $data = $this -> skoses -> le_skos($id);
-        $this -> load -> view('skos/view', $data);
+        $this -> load -> view('thesa/view/thesaurus', $data);
 
         $tela = '';
-        $tela .= $this -> load -> view('skos/thesa_admin_menu', null, true);
+        $tela .= $this -> load -> view('thesa/header/navbar_tools', null, true);
 
         $tela .= '<div class="row"><div class="col-md-12">';
         /* Lista de comunicacoes anteriores */
@@ -1519,8 +1485,8 @@ class Skos extends CI_Controller {
         $form -> novo = False;
         $form = $this -> skoses -> term_row($form);
 
-        $form -> row_view = base_url('index.php/skos/term_edit2');
-        $form -> row = base_url('index.php/skos/terms_list/');
+        $form -> row_view = base_url('index.php/thesa/term_edit2');
+        $form -> row = base_url('index.php/thesa/terms_list/');
 
         $tela .= row($form, $pag);
         $tela .= '</div></div>';
@@ -1584,10 +1550,10 @@ class Skos extends CI_Controller {
         }
 
         $data = $this -> skoses -> le_skos($th);
-        $this -> load -> view('skos/view', $data);
+        $this -> load -> view('thesa/view/thesaurus', $data);
 
         $tela = '';
-        $tela .= $this -> load -> view('skos/thesa_admin_menu', null, true);
+        $tela .= $this -> load -> view('thesa/header/navbar_tools', null, true);
         $data['content'] = $tela;
         $this -> load -> view('content', $data);
         
@@ -1610,10 +1576,10 @@ class Skos extends CI_Controller {
         }
 
         $data = $this -> skoses -> le_skos($th);
-        $this -> load -> view('skos/view', $data);
+        $this -> load -> view('thesa/view/thesaurus', $data);
 
         $tela = '';
-        $tela .= $this -> load -> view('skos/thesa_admin_menu', null, true);
+        $tela .= $this -> load -> view('thesa/header/navbar_tools', null, true);
         $data['content'] = $tela;
         $this -> load -> view('content', $data);
         
@@ -1637,10 +1603,10 @@ class Skos extends CI_Controller {
         }
 
         $data = $this -> skoses -> le_skos($th);
-        $this -> load -> view('skos/view', $data);
+        $this -> load -> view('thesa/view/thesaurus', $data);
 
         $tela = '';
-        $tela .= $this -> load -> view('skos/thesa_admin_menu', null, true);
+        $tela .= $this -> load -> view('thesa/header/navbar_tools', null, true);
 
         $tela .= '<div class="row">';
 
@@ -1667,7 +1633,7 @@ class Skos extends CI_Controller {
         if (strlen($scheme) > 0) {
             if ($this -> skoses -> scheme_set($scheme) == 1) {
                 $tema = $this -> session -> userdata('sh_initials');
-                redirect(base_url('index.php/skos/thema/' . $tema));
+                redirect(base_url('index.php/thesa/thema/' . $tema));
             }
         }
 
@@ -1760,7 +1726,7 @@ class Skos extends CI_Controller {
                 if ($ok == 1) {
                     $sql = "update users set us_password = '$passw', us_ativo = 1 where id_us = " . round($line['id_us']);
                     $this -> db -> query($sql);
-                    redirect(base_url('index.php/skos/login'));
+                    redirect(base_url('index.php/thesa/login'));
                 }
                 //$data['email_ok'] .= '['.$passw.']';
                 $this -> load -> view('skos/thesa_sign_newpassword', $data);
@@ -1866,7 +1832,7 @@ class Skos extends CI_Controller {
                         $data = array();
                         $data['title'] = msg('change_password');
                         $data['content'] = msg('change_password_successful');
-                        $data['content'] .= '<br/><br/><a href="' . base_url('index.php/skos/login') . '" class="btn btn-secondary">' . msg('return') . '</a>';
+                        $data['content'] .= '<br/><br/><a href="' . base_url('index.php/thesa/login') . '" class="btn btn-secondary">' . msg('return') . '</a>';
                         $this -> load -> view('skos/100', $data);
                         return (0);
                     }

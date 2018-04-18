@@ -18,13 +18,13 @@ if (!isset($action)) {
 	<div class="row">
 		<div class="col-md-5">
 			<?php
-			if ((count($terms_bt) +$editar)  > 0) {
+			if ((count($terms_bt) + $editar)  > 0) {
 				echo '<h4>';
 				echo msg('concept_BT');
 				if (count($terms_bt) == 0)
 					{
 					echo ' <a href="#" onclick="newwin(\''.base_url('index.php/thesa/tg/'.$id_c.'/'.checkpost_link($id_c)).'\',500,500);">';
-					echo '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>';
+					echo '<img src="'.base_url('img/icone/plus.png').'" width="32">';
 					echo '</a>';
 					}				
 				echo '</h4>';
@@ -41,7 +41,7 @@ if (!isset($action)) {
 				echo '<h4>';
 				echo msg('concept_TR');
 				echo ' <a href="#" onclick="newwin(\''.base_url('index.php/thesa/tr/'.$id_c.'/'.checkpost_link($id_c)).'\',500,500);">';
-				echo '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>';
+				echo '<img src="'.base_url('img/icone/plus.png').'" width="32">';
 				echo '</a>';
 				echo '</h4>';
 				echo $this -> skoses -> concepts_show($terms_tr);
@@ -55,7 +55,7 @@ if (!isset($action)) {
 					echo '<h4>';
 					echo msg('concept_DEF');
 					echo ' <a href="#" onclick="newwin(\''.base_url('index.php/thesa/tf/'.$id_c.'/'.checkpost_link($id_c)).'\',500,500);">';
-					echo '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>';
+					echo '<img src="'.base_url('img/icone/plus.png').'" width="32">';
 					echo '</a>';
 					echo '</h4>';
 					echo $this->skoses->notes_show($notes,$editar);
@@ -66,7 +66,7 @@ if (!isset($action)) {
 					echo '<h4>';
 					echo msg('concept_ALT');
 					echo ' <a href="#" onclick="newwin(\''.base_url('index.php/thesa/te/'.$id_c.'/'.checkpost_link($id_c)).'\',500,500);">';
-					echo '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>';
+					echo '<img src="'.base_url('img/icone/plus.png').'" width="32">';
 					echo '</a>';
 					echo '</h4>';
 					echo $this->skoses->concepts_show($terms_al);
@@ -76,7 +76,7 @@ if (!isset($action)) {
 					echo '<h4>';
 					echo msg('concept_HID');
 					echo ' <a href="#" onclick="newwin(\''.base_url('index.php/thesa/tz/'.$id_c.'/'.checkpost_link($id_c)).'\',500,500);">';
-					echo '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>';
+					echo '<img src="'.base_url('img/icone/plus.png').'" width="32">';
 					echo '</a>';
 					echo '</h4>';
 					echo $this->skoses->concepts_show($terms_hd);
@@ -90,7 +90,7 @@ if (!isset($action)) {
 			if ($editar == 1)
 				{
 				echo ' <a href="#" onclick="newwin(\''.base_url('index.php/thesa/timg/'.$id_c.'/'.checkpost_link($id_c)).'\',500,500);">';
-				echo '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>';
+				echo '<img src="'.base_url('img/icone/plus.png').'" width="32">';
 				echo '</a>';
 				}
 			?>				
