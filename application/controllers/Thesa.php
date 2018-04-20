@@ -315,7 +315,7 @@ class Thesa extends CI_Controller {
             case 'login_local' :
                 $ok = $this -> socials -> login_local();
                 if ($ok == 1) {
-                    redirect(base_url('index.php/thesa'));
+                    redirect(base_url('index.php/thesa/thesaurus_my'));
                 } else {
                     redirect(base_url('index.php/thesa/social/login/') . '?erro=ERRO_DE_LOGIN');
                 }
@@ -356,6 +356,23 @@ class Thesa extends CI_Controller {
             //$this->skoes->
         }
     }
+
+    function te_remove($id = '', $chk = '') {
+        $this -> load -> model("skoses");
+        $this -> cab(2);
+
+        $ok = get("confirm");
+        if ($ok == '1') {
+            $this -> skoses -> te_remove($id);
+            $this -> load -> view('wclose');
+        } else {
+            $data['content'] = '<br><br><h1>' . msg('remove_propriety') . '</h1>';
+            $data['content'] .= msg('content');
+            $data['link'] = base_url('index.php/thesa/te_remove/' . $id . '/' . $chk);
+            $this -> load -> view('confirm.php', $data);
+        }
+    }
+
     /***************************************************************************** Termo oculto */
     function tz($c = '') {
         $c = round($c);
@@ -529,7 +546,38 @@ class Thesa extends CI_Controller {
         $data['title'] = '';
         $this->load->view('content',$data);
     }
-	
+
+    /************************************************************** Concept */
+    function concept_create($id, $chk = '', $t) {
+        /* Load model */
+        $this -> load -> model('skoses');
+        $th = $_SESSION['skos'];
+        if ($id != $th) {
+            echo 'OPS-402';
+            exit ;
+        }
+        $this -> cab();
+
+        $is_active = $this -> skoses -> is_concept($t, $th);
+
+        if ($is_active == 0) {
+            //$this->skoses->
+            $sql = "select * from rdf_literal where id_rl = " . $t;
+            $rlt = $this -> db -> query($sql);
+            $rlt = $rlt -> result_array();
+            $desc = '';
+            $act = 'CREAT';
+            if (count($rlt) > 0) {
+                $line = $rlt[0];
+                $desc = msg('concept_create') . ' <b>' . $line['rl_value'] . '</b>';
+            }
+            $id = $this -> skoses -> concept_create($t, $th);
+            $this -> skoses -> log_insert($id, $th, $act, $desc);
+
+            redirect(base_url('index.php/thesa/c/' . $id));
+        }
+
+    }	
     function concept_add() {
         $this -> load -> model('skoses');
         $this -> cab();

@@ -770,7 +770,7 @@ class skoses extends CI_model {
                 $sx .= ' ';
                 $link = base_url('index.php/thesa/te_remove/' . $line['id_ct'] . '/' . checkpost_link($line['id_ct'] . $this -> chave));
                 $sx .= '<a href="#" style="color: red" title="Remove" onclick="newwin(\'' . $link . '\',600,300);">';
-                $sx .= '<span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>';
+                $sx .= '<img src="'.base_url('img/icone/remove.png').'" height="26" border=0>';
                 $sx .= '</a>';
 
                 $sx .= '</li>' . cr();

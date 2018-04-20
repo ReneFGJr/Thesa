@@ -1,6 +1,6 @@
 <?php
 $link = base_url('index.php');
-$link .= '/skos/c/' . $id_c . '/' . $c_th;
+$link .= '/thesa/c/' . $id_c . '/' . $c_th;
 
 $linkc = $this -> skoses -> url;
 $linkc .= 'index.php/thesa/c/' . $id_c;
@@ -11,7 +11,7 @@ $linke = 'index.php/thesa/cedit/' . $id_c;
 $linke = base_url($linke);
 
 $linkr = base_url('index.php');
-$linkr .= '/skos/c/' . $id_c . '/rdf';
+$linkr .= '/thesa/c/' . $id_c . '/rdf';
 ?>	
 <div class="container">
 	<div class="row">
