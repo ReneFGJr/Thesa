@@ -230,6 +230,9 @@ $lang['thesaurus_name'] = 'Nome do tesauro';
 $lang['thesaurus_description'] = 'Descrição';
 $lang['save'] = 'salvar';
 
+$lang['return'] = 'voltar';
+$lang['return_in'] = 'retornando em';
+
 
 
 /* Propriedades */
@@ -299,4 +302,9 @@ $lang['about'] = "SOBRE";
 $lang['download'] = "DOWNLOAD";
 $lang['contact'] = "CONTATO";
 $lang['sign_in'] = "ACESSAR";
+
+$lang['signup_success_msg'] = 'You have successfully signed up. Please folow ';
+$lang['signup_success_msg'] = 'Parabéns $name, seu cadastro foi efetivado. <BR>Verifique seu e-mail ($email) para validar seu acesso!';
+$lang['signup_success'] = 'Cadastro realizado com sucesso';
+$lang['signup_user_already_exist'] = 'E-mail $email já existe na base de dados, para recuperar a senha clique no $link.';
 ?>

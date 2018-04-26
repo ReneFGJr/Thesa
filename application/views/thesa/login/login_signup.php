@@ -12,50 +12,79 @@
 </style>
 <div class="container" style="margin-top: 100px;">
 	<div class="row">
-		<div class="col-md-4"></div>
-		<div class="col-md-4 box100">
-			<form method="post" action="<?php echo base_url('index.php/thesa/social/login_local');?>">
+		<div class="col-1 col-md-3"></div>
+		<div class="col-10 col-md-6 box100">
+			<form method="post" action="<?php echo base_url('index.php/thesa/social/signup');?>">
 				<span class="form_title"> THESA </span>
 				<br/>
 				<span class="login100-form-title p-b-48"> <i class="zmdi zmdi-font">semantic thesaurus</i> </span>
 				<br/>
 				<br/>
+				
 				<center>
-                <h2><?php echo msg('SignIn');?></h2>
-                </center>
+				<h2><?php echo msg('SignUp');?></h2>
+				</center>				
                 
+                <div class="" >
+                    <span><?php echo msg('fullName'); ?></span>
+                    <input class="form-control" type="text" name="fullName" id="fullName" value="<?php echo get("fullName");?>">
+                    <span class="focus-input100" data-placeholder="fullName"></span>
+                </div>
+                
+                <br/>
+                <div class="" >
+                    <span><?php echo msg('Institution'); ?></span>
+                    <input class="form-control" type="text" name="Institution" id="Institution" value="<?php echo get("Institution");?>">
+                    <span class="focus-input100" data-placeholder="<?php echo msg('Institution'); ?>"></span>
+                </div>                
+
+				<br/>
 				<div class="" data-validate = "Valid email is: a@b.c">
 				    <span><?php echo msg('e-mail'); ?></span>
-					<input class="form-control" type="text" name="user_login">
-					<span class="focus-input100" data-placeholder="Email"></span>
+					<input class="form-control" type="text" name="email" id="email"  value="<?php echo get("email");?>">
+					<span class="focus-input100" data-placeholder="email"></span>
 				</div>
-				<br/>
-				<div class="" data-validate="Enter password">
-				    <span><?php echo msg('password'); ?></span>
-					<input class="form-control" type="password" name="user_password">
-					<span class="focus-input100" data-placeholder="Password"></span>
-				</div>
+
 				<br/>
 				<div class="">
 					<div class="">
-						<input type="submit" class="btn btn-primary" style="width: 100%;" value="login">
+						<input type="submit" class="btn btn-primary" style="width: 100%;" value="<?php echo msg('Sign Up Send'); ?>">
 					</div>
 				</div>
+				
+				<?php
+				    if (isset($erro))
+                        {                            
+                            switch ($erro)
+                                {
+                                case -1:
+                                    $sx = '<div class="alert alert-warning" role="alert">
+                                              '.msg('signup_user_already_exist').'
+                                            </div>';
+                                    break;
+                                }
+                        if (strlen($sx) > 0)
+                            {
+                                $email = get("email");
+                                $link = '<a href="'.base_url('index.php/thesa/social/pwsend?dd0='.get("email").'&chk='.md5($email.date("Ymd").$email)).'">'.msg('link').'</a>';
+                                $sx = troca($sx,'$email','<b>'.$email.'</b>');
+                                $sx = troca($sx,'$link','<b>'.$link.'</b>');
+                                echo '<br>'.cr();
+                                echo ''.cr();
+                                echo $sx;
+                                echo ''.cr();
+                            }
+                        }
+				?>
 
                 <br>
                 <div class="text-center p-t-115">
-                    <a class="txt2" href="<?php echo base_url('index.php/thesa/social/forgot');?>"> Forgot Password? </a>
+                    <a class="txt2" href="<?php echo base_url('index.php/thesa/social/login');?>"><?php echo msg('return');?></a>
                 </div>
-                <br>
-				<div class="text-center p-t-115">
-					<span class="txt1"> Don’t have an account? </span>
-
-					<a class="txt2" href="<?php echo base_url('index.php/thesa/social/signup');?>"> <?php echo msg('SignUp');?> </a>
-				</div>
 				<br>
 			</form>
 		</div>
-		<div class="col-md-4"></div>
+		<div class="col-6 col-md-3"></div>
 	</div>
 </div>
 

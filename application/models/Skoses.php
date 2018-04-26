@@ -1,6 +1,18 @@
 <?php
 class skoses extends CI_model {
-
+    var $CO = 25;
+    /* Conceito */
+    var $TG = 26;
+    /* Termo Geral */
+    var $BT = 27;
+    /* Termo Específico */
+    var $TRc = 28;
+    /* Termo Coordenado */
+    var $TRu = 29;
+    /* União com */
+    var $TH = 34;
+    
+    /* Hidden */
     VAR $table_concept = 'th_concept';
     VAR $table_thesaurus = 'th_thesaurus';
     var $table_terms = 'rdf_literal';
@@ -1428,7 +1440,8 @@ class skoses extends CI_model {
 /*********************************************/
 
     function termos_show_letter($th, $ltr) {
-        $co = $this->find_class('Concept');        
+        $co = $this->find_class('Concept');   
+        $co = $this->CO;     
         
         if (strleN($ltr) == 0) {
             $wh = '';
@@ -1442,12 +1455,13 @@ class skoses extends CI_model {
             $auth = $this -> autho($id);
         }
         if ($auth == 1) {
+            $type = 24;
             echo '<br><br><br><br>RULE 1';
             $sql = "select * from rdf_literal
 						INNER JOIN rdf_literal_th as D1 ON lt_term = id_rl 
 						LEFT JOIN th_concept_term ON ct_term = id_rl and ct_th = $id
-						WHERE lt_thesauros = $th and rl_type = 24
-							AND $wh lt_thesauros = $th 
+						WHERE lt_thesauros = $th and rl_type = $type 
+							AND $wh lt_thesauros = $th  
 							ORDER BY rl_value
 						";
         } else {
@@ -1478,7 +1492,6 @@ class skoses extends CI_model {
 								
 						";
             $sql .= " ORDER BY rl_value";
-            //echo '<pre>'.$sql.'</pre>';
 
         }
         $xrlt = $this -> db -> query($sql);
@@ -1505,7 +1518,7 @@ class skoses extends CI_model {
             $saf = '';
             $link = '<a href="' . base_url('index.php/thesa/term/' . $th . '/' . $line['id_rl']) . '" class="term_word">';
             if (round($line['ct_propriety']) == $co) {
-                $sa = '-';
+                $sa = '<img src="'.base_url('img/icone/tag.png').'" height="24" border=0>';;
                 $link = '<a href="' . base_url('index.php/thesa/c/' . $line['ct_concept']) . '/' . $th . '/" class="term">';
             } else {
                 if (strlen(trim($line['altTerm'])) > 0) {
@@ -1556,6 +1569,8 @@ class skoses extends CI_model {
     /* ASSIGNS */
     function assign_as_narrower($c1, $c2, $th, $tm) {
         /* Verifica */
+        $tg = $this->TG;
+        
         $sql = "select * from th_concept_term 
 						WHERE (ct_concept_2 = $c2 and ct_propriety = " . $this -> TG . ")";
         $rlt = $this -> db -> query($sql);

@@ -152,6 +152,79 @@ class Thesa extends CI_Controller {
 
     }
 
+    function terms_list($pag = 0) {
+        $this -> load -> model('skoses');
+        $this -> cab();
+
+        $id = $_SESSION['skos'];
+
+        $data = $this -> skoses -> le_skos($id);
+        $this -> load -> view('thesa/view/thesaurus', $data);
+
+        $tela = '';
+        $tela .= $this -> load -> view('thesa/header/navbar_tools', null, true);
+
+        $tela .= '<div class="row"><div class="col-md-12">';
+        /* Lista de comunicacoes anteriores */
+        $form = new form;
+        $form -> tabela = "
+                    (
+                    select * from rdf_literal
+                    INNER JOIN rdf_literal_th ON lt_term = id_rl
+                    WHERE lt_thesauros = $id
+                    ) as tabela
+                
+                ";
+        $form -> see = true;
+        $form -> edit = False;
+        $form -> novo = False;
+        $form = $this -> skoses -> term_row($form);
+
+        $form -> row_view = base_url('index.php/thesa/term_edit2');
+        $form -> row = base_url('index.php/thesa/terms_list/');
+
+        $tela .= row($form, $pag);
+        $tela .= '</div></div>';
+        $data['content'] = $tela;
+        $this -> load -> view('content', $data);
+
+        $this -> load -> view('header/footer', null);
+    }
+
+    function term_edit2($id = '', $idt = '') {
+        $this -> load -> model('skoses');
+        $this -> cab();
+
+        if (!isset($th)) {
+            $th = $_SESSION['skos'];
+        }
+        $data = $this -> skoses -> le_th($th);
+
+        $data2 = $this -> skoses -> le_term($id, $th);
+        $data = array_merge($data, $data2);
+
+        $this -> load -> view('thesa/view/thesaurus', $data);
+        /******************************/
+
+        $this -> load -> view('thesa/view/term', $data);
+
+        $form = new form;
+        $form -> id = $id;
+        $cp = $this -> skoses -> cp_term();
+        $data['content'] = $form -> editar($cp, $this -> skoses -> table_terms);
+        $data['title'] = '';
+        $this -> load -> view('content', $data);
+
+        $tela = '';
+        $data['content'] = $tela;
+        $this -> load -> view('content', $data);
+
+        if ($form -> saved) {
+            redirect(base_url('index.php/thesa/terms_list/' . $th));
+        }
+        $this -> load -> view('header/footer', null);
+    }
+
     /* Terms */
     function term($th = '', $idt = '') {
 
@@ -305,9 +378,47 @@ class Thesa extends CI_Controller {
     /* LOGIN */
     function social($act = '') {
         switch($act) {
+            case 'pwsend':
+                $this -> cab();
+                $this -> socials -> resend();
+                break;
+                break;
+            case 'signup':
+                $this -> cab();
+                $this -> socials -> signup();
+                break;
             case 'logout' :
                 $this -> socials -> logout();
                 break;
+            case 'npass' :
+                $this -> cab();
+                $email = get("dd0");
+                $chk = get("chk");
+                $chk2 = checkpost_link($email.$email);
+                
+                if ($chk != $chk2)
+                    {
+                        $data['content'] = 'Erro de Check';
+                        $this->load->view('content',$data);
+                    } else {
+                        $dt = $this->socials->le_email($email);
+                        if (count($dt) > 0)
+                            {
+                                $id = $dt['id_us'];
+                                $data['title'] = '';
+                                $tela = '<br><br><h1>'.msg('change_password').'</h1>';
+                                $data['content'] = $tela . $this -> socials -> change_password($id);
+                                $this->load->view('content',$data);  
+                            } else {
+                                $data['content'] = 'Email não existe!';
+                                $this->load->view('error',$data);                                
+                            }             
+                    } 
+                        
+                
+
+                $this -> footer();
+                break;                
             case 'login' :
                 $this -> cab();
                 $this -> socials -> login();
@@ -413,7 +524,6 @@ class Thesa extends CI_Controller {
         $action = get("action");
         $tg = get("tg");
         if ((strlen($action) > 0) and (strlen($tg) > 0)) {
-            echo $this -> TG;
             $this -> skoses -> assign_as_narrower($tg, $c, $th, 0);
             $this -> load -> view('header/close', null);
             //$this->skoes->
@@ -696,7 +806,7 @@ class Thesa extends CI_Controller {
         $this -> load -> view('thesa/view/thesaurus', $data);
         /******************************/
 
-        $this -> load -> view('thesa/view/thesaurus_term', $data);
+        $this -> load -> view('thesa/view/term', $data);
 
         $chk3 = checkpost_link($th . 'DEL' . $idt);
         if ($chk2 == $chk3) {
@@ -705,12 +815,19 @@ class Thesa extends CI_Controller {
 
             if ($rs == 1) {
                 $tela = $this -> load -> view('success', $data, true);
+                //$tela .= '<br>';
+                //$tela .= '<a href="'.base_url('index.php/thesa/terms/').'" class="btn btn-secondary">'.msg('return').'</div>';
+                $url = base_url('index.php/thesa/terms/' . $th);
+                $tela .= redirect2($url,2);
                 $data['content'] = $tela;
+                $data['title'] = '';
+                
                 $this -> load -> view('content', $data);
             } else {
                 $data['content'] = msg('item_already_deleted');
                 $tela = $this -> load -> view('success', $data, true);
                 $data['content'] = $tela;
+                $data['title'] = '';
                 $this -> load -> view('content', $data);
             }
 
@@ -719,6 +836,7 @@ class Thesa extends CI_Controller {
             $data['content'] = msg('delete_term_confirm');
             $tela = $this -> load -> view('confirm', $data, True);
             $data['content'] = $tela;
+            $data['title'] = '';
             $this -> load -> view('content', $data);
         }
 

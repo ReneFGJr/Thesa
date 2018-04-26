@@ -1,18 +1,7 @@
 <?php
 class Skos extends CI_Controller {
 
-    var $CO = 25;
-    /* Conceito */
-    var $TG = 26;
-    /* Termo Geral */
-    var $BT = 27;
-    /* Termo Específico */
-    var $TRc = 28;
-    /* Termo Coordenado */
-    var $TRu = 29;
-    /* União com */
-    var $TH = 34;
-    /* Hidden */
+
 
     function __construct() {
         parent::__construct();
