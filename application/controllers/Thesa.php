@@ -191,6 +191,9 @@ class Thesa extends CI_Controller {
         $this -> load -> view('header/footer', null);
     }
 
+    function term_edit($id = '', $idt = '') {
+            $this->term_edit2($id,$idt);
+        }
     function term_edit2($id = '', $idt = '') {
         $this -> load -> model('skoses');
         $this -> cab();
