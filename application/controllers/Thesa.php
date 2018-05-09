@@ -130,6 +130,8 @@ class Thesa extends CI_Controller {
 
         /*********************************************************************** PART 3 **/
         $tela .= $this -> skoses -> termos_pg($id);
+        $tela .= msg('Export_to').': '.$this -> skoses -> export_format($id);
+
         $tela .= '<div class="row">';
 
         $tela .= '  <div class="col-md-9">';
@@ -192,8 +194,9 @@ class Thesa extends CI_Controller {
     }
 
     function term_edit($id = '', $idt = '') {
-            $this->term_edit2($id,$idt);
-        }
+        $this -> term_edit2($id, $idt);
+    }
+
     function term_edit2($id = '', $idt = '') {
         $this -> load -> model('skoses');
         $this -> cab();
@@ -253,11 +256,11 @@ class Thesa extends CI_Controller {
         $this -> load -> view('thesa/view/term', $data);
 
         $tela = '';
-		$data['title'] = '';
-        $data['content'] = $tela.'<br><br><br>';
+        $data['title'] = '';
+        $data['content'] = $tela . '<br><br><br>';
         $this -> load -> view('content', $data);
-        
-        $this->footer();
+
+        $this -> footer();
 
     }
 
@@ -276,10 +279,10 @@ class Thesa extends CI_Controller {
         $tela = $this -> skoses -> th_users();
 
         $data['title'] = msg('collaborators');
-        $data['content'] = $tela.'<br><br>';
+        $data['content'] = $tela . '<br><br>';
         $this -> load -> view('content', $data);
-        
-		$this->footer();
+
+        $this -> footer();
 
     }
 
@@ -302,7 +305,7 @@ class Thesa extends CI_Controller {
             case 'rdf' :
                 header('Content-type: text/asc');
                 $this -> skoses -> rdf($data);
-                break;				
+                break;
             default :
                 /* CAB */
                 $this -> cab();
@@ -327,7 +330,7 @@ class Thesa extends CI_Controller {
         }
 
         //redirect(base_url('index.php/thesa/myskos'));
-        $this->footer();
+        $this -> footer();
     }
 
     function cedit($c = '', $th = '') {
@@ -346,7 +349,7 @@ class Thesa extends CI_Controller {
         $data = $this -> skoses -> le_skos($th);
         $this -> load -> view('thesa/view/thesaurus', $data);
         $data['pg'] = 4;
-        
+
         /* user allow ****************************************************/
         $user_id = $this -> socials -> user_id();
         $data['edit'] = '';
@@ -365,13 +368,13 @@ class Thesa extends CI_Controller {
 
         $this -> load -> view("thesa/view/schema", $data2);
         $this -> load -> view("thesa/edit/concept", $data2);
-        
+
         //$this -> load -> view('thesa/view/thesaurus_concept', $data2);
 
         $this -> load -> view('skos/thesa_concept_tools', $data2);
 
         $data['content'] = $data2['logs'];
-		$data['title'] = '';
+        $data['title'] = '';
         $this -> load -> view('content', $data);
 
         $this -> footer();
@@ -381,12 +384,12 @@ class Thesa extends CI_Controller {
     /* LOGIN */
     function social($act = '') {
         switch($act) {
-            case 'pwsend':
+            case 'pwsend' :
                 $this -> cab();
                 $this -> socials -> resend();
                 break;
                 break;
-            case 'signup':
+            case 'signup' :
                 $this -> cab();
                 $this -> socials -> signup();
                 break;
@@ -397,31 +400,27 @@ class Thesa extends CI_Controller {
                 $this -> cab();
                 $email = get("dd0");
                 $chk = get("chk");
-                $chk2 = checkpost_link($email.$email);
-                
-                if ($chk != $chk2)
-                    {
-                        $data['content'] = 'Erro de Check';
-                        $this->load->view('content',$data);
+                $chk2 = checkpost_link($email . $email);
+
+                if ($chk != $chk2) {
+                    $data['content'] = 'Erro de Check';
+                    $this -> load -> view('content', $data);
+                } else {
+                    $dt = $this -> socials -> le_email($email);
+                    if (count($dt) > 0) {
+                        $id = $dt['id_us'];
+                        $data['title'] = '';
+                        $tela = '<br><br><h1>' . msg('change_password') . '</h1>';
+                        $data['content'] = $tela . $this -> socials -> change_password($id);
+                        $this -> load -> view('content', $data);
                     } else {
-                        $dt = $this->socials->le_email($email);
-                        if (count($dt) > 0)
-                            {
-                                $id = $dt['id_us'];
-                                $data['title'] = '';
-                                $tela = '<br><br><h1>'.msg('change_password').'</h1>';
-                                $data['content'] = $tela . $this -> socials -> change_password($id);
-                                $this->load->view('content',$data);  
-                            } else {
-                                $data['content'] = 'Email não existe!';
-                                $this->load->view('error',$data);                                
-                            }             
-                    } 
-                        
-                
+                        $data['content'] = 'Email não existe!';
+                        $this -> load -> view('error', $data);
+                    }
+                }
 
                 $this -> footer();
-                break;                
+                break;
             case 'login' :
                 $this -> cab();
                 $this -> socials -> login();
@@ -439,6 +438,7 @@ class Thesa extends CI_Controller {
                 break;
         }
     }
+
     /***************************************************************************** Termo equivalente */
     function te($c = '') {
         $c = round($c);
@@ -511,6 +511,7 @@ class Thesa extends CI_Controller {
             //$this->skoes->
         }
     }
+
     /***************************************************************************** TG Geral */
     function tg($c = '') {
         $c = round($c);
@@ -533,6 +534,7 @@ class Thesa extends CI_Controller {
         }
 
     }
+
     /***************************************************************************** Notas de definição */
     function tf($c = '') {
         $c = round($c);
@@ -558,6 +560,7 @@ class Thesa extends CI_Controller {
             //$this->skoes->
         }
     }
+
     /***************************************************************************** TR Relacionado */
     function tr($c = '') {
         $c = round($c);
@@ -582,7 +585,7 @@ class Thesa extends CI_Controller {
         }
 
     }
-	
+
     function timg($c = '', $chk = '') {
         $c = round($c);
         $th = $_SESSION['skos'];
@@ -590,74 +593,69 @@ class Thesa extends CI_Controller {
         /* Load model */
         $this -> load -> model("skoses");
         $this -> cab(0);
-        
+
         $form = new form;
-        $tela = form_open_multipart().cr();
+        $tela = form_open_multipart() . cr();
         $tela .= '<!-- MAX_FILE_SIZE deve preceder o campo input -->
                     <input type="hidden" name="MAX_FILE_SIZE" value="3000000" />
                     <!-- O Nome do elemento input determina o nome da array $_FILES -->
                     Enviar esse arquivo: <input name="userfile" type="file" class="control-form" />
-                    <input type="submit" value="Enviar arquivo" />'.cr();
-        $tela .= '</form>'.cr();
-        
-        if (isset($_FILES['userfile']['tmp_name']))
-            {
-                $fl = $_FILES['userfile']['name'];
+                    <input type="submit" value="Enviar arquivo" />' . cr();
+        $tela .= '</form>' . cr();
 
-                /* ACERVO */
-                $temp = '_acervo';
-                dircheck($temp);
-                 
-                /* IMAGES */
-                $temp = '_acervo/image';
-                echo '<hr>'.$temp;
-                dircheck($temp); 
-                                               
-                /* IMAGES - DATA */
-                $temp = '_acervo/image/'.date("Y");
-                dircheck($temp); 
+        if (isset($_FILES['userfile']['tmp_name'])) {
+            $fl = $_FILES['userfile']['name'];
 
-                /* IMAGES - DATA */
-                $temp = '_acervo/image/'.date("Y").'/'.date("m").'/';
-                dircheck($temp); 
-                
-                $img = strzero($c,7);
-                $ext = substr($fl,strlen($fl)-4,5);
-                $ext = troca($ext,'.','');
-                
-                $uploadfile = $temp.'img-'.$img.'-'.substr(checkpost_link($img),2,10).'.'.$ext;
+            /* ACERVO */
+            $temp = '_acervo';
+            dircheck($temp);
 
-                switch($ext)
-                    {
-                    case 'png':
-                        $ok = 1;
-                        break;                        
-                    case 'jpg':
-                        $ok = 1;
-                        break;
-                    default:
-                        $ok = 0;
-                        echo 'Formato não suportado "'.$ext.'"!';
-                        
-                    }
-                if ($ok==1)
-                    {
-                        if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-                            echo "Arquivo válido e enviado com sucesso.\n";
-                            $this->skoses->image_concept($c,$uploadfile);
-                            $tela = 'Sucesso!';
-                            $tela .= $this->load->view('wclose');
-                        } else {
-                            echo "Possível ataque de upload de arquivo!\n";
-                        }                        
-                    }
-                
+            /* IMAGES */
+            $temp = '_acervo/image';
+            echo '<hr>' . $temp;
+            dircheck($temp);
 
+            /* IMAGES - DATA */
+            $temp = '_acervo/image/' . date("Y");
+            dircheck($temp);
+
+            /* IMAGES - DATA */
+            $temp = '_acervo/image/' . date("Y") . '/' . date("m") . '/';
+            dircheck($temp);
+
+            $img = strzero($c, 7);
+            $ext = substr($fl, strlen($fl) - 4, 5);
+            $ext = troca($ext, '.', '');
+
+            $uploadfile = $temp . 'img-' . $img . '-' . substr(checkpost_link($img), 2, 10) . '.' . $ext;
+
+            switch($ext) {
+                case 'png' :
+                    $ok = 1;
+                    break;
+                case 'jpg' :
+                    $ok = 1;
+                    break;
+                default :
+                    $ok = 0;
+                    echo 'Formato não suportado "' . $ext . '"!';
             }
-        
+            if ($ok == 1) {
+                if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
+                    echo "Arquivo válido e enviado com sucesso.\n";
+                    $this -> skoses -> image_concept($c, $uploadfile);
+                    $tela = 'Sucesso!';
+                    $tela .= $this -> load -> view('wclose');
+                } else {
+                    echo "Possível ataque de upload de arquivo!\n";
+                }
+            }
+
+        }
+
         $data['content'] = $tela;
         $data['title'] = '';
-        $this->load->view('content',$data);
+        $this -> load -> view('content', $data);
     }
 
     /************************************************************** Concept */
@@ -690,7 +688,8 @@ class Thesa extends CI_Controller {
             redirect(base_url('index.php/thesa/c/' . $id));
         }
 
-    }	
+    }
+
     function concept_add() {
         $this -> load -> model('skoses');
         $this -> cab();
@@ -723,7 +722,7 @@ class Thesa extends CI_Controller {
         }
         $this -> load -> view('header/footer', null);
     }
-	
+
     function concept_change_preflabel($id = '', $th = '', $chk = '') {
         $this -> load -> model('skoses');
         $this -> cab(0);
@@ -771,11 +770,10 @@ class Thesa extends CI_Controller {
         $sx .= '<input type="submit" value="' . msg('change') . '">';
         $sx .= '</form>';
         $data['content'] = $sx;
-		$data['title'] = '';
+        $data['title'] = '';
         $this -> load -> view('content', $data);
 
     }
-
 
     /***************************************************************************** Conecpt */
     function json($id = '') {
@@ -787,8 +785,7 @@ class Thesa extends CI_Controller {
 
     }
 
-
-   /* Terms */
+    /* Terms */
     function term_delete($th = '', $chk = '', $idt = '', $act = '', $chk2 = '') {
         $this -> load -> model('skoses');
         $this -> cab();
@@ -821,10 +818,10 @@ class Thesa extends CI_Controller {
                 //$tela .= '<br>';
                 //$tela .= '<a href="'.base_url('index.php/thesa/terms/').'" class="btn btn-secondary">'.msg('return').'</div>';
                 $url = base_url('index.php/thesa/terms/' . $th);
-                $tela .= redirect2($url,2);
+                $tela .= redirect2($url, 2);
                 $data['content'] = $tela;
                 $data['title'] = '';
-                
+
                 $this -> load -> view('content', $data);
             } else {
                 $data['content'] = msg('item_already_deleted');
@@ -845,8 +842,61 @@ class Thesa extends CI_Controller {
 
         $this -> load -> view('header/footer', null);
     }
-		
+
+    function terms_from_to($id = '', $exp = '') {
+        if (strlen($id) == 0) {
+            $id = $_SESSION['skos'];
+        }
+
+        $tp = 1;
+        $this -> load -> model('skoses');
+        switch ($exp) {
+            case 'csv' :
+                $arquivo = "thesa_" . strzero($id, 4) . '_' . date("Ymd") . ".csv";
+                // Configurações header para forçar o download
+                header("Expires: Mon, " . gmdate("D,d M YH:i:s") . " GMT");
+                header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+                header("Cache-Control: no-cache, must-revalidate");
+                header("Pragma: no-cache");
+                header("Content-type: application/x-msexcel");
+                header("Content-Disposition: attachment; filename=\"{$arquivo}\"");
+                header("Content-Description: PHP Generated Data");
+                echo utf8_decode($this -> skoses -> from_to($id, ';', '"'));
+                return ('');
+                break;
+            case 'txt' :
+                $arquivo = "thesa_" . strzero($id, 4) . '_' . date("Ymd") . ".txt";
+                // Configurações header para forçar o download
+                header("Expires: Mon, " . gmdate("D,d M YH:i:s") . " GMT");
+                header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+                header("Cache-Control: no-cache, must-revalidate");
+                header("Pragma: no-cache");
+                header("Content-type: text/html");
+                header("Content-Disposition: attachment; filename=\"{$arquivo}\"");
+                header("Content-Description: PHP Generated Data");
+                echo($this -> skoses -> from_to($id, '=>', ''));
+                break;
+            case 'json' :
+                $arquivo = "thesa_" . strzero($id, 4) . '_' . date("Ymd") . ".txt";
+                // Configurações header para forçar o download
+                //header("Expires: Mon, " . gmdate("D,d M YH:i:s") . " GMT");
+                //header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+                //header("Cache-Control: no-cache, must-revalidate");
+                //header("Pragma: no-cache");
+                //header("Content-type: text/html");
+                //header("Content-Disposition: attachment; filename=\"{$arquivo}\"");
+                //header("Content-Description: PHP Generated Data");
+                $rst = $this -> skoses -> from_to($id, ':', '"');
+                $rst = '{'.troca($rst,chr(13).chr(10),'};{').'"fim":"fim"}';
+                $rst = troca($rst,'};{','},'.cr().'{'); 
+                echo $rst;
+                break;                
+            default :
+                echo mst($this -> skoses -> from_to($id, '=>', ''));
+                return ('');
+                break;
+        }
+    }
+
 }
-
-
 ?>    

@@ -1639,6 +1639,17 @@ class skoses extends CI_model {
 
         $rlt = $this -> db -> query($sql);
     }
+    
+    function export_format($th)
+        {
+            $sx = '';
+            $sx .= '<a href="'.base_url('index.php/thesa/terms_from_to/'.$th.'/xml').'" style="margin-right: 10px;">.xml</a> ';
+            $sx .= '<a href="'.base_url('index.php/thesa/terms_from_to/'.$th.'/csv').'" style="margin-right: 10px;">.csv</a> ';
+            $sx .= '<a href="'.base_url('index.php/thesa/terms_from_to/'.$th.'/txt').'" style="margin-right: 10px;">.txt</a> ';
+            $sx .= '<a href="'.base_url('index.php/thesa/terms_from_to/'.$th.'/rdf').'" style="margin-right: 10px;">.rdf</a> ';
+            $sx .= '<a href="'.base_url('index.php/thesa/terms_from_to/'.$th.'/json').'" style="margin-right: 10px;">.json</a> ';
+            return($sx);
+        }
 
     function from_to($th = 0, $separador = '=>', $capc = '') {
         $sql = "select * from th_concept_term 
