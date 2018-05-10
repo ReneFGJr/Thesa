@@ -42,7 +42,10 @@ if (!isset($_SESSION['id'])) {
                       <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/terms_from_to/');?>"><?php echo msg('remissiva_de_para'); ?></a>
                       
                     <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/concept_add/'); ?>"><?php echo msg('terms'); ?></a>
-                    <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/collaborators'); ?>"><?php echo msg('collaborators'); ?></a>                                      
+                    <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/collaborators'); ?>"><?php echo msg('collaborators'); ?></a>
+                    
+                    <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/tools/'); ?>"><?php echo msg('text_processing'); ?></a>
+                                                          
                     </div>
                   </li>
                   <li class="nav-item">

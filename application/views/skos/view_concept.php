@@ -23,7 +23,7 @@ if (!isset($action)) {
 				echo msg('concept_BT');
 				if (count($terms_bt) == 0)
 					{
-					echo ' <a href="#" onclick="newwin(\''.base_url('index.php/thesa/tg/'.$id_c.'/'.checkpost_link($id_c)).'\',500,500);">';
+					echo ' <a href="#" onclick="newxy(\''.base_url('index.php/thesa/tg/'.$id_c.'/'.checkpost_link($id_c)).'\',1024,500);">';
 					echo '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>';
 					echo '</a>';
 					}				
@@ -40,7 +40,7 @@ if (!isset($action)) {
 			if ((count($terms_tr) +$editar)  > 0) {
 				echo '<h4>';
 				echo msg('concept_TR');
-				echo ' <a href="#" onclick="newwin(\''.base_url('index.php/thesa/tr/'.$id_c.'/'.checkpost_link($id_c)).'\',500,500);">';
+				echo ' <a href="#" onclick="newxy(\''.base_url('index.php/thesa/tr/'.$id_c.'/'.checkpost_link($id_c)).'\',1024,500);">';
 				echo '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>';
 				echo '</a>';
 				echo '</h4>';
@@ -54,7 +54,7 @@ if (!isset($action)) {
 				{
 					echo '<h4>';
 					echo msg('concept_DEF');
-					echo ' <a href="#" onclick="newwin(\''.base_url('index.php/thesa/tf/'.$id_c.'/'.checkpost_link($id_c)).'\',500,500);">';
+					echo ' <a href="#" onclick="newxy(\''.base_url('index.php/thesa/tf/'.$id_c.'/'.checkpost_link($id_c)).'\',1024,500);">';
 					echo '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>';
 					echo '</a>';
 					echo '</h4>';
@@ -65,7 +65,7 @@ if (!isset($action)) {
 				{
 					echo '<h4>';
 					echo msg('concept_ALT');
-					echo ' <a href="#" onclick="newwin(\''.base_url('index.php/thesa/te/'.$id_c.'/'.checkpost_link($id_c)).'\',500,500);">';
+					echo ' <a href="#" onclick="newxy(\''.base_url('index.php/thesa/te/'.$id_c.'/'.checkpost_link($id_c)).'\',1024,500);">';
 					echo '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>';
 					echo '</a>';
 					echo '</h4>';
@@ -75,7 +75,7 @@ if (!isset($action)) {
 				{
 					echo '<h4>';
 					echo msg('concept_HID');
-					echo ' <a href="#" onclick="newwin(\''.base_url('index.php/thesa/tz/'.$id_c.'/'.checkpost_link($id_c)).'\',500,500);">';
+					echo ' <a href="#" onclick="newxy(\''.base_url('index.php/thesa/tz/'.$id_c.'/'.checkpost_link($id_c)).'\',1024,500);">';
 					echo '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>';
 					echo '</a>';
 					echo '</h4>';
@@ -89,7 +89,7 @@ if (!isset($action)) {
 			<?php
 			if ($editar == 1)
 				{
-				echo ' <a href="#" onclick="newwin(\''.base_url('index.php/thesa/timg/'.$id_c.'/'.checkpost_link($id_c)).'\',500,500);">';
+				echo ' <a href="#" onclick="newxy(\''.base_url('index.php/thesa/timg/'.$id_c.'/'.checkpost_link($id_c)).'\',1024,500);">';
 				echo '<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>';
 				echo '</a>';
 				}

@@ -249,7 +249,7 @@ class Thesa extends CI_Controller {
 
         if (strlen(trim(trim($data['ct_concept']))) == 0) {
             $data['action'] = '<a href="' . base_url('index.php/thesa/concept_create/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_rl']) . '" class="btn btn-primary" style="width: 100%;">' . msg('Term_create_concept') . '</a></li>';
-            $data['action'] .= '<br/><br/><a href="' . base_url('index.php/thesa/term_edit/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_rl']) . '" class="btn btn-warning" style="width: 100%;">' . msg('Term_edit_concept') . '</a></li>';
+            $data['action'] .= '<br/><br/><a href="' . base_url('index.php/thesa/term_edit/' . $data['id_rl'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_rl']) . '" class="btn btn-warning" style="width: 100%;">' . msg('Term_edit_concept') . '</a></li>';
             $data['action'] .= '<br/><br/><a href="' . base_url('index.php/thesa/term_delete/' . $data['lt_thesauros'] . '/' . checkpost_link($data['lt_thesauros']) . '/' . $data['id_rl']) . '" class="btn btn-danger" style="width: 100%;">' . msg('Term_delete_concept') . '</a></li>';
         }
         $this -> load -> view('thesa/header/navbar_tools', null);
@@ -506,8 +506,15 @@ class Thesa extends CI_Controller {
 
         if ((strlen($action) > 0) and (strlen($tr) > 0) and (strlen($desc) > 0)) {
             echo 'SAVED';
+			$ac = get("action");
             $this -> skoses -> assign_as_propriety($c, $th, $tr, $desc);
-            $this -> load -> view('header/close', null);
+			if ($ac == msg('save'))
+				{
+					$this -> load -> view('header/close', null);		
+				} else {
+					redirect(base_url('index.php/thesa/tz/'.$c));
+				}
+            
             //$this->skoes->
         }
     }
@@ -898,5 +905,34 @@ class Thesa extends CI_Controller {
         }
     }
 
+    function ajax($id = '', $id2 = '', $refresh = '0') {
+        $this -> load -> model('skoses');
+
+        switch($id) {
+            case 'collaborators_add' :
+                $refresh = '0';
+                $email = get("dd1");
+                $th = $_SESSION['skos'];
+                $refresh = $this -> skoses -> th_collabotors_add($email, $th);
+        }
+        if ($refresh == '1') {
+            echo ' <meta http-equiv="refresh" content="0">';
+        }
+    }
+
+	function tools($fc='')
+		{
+			$this->load->model("tools");
+			$this->cab();
+			
+			$tela = $this->tools->form();
+			
+			$data['content'] = $tela;
+			$data['title'] = '';
+			$data['fluid'] = true;
+			$this->load->view('content',$data);
+			
+			$this->footer();
+		}
 }
 ?>    
