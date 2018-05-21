@@ -39,4 +39,3 @@ Pesquisadores envolvidos:
 <br>Creative Commons - Atribuição  4.0 Internacional</a>.
 ';
 ?>
-

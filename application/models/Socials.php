@@ -577,11 +577,14 @@ class socials extends CI_Model {
 		return ($dd2);
 	}
 
-	function change_password($id) {
+	function change_password($id,$new=0) {
 		$form = new form;
 		$cp = array();
 		array_push($cp, array('$H8', '', '', false, false));
-		array_push($cp, array('$P20', '', 'Senha atual', True, True));
+		if ($new == 0)
+			{
+				array_push($cp, array('$P20', '', 'Senha atual', True, True));
+			}
 		array_push($cp, array('$P20', '', 'Nova senha', True, True));
 		array_push($cp, array('$P20', '', 'Confirme nova senha', True, True));
 		array_push($cp, array('$B', '', 'Alterar senha', True, True));
@@ -598,7 +601,7 @@ class socials extends CI_Model {
 		$dd2 = $this -> password_cripto($pass, $data['us_autenticador']);
 
 		if ($dd2 == $dd3) {
-			if ($p1 == $p2) {
+			if (($p1 == $p2) or ($new == 1)) {
 				$sql = "update " . $this -> table . " set us_password = '" . md5($p1) . "', us_autenticador = 'MD5' where id_us = " . $id;
 				$this -> db -> query($sql);
 				redirect(base_url('index.php/home'));
@@ -720,3 +723,4 @@ class socials extends CI_Model {
                 }
         }
 }
+?>

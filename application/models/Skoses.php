@@ -229,7 +229,7 @@ class skoses extends CI_model {
 		$sx .= '<div class="row" style="margin-top: 12px;"><div class="col-md-10 col-md-offset-1 text-right">';
 		$sx .= '	<input type="submit" name="action" class="btn btn-secondary " value="' . msg('save') . '">';
 		$sx .= '	<input type="submit" name="action" class="btn btn-secondary " value="' . msg('save_continue') . '">';
-		$sx .= '	<span onclick="wclose();" class="btn btn-secondary ">'. msg('close') . '</span>';
+		$sx .= '	<span onclick="wclose();" class="btn btn-secondary ">' . msg('close') . '</span>';
 		$sx .= '</div></div>';
 		return ($sx);
 		return ($sx);
@@ -764,6 +764,15 @@ class skoses extends CI_model {
 		$rlt = $rlt -> result_array();
 		if (count($rlt) > 0) {
 			$line = $rlt[0];
+			$line['image_bk'] = base_url('img/background_custumer/biulings.jpg');
+			
+			$line['authors'] = array();
+			$sql = "select distinct us_nome from th_users
+						INNER JOIN users ON id_us = ust_user_id
+						WHERE ust_th = $id and ust_status = 1";
+			$rrr = $this->db->query($sql);
+			$rrr = $rrr->result_array();
+			$line['authors'] = $rrr;
 			return ($line);
 		}
 		return ( array());
@@ -940,60 +949,43 @@ class skoses extends CI_model {
 		}
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
-		$sx = '';
-		$sx .= '<table width="100%" class="table">';
-		$sx .= '<tr class="small">
-					<td>' . msg('description') . '</td>';
-		$sx .= '<td>' . msg('last_update') . '</td>';
-		$sx .= '<td>' . msg('status') . '</td>';
-		$sx .= '<td>' . msg('avaliation') . '</td>';
-		$sx .= '</tr>' . cr();
+
+		$sa = '<style>
+
+				</style>';
+
+		$sa .= '<div class="row">' . cr();
+		#for ($r=0;$r < count($rlt);$r++)
 		for ($r = 0; $r < count($rlt); $r++) {
 			$line = $rlt[$r];
 			$link = '<a href="' . base_url('index.php/thesa/select/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'])) . '">';
-			$sx .= '<tr>';
-			$sx .= '<td>';
-			$sx .= $link . $line['pa_name'] . '</a>';
-			$sx .= '</td>';
-			$sx .= '<td>';
-			$sx .= $link . stodbr($line['pa_created']) . '</a>';
-			$sx .= '</td>';
-			$sx .= '<td>';
-			$btn = 'btn-secondary';
-			switch ($line['pa_status']) {
-				case '1' :
-					$btn = 'btn-warning';
-					break;
-				case '2' :
-					$btn = 'btn-success';
-					break;
-			}
-			$sx .= '<div class="btn ' . $btn . ' small" style="width: 100%;">' . msg('status_' . $line['pa_status']) . '</div>';
-			$sx .= '</td>';
-			$sx .= '<td align="center">';
-			$av = $line['pa_avaliacao'];
-			if ($av == 0) {
-				$av = "sem avaliação";
-			} else {
-				$av = '<div class="btn btn-secondary" style="width: 100%;">' . $av . '</div>';
-			}
-			$sx .= $link . $av . '</a>';
-			$sx .= '</td>';
-			//$sx .= '<td>'.$_SESSION['id'];
+			$sa .= '<div class="col-md-6 text-left" style="padding: 10px;">' . cr();
+			$sa .= $link.$this -> show_icone($r).'</a>';
 			if ((isset($_SESSION['id']) and ($line['pa_creator'] == $_SESSION['id']))) {
 				if ($line['pa_creator'] == $_SESSION['id']) {
-					$sx .= '<td>';
-					$sx .= '<a href="' . base_url('index.php/thesa/th_edit/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'] . $this -> chave)) . '" class="btn btn-secondary">' . msg('edit') . '</a>';
-					$sx .= '</td>';
+					$sa .= '<br>';
+					$sa .= '<a href="' . base_url('index.php/thesa/th_edit/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'] . $this -> chave)) . '" class="small">' . msg('edit') . '</a>';
 				}
+			}			
+			$sa .= $link . '<h5>' . $line['pa_name'] . '</h5>' . '</a>';
+			//$sa .= '<a href="' . base_url('index.php/thesa/th_edit/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'] . $this -> chave)) . '" class="btn btn-secondary">' . msg('edit') . '</a>';
+			$sa .= '</div>';
+		}
+		$sa .= '</div>' . cr();
+
+		return ($sa);
+	}
+
+	function show_icone($id) {
+		if ($id < 0) 
+			{
+				$id =0;
 			}
-			$sx .= '</tr>';
-		}
-		if (count($rlt) == 0) {
-			$sx .= '<tr><td colspan=6><span class="btn alert-danger">' . msg('not_record') . '</span></td></tr>';
-		}
-		$sx .= '</table>';
-		return ($sx);
+		$col = 5;
+		$y = ($id % $col) * (-148);
+		$x = ((int)($id / $col)) * (-148);
+		$sa = '<img class="icones" style="background: url(' . base_url('img/icone/002.png') . ')  ' . $y . 'px ' . $x . 'px;">';
+		return ($sa);
 	}
 
 	/* Select SKOS */
@@ -1663,6 +1655,7 @@ class skoses extends CI_model {
 		$sx .= '<a href="' . base_url('index.php/thesa/terms_from_to/' . $th . '/txt') . '" style="margin-right: 10px;">.txt</a> ';
 		$sx .= '<a href="' . base_url('index.php/thesa/terms_from_to/' . $th . '/rdf') . '" style="margin-right: 10px;">.rdf</a> ';
 		$sx .= '<a href="' . base_url('index.php/thesa/terms_from_to/' . $th . '/json') . '" style="margin-right: 10px;">.json</a> ';
+		$sx .= '<a href="' . base_url('index.php/thesa/terms_from_to/' . $th . '/pdf') . '" style="margin-right: 10px;">.pdf</a> ';
 		return ($sx);
 	}
 

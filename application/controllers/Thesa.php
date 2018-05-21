@@ -14,6 +14,7 @@ class Thesa extends CI_Controller {
         $this -> load -> helper('xml');
         $this -> load -> helper('email');
         $this -> load -> library('email');
+		$this -> load -> library('tcpdf');
 
         date_default_timezone_set('America/Sao_Paulo');
         $this -> load -> model('socials');
@@ -68,6 +69,60 @@ class Thesa extends CI_Controller {
 
         $this -> footer();
     }
+	
+    function th_edit($id = '', $chk = '') {
+        /* Load model */
+        $this -> load -> model("skoses");
+        $this -> skoses -> th_assosiation_users();
+
+        $this -> cab(1);
+
+        if (!isset($_SESSION['skos'])) {
+            $_SESSION['skos'] = $id;
+        }
+
+        $id = $_SESSION['skos'];
+        $data = $this -> skoses -> le_skos($id);
+
+        $this -> load -> view('thesa/view/thesaurus', $data);
+        $this -> load -> view('thesa/header/navbar_tools', null);
+
+        if ((count($data) > 0)) {
+            if ((isset($_SESSION['id']) and ($_SESSION['id']) == $data['pa_creator']) and ($data['id_pa'] == $id)) {
+                $cp = $this -> skoses -> cp_th($id);
+                $form = new form;
+                $form -> table = $this -> skoses -> table_thesaurus;
+                $form -> cp = $cp;
+                $form -> id = $id;
+
+                $data['content'] = $form -> editar($cp, $this -> skoses -> table_thesaurus);
+                $data['title'] = 'my_thesauros';
+                $this -> load -> view('content', $data);
+
+                if ($form -> saved > 0) {
+                    if (strlen($id) > 0) {
+                        redirect(base_url('index.php/thesa/select/' . $id.'/'.checkpost_link($id)));
+                    } else {
+                        redirect(base_url('index.php/thesa/myth'));
+                    }
+                }
+
+                $msg = '';
+
+                /* Colaboradores */
+                $msg = $this -> skoses -> th_collaborators($id) . $msg;
+                $data['content'] = $msg;
+                $this -> load -> view('skos/thesa_users', $data);
+            } else {
+                $tela = '	<div class="alert alert-danger" role="alert">
+								' . msg('Unauthorized_access') . '
+							</div>';
+                $data['content'] = $tela;
+                $this -> load -> view('content', $data);
+            }
+        }
+        $this -> load -> view('header/footer', null);
+    }	
 
     function thesaurus_my() {
         $this -> load -> model('skoses');
@@ -411,7 +466,8 @@ class Thesa extends CI_Controller {
                         $id = $dt['id_us'];
                         $data['title'] = '';
                         $tela = '<br><br><h1>' . msg('change_password') . '</h1>';
-                        $data['content'] = $tela . $this -> socials -> change_password($id);
+						$new = 1; // Novo registro
+                        $data['content'] = $tela . $this -> socials -> change_password($id,$new);
                         $this -> load -> view('content', $data);
                     } else {
                         $data['content'] = 'Email não existe!';
@@ -858,6 +914,116 @@ class Thesa extends CI_Controller {
         $tp = 1;
         $this -> load -> model('skoses');
         switch ($exp) {
+			case 'pdf':
+				$data = $this->skoses->le_th($id);
+				
+				$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+				$pdf->setPrintFooter(false);
+				
+				// set document information
+				$pdf->SetCreator(PDF_CREATOR);
+				$auth = '';
+				$auth2 = '<br><br>';
+				for ($r=0;$r < count($data['authors']);$r++)
+					{
+						if (strlen($auth) > 0)
+							{
+								$auth .= '; ';
+								$auth2 .= '<br>';
+							}
+							$auth .= $data['authors'][$r]['us_nome'];
+							$auth2 .= UpperCase($data['authors'][$r]['us_nome']);
+					}
+				$pdf->SetAuthor($auth);
+				$pdf->SetTitle('Thesa: '.$data['pa_name']);
+				$pdf->SetSubject('Thesaurus');
+				$pdf->SetKeywords('Thesaurus');
+				
+				// set default header data
+				//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 006', PDF_HEADER_STRING);
+				
+				// set header and footer fonts
+				//$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+				//$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+				
+				// set default monospaced font
+				$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+				
+				// set margins
+				//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+				//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+				//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+				
+				// set auto page breaks
+				//$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+				
+				// set image scale factor
+				$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+				
+				// set some language-dependent strings (optional)
+				if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+				    require_once(dirname(__FILE__).'/lang/eng.php');
+				    $pdf->setLanguageArray($l);
+				}
+				
+				// ---------------------------------------------------------
+				
+				// set font
+				$pdf->SetFont('dejavusans', '', 10);
+				
+				// add a page
+				$pdf->AddPage();
+				
+				$pdf->Image('img/background_custumer/biulings.jpg', 0, 140, 210, 0);
+				
+				$pdf->setXY(0,10);
+				//$pdf->SetTextColor(0, 0, 0);
+				for ($r=0;$r < count($data['authors']);$r++)
+					{
+						$pdf->setXY(10,5*$r+20);
+						$auth2 = UpperCase($data['authors'][$r]['us_nome']);
+						$pdf->Cell(0, 0 , $auth2, 0, false, 'C', 0, '', 0, false, 'M', 'M');
+					}
+				$pdf->setXY(0,100);
+				$pdf->SetFont('dejavusans', '', 25);
+				$pdf->Cell(0, 0 , 'THESA: '.$data['pa_name'], 0, false, 'C', 0, '', 0, false, 'M', 'M');
+									
+				$pdf->AddPage();
+				$pdf->SetFont('dejavusans', '', 10);
+				
+				// writeHTML($html, $ln=true, $fill=false, $reseth=false, $cell=false, $align='')
+				// writeHTMLCell($w, $h, $x, $y, $html='', $border=0, $ln=0, $fill=0, $reseth=true, $align='', $autopadding=true)
+				
+				// create some HTML content
+				$html = '<h1>'.$data['pa_name'].'</h1>
+				<div style="text-align:center">
+				<img src="'.base_url('img/background_custumer/brapci.jpg').'" alt="test alt attribute" width="800" border="0" />
+				</div>';
+				$html .= '<h3>==>'.PDF_PAGE_FORMAT.'</h3>';
+				// output the HTML content
+				$pdf->writeHTML($html, true, false, true, false, '');
+				
+				$html = '<h2>'.msg('Introdution').'</h2>';
+				$html .= mst($data['pa_introdution']);
+
+				$html .= '<h2>'.msg('Methodology').'</h2>';
+				$html .= mst($data['pa_methodology']);
+				
+				$pdf->writeHTML($html, true, false, true, false, '');
+				
+				// reset pointer to the last page
+				$pdf->lastPage();
+				
+				// ---------------------------------------------------------
+				
+				//Close and output PDF document
+				$pdf->Output('example_006.pdf', 'I');
+				
+				//============================================================+
+				// END OF FILE
+				//============================================================+
+				
+				break;
             case 'csv' :
                 $arquivo = "thesa_" . strzero($id, 4) . '_' . date("Ymd") . ".csv";
                 // Configurações header para forçar o download
@@ -935,4 +1101,4 @@ class Thesa extends CI_Controller {
 			$this->footer();
 		}
 }
-?>    
+?>

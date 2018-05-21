@@ -1,43 +1,50 @@
 /* Corpo */
 body {
-    margin: 0px;
-    padding: 0px;
-    background-color: #FFFFFF;
-    /* font-family: 'Open Sans Condensed', sans-serif; */
-    font-family: 'Titillium Web', sans-serif;
-    /* font-size: 100%; */
-    color: #333333;
+	margin: 0px;
+	padding: 0px;
+	background-color: #FFFFFF;
+	/* font-family: 'Open Sans Condensed', sans-serif; */
+	font-family: 'Titillium Web', sans-serif;
+	/* font-size: 100%; */
+	color: #333333;
+}
+
+.icones {
+	width: 130px;
+	height: 130px;
+	background-repeat: no-repeat !important;
+	transform: scale(0.8);
+	float: left;
 }
 
 /* Font size */
 .small, .small a {
-    font-size: 70%;
+	font-size: 70%;
 }
 .std, .std a {
-    font-size: 100%;
+	font-size: 100%;
 }
 .middle, .middle a {
-    font-size: 150%;
-    color: #4040ef;
+	font-size: 150%;
+	color: #4040ef;
 }
 .big, .big a {
-    font-size: 200%;
+	font-size: 200%;
 }
 
 a {
-  color: #444444;
-  text-decoration: none;
-  line-height: 150%;
+	color: #444444;
+	text-decoration: none;
+	line-height: 150%;
 }
 
 a:focus, a:hover {
-  color: #000000;
-  text-decoration: underline;
+	color: #000000;
+	text-decoration: underline;
 }
 
-.img-person
-    {
-        border: 2px solid #808080;
-        border-radius: 10px;
-        box-shadow: 2px 2px;
-    }
+.img-person {
+	border: 2px solid #808080;
+	border-radius: 10px;
+	box-shadow: 2px 2px;
+}

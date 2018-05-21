@@ -847,6 +847,8 @@ class Skos extends CI_Controller {
 
     /***************************************************************************** Conecpt */
     function c($c = '', $proto = '') {
+    	redirect(base_url('index.php/thesa/c/'.$c.'/'.$proto));
+		
         $this -> load -> model("skoses");
 
         $data = $this -> skoses -> le($c);
