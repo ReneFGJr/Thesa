@@ -227,7 +227,7 @@ $lang['Sign Up'] = 'Quero me cadastrar';
 $lang['logout'] = 'Sair';
 
 $lang['thesaurus_name'] = 'Nome do tesauro';
-$lang['thesaurus_description'] = 'Descrição';
+$lang['thesaurus_description'] = 'Descrição do vocabulário / tesauro';
 $lang['save'] = 'salvar';
 
 $lang['return'] = 'voltar';
@@ -307,4 +307,8 @@ $lang['signup_success_msg'] = 'You have successfully signed up. Please folow ';
 $lang['signup_success_msg'] = 'Parabéns $name, seu cadastro foi efetivado. <BR>Verifique seu e-mail ($email) para validar seu acesso!';
 $lang['signup_success'] = 'Cadastro realizado com sucesso';
 $lang['signup_user_already_exist'] = 'E-mail $email já existe na base de dados, para recuperar a senha clique no $link.';
+
+$lang['thesaurus_introdution'] = 'Introdução';
+$lang['thesaurus_methodology'] = 'Metodologia';
+$lang['thesaurus_audience'] = 'Público alvo';
 ?>

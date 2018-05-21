@@ -1,11 +1,19 @@
+<?php
+$img = base_url('/img/background/background_4.jpg');
+if (strlen($image_bk) > 0)
+	{
+		$img = $image_bk;
+	}
+			
+?>
 <style>
 .parallax_background_5 {
         /* The image used */
-        background-image: <?php echo 'url("' . base_url('/img/background/background_4.jpg') . '")'; ?>
+        background-image: <?php echo 'url("' . $img . '")'; ?>
             }
-            .bg_cor {
-                color: #ffffff;
-            }
+.bg_cor {
+    color: #333333;
+}
 </style>
 <?php
 $pa = '';
@@ -18,7 +26,7 @@ $pa = '';
 		<div class="col-xs-8 col-md-8 big">
 			<span class="thesa thesa_under" style="font-size: 120%;"><b><?php echo $pa_name; ?></b></span>
 		</div>
-        <div class="col-xs-2 col-md-2 big">
+        <div class="col-xs-2 col-md-2 big text-right nopr">
             &nbsp;
         </div>
 	</div>
@@ -35,6 +43,11 @@ $pa = '';
 		<div class="col-xs-4 col-md-4">
 			<span style="font-size: 70%"><?php echo msg('author'); ?>:</span>
 		</div>
+        <div class="col-xs-2 col-md-2 text-right nopr">
+        	<?php if (perfil("#ADM")) { ?>
+            <a href="<?php echo base_url('index.php/thesa/imagem/desktop');?>" class="btn btn-secondary" title="<?php echo msg('change_image');?>"><img src="<?php echo base_url('img/icone/photo.svg');?>" width="20" height="20"></a>
+            <?php } ?>
+        </div>		
 	</div>
 	
 	<!-------------------------------------------------------- parte III ------>

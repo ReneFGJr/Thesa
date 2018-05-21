@@ -91,6 +91,20 @@ class skoses extends CI_model {
 		if (count($rlt) > 0) {
 			$line = $rlt[0];
 			$line['allow'] = $this -> le_c_users($th);
+			$filename = 'img/background/background_thema_'.$th.'.jpg';
+			if (file_exists($filename))
+				{
+					$line['image_bk'] = base_url($filename);
+				} else {
+					$line['image_bk'] = base_url('img/background_custumer/biulings.jpg');		
+				}
+			$line['authors'] = array();
+			$sql = "select distinct us_nome from th_users
+						INNER JOIN users ON id_us = ust_user_id
+						WHERE ust_th = $th and ust_status = 1";
+			$rrr = $this -> db -> query($sql);
+			$rrr = $rrr -> result_array();
+			$line['authors'] = $rrr;
 			return ($line);
 		} else {
 			/* Thesaurus Not Found */
@@ -437,9 +451,10 @@ class skoses extends CI_model {
 	}
 
 	function le_c_associate($id = '', $th = '') {
+		/*********************************/
 		$th = round(sonumero($th));
 		$sql = "select * from (
-					SELECT ct_concept_2 as idc, ct_propriety as ctp FROM `th_concept_term` 
+					SELECT id_ct, ct_concept_2 as idc, ct_propriety as ctp FROM `th_concept_term` 
 					INNER JOIN rdf_resource ON id_rs = ct_propriety
 					WHERE rs_group = 'TR' and ct_concept = $id and ct_th = $th 
    				 ) as tb1
@@ -453,7 +468,7 @@ class skoses extends CI_model {
 
 		/* PARTE II */
 		$sql = "select * from (
-					SELECT ct_concept as idc, ct_propriety as ctp FROM `th_concept_term` 
+					SELECT id_ct, ct_concept as idc, ct_propriety as ctp FROM `th_concept_term` 
 					INNER JOIN rdf_resource ON id_rs = ct_propriety
 					WHERE rs_group = 'TR' and ct_concept_2 = $id and ct_th = $th 
    				 ) as tb1
@@ -467,6 +482,8 @@ class skoses extends CI_model {
 		$rlt2 = $rlt -> result_array();
 
 		$rlt = array_merge($rlt1, $rlt2);
+
+		//print_r($rlt);
 
 		if (count($rlt) > 0) {
 			/* Read TR */
@@ -759,23 +776,26 @@ class skoses extends CI_model {
 	}
 
 	function le_th($id = 0) {
+		return($this->le_skos($id));
+		/*
 		$sql = "select * from " . $this -> table_thesaurus . " where id_pa = " . $id;
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
 		if (count($rlt) > 0) {
 			$line = $rlt[0];
 			$line['image_bk'] = base_url('img/background_custumer/biulings.jpg');
-			
+
 			$line['authors'] = array();
 			$sql = "select distinct us_nome from th_users
 						INNER JOIN users ON id_us = ust_user_id
 						WHERE ust_th = $id and ust_status = 1";
-			$rrr = $this->db->query($sql);
-			$rrr = $rrr->result_array();
+			$rrr = $this -> db -> query($sql);
+			$rrr = $rrr -> result_array();
 			$line['authors'] = $rrr;
 			return ($line);
 		}
 		return ( array());
+		 */
 	}
 
 	function le_propriety($id = 0) {
@@ -826,16 +846,19 @@ class skoses extends CI_model {
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
 
+		print_r($rlt);
+
 		if (count($rlt) > 0) {
 
 			$line2 = $rlt[0];
 			$c = $line2['ct_concept'];
 			$th = $line2['ct_th'];
 			$desc = msg('remove_propriety') . ' - "<b>' . $line2['rl_value'] . '</b>" ' . ' (<i>' . $id . '</i>)';
-			//$this -> skoses -> log_insert($c, $th, 'REMOV', $desc);
+			$this -> skoses -> log_insert($c, $th, 'REMOV', $desc);
 
 			$sql = "delete from th_concept_term where id_ct = " . round($id);
 			$this -> db -> query($sql);
+			//exit;
 		}
 		return (0);
 	}
@@ -960,13 +983,13 @@ class skoses extends CI_model {
 			$line = $rlt[$r];
 			$link = '<a href="' . base_url('index.php/thesa/select/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'])) . '">';
 			$sa .= '<div class="col-md-6 text-left" style="padding: 10px;">' . cr();
-			$sa .= $link.$this -> show_icone($r).'</a>';
+			$sa .= $link . $this -> show_icone($r) . '</a>';
 			if ((isset($_SESSION['id']) and ($line['pa_creator'] == $_SESSION['id']))) {
 				if ($line['pa_creator'] == $_SESSION['id']) {
 					$sa .= '<br>';
 					$sa .= '<a href="' . base_url('index.php/thesa/th_edit/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'] . $this -> chave)) . '" class="small">' . msg('edit') . '</a>';
 				}
-			}			
+			}
 			$sa .= $link . '<h5>' . $line['pa_name'] . '</h5>' . '</a>';
 			//$sa .= '<a href="' . base_url('index.php/thesa/th_edit/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'] . $this -> chave)) . '" class="btn btn-secondary">' . msg('edit') . '</a>';
 			$sa .= '</div>';
@@ -977,10 +1000,9 @@ class skoses extends CI_model {
 	}
 
 	function show_icone($id) {
-		if ($id < 0) 
-			{
-				$id =0;
-			}
+		if ($id < 0) {
+			$id = 0;
+		}
 		$col = 5;
 		$y = ($id % $col) * (-148);
 		$x = ((int)($id / $col)) * (-148);
@@ -1212,7 +1234,15 @@ class skoses extends CI_model {
 		$cp = array();
 		array_push($cp, array('$H8', 'id_pa', '', false, true));
 		array_push($cp, array('$S80', 'pa_name', msg('thesaurus_name'), true, true));
-		array_push($cp, array('$T80:5', 'pa_description', msg('thesaurus_description'), false, true));
+		array_push($cp, array('$A1', '', msg('thesaurus_description'), false, false));
+		array_push($cp, array('$T80:8', 'pa_introdution', msg('thesaurus_introdution'), false, true));
+		array_push($cp, array('$T80:3', 'pa_audience', msg('thesaurus_audience'), false, true));
+		array_push($cp, array('$T80:6', 'pa_methodology', msg('thesaurus_methodology'), false, true));
+		
+		$op = '1:'.msg('th_type_1');
+		array_push($cp, array('$O', 'pa_type', msg('thesaurus_type'), true, true));
+		
+		
 		array_push($cp, array('$HV', 'pa_status', '1', true, true));
 		array_push($cp, array('$HV', 'pa_classe', 1, true, true));
 		array_push($cp, array('$HV', 'pa_creator', $us, true, true));
@@ -1225,7 +1255,20 @@ class skoses extends CI_model {
 		$cp = array();
 		array_push($cp, array('$H8', 'id_pa', '', true, true));
 		array_push($cp, array('$S80', 'pa_name', msg('thesaurus_name'), true, true));
-		array_push($cp, array('$T80:5', 'pa_description', msg('thesaurus_description'), false, true));
+		//array_push($cp, array('$T80:5', 'pa_description', msg('thesaurus_description'), false, true));
+		array_push($cp, array('$A1', '', msg('thesaurus_description'), false, false));
+		array_push($cp, array('$T80:8', 'pa_introdution', msg('thesaurus_introdution'), false, true));
+		array_push($cp, array('$T80:3', 'pa_audience', msg('thesaurus_audience'), false, true));
+		array_push($cp, array('$T80:6', 'pa_methodology', msg('thesaurus_methodology'), false, true));
+		
+		$op = '1:'.msg('th_type_1');
+		$op .= '&2:'.msg('th_type_2');
+		$op .= '&3:'.msg('th_type_3');
+		$op .= '&4:'.msg('th_type_4');
+		$op .= '&5:'.msg('th_type_5');
+		
+		array_push($cp, array('$O'.$op, 'pa_type', msg('thesaurus_type'), true, true));		
+		
 
 		$ops = '1:' . msg('status_1');
 		$ops .= '&2:' . msg('status_2');
@@ -1525,8 +1568,7 @@ class skoses extends CI_model {
 			$saf = '';
 			$link = '<a href="' . base_url('index.php/thesa/term/' . $th . '/' . $line['id_rl']) . '" class="term_word">';
 			if (round($line['ct_propriety']) == $co) {
-				$sa = '<img src="' . base_url('img/icone/tag.png') . '" height="24" border=0>';
-				;
+				$sa = '<img src="' . base_url('img/icone/tag.png') . '" height="24" border=0>'; ;
 				$link = '<a href="' . base_url('index.php/thesa/c/' . $line['ct_concept']) . '/' . $th . '/" class="term">';
 			} else {
 				if (strlen(trim($line['altTerm'])) > 0) {

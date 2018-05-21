@@ -227,7 +227,6 @@ $lang['Sign Up'] = 'Quero me cadastrar';
 $lang['logout'] = 'Sair';
 
 $lang['thesaurus_name'] = 'Nome do tesauro';
-$lang['thesaurus_description'] = 'Descrição';
 $lang['save'] = 'salvar';
 
 
@@ -299,4 +298,10 @@ $lang['about'] = "SOBRE";
 $lang['download'] = "DOWNLOAD";
 $lang['contact'] = "CONTATO";
 $lang['sign_in'] = "ACESSAR";
+
+$lang['th_type_1'] = 'Glossário';
+$lang['th_type_2'] = 'Vocabulário controlado';
+$lang['th_type_3'] = 'Controle de autoridade';
+$lang['th_type_4'] = 'Thesauro';
+$lang['th_type_5'] = 'Ontologia';
 ?>

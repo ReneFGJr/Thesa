@@ -5,7 +5,7 @@ if (!isset($action)) {
 ?>
 <div class="container">
 	<div class="row">
-		<div class="col-md-10"><?php echo msg('pref_term'); ?></br><font class="xxxbig"><?php echo $rl_value; ?>
+		<div class="col-md-10 small"><?php echo msg('pref_term'); ?></br><font class="big"><?php echo $rl_value; ?>
 			<sup>(<?php echo $rl_lang;?>)</sup>
 		</font>
 			
@@ -13,7 +13,7 @@ if (!isset($action)) {
 		<div class="col-md-2"><?php echo msg('concept'); ?></br><font class="xxxbig"><?php echo $c_concept; ?></font></div>
 	</div>
 </div>
-
+<br>
 <div class="container">
 	<div class="row">
 		<div class="col-md-5">
