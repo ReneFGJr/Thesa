@@ -977,21 +977,26 @@ class skoses extends CI_model {
 
 				</style>';
 
-		$sa .= '<div class="row">' . cr();
+		$sa .= '<div class="row" style="margin: 80px 0px;">' . cr();
 		#for ($r=0;$r < count($rlt);$r++)
 		for ($r = 0; $r < count($rlt); $r++) {
 			$line = $rlt[$r];
 			$link = '<a href="' . base_url('index.php/thesa/select/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'])) . '">';
-			$sa .= '<div class="col-md-6 text-left" style="padding: 10px;">' . cr();
+            
+			$sa .= '<div class="col-md-1 text-left" style="border-top: 1px #000000 solid; margin-bottom: 40px;">' . cr();
 			$sa .= $link . $this -> show_icone($r) . '</a>';
-			if ((isset($_SESSION['id']) and ($line['pa_creator'] == $_SESSION['id']))) {
-				if ($line['pa_creator'] == $_SESSION['id']) {
-					$sa .= '<br>';
-					$sa .= '<a href="' . base_url('index.php/thesa/th_edit/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'] . $this -> chave)) . '" class="small">' . msg('edit') . '</a>';
-				}
-			}
-			$sa .= $link . '<h5>' . $line['pa_name'] . '</h5>' . '</a>';
+            $sa .= '</div>'.cr();
+            
+            $sa .= '<div class="col-md-3 text-left" style="border-top: 1px #000000 solid; margin-bottom: 40px;">' . cr();
+			$sa .= $link . '<span class="middle">' . $line['pa_name'] . '</span>' . '</a>';
 			//$sa .= '<a href="' . base_url('index.php/thesa/th_edit/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'] . $this -> chave)) . '" class="btn btn-secondary">' . msg('edit') . '</a>';
+            if ((isset($_SESSION['id']) and ($line['pa_creator'] == $_SESSION['id']))) {
+                if ($line['pa_creator'] == $_SESSION['id']) {
+                    $sa .= '<br>';
+                    $sa .= '<a href="' . base_url('index.php/thesa/th_edit/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'] . $this -> chave)) . '" class="small">' . msg('edit') . '</a>';
+                }
+            }
+						
 			$sa .= '</div>';
 		}
 		$sa .= '</div>' . cr();
@@ -1003,10 +1008,15 @@ class skoses extends CI_model {
 		if ($id < 0) {
 			$id = 0;
 		}
-		$col = 5;
-		$y = ($id % $col) * (-148);
-		$x = ((int)($id / $col)) * (-148);
-		$sa = '<img class="icones" style="background: url(' . base_url('img/icone/002.png') . ')  ' . $y . 'px ' . $x . 'px;">';
+        $img = 'img/icone/thema/'.strzero($id,3).'.png';
+        $x = 0;
+        while ((!file_exists($img)) and ($x < 50))
+            {
+             $id = 1;
+             $x++;
+             $img = 'img/icone/thema/'.strzero($id,3).'.png';   
+            }
+		$sa = '<img class="img-fluid" src="' . base_url($img) . '" style="padding: 5px;">';
 		return ($sa);
 	}
 
