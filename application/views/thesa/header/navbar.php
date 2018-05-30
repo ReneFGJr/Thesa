@@ -18,12 +18,12 @@ if (isset($_SESSION['id']) and ($_SESSION['id'] != '')) {
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item active">
-				<a class="nav-link" href="<?php echo base_url('index.php/thesa/thesaurus_open'); ?>"><?php echo msg('open thesauros'); ?> <span class="sr-only">(current)</span></a>
+				<a class="nav-link" href="<?php echo base_url('index.php/thesa/thesaurus_open'); ?>"><?php echo msg('open_thesauros'); ?> <span class="sr-only">(current)</span></a>
 			</li>
 			<?php 
 			if (perfil('#ADM')==1) { ?>
             <li class="nav-item active">
-                <a class="nav-link" href="<?php echo base_url('index.php/thesa/thesaurus_my'); ?>"><?php echo msg('my thesauros'); ?></a>
+                <a class="nav-link" href="<?php echo base_url('index.php/thesa/thesaurus_my'); ?>"><?php echo msg('my_thesauros'); ?></a>
             </li>
             <?php } ?>
 			<li class="nav-item">

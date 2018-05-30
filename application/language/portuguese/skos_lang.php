@@ -311,4 +311,5 @@ $lang['signup_user_already_exist'] = 'E-mail $email já existe na base de dados,
 $lang['thesaurus_introdution'] = 'Introdução';
 $lang['thesaurus_methodology'] = 'Metodologia';
 $lang['thesaurus_audience'] = 'Público alvo';
+
 ?>

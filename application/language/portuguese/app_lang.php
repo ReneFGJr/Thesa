@@ -304,4 +304,8 @@ $lang['th_type_2'] = 'Vocabulário controlado';
 $lang['th_type_3'] = 'Controle de autoridade';
 $lang['th_type_4'] = 'Thesauro';
 $lang['th_type_5'] = 'Ontologia';
+
+$lang['my_thesauros'] = 'Meus Thesa';
+$lang['open_thesauros'] = 'TH abertos';
+$lang['already_inserted'] = 'Termo já existe';
 ?>

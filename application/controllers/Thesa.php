@@ -77,16 +77,15 @@ class Thesa extends CI_Controller {
 
 		$this -> cab(1);
 
-		if (!isset($_SESSION['skos'])) {
+		if ($id != '') {
 			$_SESSION['skos'] = $id;
 		}
-
 		$id = $_SESSION['skos'];
 		$data = $this -> skoses -> le_skos($id);
 
 		$this -> load -> view('thesa/view/thesaurus', $data);
 		$this -> load -> view('thesa/header/navbar_tools', null);
-
+		
 		if ((count($data) > 0)) {
 			if ((isset($_SESSION['id']) and ($_SESSION['id']) == $data['pa_creator']) and ($data['id_pa'] == $id)) {
 				$cp = $this -> skoses -> cp_th($id);
@@ -96,7 +95,7 @@ class Thesa extends CI_Controller {
 				$form -> id = $id;
 
 				$data['content'] = $form -> editar($cp, $this -> skoses -> table_thesaurus);
-				$data['title'] = 'my_thesauros';
+				$data['title'] = msg('my_thesauros');
 				$this -> load -> view('content', $data);
 
 				if ($form -> saved > 0) {
@@ -108,6 +107,12 @@ class Thesa extends CI_Controller {
 				}
 
 				$msg = '';
+				
+				/* ICONE */
+				$data['title'] = msg('icones');
+				$data['content'] = $this->skoses->show_icone($data['pa_icone']);
+				$data['content'] .= '<br><span onclick="newxy(\''.base_url('index.php/thesa/icone/').'\',600,600);" class="link">'.msg('alter').'</span>';
+				$this -> load -> view('content', $data);				
 
 				/* Colaboradores */
 				$msg = $this -> skoses -> th_collaborators($id) . $msg;
@@ -153,6 +158,93 @@ class Thesa extends CI_Controller {
 	function show_404() {
 		$this -> cab(0);
 		$this -> load -> view('skos/404', null);
+	}
+
+	function icone($id='',$sel='',$chk='') {
+		$this -> load -> model('skoses');
+		$this -> cab(0);
+		
+		$th = $this -> skoses -> th();
+		$data = $this -> skoses -> le_th($th);
+		
+		if (strlen($sel) > 0)
+			{
+				$chk2 = checkpost_link('icone'.$sel);
+				if ($chk == $chk2)
+					{
+						$this->skoses->icone_update($th,$sel);
+						$txt = '<script> window.opener.location.reload(); close(); </script>';
+						echo $txt;
+						exit;
+					}
+			}
+
+		
+
+		/******************/
+		$img = $this->skoses->show_icone($th);
+		$data['content'] = $img;
+		$data['title'] = 'THESA: ' . $data['pa_name'];
+		$this -> load -> view('content', $data);	
+		
+		/******************/
+		$txt = $this->skoses->icones_select($th);	
+		$data['content'] = $txt;
+		$data['title'] = '';
+		$this -> load -> view('content', $data);	
+		
+		$target_dir = "img/icone/custon/";
+		$target_file = $target_dir . 'background_icone_' . $th . '.png';
+		$uploadOk = 1;
+		$imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+		// Check if image file is a actual image or fake image
+		if (isset($_POST["submit"])) {
+			$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+			if ($check !== false) {
+				echo "File is an image - " . $check["mime"] . ".";
+				$uploadOk = 1;
+			} else {
+				echo "File is not an image.";
+				$uploadOk = 0;
+			}
+		}
+
+		// Allow certain file formats
+		$err = '';
+		if (!isset($_FILES["fileToUpload"]["tmp_name"])) {
+			$uploadOk = 0;
+		}
+		if ($imageFileType != "jpg" && $imageFileType != "jpeg") {
+			$err = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+			$uploadOk = 0;
+		}
+
+		// Check if $uploadOk is set to 0 by an error
+		if ($uploadOk == 0) {
+			$err = "Sorry, your file was not uploaded.";
+			// if everything is ok, try to upload file
+		} else {
+			if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+				$err = "The file " . basename($_FILES["fileToUpload"]["name"]) . " has been uploaded.";
+			} else {
+				$err = "Sorry, there was an error uploading your file.";
+			}
+		}
+		/**********************/
+
+		$html = '';
+		$html .= '<hr>';
+		$html .= $err;
+		$html .= '<form action="upload.php" method="post" enctype="multipart/form-data">
+					    Select image to upload:
+					    <input type="file" name="fileToUpload" id="fileToUpload">
+					    <input type="submit" value="Upload Image" name="submit">
+					</form>';
+		$html .= '<hr>';
+		$data['content'] = $html;
+		$data['title'] = '';
+		$this -> load -> view('content', $data);
+
 	}
 
 	function imagem($tp) {
@@ -443,7 +535,6 @@ class Thesa extends CI_Controller {
 				$this -> load -> view("thesa/view/schema", $data);
 				$this -> load -> view("thesa/view/concept", $data);
 
-				$this -> footer();
 				break;
 		}
 
@@ -1009,19 +1100,8 @@ class Thesa extends CI_Controller {
 
 				// set default monospaced font
 				$pdf -> SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-				// set margins
-				//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-				//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-				//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
-				// set auto page breaks
-				//$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-				// set image scale factor
 				$pdf -> setImageScale(PDF_IMAGE_SCALE_RATIO);
 
-				// set some language-dependent strings (optional)
 				if (@file_exists(dirname(__FILE__) . '/lang/eng.php')) {
 					require_once (dirname(__FILE__) . '/lang/eng.php');
 					$pdf -> setLanguageArray($l);
@@ -1083,7 +1163,17 @@ class Thesa extends CI_Controller {
 				$pdf -> writeHTML($html, true, false, true, false, '');
 
 				$pdf -> AddPage();
-
+				
+				
+				/******************************** GLASSARIO ****************************/
+				$html = '<h1>Glossário</h1>';
+				$pdf -> writeHTML($html, true, false, true, false, '');
+				
+				$html = $this -> skoses -> glossario_html($id, 'txt');
+				$pdf -> writeHTML($html, true, false, true, false, '');
+				
+				$pdf -> AddPage();
+				
 				// writeHTML($html, $ln=true, $fill=false, $reseth=false, $cell=false, $align='')
 				// writeHTMLCell($w, $h, $x, $y, $html='', $border=0, $ln=0, $fill=0, $reseth=true, $align='', $autopadding=true)
 

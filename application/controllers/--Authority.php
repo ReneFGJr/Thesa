@@ -401,7 +401,7 @@ class Authority extends CI_Controller {
 				$form -> id = $id;
 
 				$data['content'] = $form -> editar($cp, $this -> Authorities -> table_thesaurus);
-				$data['title'] = 'my_thesauros';
+				$data['title'] = msg('my_thesauros');
 				$this -> load -> view('content', $data);
 
 				if ($form -> saved > 0) {

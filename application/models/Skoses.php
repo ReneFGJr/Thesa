@@ -11,6 +11,7 @@ class skoses extends CI_model {
 	var $TRu = 29;
 	/* União com */
 	var $TH = 34;
+	var $new = 0;
 
 	/* Hidden */
 	VAR $table_concept = 'th_concept';
@@ -91,13 +92,12 @@ class skoses extends CI_model {
 		if (count($rlt) > 0) {
 			$line = $rlt[0];
 			$line['allow'] = $this -> le_c_users($th);
-			$filename = 'img/background/background_thema_'.$th.'.jpg';
-			if (file_exists($filename))
-				{
-					$line['image_bk'] = base_url($filename);
-				} else {
-					$line['image_bk'] = base_url('img/background_custumer/biulings.jpg');		
-				}
+			$filename = 'img/background/background_thema_' . $th . '.jpg';
+			if (file_exists($filename)) {
+				$line['image_bk'] = base_url($filename);
+			} else {
+				$line['image_bk'] = base_url('img/background_custumer/biulings.jpg');
+			}
 			$line['authors'] = array();
 			$sql = "select distinct us_nome from th_users
 						INNER JOIN users ON id_us = ust_user_id
@@ -776,25 +776,25 @@ class skoses extends CI_model {
 	}
 
 	function le_th($id = 0) {
-		return($this->le_skos($id));
+		return ($this -> le_skos($id));
 		/*
-		$sql = "select * from " . $this -> table_thesaurus . " where id_pa = " . $id;
-		$rlt = $this -> db -> query($sql);
-		$rlt = $rlt -> result_array();
-		if (count($rlt) > 0) {
-			$line = $rlt[0];
-			$line['image_bk'] = base_url('img/background_custumer/biulings.jpg');
+		 $sql = "select * from " . $this -> table_thesaurus . " where id_pa = " . $id;
+		 $rlt = $this -> db -> query($sql);
+		 $rlt = $rlt -> result_array();
+		 if (count($rlt) > 0) {
+		 $line = $rlt[0];
+		 $line['image_bk'] = base_url('img/background_custumer/biulings.jpg');
 
-			$line['authors'] = array();
-			$sql = "select distinct us_nome from th_users
-						INNER JOIN users ON id_us = ust_user_id
-						WHERE ust_th = $id and ust_status = 1";
-			$rrr = $this -> db -> query($sql);
-			$rrr = $rrr -> result_array();
-			$line['authors'] = $rrr;
-			return ($line);
-		}
-		return ( array());
+		 $line['authors'] = array();
+		 $sql = "select distinct us_nome from th_users
+		 INNER JOIN users ON id_us = ust_user_id
+		 WHERE ust_th = $id and ust_status = 1";
+		 $rrr = $this -> db -> query($sql);
+		 $rrr = $rrr -> result_array();
+		 $line['authors'] = $rrr;
+		 return ($line);
+		 }
+		 return ( array());
 		 */
 	}
 
@@ -963,11 +963,11 @@ class skoses extends CI_model {
 					where pa_status = 2 
 					order by pa_name ";
 		} else {
-			$sql = "select id_pa, pa_name, pa_created, pa_status, pa_avaliacao, pa_creator
+			$sql = "select id_pa, pa_name, pa_created, pa_status, pa_avaliacao, pa_creator, pa_description, pa_icone
 						FROM th_thesaurus
 						LEFT JOIN th_users ON ust_th = id_pa
 							where (pa_creator = $user) or (ust_user_id = $user)
-							group by  id_pa, pa_name, pa_created, pa_status, pa_avaliacao, pa_creator
+							group by  id_pa, pa_name, pa_created, pa_status, pa_avaliacao, pa_creator, pa_description, pa_icone
 							order by pa_name, pa_status desc  ";
 		}
 		$rlt = $this -> db -> query($sql);
@@ -982,21 +982,27 @@ class skoses extends CI_model {
 		for ($r = 0; $r < count($rlt); $r++) {
 			$line = $rlt[$r];
 			$link = '<a href="' . base_url('index.php/thesa/select/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'])) . '">';
-            
-			$sa .= '<div class="col-md-1 text-left" style="border-top: 1px #000000 solid; margin-bottom: 40px;">' . cr();
-			$sa .= $link . $this -> show_icone($r) . '</a>';
-            $sa .= '</div>'.cr();
-            
-            $sa .= '<div class="col-md-3 text-left" style="border-top: 1px #000000 solid; margin-bottom: 40px;">' . cr();
+
+			$sa .= '<div class="col-md-2 text-left" style="border-top: 1px #000000 solid; margin-bottom: 40px; padding: 10px;">' . cr();
+			if (round($line['pa_icone']) > 0) {
+				$sa .= $link . $this -> show_icone($line['pa_icone']) . '</a>';
+			} else {
+				$sa .= $link . $this -> show_icone($r) . '</a>';
+			}
+
+			$sa .= '</div>' . cr();
+
+			$sa .= '<div class="col-md-4 text-left" style="border-top: 1px #000000 solid; margin-bottom: 40px; padding: 10px;">' . cr();
 			$sa .= $link . '<span class="middle">' . $line['pa_name'] . '</span>' . '</a>';
+			$sa .= '<p>' . $line['pa_description'] . '</span>';
 			//$sa .= '<a href="' . base_url('index.php/thesa/th_edit/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'] . $this -> chave)) . '" class="btn btn-secondary">' . msg('edit') . '</a>';
-            if ((isset($_SESSION['id']) and ($line['pa_creator'] == $_SESSION['id']))) {
-                if ($line['pa_creator'] == $_SESSION['id']) {
-                    $sa .= '<br>';
-                    $sa .= '<a href="' . base_url('index.php/thesa/th_edit/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'] . $this -> chave)) . '" class="small">' . msg('edit') . '</a>';
-                }
-            }
-						
+			if ((isset($_SESSION['id']) and ($line['pa_creator'] == $_SESSION['id']))) {
+				if ($line['pa_creator'] == $_SESSION['id']) {
+					$sa .= '<br>';
+					$sa .= '<a href="' . base_url('index.php/thesa/th_edit/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'] . $this -> chave)) . '" class="small">' . msg('edit') . '</a>';
+				}
+			}
+
 			$sa .= '</div>';
 		}
 		$sa .= '</div>' . cr();
@@ -1008,14 +1014,13 @@ class skoses extends CI_model {
 		if ($id < 0) {
 			$id = 0;
 		}
-        $img = 'img/icone/thema/'.strzero($id,3).'.png';
-        $x = 0;
-        while ((!file_exists($img)) and ($x < 50))
-            {
-             $id = 1;
-             $x++;
-             $img = 'img/icone/thema/'.strzero($id,3).'.png';   
-            }
+		$img = 'img/icone/thema/' . strzero($id, 3) . '.png';
+		$x = 0;
+		while ((!file_exists($img)) and ($x < 50)) {
+			$id = 1;
+			$x++;
+			$img = 'img/icone/thema/' . strzero($id, 3) . '.png';
+		}
 		$sa = '<img class="img-fluid" src="' . base_url($img) . '" style="padding: 5px;">';
 		return ($sa);
 	}
@@ -1115,21 +1120,26 @@ class skoses extends CI_model {
 		for ($r = 0; $r < count($ln); $r++) {
 			$t = $ln[$r];
 			$t = $this -> prepara_termo($t, $lc);
+			$mmm = '<td class="alert alert-warning">' . msg('already_inserted') . '</td>';
 			if (strlen($t) > 0) {
 				/* Incorpore Term intro Vocabulary Literal */
-				$this -> terms_add($t, $id, $lang);
+				$new = $this -> terms_add($t, $id, $lang);
 
 				/* Insert Term intro the Thesaurus */
 				$idt = $this -> association_term_th($t, $lang, $id);
 
 				/* Create Concept Into the Thesaurus */
-				$this -> concept_create($t, $th);
+				#$this -> concept_create($t, $th);
+				if ($new == 1)
+					{
+						$mmm = '<td class="alert alert-success">' . msg('add_term') . '</td>';
+					}
 			}
 			$sx .= '<tr>';
 			$sx .= '<td>' . ($r + 1) . '</td>';
 			$sx .= '<td><b>' . $t . '</b></td>';
 			$sx .= '<td>' . msg($lang) . '</td>';
-			$sx .= '<td class="alert alert-success">' . msg('add_term') . '</td>';
+			$sx .= $mmm;
 			$sx .= '</tr>';
 		}
 		$sx .= '</table>';
@@ -1163,14 +1173,17 @@ class skoses extends CI_model {
 							";
 			$xrlt = $this -> db -> query($sqli);
 			$sx .= $t . '@' . $lang . ' <font style="color: green;">' . msg('inserted') . '</font><br>';
+			$this->new = 1;
 		} else {
 			$sx .= $t . '@' . $lang . ' <font style="color: red;">' . msg('already_inserted') . '</font><br>';
+			$this->new = 0;
 		}
 		$sql = "select * from rdf_literal where rl_value = '$t' and rl_type = 24 and rl_lang = '$lang' ";
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
 		$line = $rlt[0];
 		$id = $line['id_rl'];
+		
 		return ($id);
 	}
 
@@ -1248,11 +1261,10 @@ class skoses extends CI_model {
 		array_push($cp, array('$T80:8', 'pa_introdution', msg('thesaurus_introdution'), false, true));
 		array_push($cp, array('$T80:3', 'pa_audience', msg('thesaurus_audience'), false, true));
 		array_push($cp, array('$T80:6', 'pa_methodology', msg('thesaurus_methodology'), false, true));
-		
-		$op = '1:'.msg('th_type_1');
+
+		$op = '1:' . msg('th_type_1');
 		array_push($cp, array('$O', 'pa_type', msg('thesaurus_type'), true, true));
-		
-		
+
 		array_push($cp, array('$HV', 'pa_status', '1', true, true));
 		array_push($cp, array('$HV', 'pa_classe', 1, true, true));
 		array_push($cp, array('$HV', 'pa_creator', $us, true, true));
@@ -1265,20 +1277,19 @@ class skoses extends CI_model {
 		$cp = array();
 		array_push($cp, array('$H8', 'id_pa', '', true, true));
 		array_push($cp, array('$S80', 'pa_name', msg('thesaurus_name'), true, true));
-		//array_push($cp, array('$T80:5', 'pa_description', msg('thesaurus_description'), false, true));
+		array_push($cp, array('$T80:5', 'pa_description', msg('thesaurus_description'), false, true));
 		array_push($cp, array('$A1', '', msg('thesaurus_description'), false, false));
 		array_push($cp, array('$T80:8', 'pa_introdution', msg('thesaurus_introdution'), false, true));
 		array_push($cp, array('$T80:3', 'pa_audience', msg('thesaurus_audience'), false, true));
 		array_push($cp, array('$T80:6', 'pa_methodology', msg('thesaurus_methodology'), false, true));
-		
-		$op = '1:'.msg('th_type_1');
-		$op .= '&2:'.msg('th_type_2');
-		$op .= '&3:'.msg('th_type_3');
-		$op .= '&4:'.msg('th_type_4');
-		$op .= '&5:'.msg('th_type_5');
-		
-		array_push($cp, array('$O'.$op, 'pa_type', msg('thesaurus_type'), true, true));		
-		
+
+		$op = '1:' . msg('th_type_1');
+		$op .= '&2:' . msg('th_type_2');
+		$op .= '&3:' . msg('th_type_3');
+		$op .= '&4:' . msg('th_type_4');
+		$op .= '&5:' . msg('th_type_5');
+
+		array_push($cp, array('$O' . $op, 'pa_type', msg('thesaurus_type'), true, true));
 
 		$ops = '1:' . msg('status_1');
 		$ops .= '&2:' . msg('status_2');
@@ -1757,7 +1768,52 @@ class skoses extends CI_model {
 		$this -> db -> query($sql);
 	}
 
-	function glossario($th = '') {
+	function glossario_html($th, $lk) {
+		$sql = "select r1.rl_value as rl1, r2.rl_value as rl2,note0.rs_propriety as prop,
+						t1.ct_concept as c, note.rl_value as note, 
+						note2.rs_propriety as prop_note, pre2.prefix_ref as prop_pre,
+						UPPER(substr(r1.rl_value,1,1)) as ltr
+					FROM th_concept_term as t1						
+						INNER JOIN rdf_literal AS r1 ON id_rl = t1.ct_term 
+						INNER JOIN rdf_resource as note0 ON id_rs = t1.ct_propriety
+						LEFT JOIN th_concept_term as t2 on t1.ct_concept = t2.ct_concept and t2.ct_propriety = 25
+						LEFT JOIN rdf_literal AS r2 ON r2.id_rl = t2.ct_term 
+						LEFT JOIN rdf_literal_note as note ON rl_c = t1.ct_concept
+						LEFT JOIN rdf_resource as note2 ON note.rl_type = note2.id_rs
+						LEFT JOIN rdf_prefix as pre2 ON note2.rs_prefix = pre2.id_prefix
+						WHERE t1.ct_th = $th and 
+							(note0.rs_group = 'LABEL' or note0.rs_group = 'TE' or note0.rs_group = 'FE')  
+						ORDER BY r1.rl_value";
+
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+		$sx = '<div style="line-height: 160%">';
+		$xltr = '';
+		for ($r = 0; $r < count($rlt); $r++) {
+			$line = $rlt[$r];
+
+			$ltr = $line['ltr'];
+			if (($xltr != $ltr) and (strlen(trim($line['rl1'])) >= 3)){
+				$sx .= '<br>';
+				$sx .= '<font style="font-size: 150%;"><b>~~' . trim($ltr) . '~~</b></font>';			
+				$sx .= '<br>';
+				$xltr = $ltr;
+			}
+
+			$sx .= $line['rl1'];
+			if ($line['rl1'] != $line['rl2']) {
+				$sx .= '<span>';
+				$sx .= '<i> ' . msg('use') . ' </i> ';
+				$sx .= '</span>';
+				$sx .= $line['rl2'];
+			}
+			$sx .= '<br>';
+		}
+		$sx .= '</div>';
+		return ($sx);
+	}
+
+	function glossario($th = '', $lk = '') {
 		$sql = "select r1.rl_value as rl1, r2.rl_value as rl2,note0.rs_propriety as prop,
 						t1.ct_concept as c, note.rl_value as note, 
 						note2.rs_propriety as prop_note, pre2.prefix_ref as prop_pre
@@ -1789,18 +1845,24 @@ class skoses extends CI_model {
 					$ix = 0;
 				}
 				$ltr = $xltr;
-				$sx .= '<span class="big">~' . substr($ltr, 0, 1) . '~</span>';
+				$sx .= '<span class="big">~' . substr($ltr, 0, 1) . '~</span>' . cr();
 			}
-			$link = '<a href="' . base_url('index.php/thesa/c/' . $line['c']) . '">';
+			if ($lk != '') {
+				$link = '';
+				$linka = '';
+			} else {
+				$link = '<a href="' . base_url('index.php/thesa/c/' . $line['c']) . '">';
+				$linka = '</a>';
+			}
 
 			if ($c != $xc) {
 				if ($ix > 0) { $sx .= '</li>' . cr();
 					$ix = 0;
 				}
 				$sx .= '<li>';
-				$sx .= $link . $line['rl1'] . '</a>';
+				$sx .= $link . $line['rl1'] . $linka;
 				if (strlen($line['note']) > 0) {
-					$sx .= '<p>' . '<b>' . msg($line['prop_pre'] . ':' . $line['prop_note']) . '</b>: ' . $line['note'] . '</p>';
+					$sx .= '<p>' . '<b>' . msg($line['prop_pre'] . ':' . $line['prop_note']) . '</b>: ' . $line['note'] . '</p>' . cr();
 				}
 				// $sx .= '<i>'.$line['prop'].'</i>';
 				if ($line['rl1'] != $line['rl2']) {
@@ -1822,7 +1884,7 @@ class skoses extends CI_model {
 		if ($ix > 0) { $sx .= '</li>' . cr();
 			$ix = 0;
 		}
-		$sx .= '</lu>';
+		$sx .= '</ul>';
 		return ($sx);
 	}
 
@@ -2470,6 +2532,29 @@ class skoses extends CI_model {
 				break;
 		}
 
+	}
+
+	function icone_update($th, $ic) {
+		$sql = "update th_thesaurus
+						set pa_icone = " . round($ic) . "
+						where id_pa = " . $th;
+		$this -> db -> query($sql);
+		return (1);
+	}
+
+	function icones_select($th) {
+		$sx = '';
+		$sx .= '<div class="row">' . cr();
+		for ($r = 0; $r < 1000; $r++) {
+			$img = 'img/icone/thema/' . strzero($r, 3) . '.png';
+			if (file_exists($img)) {
+				$link = '<a href="' . base_url('index.php/thesa/icone/' . $th . '/' . $r . '/' . checkpost_link('icone' . $r)) . '">';
+				$sx .= '<div class="col-2">' . $r . $link . $this -> show_icone($r) . '</a>' . '</div>' . cr();
+			}
+
+		}
+		$sx .= '</div>' . cr();
+		return ($sx);
 	}
 
 }
