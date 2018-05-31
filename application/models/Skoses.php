@@ -963,11 +963,13 @@ class skoses extends CI_model {
 					where pa_status = 2 
 					order by pa_name ";
 		} else {
-			$sql = "select id_pa, pa_name, pa_created, pa_status, pa_avaliacao, pa_creator, pa_description, pa_icone
+			$sql = "select id_pa, pa_type, pa_name, pa_created, pa_status, 
+			                 pa_avaliacao, pa_creator, pa_description, pa_icone
 						FROM th_thesaurus
 						LEFT JOIN th_users ON ust_th = id_pa
 							where (pa_creator = $user) or (ust_user_id = $user)
-							group by  id_pa, pa_name, pa_created, pa_status, pa_avaliacao, pa_creator, pa_description, pa_icone
+							group by  id_pa, pa_name, pa_created, pa_status, 
+							          pa_avaliacao, pa_creator, pa_description, pa_icone, pa_type
 							order by pa_name, pa_status desc  ";
 		}
 		$rlt = $this -> db -> query($sql);
@@ -994,6 +996,7 @@ class skoses extends CI_model {
 
 			$sa .= '<div class="col-md-4 text-left" style="border-top: 1px #000000 solid; margin-bottom: 40px; padding: 10px;">' . cr();
 			$sa .= $link . '<span class="middle">' . $line['pa_name'] . '</span>' . '</a>';
+            $sa .= '<br><i>' . msg('th_type_'.$line['pa_type']) . '</i>';
 			$sa .= '<p>' . $line['pa_description'] . '</span>';
 			//$sa .= '<a href="' . base_url('index.php/thesa/th_edit/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'] . $this -> chave)) . '" class="btn btn-secondary">' . msg('edit') . '</a>';
 			if ((isset($_SESSION['id']) and ($line['pa_creator'] == $_SESSION['id']))) {
@@ -1051,9 +1054,9 @@ class skoses extends CI_model {
 			$sx .= '<li><a href="' . base_url('index.php/thesa/terms/' . $id . '/' . $line['letra']) . '" class="page-link">' . $line['letra'] . '</a></li>';
 		}
 
-		if (($ed == 1) and ($this -> autho('', $id))) {
-			$sx .= '<li><a href="' . base_url('index.php/thesa/concept_add/' . $id . '/') . '" class="page-link">' . msg('add') . '</a></li>';
-		}
+		#if (($ed == 1) and ($this -> autho('', $id))) {
+		#	$sx .= '<li><a href="' . base_url('index.php/thesa/concept_add/' . $id . '/') . '" class="page-link">' . msg('add') . '</a></li>';
+		#}
 		$sx .= '</ul></nav>	';
 		return ($sx);
 	}
@@ -1263,7 +1266,12 @@ class skoses extends CI_model {
 		array_push($cp, array('$T80:6', 'pa_methodology', msg('thesaurus_methodology'), false, true));
 
 		$op = '1:' . msg('th_type_1');
-		array_push($cp, array('$O', 'pa_type', msg('thesaurus_type'), true, true));
+        $op .= '&2:' . msg('th_type_2');
+        $op .= '&3:' . msg('th_type_3');
+        $op .= '&4:' . msg('th_type_4');
+        $op .= '&5:' . msg('th_type_5');
+        $op .= '&6:' . msg('th_type_6');
+		array_push($cp, array('$O '.$op, 'pa_type', msg('thesaurus_type'), true, true));
 
 		array_push($cp, array('$HV', 'pa_status', '1', true, true));
 		array_push($cp, array('$HV', 'pa_classe', 1, true, true));
@@ -1288,7 +1296,7 @@ class skoses extends CI_model {
 		$op .= '&3:' . msg('th_type_3');
 		$op .= '&4:' . msg('th_type_4');
 		$op .= '&5:' . msg('th_type_5');
-
+        $op .= '&6:' . msg('th_type_6');
 		array_push($cp, array('$O' . $op, 'pa_type', msg('thesaurus_type'), true, true));
 
 		$ops = '1:' . msg('status_1');
@@ -1485,6 +1493,7 @@ class skoses extends CI_model {
 						WHERE ust_user_id = $id
 						AND ust_th = $th
 						AND ust_status = 1";
+
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
 		if (count($rlt) > 0) {
@@ -1595,7 +1604,7 @@ class skoses extends CI_model {
 				if (strlen(trim($line['altTerm'])) > 0) {
 					$link = '<a href="' . base_url('index.php/thesa/c/' . $line['ct_concept']) . '/' . $th . '/" class="term">';
 					$sa = ' ';
-					$saf = ' </a><span style="color: #808080"><i>USE</i></span> ' . $link . $line['altTerm'];
+					$saf = ' </a><span style="color: #808080"><i>'.msg('use').'</i></span> ' . $link . $line['altTerm'];
 				}
 			}
 			$sx .= '<li>' . $link . $sa . ' ' . $line['rl_value'];
@@ -1723,10 +1732,10 @@ class skoses extends CI_model {
 	}
 
 	function from_to($th = 0, $separador = '=>', $capc = '') {
-		$sql = "select * from th_concept_term 
+		$sql = "select ct_concept, ct_propriety, rl_value, length(rl_value) as sz  from th_concept_term 
 						INNER JOIN rdf_literal ON ct_term = id_rl
 						where ct_th = $th and ct_term > 0
-						order by ct_concept, ct_propriety";
+						order by ct_concept, ct_propriety, sz desc";
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
 		$mst = '';
@@ -2370,17 +2379,19 @@ class skoses extends CI_model {
 		}
 	}
 
-	function search_term($t = '', $th = '') {
+	function search_term($t = '', $th = '0') {
 		$sql = "select * from th_concept_term
 						INNER JOIN rdf_literal ON id_rl = ct_term
 						INNER JOIN th_thesaurus ON ct_th = id_pa
-						where rl_value like '%" . $t . "%'
+						where rl_value like '%" . $t . "%' and ct_th = $th
 						order by rl_value";
+                        echo $sql;
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
 		$sx = '<table width="100%" class="table">';
 		for ($r = 0; $r < count($rlt); $r++) {
 			$line = $rlt[$r];
+
 			$link = '<a href="' . base_url('index.php/thesa/c/' . $line['ct_concept'] . '/' . $line['ct_th']) . '" class="link">';
 			$sx .= '<tr>';
 			$sx .= '<td>';

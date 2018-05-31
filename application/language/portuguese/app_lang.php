@@ -78,6 +78,7 @@ $lang['email_already_inserted'] = 'E-mail já cadastrado!';
 $lang['forgot_password'] = 'Esqueci minha senha';
 $lang['lowercase'] = 'Inserir em caixa baixa';
 $lang['add'] = 'adicionar';
+$lang['add_term_title'] = 'Adicionar novo Termo';
 $lang['Term_edit_concept'] = 'Editar descritor';
 $lang['Term_delete_concept'] = 'Excluir descritor';
 $lang['bt_thesauros'] = 'tesauros';
@@ -304,8 +305,10 @@ $lang['th_type_2'] = 'Vocabulário controlado';
 $lang['th_type_3'] = 'Controle de autoridade';
 $lang['th_type_4'] = 'Thesauro';
 $lang['th_type_5'] = 'Ontologia';
+$lang['th_type_6'] = 'Stopwords';
 
-$lang['my_thesauros'] = 'Meus Thesa';
+$lang['my_thesauros'] = 'Meu Thesa';
 $lang['open_thesauros'] = 'TH abertos';
 $lang['already_inserted'] = 'Termo já existe';
+
 ?>

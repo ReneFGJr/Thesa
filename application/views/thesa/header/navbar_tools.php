@@ -1,4 +1,5 @@
 <?php
+if (!isset($ed)) { $ed = ''; }
 if (!isset($_SESSION['skos'])) {
     $th = 0;
     if (isset($id_pa)) { $th = $id_pa;
@@ -29,8 +30,12 @@ if (!isset($_SESSION['id'])) {
                   <li class="nav-item">
                     <a class="nav-link active" href="<?php echo base_url('index.php/thesa/terms/' . $th); ?>"><?php echo msg('glossario'); ?></a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><?php echo msg('configuration'); ?></a>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/th_edit/'.$th.'/'.checkpost_link($th)); ?>"><?php echo msg('edit_th'); ?></a>
+                      <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/collaborators'); ?>"><?php echo msg('collaborators'); ?></a>                                                          
+                    </div>
                   </li>
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><?php echo msg('rules'); ?></a>
@@ -42,23 +47,25 @@ if (!isset($_SESSION['id'])) {
                       <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/terms_from_to/');?>"><?php echo msg('remissiva_de_para'); ?></a>
                       
                     <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/concept_add/'); ?>"><?php echo msg('terms'); ?></a>
-                    <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/collaborators'); ?>"><?php echo msg('collaborators'); ?></a>
+                    
                     
                     <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/tools/'); ?>"><?php echo msg('text_processing'); ?></a>
                                                           
                     </div>
                   </li>
+                  <?php if (($ed == 1) or ($this -> skoses -> autho('', $th))) { ?>
                   <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
+                    <a class="nav-link" href="<?php echo base_url('index.php/thesa/concept_add/'.$th);?>" title="<?php echo msg('add_term_title');?>"><?php echo msg('add');?></a>
                   </li>
+                  <?php } ?>
                 </ul>                
             </div>
             <div class="col-md-4 text-right">    
-                <form class="navbar-form navbar-left">
+                <form class="navbar-form navbar-left" menthod="get" action="<?php echo base_url('index.php/thesa/search');?>">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="<?php echo msg('term_search');?>" aria-label="<?php echo msg('term_search');?>" aria-describedby="basic-addon2">
+                        <input type="text" name="form_search" class="form-control" placeholder="<?php echo msg('term_search');?>" aria-label="<?php echo msg('term_search');?>" aria-describedby="basic-addon2">
                         <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button"><?php echo msg('search'); ?></button>
+                            <input type="submit" class="btn btn-outline-secondary" type="button" value="<?php echo msg('search'); ?>">
                         </div>
                     </div>
                 </form>
