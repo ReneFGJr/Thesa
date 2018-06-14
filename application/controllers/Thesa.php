@@ -1196,7 +1196,7 @@ class Thesa extends CI_Controller {
 
                 
 
-                /******************************** GLASSARIO ****************************/
+                /******************************** GLOSSARIO ****************************/
                 $pdf -> AddPage();
                 $html = '<h1>Glossário</h1>';
                 $html .= $this -> skoses -> glossario_html($id, 'txt');                
@@ -1208,16 +1208,24 @@ class Thesa extends CI_Controller {
                 $pdf -> writeHTML($html, true, false, true, false, '');
                 
                 $pdf -> AddPage();
+                $html = '<h1>Glossário - Ficha Terminológica para Coleta dos Termos</h1>';
+                $html .= $this -> skoses -> ficha_terminologica_html($id, 'txt');
+                $pdf -> writeHTML($html, true, false, true, false, '');
+                
+                
+                $pdf -> AddPage();
 
                 // writeHTML($html, $ln=true, $fill=false, $reseth=false, $cell=false, $align='')
                 // writeHTMLCell($w, $h, $x, $y, $html='', $border=0, $ln=0, $fill=0, $reseth=true, $align='', $autopadding=true)
 
                 // create some HTML content
+                /*
                 $html = '<h1>' . $data['pa_name'] . '</h1>
 				<div style="text-align:center">
 				<img src="' . base_url('img/background_custumer/brapci.jpg') . '" alt="test alt attribute" width="800" border="0" />
 				</div>';
                 $html .= '<h3>==>' . PDF_PAGE_FORMAT . '</h3>';
+                 */
                 // output the HTML content
                 $pdf -> writeHTML($html, true, false, true, false, '');
 

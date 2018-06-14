@@ -395,7 +395,7 @@ class skoses extends CI_model {
 
     function le_c_broader($id = '', $th = '') {
         $th = round(sonumero($th));
-        $cp = 't1.id_ct as id_ct, t2.id_ct as id_ct2, rl_value, rl_lang, t1.ct_concept as ct_concept';
+        $cp = 't1.id_ct as id_ct, t2.id_ct as id_ct2, rl_value, rl_lang, t1.ct_concept as ct_concept, t1.ct_created as ct_created';
         $sql = "select $cp
 					FROM th_concept_term as t1
 					INNER JOIN th_concept_term as t2 ON t1.ct_concept = t2.ct_concept and t2.ct_propriety = 25 
@@ -457,7 +457,7 @@ class skoses extends CI_model {
         /*********************************/
         $th = round(sonumero($th));
 
-        $cp = 'id_ct2 as id_ct, rl_value, rl_lang, ct_concept, rs_propriety, prefix_ref';
+        $cp = 'id_ct2 as id_ct, rl_value, rl_lang, ct_concept, rs_propriety, prefix_ref, ct_created';
         $sql = "select $cp from (
 					SELECT id_ct as id_ct2, ct_concept_2 as idc, ct_propriety as ctp FROM `th_concept_term` 
 					INNER JOIN rdf_resource ON id_rs = ct_propriety
@@ -1607,7 +1607,8 @@ class skoses extends CI_model {
             $saf = '';
             $link = '<a href="' . base_url('index.php/thesa/term/' . $th . '/' . $line['id_rl']) . '" class="term_word">';
             if (round($line['ct_propriety']) == $co) {
-                $sa = '<img src="' . base_url('img/icone/tag.png') . '" height="24" border=0>'; ;
+                $sa = '<img src="' . base_url('img/icone/tag.png') . '" height="24" border=0>';
+                ;
                 $link = '<a href="' . base_url('index.php/thesa/c/' . $line['ct_concept']) . '/' . $th . '/" class="term">';
             } else {
                 if (strlen(trim($line['altTerm'])) > 0) {
@@ -1872,8 +1873,9 @@ class skoses extends CI_model {
                 $nota = trim($line['note']);
                 $nota = troca($nota, chr(13), ' ');
                 $nota = troca($nota, chr(10), '');
-                if (strlen($nota) > 0) { $nota = '----'.$nota.cr().cr(); }                
-                $sx .= '<b>' . $line['rl1'] . '</b>'.$nota;
+                if (strlen($nota) > 0) { $nota = '----' . $nota . cr() . cr();
+                }
+                $sx .= '<b>' . $line['rl1'] . '</b>' . $nota;
             }
 
             $sx .= '<br>';
@@ -1926,7 +1928,6 @@ class skoses extends CI_model {
                     break;
                 case 'LABEL' :
                     $d = $this -> skoses -> le_c($idx, $id_th);
-                    //print_r($d);
                     $bt = $d['terms_bt'];
                     $nw = $d['terms_nw'];
                     $tr = $d['terms_tr'];
@@ -1988,6 +1989,185 @@ class skoses extends CI_model {
 
         }
         return ('<pre>' . $sx . '</pre>');
+    }
+
+    function ficha_terminologica_html($th, $lk) {
+
+        $sql = "select 
+                    r1.rl_value as rl_value, 
+                    r2.rl_value as r2_value,
+                    rs_propriety, 
+                    T1.ct_th as ct_th, 
+                    T1.ct_concept as ct_concept,
+                    rs_group,
+                    T1.ct_created as ct_created
+                    
+                    FROM th_concept_term as T1
+                    INNER JOIN rdf_literal AS r1 ON r1.id_rl = T1.ct_term
+                    INNER JOIN rdf_resource ON T1.ct_propriety = id_rs
+                    
+                    INNER JOIN th_concept_term as UP ON T1.ct_concept = UP.ct_concept and UP.ct_propriety = 25
+                    INNER JOIN rdf_literal AS r2 ON r2.id_rl = UP.ct_term
+                    
+                    WHERE T1.ct_th = $th AND rs_propriety = 'prefLabel'
+                    ORDER BY r1.rl_value 
+                    ";
+
+        $rlt = $this -> db -> query($sql);
+        $rlt = $rlt -> result_array();
+        $sx = '';
+        for ($r = 0; $r < count($rlt); $r++) {
+            $line = $rlt[$r];
+            $sx .= '<br/>';
+            $sx .= '<table cellspacing="0" cellpadding="5" border="1" width="100%">';
+
+            /* NAME */
+            $sx .= '<tr>';
+            $sx .= '<td rowspan="1" width="85%"><h2><tt>';
+            $sx .= '<b>' . $line['rl_value'] . '</b>';
+            //$sx .= '(' . $line['rs_propriety'] . '-' . $line['rs_group'] . ')';
+            $sx .= '</tt></h2></td>';
+            $sx .= '<td rowspan="10" width="15%" align="center">';
+            $sx .= "IMAGE";
+            $sx .= '</td>';
+            $sx .= '</tr>';
+
+            $idx = $line['ct_concept'];
+            $id_th = $line['ct_th'];
+            $dt = sonumero(substr($line['ct_created'], 0, 10));
+            $dta = $dt;
+
+            $d = $this -> skoses -> le_c($idx, $id_th);
+
+            for ($z = 0; $z < count($d['notes']); $z++) {
+                $note = $d['notes'][$z];
+                $dt1 = sonumero(substr($note['rl_created'], 0, 10));
+                if ($dt1 > $dta) { $dta = $dt1;
+                }
+
+                $sx .= '<tr>';
+                $sx .= '<td><tt><font style="font-size: 10px;">';
+                $sx .= '<b>' . msg($note['prefix_ref'] . ':' . $note['rs_propriety']) . '</b>: ';
+                $sx .= mst($note['rl_value']);
+                $sx .= '</font></tt></td>';
+                $sx .= '</tr>';
+            }
+
+            /*********************************************** termos relacionados ************/
+            if ((count($d['terms_bt']) + count($d['terms_nw']) + count($d['terms_tr']) + count($d['terms_al'])) > 0) {
+
+                $sx .= '<tr>';
+                $sx .= '<td><tt>';
+                $sx .= '<b>' . msg('term_relations') . '</b>';
+                $sx .= '<br/>';
+                $sx .= '';
+
+                switch ($line['rs_group']) {
+                    case 'FE' :
+                        $sx .= '<br>';
+                        $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;USE ' . $line['r2_value'];
+                        break;
+                    case 'TH' :
+                        $sx .= '<br>';
+                        $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;USE ' . $line['r2_value'];
+                        break;
+                    case 'LABEL' :
+                        $d = $this -> skoses -> le_c($idx, $id_th);
+                        $bt = $d['terms_bt'];
+                        $nw = $d['terms_nw'];
+                        $tr = $d['terms_tr'];
+                        $al = $d['terms_al'];
+
+                        /******************** AL **********/
+                        if (count($al) > 0) {
+                            for ($z = 0; $z < count($al); $z++) {
+                                $dt1 = sonumero(substr($al[$z]['ct_created'], 0, 10));
+                                if ($dt1 > $dta) { $dta = $dt1;
+                                }
+                                $sx .= '<br>';
+                                if ($z == 0) {
+                                    $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;UP ' . $al[$z]['rl_value'];
+                                } else {
+                                    $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ' . $al[$z]['rl_value'];
+                                }
+
+                            }
+                        }
+                        /******************** BT **********/
+                        if (count($bt) > 0) {
+                            for ($z = 0; $z < count($bt); $z++) {
+                                $dt1 = sonumero(substr($bt[$z]['ct_created'], 0, 10));
+                                if ($dt1 > $dta) { $dta = $dt1;
+                                }
+                                $sx .= '<br>';
+                                if ($z == 0) {
+                                    $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;TG ' . $bt[$z]['rl_value'];
+                                } else {
+                                    $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ' . $bt[$z]['rl_value'];
+                                }
+
+                            }
+                        }
+                        /******************** NW **********/
+                        if (count($nw) > 0) {
+                            for ($z = 0; $z < count($nw); $z++) {
+                                $dt1 = sonumero(substr($nw[$z]['ct_created'], 0, 10));
+                                if ($dt1 > $dta) { $dta = $dt1;
+                                }
+                                $sx .= '<br>';
+                                if ($z == 0) {
+                                    $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;TE ' . $nw[$z]['rl_value'];
+                                } else {
+                                    $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ' . $nw[$z]['rl_value'];
+                                }
+                            }
+                        }
+                        /******************** TR **********/
+                        if (count($tr) > 0) {
+                            for ($z = 0; $z < count($tr); $z++) {
+                                $dt1 = sonumero(substr($tr[$z]['ct_created'], 0, 10));
+                                if ($dt1 > $dta) { $dta = $dt1;
+                                }
+                                $sx .= '<br>';
+                                if ($z == 0) {
+                                    $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;TR ' . $tr[$z]['rl_value'];
+                                } else {
+                                    $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ' . $tr[$z]['rl_value'];
+                                }
+                            }
+                        }
+                        break;
+                    default :
+                        if ((isset($d['rl_value'])) and ($d['rl_value'] != $line['rl_value'])) {
+                            $sx .= '<br>x';
+                            $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;USE ' . $d['rl_value'];
+
+                        }
+                }
+                $sx .= '</tt>';
+                $sx .= '</td>';
+                $sx .= '</tr>';
+            }
+
+            $sx .= '<tr>';
+            $sx .= '<td>';
+            $sx .= '<tt>';
+            $sx .= msg('created_in') . ': <b>' . stodbr($dt) . '</b>';
+            if ($dt != $dta)
+                {
+                    $sx .= ' &nbsp; &nbsp; &nbsp; &nbsp; ';
+                    $sx .= msg('update_in') . ': <b>' . stodbr($dta) . '</b>';
+                }
+            $sx .= '</tt>';
+            $sx .= '</td>';
+            $sx .= '</tr>';
+
+            $sx .= '</table>';
+            $sx .= '<br/>';
+        }
+        //echo $sx;
+        //exit ;
+        return ($sx);
     }
 
     function glossario($th = '', $lk = '') {
