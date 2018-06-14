@@ -266,6 +266,7 @@ class skoses extends CI_model {
 						<div class="col-md-10 col-md-offset-1">';
 		$sx .= '	<select name="tt" size=1 style="width: 100%">';
 		$sx .= '	<option value="" class="middle">::: ' . msg('select_the_relation') . '</option>';
+		$sx .= '	<option value="por" class="middle" selected>' . msg('por') . '</option>';
 		for ($r = 0; $r < count($rlt); $r++) {
 			$line = $rlt[$r];
 			$op = '';
@@ -453,8 +454,10 @@ class skoses extends CI_model {
 	function le_c_associate($id = '', $th = '') {
 		/*********************************/
 		$th = round(sonumero($th));
-		$sql = "select * from (
-					SELECT id_ct, ct_concept_2 as idc, ct_propriety as ctp FROM `th_concept_term` 
+		
+		$cp = 'id_ct2 as id_ct, rl_value, rl_lang, ct_concept, rs_propriety, prefix_ref';
+		$sql = "select $cp from (
+					SELECT id_ct as id_ct2, ct_concept_2 as idc, ct_propriety as ctp FROM `th_concept_term` 
 					INNER JOIN rdf_resource ON id_rs = ct_propriety
 					WHERE rs_group = 'TR' and ct_concept = $id and ct_th = $th 
    				 ) as tb1
@@ -467,8 +470,8 @@ class skoses extends CI_model {
 		$rlt1 = $rlt -> result_array();
 
 		/* PARTE II */
-		$sql = "select * from (
-					SELECT id_ct, ct_concept as idc, ct_propriety as ctp FROM `th_concept_term` 
+		$sql = "select $cp from (
+					SELECT id_ct as id_ct2, ct_concept as idc, ct_propriety as ctp FROM `th_concept_term` 
 					INNER JOIN rdf_resource ON id_rs = ct_propriety
 					WHERE rs_group = 'TR' and ct_concept_2 = $id and ct_th = $th 
    				 ) as tb1
@@ -482,6 +485,7 @@ class skoses extends CI_model {
 		$rlt2 = $rlt -> result_array();
 
 		$rlt = array_merge($rlt1, $rlt2);
+		print_r($rlt);
 
 		//print_r($rlt);
 
@@ -900,7 +904,16 @@ class skoses extends CI_model {
 	function to_json($id) {
 		$id = round($id);
 		$data = $this -> le($id);
-		print_r($data);
+		
+		$tree = array();
+		/********************** json *****************/
+		$sx = '{ "name": "flare" }';
+		//$sx .= 'children": [ { "name": "analytics", }';
+		//$sx .= '}';
+		$fp = fopen('xml/thesa_'.$id.'.json', 'w');
+		fwrite($fp, $sx);
+		fclose($fp);
+		return($sx);
 	}
 
 	function edit_nt($id) {
@@ -2385,7 +2398,7 @@ class skoses extends CI_model {
 						INNER JOIN th_thesaurus ON ct_th = id_pa
 						where rl_value like '%" . $t . "%' and ct_th = $th
 						order by rl_value";
-                        echo $sql;
+
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
 		$sx = '<table width="100%" class="table">';

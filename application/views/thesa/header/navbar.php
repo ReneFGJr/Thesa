@@ -21,7 +21,7 @@ if (isset($_SESSION['id']) and ($_SESSION['id'] != '')) {
 				<a class="nav-link" href="<?php echo base_url('index.php/thesa/thesaurus_open'); ?>"><?php echo msg('open_thesauros'); ?> <span class="sr-only">(current)</span></a>
 			</li>
 			<?php 
-			if (perfil('#ADM')==1) { ?>
+			if ((perfil('#ADM')==1) or (isset($_SESSION['id']))) { ?>
             <li class="nav-item active">
                 <a class="nav-link" href="<?php echo base_url('index.php/thesa/thesaurus_my'); ?>"><?php echo msg('my_thesauros'); ?></a>
             </li>

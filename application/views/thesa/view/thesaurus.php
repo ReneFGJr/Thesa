@@ -44,7 +44,7 @@ $pa = '';
 			<span style="font-size: 70%"><?php echo msg('author'); ?>:</span>
 		</div>
         <div class="col-xs-2 col-md-2 text-right nopr">
-        	<?php if (perfil("#ADM")) { ?>
+        	<?php if (perfil("#ADM") or (isset($editar))) { ?>
             <a href="<?php echo base_url('index.php/thesa/imagem/desktop');?>" class="btn btn-secondary" title="<?php echo msg('change_image');?>"><img src="<?php echo base_url('img/icone/photo.svg');?>" width="20" height="20"></a>
             <?php } ?>
         </div>		

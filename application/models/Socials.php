@@ -392,12 +392,10 @@ class socials extends CI_Model {
 		$nome = $data['us_nome'];
 		$senha = $data['us_password'];
 		$auth = $data['us_autenticador'];
-        $inst = '';
-        if (isset($data['us_institution']))
-            {
-                $inst = $data['us_institution'];        
-            }
-        
+		$inst = '';
+		if (isset($data['us_institution'])) {
+			$inst = $data['us_institution'];
+		}
 
 		$sql = "select * from " . $this -> table . " where us_email = '$email' ";
 		$rlt = $this -> db -> query($sql);
@@ -415,25 +413,23 @@ class socials extends CI_Model {
 			$this -> db -> query($sql);
 			$this -> updatex();
 			$this -> update_perfil_check($data);
-			return(1);
+			return (1);
 		} else {
-		    return(-1);
+			return (-1);
 		}
 	}
 
-    function resend()
-        {
-            $email = get("dd0");
-            $chk = get("chk");
-            $chk2 = md5($email.date("Ymd").$email);
-            if ($chk2 == $chk)
-                {
-                    
-                } else {
-                    $data['content'] = 'Erro de checagem dos dados!';
-                    $this->load->view('error',$data);                                   
-                }
-        }
+	function resend() {
+		$email = get("dd0");
+		$chk = get("chk");
+		$chk2 = md5($email . date("Ymd") . $email);
+		if ($chk2 == $chk) {
+
+		} else {
+			$data['content'] = 'Erro de checagem dos dados!';
+			$this -> load -> view('error', $data);
+		}
+	}
 
 	function le($id, $fld = 'id') {
 		$sql = "select * from " . $this -> table;
@@ -501,7 +497,7 @@ class socials extends CI_Model {
 	function security_logout() {
 		$data = array('id' => '', 'user' => '', 'email' => '', 'image' => '', 'perfil' => '');
 		$this -> session -> set_userdata($data);
-		return('');
+		return ('');
 	}
 
 	function action($path, $d1, $d2) {
@@ -543,7 +539,8 @@ class socials extends CI_Model {
 				$ss_email = $line['us_email'];
 				$ss_image = $line['us_image'];
 				$ss_perfil = $line['us_perfil'];
-				$data = array('id' => $ss_id, 'user' => $ss_user, 'email' => $ss_email, 'image' => $ss_image, 'perfil' => $ss_perfil);
+				$ss_nivel = $line['us_nivel'];
+				$data = array('id' => $ss_id, 'user' => $ss_user, 'email' => $ss_email, 'image' => $ss_image, 'perfil' => $ss_perfil, 'nivel'=>$ss_nivel);
 				$this -> session -> set_userdata($data);
 				return (1);
 			} else {
@@ -577,17 +574,18 @@ class socials extends CI_Model {
 		return ($dd2);
 	}
 
-	function change_password($id,$new=0) {
+	function change_password($id, $new = 0) {
 		$form = new form;
 		$cp = array();
 		array_push($cp, array('$H8', '', '', false, false));
-		if ($new == 0)
-			{
-				array_push($cp, array('$P20', '', 'Senha atual', True, True));
-			}
+		if ($new == 0) {
+			array_push($cp, array('$P20', '', 'Senha atual', True, True));
+		} else {
+			array_push($cp, array('$HV', '', '', False, False));
+		}
 		array_push($cp, array('$P20', '', 'Nova senha', True, True));
 		array_push($cp, array('$P20', '', 'Confirme nova senha', True, True));
-		array_push($cp, array('$B', '', 'Alterar senha', True, True));
+		array_push($cp, array('$B', '', 'Alterar senha', false, True));
 
 		$tela = $form -> editar($cp, '');
 
@@ -597,19 +595,21 @@ class socials extends CI_Model {
 		$dd3 = $data['us_password'];
 		$p1 = get("dd2");
 		$p2 = get("dd3");
+		$dd2 = get("dd2");
 
-		$dd2 = $this -> password_cripto($pass, $data['us_autenticador']);
-
-		if ($dd2 == $dd3) {
-			if (($p1 == $p2) or ($new == 1)) {
-				$sql = "update " . $this -> table . " set us_password = '" . md5($p1) . "', us_autenticador = 'MD5' where id_us = " . $id;
-				$this -> db -> query($sql);
-				redirect(base_url('index.php/home'));
+		//$dd2 = $this -> password_cripto($pass, $data['us_autenticador']);
+		if ($form -> saved > 0) {
+			if (($dd2 == $dd2) and (strlen($dd2) > 0)) {
+				if (($p1 == $p2) or ($new == 1)) {
+					$sql = "update " . $this -> table . " set us_password = '" . md5($p1) . "', us_autenticador = 'MD5' where id_us = " . $id;
+					$this -> db -> query($sql);
+					redirect(base_url('index.php/thesa/social/login'));
+				} else {
+					$tela .= '<div class="alert">Senhas não conferem</div>';
+				}
 			} else {
-				$tela .= '<div class="alert">Senhas não conferem</div>';
+				$tela .= '<div class="alert">Senhas atual não confere!</div>';
 			}
-		} else {
-			$tela .= '<div class="alert">Senhas atual não confere!</div>';
 		}
 
 		return ($tela);
@@ -617,110 +617,109 @@ class socials extends CI_Model {
 
 	function user_id() {
 		if (!isset($_SESSION['id'])) {
-			return(0);
+			return (0);
 		}
 
 		$us = round($_SESSION['id']);
-		return($us);
+		return ($us);
 
 	}
 
-    function user_email_send($para, $nome, $code) {
-        $anexos = array();
-        $texto = $this -> email_cab();
-        $de = 0;
-        switch($code) {
-            case 'SIGNUP' :
-                $link = base_url('index.php/thesa/social/npass/?dd0=' . $para . '&chk=' . checkpost_link($para . $para));
-                $assunto = 'Cadastro de novo usuários - Thesa';
-                $texto .= '<p>' . msg('Dear') . ' <b>' . $nome . ',</b></p>';
-                $texto .= '<p>Para ativar seu cadastro é necessário clicar no link abaixo:';
-                $texto .= '<br><br>';
-                $texto .= '<a href="' . $link . '" target="_new">' . $link . '</a></p>';
-                $de = 1;
-                break;
-            case 'PASSWORD' :
-                $this -> le_user_id($para);
-                $link = base_url('index.php/thesa/user_password_new/?dd0=' . $para . '&chk=' . checkpost_link($para . date("Ymd")));
-                $assunto = msg('Cadastro de novo senha') . ' - Thesa';
-                $texto .= '<p>' . msg('Dear') . ' ' . $this -> line['us_nome'] . '</p>';
-                $texto .= '<p>' . msg('change_new_password') . '</p>';
-                $texto .= '<br><br>';
-                $texto .= '<a href="' . $link . '" target="_new">' . $link . '</a>';
-                $de = 1;
-                break;
-            default :
-                $assunto = 'Enviado de e-mail';
-                $texto .= ' Vinculo não informado ' . $code;
-                $de = 1;
-                break;
-        }
-        $texto .= $this -> email_foot();
-        if ($de > 0) {
-            enviaremail($para, $assunto, $texto, $de);
-        } else {
-            echo 'e-mail não enviado - ' . $code;
-        }
-    }
-    /***** EMAIL */
-    function email_cab() {
-        $sx = '<table width="600" align="center"><tr><td>';
-        $sx .= '<font style="font-family: Tahoma, Verdana, Arial; font-size: 14px;">' . cr();
-        $sx .= '<font color="blue" style="font-size: 24px;">THESA</font>' . cr();
-        $sx .= '<br>';
-        $sx .= '<font color="blue" style="font-size: 12px;"><i>Semantic Thesaurus</i></font>' . cr();
-        $sx .= '<hr>';
-        return ($sx);
-    }
+	function user_email_send($para, $nome, $code) {
+		$anexos = array();
+		$texto = $this -> email_cab();
+		$de = 0;
+		switch($code) {
+			case 'SIGNUP' :
+				$link = base_url('index.php/thesa/social/npass/?dd0=' . $para . '&chk=' . checkpost_link($para . $para));
+				$assunto = 'Cadastro de novo usuários - Thesa';
+				$texto .= '<p>' . msg('Dear') . ' <b>' . $nome . ',</b></p>';
+				$texto .= '<p>Para ativar seu cadastro é necessário clicar no link abaixo:';
+				$texto .= '<br><br>';
+				$texto .= '<a href="' . $link . '" target="_new">' . $link . '</a></p>';
+				$de = 1;
+				break;
+			case 'PASSWORD' :
+				$this -> le_user_id($para);
+				$link = base_url('index.php/thesa/user_password_new/?dd0=' . $para . '&chk=' . checkpost_link($para . date("Ymd")));
+				$assunto = msg('Cadastro de novo senha') . ' - Thesa';
+				$texto .= '<p>' . msg('Dear') . ' ' . $this -> line['us_nome'] . '</p>';
+				$texto .= '<p>' . msg('change_new_password') . '</p>';
+				$texto .= '<br><br>';
+				$texto .= '<a href="' . $link . '" target="_new">' . $link . '</a>';
+				$de = 1;
+				break;
+			default :
+				$assunto = 'Enviado de e-mail';
+				$texto .= ' Vinculo não informado ' . $code;
+				$de = 1;
+				break;
+		}
+		$texto .= $this -> email_foot();
+		if ($de > 0) {
+			enviaremail($para, $assunto, $texto, $de);
+		} else {
+			echo 'e-mail não enviado - ' . $code;
+		}
+	}
 
-    function email_foot() {
-        $sx = '';
-        $sx .= '<hr>';
-        $sx .= '</td></tr></table>';
-        return ($sx);
-    }
-    function signup()
-        {
-            $data = array();
-            $name = get("fullName");
-            $email = get("email");
-            $inst = get("Institution");
-            
-            if ((strlen($name) > 0) and (strlen($email)))
-                {
-                    $dt = array();
-                    $dt['us_nome'] = $name;
-                    $dt['us_email'] = $email;
-                    $dt['us_institution'] = $inst;
-                    $dt['us_password'] = md5(date("YmdHis"));
-                    $dt['us_autenticador'] = 'MD5';
-                    $rs = $this -> insert_new_user($dt);
-                    //$rs = 1;
-                    $data['erro'] = $rs;
-                    
-                    if ($rs == 1)
-                        {
-                            $code = 'SIGNUP';
-                            $this-> user_email_send($email, $name, $code);
-                            $this -> load -> view('thesa/login/login_signup_sucess', $dt);
-                            return("");   
-                        }  
-                }
-            
-            $this -> load -> view('thesa/login/login_signup', $data);
-        }
-    function le_email($e)
-        {
-            $sql = "select * from users where us_email = '$e'";
-            $rlt = $this->db->query($sql);
-            $rlt = $rlt->result_array();
-            if (count($rlt) > 0)
-                {
-                    $line = $rlt[0];
-                    return($line);
-                } else {
-                    return(array());
-                }
-        }
+	/***** EMAIL */
+	function email_cab() {
+		$sx = '<table width="600" align="center"><tr><td>';
+		$sx .= '<font style="font-family: Tahoma, Verdana, Arial; font-size: 14px;">' . cr();
+		$sx .= '<font color="blue" style="font-size: 24px;">THESA</font>' . cr();
+		$sx .= '<br>';
+		$sx .= '<font color="blue" style="font-size: 12px;"><i>Semantic Thesaurus</i></font>' . cr();
+		$sx .= '<hr>';
+		return ($sx);
+	}
+
+	function email_foot() {
+		$sx = '';
+		$sx .= '<hr>';
+		$sx .= '</td></tr></table>';
+		return ($sx);
+	}
+
+	function signup() {
+		$data = array();
+		$name = get("fullName");
+		$email = get("email");
+		$inst = get("Institution");
+
+		if ((strlen($name) > 0) and (strlen($email))) {
+			$dt = array();
+			$dt['us_nome'] = $name;
+			$dt['us_email'] = $email;
+			$dt['us_institution'] = $inst;
+			$dt['us_password'] = md5(date("YmdHis"));
+			$dt['us_autenticador'] = 'MD5';
+			$rs = $this -> insert_new_user($dt);
+			//$rs = 1;
+			$data['erro'] = $rs;
+
+			if ($rs == 1) {
+				$code = 'SIGNUP';
+				$this -> user_email_send($email, $name, $code);
+				$this -> load -> view('thesa/login/login_signup_sucess', $dt);
+				return ("");
+			}
+		}
+
+		$this -> load -> view('thesa/login/login_signup', $data);
+	}
+
+	function le_email($e) {
+		$sql = "select * from users where us_email = '$e'";
+		$rlt = $this -> db -> query($sql);
+		$rlt = $rlt -> result_array();
+		if (count($rlt) > 0) {
+			$line = $rlt[0];
+			return ($line);
+		} else {
+			return ( array());
+		}
+	}
+
 }
 ?>

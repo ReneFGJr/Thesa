@@ -42,12 +42,9 @@ if (!isset($_SESSION['id'])) {
                     <div class="dropdown-menu">
                       <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/check_all/'); ?>"><?php echo msg('check_all'); ?></a>
                       <a class="dropdown-item" href="#">Separated link</a>
-                      <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/th_edit/'.$th.'/'.checkpost_link($th)); ?>"><?php echo msg('preferences'); ?></a>
+                      <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/term_grapho/'.$th.'/'); ?>"><?php echo msg('grapho'); ?></a>
                       <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/terms_list/');?>"><?php echo msg('terms_list'); ?></a>
                       <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/terms_from_to/');?>"><?php echo msg('remissiva_de_para'); ?></a>
-                      
-                    <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/concept_add/'); ?>"><?php echo msg('terms'); ?></a>
-                    
                     
                     <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/tools/'); ?>"><?php echo msg('text_processing'); ?></a>
                                                           
