@@ -4,8 +4,8 @@
 <div style="background-color:#ffffff; padding: 20px;">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-6">
-				<h3>Apresentação do Thesa</h3>
+			<div class="col-md-12">
+				<h3>Apresentação do Thesa X</h3>
 				<p>
 					O Thesa foi desenvolvido objetivando disponibilizar um instrumento para os estudantes de graduação de biblioteconomia na disciplina de Linguagens Documentárias para a elaboração de tesauros, de modo que possibilite reduzir o trabalho operacional e dar maior atenção ao trabalho de desenvolvimento cognitivo e conceitual referente a modelagem do domínio.
 				</p>
@@ -27,17 +27,17 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-3 text-center box">
-			    <span class="small"><b><?php echo msg("thesauros");?></b></span>
+			    <span class="small"><b><?php echo msg("thesauros"); ?></b></span>
 			    <br>
 				<span class="big"><b><?php echo $nr_thesaurus; ?></b></span>
 			</div>
 			<div class="col-md-3 text-center box">
-			    <span class="small"><b><?php echo msg("concepts");?></b></span>
+			    <span class="small"><b><?php echo msg("concepts"); ?></b></span>
 			    <br>
 				<span class="big"><b><?php echo $nr_concept; ?></b></span>
 			</div>
 			<div class="col-md-3 text-center box">
-			    <span class="small"><b><?php echo msg("terms");?></b></span>
+			    <span class="small"><b><?php echo msg("terms"); ?></b></span>
 			    <br>
 				<span class="big"><b><?php echo $nr_terms; ?></b></span>
 			</div>
@@ -49,7 +49,7 @@
 <div style="background-color:#ffffff; padding: 20px;">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-md-12">
 				<h3>Sobre o Thesa</h3>
 				<p>
 					O Thesa foi desenvolvido inicialmente como um protótipo utilizando a linguagem php e banco de dados MySql, de forma a possibilitar o compartilhamento e desenvolvimento colaborativo da ferramenta.
