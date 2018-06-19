@@ -50,7 +50,7 @@ if (!isset($action)) {
 		</div>
 		<div class="col-md-5">
 			<?php
-			if ((count($notes)  +$editar) > 0) 
+			if ((count($notes)  + $editar) > 0) 
 				{
 					echo '<h4>';
 					echo msg('concept_DEF');

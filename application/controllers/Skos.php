@@ -901,21 +901,7 @@ class Skos extends CI_Controller {
         }
     }
 
-    function ntedit($id = '', $chk = '') {
-        /* Load model */
-        $edit = true;
-        $this -> load -> model("skoses");
-        $this -> cab(0);
 
-        $data['content'] = $this -> skoses -> edit_nt($id);
-        $data['title'] = '';
-        $this -> load -> view('content', $data);
-
-        if (strlen($data['content']) == 0) {
-            $this -> load -> view('wclose');
-        }
-
-    }
 
 
     function c2($c = '', $th = '') {

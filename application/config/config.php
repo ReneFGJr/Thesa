@@ -23,8 +23,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
+//$config['base_url'] = 'https://www.ufrgs.br/tesauros/';
 $config['base_url'] = '';
-
+define("PATH",'index.php/thesa/');
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -43,7 +44,7 @@ $config['index_page'] = 'index.php';
 |--------------------------------------------------------------------------
 |
 | This item determines which server global should be used to retrieve the
-| URI string.  The default setting of 'REQUEST_URI' catalogs for most servers.
+| URI string.  The default setting of 'REQUEST_URI' works for most servers.
 | If your links do not seem to work, try one of the other delicious flavors:
 |
 | 'REQUEST_URI'    Uses $_SERVER['REQUEST_URI']
@@ -367,10 +368,11 @@ $config['encryption_key'] = '';
 | except for 'cookie_prefix' and 'cookie_httponly', which are ignored here.
 |
 */
-$config['sess_driver'] = 'files';
+/* $config['sess_driver'] = 'files'; */
+$config['sess_driver'] = 'database';
 $config['sess_cookie_name'] = 'ci_session';
 $config['sess_expiration'] = 7200;
-$config['sess_save_path'] = NULL;
+$config['sess_save_path'] = 'ci_sessions';
 $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;

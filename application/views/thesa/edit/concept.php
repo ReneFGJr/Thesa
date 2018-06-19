@@ -5,12 +5,16 @@ if (!isset($action)) {
 ?>
 <div class="container">
 	<div class="row">
-		<div class="col-md-10 small"><?php echo msg('pref_term'); ?></br><font class="big"><?php echo $rl_value; ?>
+		<div class="col-md-9 small"><?php echo msg('pref_term'); ?></br><font class="big"><?php echo $rl_value; ?>
 			<sup>(<?php echo $rl_lang;?>)</sup>
-		</font>
-			
+		</font>			
 		</div>
-		<div class="col-md-2"><?php echo msg('concept'); ?></br><font class="xxxbig"><?php echo $c_concept; ?></font></div>
+		<div class="col-md-1">
+			<a href="#" onclick="newxy('<?php echo base_url('index.php/thesa/cremove/'.$id_c.'/'.checkpost_link($id_c));?>',1024,500);" title="<?php echo msg('delete concept');?>">
+			<img src="<?php echo base_url('img/icone/exclud.png');?>" class="img-fluid">
+			</a>
+		</div>
+		<div class="col-md-2 btn btn-secondary"><?php echo msg('concept'); ?></br><font class="xxxbig"><?php echo $c_concept; ?></font></div>
 	</div>
 </div>
 <br>

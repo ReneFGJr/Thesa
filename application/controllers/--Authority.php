@@ -615,7 +615,7 @@ class Authority extends CI_Controller {
 		$data = $this -> Authorities -> le_skos($th);
 		$this -> load -> view('skos/view', $data);
 		$data['pg'] = 4;
-		$data['editar'] = 1;
+		$data2['editar'] = 1;
 
 		/* menu */
 		$this -> load -> view('skos/skos_nav', $data);
