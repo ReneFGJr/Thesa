@@ -219,17 +219,44 @@ class skoses extends CI_model {
 		}
 		$sx .= '</td>';
 
-		$sx .= '<td>';
+		$sx .= '<td>';		
+		$dd10 = get("dd10");
+		if (get("acao") == 'Limpar filtro')
+			{
+				echo "LIMPAR";
+				$_SESSION['filter'] = null;
+				$dd10 = '';
+			}		
+		
+		if ((isset($_SESSION['filter'])) AND (strlen($_SESSION['filter']) > 0) AND (strlen($dd10)==0)) {
+				$dd10 = $_SESSION['filter'];
+			}
+		$sx .= 'Filtro: <input type="text" name="dd10" value="' . $dd10 . '"> <input type="submit" value="Filtrar>>>">';
+		if ((isset($_SESSION['filter'])) AND (strlen($_SESSION['filter']) > 0)) {
+			$sx .= '<input type="submit" value="Limpar filtro" name="acao">';
+		}
+		$sx .= '<hr>';
+		$wh = $dd10;
+		if (strlen($wh) > 0) {
+			$_SESSION['filter'] = $wh;
+			$wh = " AND (rl_value like '%$wh%')";
+		} else {
+			if ((isset($_SESSION['filter']) > 0) AND (strlen($_SESSION['filter']) > 0)) {
+				$wh = $_SESSION['filter'];
+				$wh = " AND (rl_value like '%$wh%')";
+			}
+		}
 		$sx .= '<span class="font-size: 50%">' . msg('select_description') . '</span>';
 		$sql = "SELECT * FROM rdf_literal_th
 				INNER JOIN rdf_literal ON lt_term = id_rl
 				LEFT JOIN th_concept_term on  id_rl = ct_term and ct_th = $th
-				where lt_thesauros = $th and id_ct is null
+				where (lt_thesauros = $th and id_ct is null) $wh
 				order by rl_value";
 
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
-		$sx .= '	<select name="tm" size=10 style="width: 100%">';
+
+		$sx .= '	<select name="tm" size=8 style="width: 100%">';
 		for ($r = 0; $r < count($rlt); $r++) {
 			$line = $rlt[$r];
 			$op = '';
@@ -844,7 +871,7 @@ class skoses extends CI_model {
 
 		$sql = "select * from th_concept_term
 					left join rdf_literal ON id_rl = ct_term
-					where ct_concept_2 = ".round($id)." OR ct_concept = " . round($id);
+					where ct_concept_2 = " . round($id) . " OR ct_concept = " . round($id);
 		$rlt = $this -> db -> query($sql);
 		$rlt = $rlt -> result_array();
 
@@ -859,8 +886,8 @@ class skoses extends CI_model {
 			$sql = "delete from th_concept_term where id_ct = " . round($idc);
 			$this -> db -> query($sql);
 		}
-		
-		$sql = "update th_concept set c_ativo = 0 where id_c = ".$id;
+
+		$sql = "update th_concept set c_ativo = 0 where id_c = " . $id;
 		$this -> db -> query($sql);
 		return (0);
 	}
@@ -1632,7 +1659,8 @@ class skoses extends CI_model {
 			$saf = '';
 			$link = '<a href="' . base_url('index.php/thesa/term/' . $th . '/' . $line['id_rl']) . '" class="term_word">';
 			if (round($line['ct_propriety']) == $co) {
-				$sa = '<img src="' . base_url('img/icone/tag.png') . '" height="24" border=0>'; ;
+				$sa = '<img src="' . base_url('img/icone/tag.png') . '" height="24" border=0>';
+				;
 				$link = '<a href="' . base_url('index.php/thesa/c/' . $line['ct_concept']) . '/' . $th . '/" class="term">';
 			} else {
 				if (strlen(trim($line['altTerm'])) > 0) {
