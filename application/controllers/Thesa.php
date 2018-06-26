@@ -1187,7 +1187,7 @@ class Thesa extends CI_Controller {
 						$html .= '<div class="alert alert-info" role="alert">
 											  Aguarde! Processando registros
 											</div>';
-						$html .= '<meta http-equiv="refresh" content="2; url=' . base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/9') . '">';
+						$html .= '<meta http-equiv="refresh" content="2; url=' . base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/4') . '">';
 
 						$txt = $this -> skoses -> ficha_terminologica_html($id, 'txt');
 						$this -> skoses -> save($id, '3', $txt);
@@ -1197,6 +1197,25 @@ class Thesa extends CI_Controller {
 						$this -> load -> view('content', $data);
 						$this -> footer();
 						break;
+                    case '4' :
+                        $this -> cab();
+                        $html = '<h1>' . msg('phase') . ' 3</h1>';
+                        $html .= '<div class="alert alert-info" role="alert">
+                                              Aguarde! Processando registros
+                                            </div>';
+                        $html .= '<meta http-equiv="refresh" content="2; url=' . base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/9') . '">';
+
+                        $txt = $this -> skoses -> le_tree($id, 'txt');
+                        //$this -> skoses -> save($id, '4', $txt);
+                        
+                        $txt = $this -> skoses -> le_tree_sistematic($id);
+                        $this -> skoses -> save($id, '5', $txt);
+
+                        $data['content'] = $html;
+                        $data['title'] = 'Export to PDF';
+                        $this -> load -> view('content', $data);
+                        $this -> footer();
+                        break;                        
 					case '9' :
 						$this -> cab();
 						$html = $this -> skoses -> make_pdf($id);

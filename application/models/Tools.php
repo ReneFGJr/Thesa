@@ -164,7 +164,7 @@ class tools extends CI_model {
 			}
 		}
 		$sx = '';
-		asort($nl);
+		//asort($nl);
 		foreach ($nl as $key => $value) {
 			$sx .= $value . cr();
 		}

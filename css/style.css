@@ -32,6 +32,12 @@ body {
 	font-size: 200%;
 }
 
+.border
+    {
+        border: 1px solid #000000;
+        background-color: #E0E000;
+    }
+
 a {
 	color: #444444;
 	text-decoration: none;

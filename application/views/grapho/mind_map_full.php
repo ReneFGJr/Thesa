@@ -15,18 +15,19 @@ if (strlen($file) > 0)
 <style>
 
 .node circle {
-  fill: #999;
+  fill: #333388;
 }
 
 .node text {
-  font: 10px sans-serif;
+  font: 12px sans-serif;
+  color: red;
 }
 
 .node--internal circle {
-  fill: #555;
+  fill: #5555FF;
 }
 
-.node--internal text {
+.node--internal text { 
   text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
 }
 
@@ -41,7 +42,7 @@ if (strlen($file) > 0)
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <svg width="960" height="800"></svg>
+            <svg width="960" height="1400"></svg>
         </div>
     </div>
 </div>
