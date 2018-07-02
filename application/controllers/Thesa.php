@@ -45,6 +45,12 @@ class Thesa extends CI_Controller {
 		$data = array();
 		$this -> load -> view('thesa/header/footer', $data);
 	}
+    
+    function api($d1='',$d2='')
+        {
+            $this->load->model("thesa_api");
+            $this->thesa_api->index($d1,$d2);
+        }
 
 	function thesaurus_open() {
 		$this -> load -> model('skoses');
