@@ -777,7 +777,7 @@ class CI_Input {
 			{
 				// take SOME_HEADER and turn it into Some-Header
 				$header = str_replace('_', ' ', strtolower($header));
-				$header = str_replace(' ', '-', ucwords($header));
+				$header = str_replace(' ', '-', ucase($header));
 
 				$this->headers[$header] = $this->_fetch_from_array($_SERVER, $key, $xss_clean);
 			}

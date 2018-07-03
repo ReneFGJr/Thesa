@@ -16995,7 +16995,7 @@ class TCPDF {
 					} elseif (!$this->isunicode) {
 						switch ($dom[$dom[$key]['parent']]['text-transform']) {
 							case 'capitalize': {
-								$element = ucwords(strtolower($element));
+								$element = ucase(strtolower($element));
 								break;
 							}
 							case 'uppercase': {

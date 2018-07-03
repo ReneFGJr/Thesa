@@ -178,7 +178,7 @@ class CI_Profiler {
 
 		foreach ($profile as $key => $val)
 		{
-			$key = ucwords(str_replace(array('_', '-'), ' ', $key));
+			$key = ucase(str_replace(array('_', '-'), ' ', $key));
 			$output .= '<tr><td style="padding:5px;width:50%;color:#000;font-weight:bold;background-color:#ddd;">'
 					.$key.'&nbsp;&nbsp;</td><td style="padding:5px;width:50%;color:#900;font-weight:normal;background-color:#ddd;">'
 					.$val."</td></tr>\n";

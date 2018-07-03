@@ -10,12 +10,13 @@ class thesa_api extends CI_model {
             }
         $th = $d1;
         if ((strlen($term) == 0) or (strlen($th) == 0)) {
-            http_response_code(500);
-            header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+            //http_response_code(500);
+            //header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
             echo "ERRO - Empty Term";
+			exit;
             return ("");
         }
-        $this -> load -> model("skoses");
+        $this -> load -> model("Skoses");
 
         header('Content-type: application/xml');
         echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
