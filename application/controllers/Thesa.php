@@ -1160,7 +1160,13 @@ class Thesa extends CI_Controller {
 						$html = '<h1>' . msg('phase') . ' 1</h1>';
 						$html .= '<div class="alert alert-info" role="alert">
 											  Aguarde! Processando registros
-											</div>';
+											  <hr>
+											  Processando Glossário Html
+											  <hr>
+											</div>
+											<br>
+											<br>
+											';
 						$html .= '<meta http-equiv="refresh" content="2; url=' . base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/2') . '">';
 
 						$txt = $this -> skoses -> glossario_html($id, 'txt');
@@ -1176,7 +1182,11 @@ class Thesa extends CI_Controller {
 						$html = '<h1>' . msg('phase') . ' 2</h1>';
 						$html .= '<div class="alert alert-info" role="alert">
 											  Aguarde! Processando registros
-											</div>';
+                                              <hr>
+                                              Processando Glossário Html
+                                              <hr>                                              											  
+											</div>
+											<br><br>';
 						$html .= '<meta http-equiv="refresh" content="2; url=' . base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/3') . '">';
 
 						$txt = $this -> skoses -> glossario_alfabetico_html($id, 'txt');
@@ -1192,7 +1202,11 @@ class Thesa extends CI_Controller {
 						$html = '<h1>' . msg('phase') . ' 3</h1>';
 						$html .= '<div class="alert alert-info" role="alert">
 											  Aguarde! Processando registros
-											</div>';
+											<hr>
+                                              Processando Glossário Html
+                                              <hr>                                                                                            
+                                            </div>
+                                            <br><br>';
 						$html .= '<meta http-equiv="refresh" content="2; url=' . base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/4') . '">';
 
 						$txt = $this -> skoses -> ficha_terminologica_html($id, 'txt');

@@ -659,17 +659,22 @@ class skoses extends CI_model {
         }
     }
 
+    /********************* MONTA ESTRUTURA **************/
     function le_tree_sistematic($th = 0) {
         $th = round(sonumero($th));
         $co = 25;
         $sql = "select l1.id_rl as id1, l1.rl_value as lt1,
                        l2.id_rl as id2, l2.rl_value as lt2
-                    FROM th_concept_term as t1
+                    FROM th_concept_term as t1                    
                     INNER JOIN th_concept_term as t2 ON t1.ct_concept_2 = t2.ct_concept and t2.ct_propriety = " . $co . "
-                    INNER JOIN th_concept_term as t3 ON t1.ct_concept = t3.ct_concept and t3.ct_propriety = " . $co . " 
+                    INNER JOIN th_concept_term as t3 ON t1.ct_concept = t3.ct_concept and t3.ct_propriety = " . $co . "
+                    INNER JOIN th_concept on t2.ct_concept = id_c 
                     INNER JOIN rdf_literal as l1 ON l1.id_rl = t2.ct_term
                     LEFT JOIN rdf_literal as l2 ON l2.id_rl = t3.ct_term
-                        WHERE t1.ct_th = $th and t1.ct_propriety = " . $this -> TG;
+                        WHERE t1.ct_th = $th and t1.ct_propriety = " . $this -> TG."
+                        order by c_prior desc, t1.ct_prior ";
+                        echo $sql;
+                        
         $rlt = $this -> db -> query($sql);
         $rlt = $rlt -> result_array();
         $desc = array();
@@ -1953,6 +1958,7 @@ class skoses extends CI_model {
                     
                     WHERE T1.ct_th = $th
                     ORDER BY r1.rl_value ";
+                    ECHO $sql;
         $rlt = $this -> db -> query($sql);
         $rlt = $rlt -> result_array();
         $sx = '<tt>';
