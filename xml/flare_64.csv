@@ -14,15 +14,19 @@ interoperabilidade.interoperabilidade semântica,1
 metadados.padrões de metadados,1
 organização da informação.catalogação.catalogação automatizada,1
 organização da informação.tratamento temático da informação.análise documentária,1
+organização da informação.tratamento temático da informação.classificação.relação semântica.tesauro,1
 organização da informação.tratamento temático da informação.linguagem documentária,1
 organização da informação.tratamento temático da informação.linguagem documentária.linguagem artificial,1
 terminologia.teoria comunicativa da terminologia,1
 regras de catalogação.código de catalogação anglo-americano,1
 regras de catalogação.descrição e acesso de recursos,1
 interoperabilidade.interoperabilidade semântica.web semântica,1
+organização da informação.tratamento temático da informação.classificação.relação semântica,1
+organização da informação.tratamento temático da informação.classificação.relação semântica.ontologia,1
+organização da informação.tratamento temático da informação.classificação.relação semântica.folksonomia,1
 metadados.padrões de metadados.resource description framework,1
 sistemas de organização da informação.simple knowledge organization system,1
-internet.arquitetura da informação.arquitetura da informação pervasiva,1
+arquitetura da informação.arquitetura da informação pervasiva,1
 internet.world wide web,1
 estudos métricos da informação.bibliometria,1
 estudos métricos da informação.informetria,1
@@ -41,7 +45,6 @@ patente.patente verde,1
 área do conhecimento.interdisciplinaridade,1
 documento.produção documental,1
 semântica.semântica discursiva,1
-acervo.acervo fotográfico,1
 documento.documento museológico,1
 organização da informação.tratamento temático da informação.indexação.indexação automática,1
 sintagma.sintagma verbal,1
@@ -88,28 +91,4 @@ documento.tipo de documento.mapas,1
 documento.tipo de documento.fotografias,1
 documento.tipo de documento.revista científica,1
 estudos de gênero.étnico racial,1
-organização da informação.tratamento temático da informação.classificação.classificação de bliss,1
-estudos métricos da informação.cibermetria,1
-estudos métricos da informação.webmetria,1
-profissional da informação.bibliotecário.bibibliotecário de referência,1
-organização da informação.tratamento temático da informação.classificação.classificação decimal universal,1
-profissional da informação.cientista da informação,1
-comunicação científica.produção científica.acoplamento bibliográfico,1
-documento.tipo de documento.livro.audiolivros,1
-comunicação científica.resumo,1
-estudos métricos da informação.bibliometria.autoria,1
-área do conhecimento.arquivologia,1
-área do conhecimento.museologia,1
-área do conhecimento.biblioteconomia,1
-área do conhecimento.comunicação (área do conhecimento),1
-comunicação científica.artigos científicos,1
-estudo de usuários.perfil do usuário,1
-estudo de usuários.estudo de uso,1
-profissional da informação.arquiteto de informação,1
-profissional da informação.auxiliar de biblioteca,1
-área do conhecimento.biblioteconomia.currículo de biblioteconomia,1
-editora.editora científica,1
-organização da informação.tratamento temático da informação.classificação.colon classification,1
-organização da informação.tratamento temático da informação.classificação.library of congress classification,1
-métodos e técnicas de pesquisas.estudos de caso,1
-internet.arquitetura da informação,1
+acervo fotográfico.alfabetação,1
