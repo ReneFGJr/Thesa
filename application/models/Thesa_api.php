@@ -4,8 +4,10 @@ class thesa_api extends CI_model {
         $user = get("user");
         $pass = get("password");
         $term = get("term");
+        $lang = '';
         if (strpos($term,'@') > 0)
             {
+                $lang = substr($term,strpos($term,'@')+1,5);
                 $term = substr($term,0,strpos($term,'@'));
             }
         $th = $d1;
@@ -53,6 +55,8 @@ class thesa_api extends CI_model {
             }
         } else {
             echo '<error>not found '.$term.'</error>';
+            /******************************/
+            $this -> skoses -> incorpore_terms($term, $d1, $lang, $lc);
         }
         echo '</thesa>';
     }
