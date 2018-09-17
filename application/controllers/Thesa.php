@@ -20,11 +20,10 @@ class Thesa extends CI_Controller {
 		$this -> load -> model('socials');
 		/* Security */
 		//      $this -> security();
+		$this -> load -> model('skoses');
 	}
 
 	function index() {
-		$this -> load -> model('skoses');
-
 		$this -> cab(1);
 		$data = $this -> skoses -> welcome_resumo();
 		$this -> load -> view("thesa/home/welcome", $data);
@@ -781,7 +780,7 @@ class Thesa extends CI_Controller {
 	/***************************************************************************** Termo oculto */
 	function tz($c = '') {
 		$c = round($c);
-		$th = $_SESSION['skos'];
+		$th = $this->skoses->th();
 
 		/* Load model */
 		$this -> load -> model("skoses");
@@ -988,7 +987,10 @@ class Thesa extends CI_Controller {
 	}
 
 	function concept_add() {
-		$this -> load -> model('skoses');
+		if (!perfil("#ADM"))
+            {
+                redirect(base_url('index.php/thesa'));
+            }
 		$this -> cab();
 		$id = $_SESSION['skos'];
 		$data = $this -> skoses -> le_skos($id);
