@@ -318,4 +318,7 @@ $lang['form_user_password'] = 'Senha de acesso';
 
 $lang['edit_th'] = 'Personalizar Thesa';
 $lang['configuration'] = 'Configurações';
+
+$lang['ex:coordinationOfProductCharacteristics'] = 'Características do produto';
+$lang['ex:coordinationOfCauseEffect'] = 'Causa/efeito';
 ?>
