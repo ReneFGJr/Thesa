@@ -987,10 +987,6 @@ class Thesa extends CI_Controller {
 	}
 
 	function concept_add() {
-		if (!perfil("#ADM"))
-            {
-                redirect(base_url('index.php/thesa'));
-            }
 		$this -> cab();
 		$id = $_SESSION['skos'];
 		$data = $this -> skoses -> le_skos($id);
