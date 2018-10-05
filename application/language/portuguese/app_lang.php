@@ -247,6 +247,10 @@ $lang['skosxl:isFeminine'] = 'feminino de';
 $lang['skosxl:literalForm'] = 'extenso de ';
 $lang['skosxl:abbreviation_of'] = 'abreviatura de';
 $lang['skosxl:acronym'] = 'sigla';
+$lang['skosxl:garantiaLiteraria'] = 'Garantia literária';
+$lang['created_in'] = 'Criado em';
+$lang['update_in'] = 'Atualizado em';
+$lang['skosxl:noteCited'] = 'Nota de citação';
 
 $lang['skosxl:has_gerund'] = 'tem como gerundio';
 $lang['skosxl:verbal_inflection'] = 'tem como flexão verbal';

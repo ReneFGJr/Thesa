@@ -16,6 +16,10 @@ body {
 	transform: scale(0.8);
 	float: left;
 }
+.prt
+	{
+		font-size: 22px;
+	}
 
 /* Font size */
 .small, .small a {

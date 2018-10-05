@@ -1900,18 +1900,21 @@ class skoses extends CI_model {
 
         $rlt = $this -> db -> query($sql);
         $rlt = $rlt -> result_array();
-        $sx = '<div style="line-height: 160%">';
+        $sx = '<div style="line-height: 110%">';
         $xltr = '';
+        $term = '';
         for ($r = 0; $r < count($rlt); $r++) {
             $line = $rlt[$r];
             $ltr = UpperCaseSql($line['ltr']);
             if (($xltr != $ltr) and (strlen(trim($line['rl1'])) >= 3)) {
                 $sx .= '<br>';
-                $sx .= '<font style="font-size: 150%;"><b>~~' . trim($ltr) . '~~</b></font>';
+                $sx .= '<font style="font-size: 200%;"><b>~~' . trim($ltr) . '~~</b></font><br>';
                 $sx .= '<br>';
                 $xltr = $ltr;
             }
 
+            
+            $xterm = $line['rl1'];
             if ($line['rl1'] != $line['rl2']) {
                 $sx .= $line['rl1'];
                 $sx .= '<span>';
@@ -1919,15 +1922,30 @@ class skoses extends CI_model {
                 $sx .= '</span>';
                 $sx .= '<b>' . $line['rl2'] . '</b>';
             } else {
-                $nota = trim($line['note']);
-                $nota = troca($nota, chr(13), ' ');
-                $nota = troca($nota, chr(10), '');
-                if (strlen($nota) > 0) { $nota = '----' . $nota . cr() . cr();
-                }
-                $sx .= '<b>' . $line['rl1'] . '</b>' . $nota;
+            	$nota = '';
+            	if ($line['prop_note'] == 'definition')
+					{					
+                		$nota = trim($line['note']);
+                		$nota = troca($nota, chr(13), ' ');
+                		$nota = troca($nota, chr(10), '');
+						$nota = troca($nota,'<','&gt;');
+						$nota = troca($nota,'>','&lt;');
+                		if (strlen($nota) > 0) { $nota = '----' . $nota . cr() . cr();
+                		}
+					}
+				if ($xterm != $term)
+					{
+						//$sx .= '<br>';
+                		$sx .= '<b>' . $line['rl1'] . '</b>';
+						$term = $xterm;						
+					}
+				if (strlen($nota) > 0)
+					{
+						$sx .= $nota;
+					}					
             }
 
-            $sx .= '<br>';
+            
             //$sx .= '<br>';
         }
         $sx .= '</div>';
@@ -1958,7 +1976,7 @@ class skoses extends CI_model {
         $sx = '<tt>';
         for ($r = 0; $r < count($rlt); $r++) {
             $line = $rlt[$r];
-            $sx .= '<br>';
+            //$sx .= '<br>';
             $sx .= '<br>';
             $sx .= '<b>' . $line['rl_value'] . '</b>';
             //$sx .= '(' . $line['rs_propriety'] . '-' . $line['rs_group'] . ')';
@@ -2074,12 +2092,12 @@ class skoses extends CI_model {
             $dta = $dt;
 
             $d = $this -> skoses -> le_c($idx, $id_th);
-            $sx .= '<br/>';
-            $sx .= '<table cellspacing="0" cellpadding="5" border="1" width="100%">';
+            $sx .= '<div style="height: 10px; width: 100%;">';
+            $sx .= '<table cellspacing="0" cellpadding="5" width="100%" class="prt">';
 
             /* NAME */
             $sx .= '<tr>';
-            $sx .= '<td rowspan="1" width="90%"><font class="ttitle"><tt>';
+            $sx .= '<td rowspan="1" width="90%" colspan=2><font class="ttitle"><tt>';
             $sx .= '<b>' . $line['rl_value'] . '</b>';
             //$sx .= '(' . $line['rs_propriety'] . '-' . $line['rs_group'] . ')';
             $sx .= '</tt></font></td>';
@@ -2095,10 +2113,11 @@ class skoses extends CI_model {
                 }
 
                 $sx .= '<tr>';
-                $sx .= '<td><tt><font style="font-size: 10px;">';
+				$sx .= '<td width="20">&nbsp;</td>';
+                $sx .= '<td class="prt"><tt>';
                 $sx .= '<b>' . msg($note['prefix_ref'] . ':' . $note['rs_propriety']) . '</b>: ';
-                $sx .= mst($note['rl_value']);
-                $sx .= '</font></tt></td>';
+                $sx .= htmlentities(mst($note['rl_value']));
+                $sx .= '</tt></td>';
                 $sx .= '</tr>';
             }
 
@@ -2106,7 +2125,8 @@ class skoses extends CI_model {
             if ((count($d['terms_bt']) + count($d['terms_nw']) + count($d['terms_tr']) + count($d['terms_al'])) > 0) {
 
                 $sx .= '<tr>';
-                $sx .= '<td><tt>';
+				$sx .= '<td width="50">&nbsp;</td>';
+                $sx .= '<td style="text-align: justify; line-height: 120%;"><tt>';
                 $sx .= '<b>' . msg('term_relations') . '</b>';
                 $sx .= '<br/>';
                 $sx .= '';
@@ -2199,12 +2219,13 @@ class skoses extends CI_model {
             }
 
             $sx .= '<tr>';
-            $sx .= '<td>';
+			$sx .= '<td>&nbsp;</td>';
+            $sx .= '<td style="font-size: 80%" colspan=2>';
             $sx .= '<tt>';
-            $sx .= msg('created_in') . ': <b>' . stodbr($dt) . '</b>';
+            $sx .= msg('created_in') . ': ' . stodbr($dt) . '';
             if ($dt != $dta) {
                 $sx .= ' &nbsp; &nbsp; &nbsp; &nbsp; ';
-                $sx .= msg('update_in') . ': <b>' . stodbr($dta) . '</b>';
+                $sx .= msg('update_in') . ': ' . stodbr($dta) . '';
             }
             $sx .= '</tt>';
             $sx .= '</td>';
@@ -3001,7 +3022,7 @@ class skoses extends CI_model {
         $page = '<hr style="page-break-after: always;">';
 
         // ---------------------------------------------------------
-        $sx .= '<div class="row border1" ><div class="col-12">';
+        $sx .= '<div class="row" ><div class="col-12">';
         $sx .= '<h2 style="text-align: center; font-size: 35px;"><tt>THESA: ' . $data['pa_name'] . '</tt></h2>';
         $sx .= '<center>';
         $sx .= '<span style="text-align: center; font-size: 15px;"><tt>' . msg('th_type_' . $data['pa_type']) . '</tt></span>';
@@ -3030,7 +3051,7 @@ class skoses extends CI_model {
         /********************************************************************/
         $sx .= $page;
         /************************************************ METHODOLOGY *******/
-        $sx .= '<div class="row border1" >
+        $sx .= '<div class="row" >
                   <div class="col-12">';
         $sx .= '    <div style="line-height: 170%; text-align:justify">';
 
@@ -3064,10 +3085,10 @@ class skoses extends CI_model {
             /********************************************************************/
             $sx .= $page;
             /********************************************************************/
-            $sx .= '<div class="row border1"><div class="col-12" style="column-count: 1;">';
+            $sx .= '<div class="row"><div class="col-12" >';
             $sx .= '<h1>Apresentação Sistemática</h1>';
             $sx .= '</div></div><br>' . cr();
-            $sx .= '<div class="row border1"><div class="col-12" style="column-count: 2;">';
+            $sx .= '<div class="row"><div class="col-12" >';
             $sx .= '<tt style="font-size: 20px; line-height: 90%;">' . load_file_local($filename) . '</tt>';
             $sx .= '</div></div>' . cr();
         } else {
@@ -3081,10 +3102,10 @@ class skoses extends CI_model {
             /********************************************************************/
             $sx .= $page;
             /********************************************************************/
-            $sx .= '<div class="row border1"><div class="col-12" style="column-count: 1;">';
+            $sx .= '<div class="row"><div class="col-12" >';
             $sx .= '<h1>Glossário</h1>';
             $sx .= '</div></div>' . cr();
-            $sx .= '<div class="row border1"><div class="col-12" style="column-count: 2;">';
+            $sx .= '<div class="row"><div class="col-12 prt" >';
             $sx .= load_file_local($filename);
             $sx .= '</div></div>' . cr();
         } else {
@@ -3096,10 +3117,10 @@ class skoses extends CI_model {
             /********************************************************************/
             $sx .= $page;
             /********************************************************************/
-            $sx .= '<div class="row border1"><div class="col-12" style="column-count: 1;">';
+            $sx .= '<div class="row"><div class="col-12" >';
             $sx .= '<h1>Apresentação Alfabética</h1>';
             $sx .= '</div></div>' . cr();
-            $sx .= '<div class="row border1"><div class="col-12" style="column-count: 2;">';
+            $sx .= '<div class="row"><div class="col-12 prt" >';
             $sx .= load_file_local($filename);
             $sx .= '</div></div>' . cr();
         }
@@ -3112,7 +3133,7 @@ class skoses extends CI_model {
             $sx .= '<div class="row"><div class="col-12">';
             $sx .= '<h1>Ficha Terminológica para Coleta dos Termos</h1>';
             $sx .= '</div></div>' . cr();
-            $sx .= '<div class="row"><div class="col-12">';
+            $sx .= '<div class="row"><div class="col-12 prt">';
             $sx .= load_file_local($filename);
             $sx .= '</div></div>' . cr();
         }
