@@ -854,7 +854,7 @@ class skoses extends CI_model {
                 $sx .= ' ';
                 $link = base_url('index.php/thesa/te_remove/' . $line['id_ct'] . '/' . checkpost_link($line['id_ct'] . $this -> chave));
                 $sx .= '<a href="#" style="color: red" title="Remove" onclick="newwin(\'' . $link . '\',600,300);">';
-                $sx .= '<img src="' . base_url('img/icone/remove.png') . '" height="26" border=0>';
+                $sx .= '<img src="' . base_url('img/icone/remove.png') . '" width="100" border=0>';
                 $sx .= '</a>';
 
                 $sx .= '</li>' . cr();
@@ -922,7 +922,7 @@ class skoses extends CI_model {
             if ($line['ct_concept'] > 0) {
                 $sx .= '<li class="term_item">';
                 $sx .= '<b>' . $tp . '</b> ';
-                $sx .= '<tt>' . $line['rl_value'] . '</tt>' . ' <sup class="supersmall">(' . $line['rl_lang'] . ')</sup>';
+                $sx .= '' . $line['rl_value'] . '' . ' <sup class="supersmall">(' . $line['rl_lang'] . ')</sup>';
                 $sx .= '</li>' . cr();
             }
 
@@ -977,6 +977,24 @@ class skoses extends CI_model {
         }
         return ($tela);
     }
+    
+    function edit_nt_remove($id) {
+        $form = new form;
+        $cp = array();
+        $table = 'rdf_literal_note';
+        $sql = "delete from ".$table." where id_rl = ".$id;
+        $this->db->query($sql);
+        return ("");
+    }    
+    
+    function edit_nt_confirm($id)
+        {
+            $sx = '<br><br>';
+            //$data = $this->le_c_note($id);
+            //print_r($data);
+            $sx .= '<a href="'.base_url('index.php/thesa/ntremove/'.$id.'/'.checkpost_link($id).'/confirm').'" class="btn btn-primary">'.msg('confirm_exclude').'</a>';
+            return($sx);
+        }
 
     function notes_show($l, $edit = 0) {
         $sx = '';
@@ -991,9 +1009,11 @@ class skoses extends CI_model {
             $ed = '';
             if ($edit == 1) {
                 $ed = '<a href="#" onclick="newxy(\'' . base_url('index.php/thesa/ntedit/' . $line['id_rl'] . '/' . checkpost_link($line['id_rl'])) . '\',800,400);">[edit]</a>' . cr();
+                $ed .= '<a href="#" onclick="newxy(\'' . base_url('index.php/thesa/ntremove/' . $line['id_rl'] . '/' . checkpost_link($line['id_rl'])) . '\',800,400);">[remove]</a>' . cr();                
             }
             $sx .= '<span style="font-size: 75%;">' . msg($line['prefix_ref'] . ':' . $line['rs_propriety']) . '</span>
 					<p>' . $ed . $line['rl_value'] . '</p>';
+                    
             $sx .= '<hr>';
             $ed = '';
         }
@@ -1862,7 +1882,7 @@ class skoses extends CI_model {
 
             $ltr = $line['ltr'];
             if (($xltr != $ltr) and (strlen(trim($line['rl1'])) >= 3)) {
-                $sx .= '<br>';
+                $sx .= '<br><br>';
                 $sx .= '<font style="font-size: 150%;"><b>~~' . trim($ltr) . '~~</b></font>';
                 $sx .= '<br>';
                 $xltr = $ltr;
@@ -1907,49 +1927,55 @@ class skoses extends CI_model {
             $line = $rlt[$r];
             $ltr = UpperCaseSql($line['ltr']);
             if (($xltr != $ltr) and (strlen(trim($line['rl1'])) >= 3)) {
-                $sx .= '<br>';
-                $sx .= '<font style="font-size: 200%;"><b>~~' . trim($ltr) . '~~</b></font><br>';
+                $sx .= '<br><br>';
+                $sx .= '<font style="font-size: 200%;"><b>~~' . trim($ltr) . '~~</b></font>';
                 $sx .= '<br>';
                 $xltr = $ltr;
             }
 
             
             $xterm = $line['rl1'];
-            if ($line['rl1'] != $line['rl2']) {
-                $sx .= $line['rl1'];
-                $sx .= '<span>';
-                $sx .= '<i> ' . msg('ver') . '</i> ';
-                $sx .= '</span>';
-                $sx .= '<b>' . $line['rl2'] . '</b>';
-            } else {
-            	$nota = '';
-            	if ($line['prop_note'] == 'definition')
-					{					
+            if ($line['rl1'] != $line['rl2']) 
+                {                    
+                        $sx .= '<br>'.$line['rl1'];
+                        $sx .= '<span>';
+                        $sx .= '<i> ' . msg('ver') . '</i> ';
+                        $sx .= '</span>';
+                        $sx .= '<b>' . $line['rl2'] . '</b> ';
+                } else {
+                        $sx .= '<br>'.$line['rl1'];                    
+                }
+
+           	$nota = '';
+            echo $line['prop_note']. ' ';
+           	if (strlen($line['prop_note']) > 0)
+					{
+					    switch ($line['prop_note'])
+                            {
+                            case 'definition':
+                                $cpat = msg('definição');
+                                break;
+                            case 'scopeNote':
+                                $cpat = msg('scopeNote');
+                                break;
+                            default:
+                                $cpat = 'nota';
+                                break;
+                            }					
                 		$nota = trim($line['note']);
                 		$nota = troca($nota, chr(13), ' ');
                 		$nota = troca($nota, chr(10), '');
 						$nota = troca($nota,'<','&gt;');
 						$nota = troca($nota,'>','&lt;');
-                		if (strlen($nota) > 0) { $nota = '----' . $nota . cr() . cr();
+                		if (strlen($nota) > 0) {
+                		    $nota = $nota . cr() . cr();
+                            $sx .= '<br><div class="note small" style="margin-left: 40px;">'.$cpat.': '.$nota.'</div>';
                 		}
 					}
-				if ($xterm != $term)
-					{
-						//$sx .= '<br>';
-                		$sx .= '<b>' . $line['rl1'] . '</b>';
-						$term = $xterm;						
-					}
-				if (strlen($nota) > 0)
-					{
-						$sx .= $nota;
-					}					
-            }
-
-            
-            //$sx .= '<br>';
+                $term = $xterm; 
         }
         $sx .= '</div>';
-        return ('<pre>' . $sx . '</pre>');
+        return ('' . $sx . '');
     }
 
     function glossario_alfabetico_html($th, $lk) {
@@ -1973,7 +1999,7 @@ class skoses extends CI_model {
                     ORDER BY r1.rl_value ";
         $rlt = $this -> db -> query($sql);
         $rlt = $rlt -> result_array();
-        $sx = '<tt>';
+        $sx = '';
         for ($r = 0; $r < count($rlt); $r++) {
             $line = $rlt[$r];
             //$sx .= '<br>';
@@ -2093,16 +2119,20 @@ class skoses extends CI_model {
 
             $d = $this -> skoses -> le_c($idx, $id_th);
             $sx .= '<div style="height: 10px; width: 100%;">';
-            $sx .= '<table cellspacing="0" cellpadding="5" width="100%" class="prt">';
+            $sx .= '<table border=0 cellspacing="0" cellpadding="5" width="100%" class="prt">';
+            $sx .= '<tr><th width="2%"></th><th width="90%"></th><th width="10%"></th></tr>'.cr();
 
             /* NAME */
-            $sx .= '<tr>';
-            $sx .= '<td rowspan="1" width="90%" colspan=2><font class="ttitle"><tt>';
+            $sx .= '<tr valign="top">';
+            $sx .= '<td rowspan="1" colspan=2><font class="ttitle">';
             $sx .= '<b>' . $line['rl_value'] . '</b>';
             //$sx .= '(' . $line['rs_propriety'] . '-' . $line['rs_group'] . ')';
-            $sx .= '</tt></font></td>';
-            $sx .= '<td rowspan="10" width="10%" align="center">';
-            $sx .= '<img src="' . base_url($d['images'][0]) . '" width="100%">';
+            $sx .= '</font></td>';
+            $sx .= '<td rowspan="10" align="center" valign="top">';
+            if (trim($d['images'][0]) != '_acervo/thumb/0000000_287px.jpg')
+                {
+                    $sx .= '<img src="' . base_url($d['images'][0]) . '" width="100">';
+                }
             $sx .= '</td>';
             $sx .= '</tr>';
 
@@ -2114,10 +2144,10 @@ class skoses extends CI_model {
 
                 $sx .= '<tr>';
 				$sx .= '<td width="20">&nbsp;</td>';
-                $sx .= '<td class="prt"><tt>';
+                $sx .= '<td class="prt small">';
                 $sx .= '<b>' . msg($note['prefix_ref'] . ':' . $note['rs_propriety']) . '</b>: ';
                 $sx .= htmlentities(mst($note['rl_value']));
-                $sx .= '</tt></td>';
+                $sx .= '</td>';
                 $sx .= '</tr>';
             }
 
@@ -2125,20 +2155,22 @@ class skoses extends CI_model {
             if ((count($d['terms_bt']) + count($d['terms_nw']) + count($d['terms_tr']) + count($d['terms_al'])) > 0) {
 
                 $sx .= '<tr>';
-				$sx .= '<td width="50">&nbsp;</td>';
-                $sx .= '<td style="text-align: justify; line-height: 120%;"><tt>';
-                $sx .= '<b>' . msg('term_relations') . '</b>';
+				$sx .= '<td>&nbsp;</td>';
+                $sx .= '<td style="text-align: left; line-height: 120%;" class="small">';
+                $sx .= '<i>' . msg('term_relations') . '</i>';
                 $sx .= '<br/>';
                 $sx .= '';
 
                 switch ($line['rs_group']) {
                     case 'FE' :
-                        $sx .= '<br>';
+                        $sx .= '<br><pre>';
                         $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;USE ' . $line['r2_value'];
+                        $sx .= '</pre>';
                         break;
                     case 'TH' :
-                        $sx .= '<br>';
+                        $sx .= '<br><pre>';
                         $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;USE ' . $line['r2_value'];
+                        $sx .= '</pre>';
                         break;
                     case 'LABEL' :
                         $d = $this -> skoses -> le_c($idx, $id_th);
@@ -2146,7 +2178,7 @@ class skoses extends CI_model {
                         $nw = $d['terms_nw'];
                         $tr = $d['terms_tr'];
                         $al = $d['terms_al'];
-
+                        $sx .= '<pre>';
                         /******************** AL **********/
                         if (count($al) > 0) {
                             for ($z = 0; $z < count($al); $z++) {
@@ -2205,6 +2237,7 @@ class skoses extends CI_model {
                                 }
                             }
                         }
+                        $sx .= '</pre>';
                         break;
                     default :
                         if ((isset($d['rl_value'])) and ($d['rl_value'] != $line['rl_value'])) {
@@ -2213,21 +2246,21 @@ class skoses extends CI_model {
 
                         }
                 }
-                $sx .= '</tt>';
+                $sx .= '';
                 $sx .= '</td>';
                 $sx .= '</tr>';
             }
 
             $sx .= '<tr>';
 			$sx .= '<td>&nbsp;</td>';
-            $sx .= '<td style="font-size: 80%" colspan=2>';
-            $sx .= '<tt>';
+            $sx .= '<td class="small" colspan=2>';
+            $sx .= '';
             $sx .= msg('created_in') . ': ' . stodbr($dt) . '';
             if ($dt != $dta) {
                 $sx .= ' &nbsp; &nbsp; &nbsp; &nbsp; ';
                 $sx .= msg('update_in') . ': ' . stodbr($dta) . '';
             }
-            $sx .= '</tt>';
+            $sx .= '';
             $sx .= '</td>';
             $sx .= '</tr>';
 
@@ -3023,15 +3056,15 @@ class skoses extends CI_model {
 
         // ---------------------------------------------------------
         $sx .= '<div class="row" ><div class="col-12">';
-        $sx .= '<h2 style="text-align: center; font-size: 35px;"><tt>THESA: ' . $data['pa_name'] . '</tt></h2>';
+        $sx .= '<h2 style="text-align: center; font-size: 35px;">THESA: ' . $data['pa_name'] . '</h2>';
         $sx .= '<center>';
-        $sx .= '<span style="text-align: center; font-size: 15px;"><tt>' . msg('th_type_' . $data['pa_type']) . '</tt></span>';
+        $sx .= '<span style="text-align: center; font-size: 15px;">' . msg('th_type_' . $data['pa_type']) . '</span>';
         $sx .= '<br>';
         $sx .= '<br>';
         /************************************ AUTHORS */
         for ($r = 0; $r < count($data['authors']); $r++) {
             $auth2 = UpperCase($data['authors'][$r]['us_nome']);
-            $sx .= '<tt><span style="text-align: center; font-size: 15px;">' . $auth2 . '</span></tt><br>';
+            $sx .= '<span style="text-align: center; font-size: 15px;">' . $auth2 . '</span><br>';
         }
         $sx .= '</center>';
         $sx .= '<br>';
@@ -3042,11 +3075,16 @@ class skoses extends CI_model {
         if (file_exists($filename)) {
             $img = $filename;
         }
-        $sx .= '<center><img src="' . base_url($img) . '" class="img-fluid"></center>';
+        $sx .= '<center><img src="' . base_url($img) . '" class="img-fluid" width="100%"></center>';
         $sx .= '<br>';
         $sx .= '<br>';
         $sx .= '</div>';
         $sx .= '</div>';
+               
+        if (strlen($data['pa_description']) > 0)
+            {
+                
+            }
 
         /********************************************************************/
         $sx .= $page;
@@ -3055,12 +3093,12 @@ class skoses extends CI_model {
                   <div class="col-12">';
         $sx .= '    <div style="line-height: 170%; text-align:justify">';
 
-        if (strlen($data['pa_methodology']) > 0) {
+        if (strlen($data['pa_introdution']) > 0) {
             $sx .= '<h1>' . msg('thesaurus_introdution') . '</h1>';
             $sx .= mst($data['pa_introdution']);
         }
 
-        if (strlen($data['pa_methodology']) > 0) {
+        if (strlen($data['pa_audience']) > 0) {
             $sx .= '<h1>' . msg('thesaurus_audience') . '</h1>';
             $sx .= mst($data['pa_audience']);
         }
@@ -3089,7 +3127,7 @@ class skoses extends CI_model {
             $sx .= '<h1>Apresentação Sistemática</h1>';
             $sx .= '</div></div><br>' . cr();
             $sx .= '<div class="row"><div class="col-12" >';
-            $sx .= '<tt style="font-size: 20px; line-height: 90%;">' . load_file_local($filename) . '</tt>';
+            $sx .= load_file_local($filename) . '';
             $sx .= '</div></div>' . cr();
         } else {
             echo 'Falha';

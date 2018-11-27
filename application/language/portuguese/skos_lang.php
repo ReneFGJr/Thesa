@@ -312,4 +312,6 @@ $lang['thesaurus_introdution'] = 'Introdução';
 $lang['thesaurus_methodology'] = 'Metodologia';
 $lang['thesaurus_audience'] = 'Público alvo';
 
+$lang['scopeNote'] = 'Nota de escopo';
+$lang['term_relations'] = 'Termos relacionados';
 ?>

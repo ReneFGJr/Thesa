@@ -638,6 +638,12 @@ class Thesa extends CI_Controller {
 
 	function ntedit($id = '', $chk = '') {
 		/* Load model */
+		
+        if ($chk != checkpost_link($id))
+            {
+              $this -> load -> view('wclose');  
+            }
+            		
 		$edit = true;
 		$this -> load -> model("skoses");
 		$this -> cab(0);
@@ -651,6 +657,33 @@ class Thesa extends CI_Controller {
 		}
 
 	}
+    
+    function ntremove($id = '',$chk = '',$conf='')
+        {
+        /* Load model */
+        $edit = true;
+        $this -> load -> model("skoses");
+        $this -> cab(0);
+        
+        if ($chk != checkpost_link($id))
+            {
+              $this -> load -> view('wclose');  
+            }
+
+        $data['content'] = $this -> skoses -> edit_nt_confirm($id);
+        $data['title'] = '';
+        $this -> load -> view('content', $data);
+        
+        if ($conf == 'confirm')
+            {
+                $data['content'] = '';
+                $this -> skoses -> edit_nt_remove($id);
+            }
+
+        if (strlen($data['content']) == 0) {
+            $this -> load -> view('wclose');
+        }   
+        }
 
 	/* LOGIN */
 	function social($act = '') {
