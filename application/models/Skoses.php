@@ -854,7 +854,7 @@ class skoses extends CI_model {
                 $sx .= ' ';
                 $link = base_url('index.php/thesa/te_remove/' . $line['id_ct'] . '/' . checkpost_link($line['id_ct'] . $this -> chave));
                 $sx .= '<a href="#" style="color: red" title="Remove" onclick="newwin(\'' . $link . '\',600,300);">';
-                $sx .= '<img src="' . base_url('img/icone/remove.png') . '" width="100" border=0>';
+                $sx .= '<img src="' . base_url('img/icone/remove.png') . '" width="20" border=0>';
                 $sx .= '</a>';
 
                 $sx .= '</li>' . cr();
@@ -977,24 +977,23 @@ class skoses extends CI_model {
         }
         return ($tela);
     }
-    
+
     function edit_nt_remove($id) {
         $form = new form;
         $cp = array();
         $table = 'rdf_literal_note';
-        $sql = "delete from ".$table." where id_rl = ".$id;
-        $this->db->query($sql);
+        $sql = "delete from " . $table . " where id_rl = " . $id;
+        $this -> db -> query($sql);
         return ("");
-    }    
-    
-    function edit_nt_confirm($id)
-        {
-            $sx = '<br><br>';
-            //$data = $this->le_c_note($id);
-            //print_r($data);
-            $sx .= '<a href="'.base_url('index.php/thesa/ntremove/'.$id.'/'.checkpost_link($id).'/confirm').'" class="btn btn-primary">'.msg('confirm_exclude').'</a>';
-            return($sx);
-        }
+    }
+
+    function edit_nt_confirm($id) {
+        $sx = '<br><br>';
+        //$data = $this->le_c_note($id);
+        //print_r($data);
+        $sx .= '<a href="' . base_url('index.php/thesa/ntremove/' . $id . '/' . checkpost_link($id) . '/confirm') . '" class="btn btn-primary">' . msg('confirm_exclude') . '</a>';
+        return ($sx);
+    }
 
     function notes_show($l, $edit = 0) {
         $sx = '';
@@ -1009,11 +1008,11 @@ class skoses extends CI_model {
             $ed = '';
             if ($edit == 1) {
                 $ed = '<a href="#" onclick="newxy(\'' . base_url('index.php/thesa/ntedit/' . $line['id_rl'] . '/' . checkpost_link($line['id_rl'])) . '\',800,400);">[edit]</a>' . cr();
-                $ed .= '<a href="#" onclick="newxy(\'' . base_url('index.php/thesa/ntremove/' . $line['id_rl'] . '/' . checkpost_link($line['id_rl'])) . '\',800,400);">[remove]</a>' . cr();                
+                $ed .= '<a href="#" onclick="newxy(\'' . base_url('index.php/thesa/ntremove/' . $line['id_rl'] . '/' . checkpost_link($line['id_rl'])) . '\',800,400);">[remove]</a>' . cr();
             }
             $sx .= '<span style="font-size: 75%;">' . msg($line['prefix_ref'] . ':' . $line['rs_propriety']) . '</span>
 					<p>' . $ed . $line['rl_value'] . '</p>';
-                    
+
             $sx .= '<hr>';
             $ed = '';
         }
@@ -1933,46 +1932,47 @@ class skoses extends CI_model {
                 $xltr = $ltr;
             }
 
-            
             $xterm = $line['rl1'];
-            if ($line['rl1'] != $line['rl2']) 
-                {                    
-                        $sx .= '<br>'.$line['rl1'];
-                        $sx .= '<span>';
-                        $sx .= '<i> ' . msg('ver') . '</i> ';
-                        $sx .= '</span>';
-                        $sx .= '<b>' . $line['rl2'] . '</b> ';
+            $rem = 0;
+            if ($xterm != $term) {
+                if ($line['rl1'] != $line['rl2']) {
+                    $sx .= '<br>' . $line['rl1'];
+                    $sx .= '<span>';
+                    $sx .= '<i> ' . msg('ver') . '</i> ';
+                    $sx .= '</span>';
+                    $sx .= '<b>' . $line['rl2'] . '</b> ';
+                    $sx .= '<br>';
+                    $rem = 1;
                 } else {
-                        $sx .= '<br>'.$line['rl1'];                    
+                    $sx .= '<br>' . $line['rl1'];
                 }
-
-           	$nota = '';
-            echo $line['prop_note']. ' ';
-           	if (strlen($line['prop_note']) > 0)
-					{
-					    switch ($line['prop_note'])
-                            {
-                            case 'definition':
-                                $cpat = msg('definição');
-                                break;
-                            case 'scopeNote':
-                                $cpat = msg('scopeNote');
-                                break;
-                            default:
-                                $cpat = 'nota';
-                                break;
-                            }					
-                		$nota = trim($line['note']);
-                		$nota = troca($nota, chr(13), ' ');
-                		$nota = troca($nota, chr(10), '');
-						$nota = troca($nota,'<','&gt;');
-						$nota = troca($nota,'>','&lt;');
-                		if (strlen($nota) > 0) {
-                		    $nota = $nota . cr() . cr();
-                            $sx .= '<br><div class="note small" style="margin-left: 40px;">'.$cpat.': '.$nota.'</div>';
-                		}
-					}
-                $term = $xterm; 
+            }
+            $nota = '';
+            if ($rem == 0) {
+                if (strlen($line['prop_note']) > 0) {
+                    switch ($line['prop_note']) {
+                        case 'definition' :
+                            $cpat = msg('definição');
+                            break;
+                        case 'scopeNote' :
+                            $cpat = msg('scopeNote');
+                            break;
+                        default :
+                            $cpat = 'nota';
+                            break;
+                    }
+                    $nota = trim($line['note']);
+                    $nota = troca($nota, chr(13), ' ');
+                    $nota = troca($nota, chr(10), '');
+                    $nota = troca($nota, '<', '&gt;');
+                    $nota = troca($nota, '>', '&lt;');
+                    if (strlen($nota) > 0) {
+                        $nota = $nota . cr() . cr();
+                        $sx .= '<br><div class="note small" style="margin-left: 40px;">' . $cpat . ': ' . $nota . '</div>';
+                    }
+                }
+            }
+            $term = $xterm;
         }
         $sx .= '</div>';
         return ('' . $sx . '');
@@ -2120,7 +2120,7 @@ class skoses extends CI_model {
             $d = $this -> skoses -> le_c($idx, $id_th);
             $sx .= '<div style="height: 10px; width: 100%;">';
             $sx .= '<table border=0 cellspacing="0" cellpadding="5" width="100%" class="prt">';
-            $sx .= '<tr><th width="2%"></th><th width="90%"></th><th width="10%"></th></tr>'.cr();
+            $sx .= '<tr><th width="2%"></th><th width="90%"></th><th width="10%"></th></tr>' . cr();
 
             /* NAME */
             $sx .= '<tr valign="top">';
@@ -2129,10 +2129,9 @@ class skoses extends CI_model {
             //$sx .= '(' . $line['rs_propriety'] . '-' . $line['rs_group'] . ')';
             $sx .= '</font></td>';
             $sx .= '<td rowspan="10" align="center" valign="top">';
-            if (trim($d['images'][0]) != '_acervo/thumb/0000000_287px.jpg')
-                {
-                    $sx .= '<img src="' . base_url($d['images'][0]) . '" width="100">';
-                }
+            if (trim($d['images'][0]) != '_acervo/thumb/0000000_287px.jpg') {
+                $sx .= '<img src="' . base_url($d['images'][0]) . '" width="100">';
+            }
             $sx .= '</td>';
             $sx .= '</tr>';
 
@@ -2143,7 +2142,7 @@ class skoses extends CI_model {
                 }
 
                 $sx .= '<tr>';
-				$sx .= '<td width="20">&nbsp;</td>';
+                $sx .= '<td width="20">&nbsp;</td>';
                 $sx .= '<td class="prt small">';
                 $sx .= '<b>' . msg($note['prefix_ref'] . ':' . $note['rs_propriety']) . '</b>: ';
                 $sx .= htmlentities(mst($note['rl_value']));
@@ -2155,7 +2154,7 @@ class skoses extends CI_model {
             if ((count($d['terms_bt']) + count($d['terms_nw']) + count($d['terms_tr']) + count($d['terms_al'])) > 0) {
 
                 $sx .= '<tr>';
-				$sx .= '<td>&nbsp;</td>';
+                $sx .= '<td>&nbsp;</td>';
                 $sx .= '<td style="text-align: left; line-height: 120%;" class="small">';
                 $sx .= '<i>' . msg('term_relations') . '</i>';
                 $sx .= '<br/>';
@@ -2252,7 +2251,7 @@ class skoses extends CI_model {
             }
 
             $sx .= '<tr>';
-			$sx .= '<td>&nbsp;</td>';
+            $sx .= '<td>&nbsp;</td>';
             $sx .= '<td class="small" colspan=2>';
             $sx .= '';
             $sx .= msg('created_in') . ': ' . stodbr($dt) . '';
@@ -3080,11 +3079,10 @@ class skoses extends CI_model {
         $sx .= '<br>';
         $sx .= '</div>';
         $sx .= '</div>';
-               
-        if (strlen($data['pa_description']) > 0)
-            {
-                
-            }
+
+        if (strlen($data['pa_description']) > 0) {
+
+        }
 
         /********************************************************************/
         $sx .= $page;
