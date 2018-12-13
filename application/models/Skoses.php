@@ -1968,7 +1968,7 @@ class skoses extends CI_model {
                     $nota = troca($nota, '>', '&lt;');
                     if (strlen($nota) > 0) {
                         $nota = $nota . cr() . cr();
-                        $sx .= '<br><div class="note small" style="margin-left: 40px;">' . $cpat . ': ' . $nota . '</div>';
+                        $sx .= '<div class="note small" style="margin-left: 40px;"><i>' . $cpat . '</i>: ' . $nota . '</div>';
                     }
                 }
             }
@@ -3301,6 +3301,27 @@ class skoses extends CI_model {
         //============================================================+
 
     }
+    function th_list($th='')
+        {
+            $sql = "select * from th_thesaurus
+                        INNER JOIN users ON pa_creator = id_us
+                        order by pa_name";
+            $rlt = $this->db->query($sql);
+            $rlt = $rlt->result_array();
+            $sx = '<table class="table">';
+            for ($r=0;$r < count($rlt);$r++)
+                {
+                    $line = $rlt[$r];
+                    $link = '<a href="'.base_url('index.php/thesa/select/'.$line['id_pa'].'/'.checkpost_link($line['id_pa'])).'">';
+                    $sx .= '<tr>';
+                    $sx .= '<td align="center">'.$line['id_pa'].'</td>';
+                    $sx .= '<td>'.$link.$line['pa_name'].'</a>'.'</td>';
+                    $sx .= '<td>'.$link.$line['us_nome'].'</a>'.'</td>';
+                    $sx .= '</tr>';
+                }
+                $sx .= '</table>';
+            return($sx);
+        }    
 
 }
 

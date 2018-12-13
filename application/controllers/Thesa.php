@@ -1392,6 +1392,21 @@ class Thesa extends CI_Controller {
 		$this -> load -> view('grapho/mind_map', $data);
 		//$this -> load -> view('grapho/mind_map_full', $data);
 	}
+    
+    function admin_thesauros($id='')
+        {
+            if (perfil("#ADM") < 1)
+                {
+                    redirect(base_url('index.php/main'));
+                }
+            $this->load->model("skoses");
+            $this -> cab();
+            
+            $data['content'] = $this->skoses->th_list();
+            $this->load->view('content',$data);
+            $this->footer();
+            
+        }
 
 }
 ?>

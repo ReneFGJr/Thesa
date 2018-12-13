@@ -54,6 +54,7 @@ if (isset($_SESSION['id']) and ($_SESSION['id'] != '')) {
                     <a class="dropdown-item" href="<?php echo base_url('index.php/main/config/msg'); ?>"><?php echo msg("menu_msg"); ?></a>
                     <a class="dropdown-item" href="<?php echo base_url('index.php/main/config/forms'); ?>"><?php echo msg("menu_forms"); ?></a>
                     <a class="dropdown-item" href="<?php echo base_url('index.php/main/config/authority'); ?>"><?php echo msg("menu_authority"); ?></a>
+                    <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/admin_thesauros'); ?>"><?php echo msg("admin_thesauros"); ?></a>
                 </div>
             </li>                
             <?php } ?>
