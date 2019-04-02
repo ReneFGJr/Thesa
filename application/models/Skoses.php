@@ -1808,6 +1808,56 @@ class skoses extends CI_model {
         $sx .= '<a href="' . base_url('index.php/thesa/terms_from_to/' . $th . '/pdf') . '" style="margin-right: 10px;">.pdf</a> ';
         return ($sx);
     }
+    
+    function from_to_xml($th = 0)
+        {
+        $sql = "select *  from th_concept_term 
+                        INNER JOIN rdf_literal ON ct_term = id_rl
+                        INNER JOIN rdf_resource ON ct_propriety = id_rs
+                        LEFT JOIN rdf_image_concept ON ic_concept = ct_concept
+                        where ct_th = $th and ct_term > 0
+
+                        order by ct_concept, ct_propriety";
+        $rlt = $this -> db -> query($sql);
+        $rlt = $rlt -> result_array();
+
+        $x = array();
+        for ($r=0;$r < count($rlt);$r++)
+            {
+                $line = $rlt[$r];
+                $v = $line['rl_value'];
+                $id = $line['ct_concept'];
+                if (isset($x[$id]))
+                    {
+                        
+                    } else {
+                        $x[$id] = array('id'=>$id);
+                    }
+                $prop = $line['rs_propriety'];
+                /**************************************/
+                switch($prop)
+                    {
+                    case 'acronym':
+                        $x[$id]['sigla'] = $v;
+                        break;
+                    case 'prefLabel':
+                        $x[$id]['nome'] = $v;
+                        break; 
+                    case '':
+                        $x[$id]['image'] = base_url($line['ic_url']);
+                        break;
+                    }
+                
+            }
+        echo '<pre>';
+        print_r($x);
+        exit;
+        $xml = new SimpleXMLElement('<root/>');
+        array_walk_recursive($rlt, array ($x, 'addChild'));
+        print $xml->asXML();
+        echo '</pre>';
+        exit;  
+        }
 
     function from_to($th = 0, $separador = '=>', $capc = '') {
         $sql = "select ct_concept, ct_propriety, rl_value, length(rl_value) as sz  from th_concept_term 

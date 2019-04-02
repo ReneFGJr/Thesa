@@ -1316,6 +1316,19 @@ class Thesa extends CI_Controller {
 				$rst = troca($rst, '};{', '},' . cr() . '{');
 				echo $rst;
 				break;
+            case 'xml' :
+                $arquivo = "thesa_" . strzero($id, 4) . '_' . date("Ymd") . ".xml";
+                // Configurações header para forçar o download
+                //header("Expires: Mon, " . gmdate("D,d M YH:i:s") . " GMT");
+                //header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+                //header("Cache-Control: no-cache, must-revalidate");
+                //header("Pragma: no-cache");
+                //header("Content-type: text/html");
+                //header("Content-Disposition: attachment; filename=\"{$arquivo}\"");
+                //header("Content-Description: PHP Generated Data");
+                $rst = $this -> skoses -> from_to_xml($id);
+                echo $rst;
+                break;                
 			default :
 				echo mst($this -> skoses -> from_to($id, '=>', ''));
 				return ('');
