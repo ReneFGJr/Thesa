@@ -17,6 +17,7 @@ Deve-se criar uma base de dados no MySQL
 
 Arquivo /application/config/database.php ajustar:
 
+<pre>
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
@@ -38,6 +39,7 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+</pre>
 
 Restare a base de dados com base no arquivo:
 /_documment/sql/thesa.sql
