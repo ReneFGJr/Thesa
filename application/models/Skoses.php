@@ -1849,13 +1849,31 @@ class skoses extends CI_model {
                     }
                 
             }
-        echo '<pre>';
-        print_r($x);
-        exit;
-        $xml = new SimpleXMLElement('<root/>');
-        array_walk_recursive($rlt, array ($x, 'addChild'));
-        print $xml->asXML();
-        echo '</pre>';
+        header('Content-Type: application/xml; charset=utf-8');            
+        $sx = '<?xml version="1.0" encoding="UTF-8"?>'.cr();
+        $sx .= '<corporate>'.cr();
+        foreach ($x as $key => $value) {
+            $sx .= '<institution>'.cr();;
+            $sx .= '<id>thesa:c'.$key.'</id>'.cr();
+            $sx .= '<url>'.base_url(PATH.'c/'.$key).'</url>'.cr();
+            $sx .= '<name>'.$x[$key]['nome'].'</name>'.cr();
+           if (isset($x[$id]['image']))
+                {            
+                    $sx .= '<sigla>'.$x[$key]['sigla'].'</sigla>'.cr();
+                } else {
+                    $sx .= '<sigla></sigla>'.cr();
+                }
+            if (isset($x[$id]['image']))
+                {
+                    $sx .= '<image>'.$x[$key]['image'].'</image>'.cr();        
+                } else {
+                    $sx .= '<image></image>'.cr();
+                }
+            
+            $sx .= '</institution>'.cr();            
+        }
+        $sx .= '</corporate>'.cr();
+        echo $sx;
         exit;  
         }
 
