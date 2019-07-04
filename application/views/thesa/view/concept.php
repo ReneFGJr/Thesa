@@ -77,7 +77,7 @@ $linkr .= '/thesa/c/' . $id_c . '/rdf';
                     for ($r = 0; $r < count($terms_al); $r++) {
                         $line = $terms_al[$r];
                         $link = '<a href="' . base_url('index.php/thesa/c/' . $line['ct_concept']) . '" class="thesa_link">';
-                        echo 'UP: ';
+                        echo 'UP  <sup>('.msg($line['prefix_ref'].':'.$line['rs_propriety']).')</sup>: ';
                         echo $link;
                         echo $line['rl_value'];
                         echo '</a>';
@@ -107,7 +107,7 @@ $linkr .= '/thesa/c/' . $id_c . '/rdf';
                     for ($r = 0; $r < count($terms_tr); $r++) {
                         $line = $terms_tr[$r];
                         $link = '<a href="' . base_url('index.php/thesa/c/' . $line['ct_concept']) . '" class="thesa_link">';
-                        echo 'TR: ';
+                        echo 'TR <sup>('.msg(trim($line['prefix_ref'].':'.$line['rs_propriety'])).')</sup>: ';
                         echo $link;
                         echo $line['rl_value'];
                         echo '</a>';
@@ -116,6 +116,8 @@ $linkr .= '/thesa/c/' . $id_c . '/rdf';
                     }
                     echo '<br>';
                 }
+                
+                echo $grapho;
 
                 /******************************************** TR *******************/
                 if (count($terms_ge) > 0) {
@@ -156,7 +158,7 @@ $linkr .= '/thesa/c/' . $id_c . '/rdf';
         <div class="col-md-3">
             <?php for ($r=0;$r < count($images);$r++)
                 {
-                    echo '<img src="'.base_url($images[$r]).'" border=1 class="img-rounded img-responsive">';      
+                    echo '<img width="100%" src="'.base_url($images[$r]).'" border=1 class="img-rounded img-responsive">';      
                 }
             ?>
         </div>      

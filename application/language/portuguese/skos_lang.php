@@ -254,9 +254,9 @@ $lang['skosxl:acronym'] = 'sigla';
 $lang['skosxl:has_gerund'] = 'tem como gerundio';
 $lang['skosxl:verbal_inflection'] = 'tem como flexão verbal';
 $lang['skosxl:synonymous'] = 'tem como variação';
-$lang['skosxl:is_gerund'] = 'é gerundio de';
-$lang['skosxl:is_verbal_inflection'] = 'é flexão verbal de';
-$lang['skosxl:is_synonymous'] = 'é variação de';
+$lang['skosxl:is_gerund'] = 'gerundio de';
+$lang['skosxl:is_verbal_inflection'] = 'flexão verbal de';
+$lang['skosxl:is_synonymous'] = 'variação de';
 $lang['skosxl:hiddenLabel'] = 'tem com termo oculto';
 $lang['ex:unionOf'] = 'equivalente a';
 

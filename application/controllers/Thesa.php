@@ -521,6 +521,7 @@ class Thesa extends CI_Controller {
 	/***************************************************************************** Conecpt */
 	function c($c = '', $proto = '', $proto2 = '') {
 		$this -> load -> model("skoses");
+        $this -> load -> model("frbrs");
 
 		$data = $this -> skoses -> le($c);
 		if (count($data) == 0) { redirect(base_url('index.php/thesa/error/c'));
@@ -553,7 +554,7 @@ class Thesa extends CI_Controller {
 					$user_id = $this -> socials -> user_id();
 					$data['edit'] = isset($data['allow'][$user_id]);
 				}
-
+                $data['grapho'] = $this->frbrs->vis($data);
 				$this -> load -> view("thesa/view/schema", $data);
 				$this -> load -> view("thesa/view/concept", $data);
 

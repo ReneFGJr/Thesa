@@ -28,7 +28,7 @@ if (!isset($_SESSION['id'])) {
             <div class="col-md-8">
                 <ul class="nav">
                   <li class="nav-item">
-                    <a class="nav-link active" href="<?php echo base_url('index.php/thesa/terms/' . $th); ?>"><?php echo msg('glossario'); ?></a>
+                    <a class="nav-link active" href="<?php echo base_url('index.php/thesa/terms/' . $th); ?>"><?php echo msg('glossario_cap'); ?></a>
                   </li>
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><?php echo msg('configuration'); ?></a>

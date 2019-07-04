@@ -1990,6 +1990,7 @@ class skoses extends CI_model {
         $sx = '<div style="line-height: 110%">';
         $xltr = '';
         $term = '';
+        $rem = 0;
         for ($r = 0; $r < count($rlt); $r++) {
             $line = $rlt[$r];
             $ltr = UpperCaseSql($line['ltr']);
@@ -2001,7 +2002,7 @@ class skoses extends CI_model {
             }
 
             $xterm = $line['rl1'];
-            $rem = 0;
+            
             if ($xterm != $term) {
                 if ($line['rl1'] != $line['rl2']) {
                     $sx .= '<br>' . $line['rl1'];
@@ -2013,6 +2014,7 @@ class skoses extends CI_model {
                     $rem = 1;
                 } else {
                     $sx .= '<br>' . $line['rl1'];
+                    $rem = 0;
                 }
             }
             $nota = '';
@@ -2035,8 +2037,8 @@ class skoses extends CI_model {
                     $nota = troca($nota, '<', '&gt;');
                     $nota = troca($nota, '>', '&lt;');
                     if (strlen($nota) > 0) {
-                        $nota = $nota . cr() . cr();
-                        $sx .= '<div class="note small" style="margin-left: 40px;"><i>' . $cpat . '</i>: ' . $nota . '</div>';
+                        $nota = troca($nota,chr(13),'<br>') . cr() . cr();
+                        $sx .= '<div class="note small text-justify" style="margin-left: 40px; padding: 0px 0px 10px 0px;"><i><b>' . $cpat . '</b></i>: ' . $nota . '</div>';
                     }
                 }
             }
@@ -2133,7 +2135,11 @@ class skoses extends CI_model {
                         for ($z = 0; $z < count($tr); $z++) {
                             $sx .= '<br>';
                             if ($z == 0) {
-                                $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;TR ' . $tr[$z]['rl_value'];
+                                $sup = '';
+                                $sup = '<sup>('.msg($tr[$z]['prefix_ref'].':'.$tr[$z]['rs_propriety']).')</sup>';
+                                $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;TR' . $sup;
+                                $sx .= '<br>';
+                                $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ' . $tr[$z]['rl_value'];
                             } else {
                                 $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ' . $tr[$z]['rl_value'];
                             }
@@ -2143,7 +2149,9 @@ class skoses extends CI_model {
                 default :
                     if ((isset($d['rl_value'])) and ($d['rl_value'] != $line['rl_value'])) {
                         $sx .= '<br>x';
-                        $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;USE ' . $d['rl_value'];
+                        $sup = '';
+                        $sup = '<sup>('.msg($d['rs_propriety']).')</sup>';                        
+                        $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;USE '.$d['rl_value'];
 
                     }
             }

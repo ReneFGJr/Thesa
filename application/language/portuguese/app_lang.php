@@ -42,7 +42,7 @@ $lang['terms_list'] = 'Termos do tesauro';
 $lang['preferences'] = 'Dados do tesauro';
 $lang['userName'] = 'Nome do usuário';
 $lang['userEmail'] = 'e-mail';
-$lang['thesaurus_status'] = 'Tipo';
+$lang['thesaurus_status'] = 'Acesso';
 /* Colaborador */
 $lang['language'] = 'idioma';
 $lang['Portuguese'] = 'Português';	
@@ -213,7 +213,7 @@ $lang['all'] = 'todas';
 $lang['Welcome'] = 'Bem vindo a';
 $lang['edit'] = 'editar';
 $lang['last_update'] = 'atualização';
-$lang['glossario'] = 'Glossário';
+$lang['glossario_cap'] = 'Apresentação Alfabética';
 $lang['delete_term_confirm'] = 'Excluir term do tesauro?';
 $lang['success_action'] = 'Ação realizada com sucesso';
 $lang['item_already_deleted'] = 'Term já estava excluído';
@@ -307,9 +307,10 @@ $lang['sign_in'] = "ACESSAR";
 $lang['th_type_1'] = 'Glossário';
 $lang['th_type_2'] = 'Vocabulário controlado';
 $lang['th_type_3'] = 'Controle de autoridade';
-$lang['th_type_4'] = 'Thesauro';
-$lang['th_type_5'] = 'Ontologia';
-$lang['th_type_6'] = 'Stopwords';
+$lang['th_type_4'] = 'Tesauro';
+$lang['th_type_5'] = 'Tesauro Semântico';
+$lang['th_type_6'] = 'Ontologia';
+$lang['th_type_7'] = 'StopWords';
 
 $lang['my_thesauros'] = 'Meu Thesa';
 $lang['open_thesauros'] = 'TH abertos';
@@ -323,6 +324,13 @@ $lang['form_user_password'] = 'Senha de acesso';
 $lang['edit_th'] = 'Personalizar Thesa';
 $lang['configuration'] = 'Configurações';
 
-$lang['ex:coordinationOfProductCharacteristics'] = 'Características do produto';
-$lang['ex:coordinationOfCauseEffect'] = 'Causa/efeito';
+$lang['ex:coordinationOfProductCharacteristics'] = 'características do produto';
+$lang['ex:coordinationOfCauseEffect'] = 'causa/efeito';
+$lang['ex:coordinationOfActionProduct'] = 'ação/produto';
+$lang['ex:coordinationOfOpposition'] = 'oposição';
+$lang['ex:coordinationOfKinship'] = 'afinidade';
+$lang['ex:coordinationOfPartOf'] = 'parte de';
+$lang['::: select_the_relation'] = '::: selecione uma opção :::';
+
+$lang['thesaurus_type'] = 'Tipo';
 ?>
