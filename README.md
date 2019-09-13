@@ -41,7 +41,7 @@ $db['default'] = array(
 );
 </pre>
 
-Restare a base de dados com base no arquivo:
+Restaure a base de dados com base no arquivo:
 /_documment/sql/thesa.sql
 
 O login de acesso inicial é:
