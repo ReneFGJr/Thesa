@@ -33,7 +33,7 @@ function perfil($p, $trava = 0) {
 	return ($ac);
 }
 
-class socials extends CI_Model {
+class Socials extends CI_Model {
 
 	var $table = "users";
 
@@ -121,6 +121,12 @@ class socials extends CI_Model {
 		$this -> security_logout();
 		redirect(base_url('index.php/'));
 	}
+
+	function show_perfil()
+		{
+			$sx = '<h1>Perfil</h1>';
+			return($sx);
+		}	
 
 	function update() {
 		$sql = "ALTER TABLE users ADD us_password CHAR(20) NOT NULL AFTER `us_email`;";
@@ -720,6 +726,5 @@ class socials extends CI_Model {
 			return ( array());
 		}
 	}
-
 }
 ?>
