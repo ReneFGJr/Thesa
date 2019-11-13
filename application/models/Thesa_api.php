@@ -1,5 +1,38 @@
 <?php
 class thesa_api extends CI_model {
+    function cp_th($id = '') {
+        $cp = array();
+        array_push($cp, array('$H8', 'id_pa', '', true, true));
+        array_push($cp, array('$S80', 'pa_name', msg('thesaurus_name'), true, true));
+        array_push($cp, array('$T80:5', 'pa_description', msg('thesaurus_description'), false, true));
+        array_push($cp, array('$A1', '', msg('thesaurus_description'), false, false));
+        array_push($cp, array('$T80:8', 'pa_introdution', msg('thesaurus_introdution'), false, true));
+        array_push($cp, array('$T80:3', 'pa_audience', msg('thesaurus_audience'), false, true));
+        array_push($cp, array('$T80:6', 'pa_methodology', msg('thesaurus_methodology'), false, true));
+
+        $op = '1:' . msg('th_type_1');
+        $op .= '&2:' . msg('th_type_2');
+        $op .= '&3:' . msg('th_type_3');
+        $op .= '&4:' . msg('th_type_4');
+        $op .= '&5:' . msg('th_type_5');
+        //$op .= '&6:' . msg('th_type_6');
+        array_push($cp, array('$O' . $op, 'pa_type', msg('thesaurus_type'), true, true));
+
+        $ops = '1:' . msg('status_1');
+        $ops .= '&2:' . msg('status_2');
+        array_push($cp, array('$O ' . $ops, 'pa_status', msg('thesaurus_status'), true, true));
+        array_push($cp, array('$B8', '', msg('save'), false, true));
+        return ($cp);
+    }
+
+    function le($id)
+        {
+            $sql = "select * from th_thesaurus where id_pa = ".$id;
+            $rlt = $this->db->query($sql);
+            $rlt = $rlt->result_array();
+            $line = $rlt[0];
+            return($line);
+        }
     function index($d1 = '', $d2 = '') {
         $user = get("user");
         $pass = get("password");

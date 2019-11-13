@@ -251,6 +251,12 @@ $lang['skosxl:literalForm'] = 'extenso de ';
 $lang['skosxl:abbreviation_of'] = 'abreviatura de';
 $lang['skosxl:acronym'] = 'sigla';
 
+$lang['skos:broader.isTypeOf'] = 'é um tipo de (especificidade)';
+$lang['skos:broader.isPartOfGeo'] = 'é parte de (geográfico)';
+$lang['skos:broader.isPartOfBody'] = 'é parte do (corpo/orgãos)';
+$lang['skos:broader.isPartOfSocialStructure'] = 'é parte (estrutura social)';
+$lang['skos:broader.isPartOfDisciplina'] = 'é parte (área do conhecimento)';
+
 $lang['skosxl:has_gerund'] = 'tem como gerundio';
 $lang['skosxl:verbal_inflection'] = 'tem como flexão verbal';
 $lang['skosxl:synonymous'] = 'tem como variação';

@@ -100,7 +100,7 @@ class skoses extends CI_model {
             }
             $line['authors'] = array();
             $sql = "select distinct us_nome from th_users
-						INNER JOIN users ON id_us = ust_user_id
+						INNER JOIN users ON id_us = ust_user_id                        
 						WHERE ust_th = $th and ust_status = 1";
             $rrr = $this -> db -> query($sql);
             $rrr = $rrr -> result_array();
@@ -192,7 +192,8 @@ class skoses extends CI_model {
         /* ASSOCIATION TYPE */
         $sql = "select * from rdf_resource
 					inner join rdf_prefix on id_prefix = rs_prefix 
-					where rs_group = '$gr' order by id_rs";
+					where rs_group = '$gr' and rs_public = 1
+                    order by id_rs";
 
         $rlt = $this -> db -> query($sql);
         $rlt = $rlt -> result_array();
@@ -420,13 +421,26 @@ class skoses extends CI_model {
     }
 
     function le_c_broader($id = '', $th = '') {
+        /************ TGS */
+        $sql = "select * from rdf_resource where rs_group = 'TG'";
+        $rrr = $this->db->query($sql);
+        $rrr = $rrr->result_array();
+        $wh = '';
+        for ($r=0;$r < count($rrr);$r++)
+        {
+            $line = $rrr[$r];
+            if (strlen($wh) > 0) { $wh .= ' or '; }
+            $wh .= '(t1.ct_propriety = '.$line['id_rs'].')';
+        }
+
+
         $th = round(sonumero($th));
         $cp = 't1.id_ct as id_ct, t2.id_ct as id_ct2, rl_value, rl_lang, t1.ct_concept as ct_concept, t1.ct_created as ct_created';
         $sql = "select $cp
 					FROM th_concept_term as t1
 					INNER JOIN th_concept_term as t2 ON t1.ct_concept = t2.ct_concept and t2.ct_propriety = 25 
 					INNER JOIN rdf_literal ON id_rl = t2.ct_term
-						WHERE t1.ct_concept_2 = $id and t1.ct_th = $th and t1.ct_propriety = 26";
+						WHERE t1.ct_concept_2 = $id and t1.ct_th = $th and ($wh) ";
         $rlt = $this -> db -> query($sql);
         $rlt = $rlt -> result_array();
         if (count($rlt) > 0) {
@@ -1359,30 +1373,7 @@ class skoses extends CI_model {
         return ($cp);
     }
 
-    function cp_th($id = '') {
-        $cp = array();
-        array_push($cp, array('$H8', 'id_pa', '', true, true));
-        array_push($cp, array('$S80', 'pa_name', msg('thesaurus_name'), true, true));
-        array_push($cp, array('$T80:5', 'pa_description', msg('thesaurus_description'), false, true));
-        array_push($cp, array('$A1', '', msg('thesaurus_description'), false, false));
-        array_push($cp, array('$T80:8', 'pa_introdution', msg('thesaurus_introdution'), false, true));
-        array_push($cp, array('$T80:3', 'pa_audience', msg('thesaurus_audience'), false, true));
-        array_push($cp, array('$T80:6', 'pa_methodology', msg('thesaurus_methodology'), false, true));
 
-        $op = '1:' . msg('th_type_1');
-        $op .= '&2:' . msg('th_type_2');
-        $op .= '&3:' . msg('th_type_3');
-        $op .= '&4:' . msg('th_type_4');
-        $op .= '&5:' . msg('th_type_5');
-        $op .= '&6:' . msg('th_type_6');
-        array_push($cp, array('$O' . $op, 'pa_type', msg('thesaurus_type'), true, true));
-
-        $ops = '1:' . msg('status_1');
-        $ops .= '&2:' . msg('status_2');
-        array_push($cp, array('$O ' . $ops, 'pa_status', msg('thesaurus_status'), true, true));
-        array_push($cp, array('$B8', '', msg('save'), false, true));
-        return ($cp);
-    }
 
     function cp_term($id = '') {
         $cp = array();
@@ -2543,11 +2534,11 @@ class skoses extends CI_model {
         return ($sx);
     }
 
-    function th_collabotors_add($email, $th) {
+    function th_collabotors_add($email, $th, $type) {
         $ok = $this -> le_user_email($email);
         if ($ok == 1) {
             $id_us = $this -> line['id_us'];
-            $ok = $this -> insert_collaborators_add($id_us, $th);
+            $ok = $this -> insert_collaborators_add($id_us, $th, $type);
             if ($ok == 1) {
                 $msg = '<br/><br/><span class="btn alert-success">' . msg('collaborator_insered') . '</span>';
                 $this -> skoses -> user_thesa($th, $id_us, 'INS');
@@ -2601,21 +2592,21 @@ class skoses extends CI_model {
         return ($data);
     }
 
-    function insert_collaborators_add($id, $th) {
+    function insert_collaborators_add($id, $th, $type) {
         $sql = "select * from th_users where ust_user_id = $id and ust_th = $th";
         $rlt = $this -> db -> query($sql);
         $rlt = $rlt -> result_array();
         if (count($rlt) == 0) {
             $sql = "insert into th_users
-							(ust_user_id, ust_user_role, ust_th, ust_status)
+							(ust_user_id, ust_user_role, ust_th, ust_status, ust_tipo)
 							values
-							($id,1,$th,1)";
+							($id,1,$th,1,$type)";
             $rlt = $this -> db -> query($sql);
             $ok = 1;
         } else {
             $id_ust = $rlt[0]['id_ust'];
 
-            $sql = "update th_users set ust_status = 1 where id_ust = $id_ust";
+            $sql = "update th_users set ust_status = 1, ust_tipo = $type where id_ust = $id_ust";
             $rlt = $this -> db -> query($sql);
             $ok = 2;
         }
@@ -2630,6 +2621,7 @@ class skoses extends CI_model {
 
         $sql = "select * from th_users
 						INNER JOIN users ON ust_user_id = id_us
+                        LEFT JOIN th_users_perfil ON ust_tipo = id_up
 						WHERE ust_status = 1
 							AND ust_th = $th ";
         $rlt = $this -> db -> query($sql);
@@ -2637,9 +2629,10 @@ class skoses extends CI_model {
         $sx = '<table class="table" width="100%">' . cr();
         $sx .= '<tr class="small">';
         $sx .= '<th width="2%">' . msg('#') . '</th>';
-        $sx .= '<th width="40%">' . msg('name') . '</th>';
-        $sx .= '<th width="40%">' . msg('email') . '</th>';
+        $sx .= '<th width="31%">' . msg('name') . '</th>';
+        $sx .= '<th width="31%">' . msg('email') . '</th>';
         $sx .= '<th width="18%">' . msg('designated') . '</th>';
+        $sx .= '<th width="18%">' . msg('function') . '</th>';
         $sx .= '</tr>' . cr();
 
         for ($r = 0; $r < count($rlt); $r++) {
@@ -2661,6 +2654,11 @@ class skoses extends CI_model {
             $sx .= '<td>';
             $sx .= stodbr($line['ust_created']);
             $sx .= '</td>';
+
+            $sx .= '<td>';
+            $sx .= $line['up_tipo'];
+            $sx .= '</td>'; 
+
             if ($thesa['pa_creator'] != $line['id_us']) {
                 $link = '<a href="#">';
                 $sx .= '<td>';
@@ -2669,6 +2667,8 @@ class skoses extends CI_model {
                 $sx .= '</a>';
                 $sx .= '</td>';
             }
+
+
 
             $sx .= '</tr>' . cr();
         }
@@ -2694,6 +2694,20 @@ class skoses extends CI_model {
             $sx .= '<span class="small">' . msg('email') . '</span><br/>';
             $sx .= '<input type="text" name="email" id="email" class="form-control" aria-label="' . msg('find') . '">';
 
+            $sx .= '<span class="small">' . msg('function') . '</span><br/>';
+
+                    /**** Consulta SQL ********************/
+                    $sql = "select * from th_users_perfil";
+                    $rlt = $this->db->query($sql);
+                    $rlt = $rlt->result_array();
+                    for ($r=0;$r < count($rlt);$r++)
+                        {
+                            $line = $rlt[$r];
+                            $sx .= '<input type="radio" name="function" id="function_'.$line['id_up'].'" value="'.$line['id_up'].'"> '.msg($line['up_tipo']).'<br>';       
+                        }
+                    
+            
+
             $data = '';
             $data .= ', acao: "save" ';
             $url = base_url('index.php/thesa/ajax/collaborators_add/' . checkpost_link('hello') . '/1');
@@ -2711,10 +2725,11 @@ class skoses extends CI_model {
 							<script>
 								$( "#submit" ).click(function() {
 									$vlr = $("#email").val();
+                                    $type = $("input[name=function]:checked").val();
 										$.ajax({
 											url : "' . $url . '",
 											type : "post",
-											data : { dd1: $vlr ' . $data . ' }, 
+											data : { dd1: $vlr, dd2: $type ' . $data . ' }, 
 											success : function(data) {
 												$("#status").html(data);
 										} });

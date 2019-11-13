@@ -304,9 +304,10 @@ $lang['download'] = "DOWNLOAD";
 $lang['contact'] = "CONTATO";
 $lang['sign_in'] = "ACESSAR";
 
-$lang['th_type_1'] = 'Glossário';
-$lang['th_type_2'] = 'Vocabulário controlado';
-$lang['th_type_3'] = 'Controle de autoridade';
+$lang['th_type_1'] = 'Dicionário';
+$lang['th_type_2'] = 'Glossário';
+$lang['th_type_3'] = 'Controle de autoridade de assuntos';
+$lang['th_type_3'] = 'Controle de autoridade de pessoas e instituições';
 $lang['th_type_4'] = 'Tesauro';
 $lang['th_type_5'] = 'Tesauro Semântico';
 $lang['th_type_6'] = 'Ontologia';
