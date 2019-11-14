@@ -9,6 +9,15 @@ body {
 	color: #333333;
 }
 
+.trash
+	{
+		opacity: 0.2;
+	}
+.trash:hover
+	{
+		opacity: 1;
+	}	
+
 .icones {
 	width: 130px;
 	height: 130px;

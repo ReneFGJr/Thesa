@@ -121,7 +121,7 @@ class frbrs extends CI_model {
                 {id: 5, label: \'Node 5\nLeft-Aligned box\', shape: \'box\',
                  font: {\'face\': \'Monospace\', align: \'left\'}} 
          */
-        $sx = '  <link href="' . base_url('js/vis.min.css') . '" rel="stylesheet">' . cr();
+        $sx = '  <link href="' . base_url('css/vis.min.css') . '" rel="stylesheet">' . cr();
         $sx .= '<script type="text/javascript" src="' . base_url('js/vis.min.js') . '"></script>' . cr();
         $sx .= '
             <div id="mynetwork" style="border:0px solid #000000; height: 500px;"></div>

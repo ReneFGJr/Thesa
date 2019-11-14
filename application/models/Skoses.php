@@ -99,8 +99,9 @@ class skoses extends CI_model {
                 $line['image_bk'] = base_url('img/background_custumer/biulings.jpg');
             }
             $line['authors'] = array();
-            $sql = "select distinct us_nome from th_users
+            $sql = "select distinct us_nome, id_up, up_tipo from th_users
 						INNER JOIN users ON id_us = ust_user_id                        
+                        INNER JOIN th_users_perfil ON ust_tipo = id_up
 						WHERE ust_th = $th and ust_status = 1";
             $rrr = $this -> db -> query($sql);
             $rrr = $rrr -> result_array();
@@ -867,8 +868,8 @@ class skoses extends CI_model {
 
                 $sx .= ' ';
                 $link = base_url('index.php/thesa/te_remove/' . $line['id_ct'] . '/' . checkpost_link($line['id_ct'] . $this -> chave));
-                $sx .= '<a href="#" style="color: red" title="Remove" onclick="newwin(\'' . $link . '\',600,300);">';
-                $sx .= '<img src="' . base_url('img/icone/remove.png') . '" width="20" border=0>';
+                $sx .= '<a href="#" class="trash" style="color: red" title="Remove" onclick="newwin(\'' . $link . '\',600,300);">';
+                $sx .= '<img src="' . base_url('img/icone/remove.png') . '"  width="16" border=0>';
                 $sx .= '</a>';
 
                 $sx .= '</li>' . cr();
@@ -3154,7 +3155,13 @@ class skoses extends CI_model {
         /************************************ AUTHORS */
         for ($r = 0; $r < count($data['authors']); $r++) {
             $auth2 = UpperCase($data['authors'][$r]['us_nome']);
-            $sx .= '<span style="text-align: center; font-size: 15px;">' . $auth2 . '</span><br>';
+            $tp = $data['authors'][$r]['id_up'];
+            $compl = '';
+            if ($tp != 1)
+            {
+              $compl = ' ('.msg($data['authors'][$r]['up_tipo']).')'; 
+            }
+            $sx .= '<span style="text-align: center; font-size: 15px;">' . $auth2 . $compl .'</span><br>';
         }
         $sx .= '</center>';
         $sx .= '<br>';

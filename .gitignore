@@ -56,3 +56,4 @@ application/config/config.php
 application/config/config.php
 application/config/config.php
 xml/flare_1.csv
+application/config/database.php

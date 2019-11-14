@@ -11,7 +11,7 @@ if (!isset($action)) {
 		</div>
 		<div class="col-md-1">
 			<a href="#" onclick="newxy('<?php echo base_url('index.php/thesa/cremove/'.$id_c.'/'.checkpost_link($id_c));?>',1024,500);" title="<?php echo msg('delete concept');?>">
-			<img src="<?php echo base_url('img/icone/exclud.png');?>" class="img-fluid">
+			<img src="<?php echo base_url('img/icone/exclud.png');?>" class="img-fluid trash">
 			</a>
 		</div>
 		<div class="col-md-2 btn btn-secondary"><?php echo msg('concept'); ?></br><font class="xxxbig"><?php echo $c_concept; ?></font></div>
