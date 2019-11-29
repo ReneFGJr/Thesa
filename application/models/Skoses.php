@@ -1679,7 +1679,9 @@ class skoses extends CI_model {
             }
             $sx .= '<li>' . $link . $sa . ' ' . $line['rl_value'];
             $sx .= $saf;
-            $sx .= '</a></li>';
+            $sx .= '</a>';
+            $sx .= '<sup>('.$line['rl_lang'].')</sup>';
+            $sx .= '</li>';
         }
         $sx .= '</ul>' . cr();
         $sx .= '</div>';

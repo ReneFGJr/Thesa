@@ -239,7 +239,7 @@ $lang['skos:prefLabel'] = 'Descritor preferencial';
 $lang['skos:altLabel'] = 'Variações Terminológica / Termo alternativo';
 $lang['skos:hiddenLabel'] = 'Variações léxicas (erros grafia)';
 $lang['skos:narrower'] = 'Descritor Específico:';
-$lang['ex:coordinationOf'] = 'Coordenação';
+$lang['ex:coordinationOf'] = 'coordenação';
 $lang['skosxl:isSingular'] = 'singular de';
 $lang['skosxl:isPlural'] = 'plural de';
 $lang['skosxl:isMasculine'] = 'masculino de';
@@ -252,6 +252,21 @@ $lang['created_in'] = 'Criado em';
 $lang['update_in'] = 'Atualizado em';
 $lang['skosxl:noteCited'] = 'Nota de citação';
 
+$lang['skos:is_equivalent_another_language'] = 'é traduzido por';
+$lang['skos:is_verbal_flexion'] = 'é flexão verbal';
+$lang['skos:is_feminine_of'] = 'é feminino de';
+$lang['skos:is_gerund'] = 'é gerundio de';
+$lang['skos:process_agent'] = 'agente/processo';
+$lang['skos:objective_action'] = 'ação/paciente ou objetivo';
+$lang['skos:property_action'] = 'ação/propriedade';
+$lang['skos:object_field'] = 'campo de estudo/objeto ou fenômeno';
+$lang['skos:action_against_agent'] = 'ação ou objeto/contra agente';
+$lang['skos:property_object'] = 'conceito ou objeto/propriedade';
+$lang['skos:part_of_object'] = 'objeto/suas partes';
+$lang['skos:material_product'] = 'matéria prima/produto';
+$lang['skos:object_field2'] = '';
+
+
 $lang['skosxl:has_gerund'] = 'tem como gerundio';
 $lang['skosxl:verbal_inflection'] = 'tem como flexão verbal';
 $lang['skosxl:synonymous'] = 'tem como variação';
@@ -260,6 +275,15 @@ $lang['skosxl:is_verbal_inflection'] = 'é flexão verbal de';
 $lang['skosxl:is_synonymous'] = 'é variação de';
 $lang['skosxl:hiddenLabel'] = 'tem com termo oculto';
 $lang['ex:unionOf'] = 'equivalente a';
+
+$lang['ex:coordinationOfProductCharacteristics'] = 'características do produto';
+$lang['ex:coordinationOfCauseEffect'] = 'causa/efeito';
+$lang['ex:coordinationOfActionProduct'] = 'ação/produto';
+$lang['ex:coordinationOfOpposition'] = 'oposição/antonímia';
+$lang['ex:coordinationOfKinship'] = 'afinidade';
+$lang['ex:coordinationOfPartOf'] = 'processo/parte de';
+$lang['::: select_the_relation'] = '::: selecione uma opção :::';
+
 
 
 $lang['skos:definition'] = 'Definição do conceito';
@@ -324,14 +348,6 @@ $lang['form_user_password'] = 'Senha de acesso';
 
 $lang['edit_th'] = 'Personalizar Thesa';
 $lang['configuration'] = 'Configurações';
-
-$lang['ex:coordinationOfProductCharacteristics'] = 'características do produto';
-$lang['ex:coordinationOfCauseEffect'] = 'causa/efeito';
-$lang['ex:coordinationOfActionProduct'] = 'ação/produto';
-$lang['ex:coordinationOfOpposition'] = 'oposição';
-$lang['ex:coordinationOfKinship'] = 'afinidade';
-$lang['ex:coordinationOfPartOf'] = 'parte de';
-$lang['::: select_the_relation'] = '::: selecione uma opção :::';
 
 $lang['thesaurus_type'] = 'Tipo';
 ?>

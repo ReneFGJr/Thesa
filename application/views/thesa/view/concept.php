@@ -17,6 +17,7 @@ $linkr .= '/thesa/c/' . $id_c . '/rdf';
     <div class="row">
         <div class="col-md-7 col-xs-7 col-sm-7">
             <a  href="<?php echo $link; ?>"  class="thesa-concept thesa thesa_under"><?php echo $rl_value; ?></a>
+            <sup class="thesa-concept thesa" style="font-size: 90%;">(<?php echo $rl_lang;?>)</sup>
             <br><input type="text" id="cpc" value = "<?php echo $linkc; ?>" class="small" style="width: 100%; border: 0px;" readonly >
             <br>
             <br>
@@ -51,6 +52,7 @@ $linkr .= '/thesa/c/' . $id_c . '/rdf';
                         echo $link;
                         echo $line['rl_value'];
                         echo '</a>';
+                        echo '<sup>('.$line['rl_lang'].')</sup>';
                         echo cr();
                         echo '<br>';
                     }
@@ -67,6 +69,7 @@ $linkr .= '/thesa/c/' . $id_c . '/rdf';
                         echo $link;
                         echo $line['rl_value'];
                         echo '</a>';
+                        echo '<sup>('.$line['rl_lang'].')</sup>';
                         echo cr();
                         echo '<br>';
                     }
@@ -79,8 +82,9 @@ $linkr .= '/thesa/c/' . $id_c . '/rdf';
                         $link = '<a href="' . base_url('index.php/thesa/c/' . $line['ct_concept']) . '" class="thesa_link">';
                         echo 'UP  <sup>('.msg($line['prefix_ref'].':'.$line['rs_propriety']).')</sup>: ';
                         echo $link;
-                        echo $line['rl_value'];
+                        echo $line['rl_value'];                        
                         echo '</a>';
+                        echo '<sup>('.$line['rl_lang'].')</sup>';
                         echo cr();
                         echo '<br>';
                     }
@@ -111,6 +115,7 @@ $linkr .= '/thesa/c/' . $id_c . '/rdf';
                         echo $link;
                         echo $line['rl_value'];
                         echo '</a>';
+                        echo '<sup>('.$line['rl_lang'].')</sup>';
                         echo cr();
                         echo '<br>';
                     }

@@ -858,7 +858,7 @@ class Thesa extends CI_Controller {
 
 		switch($dt['pa_type'])
 		{
-			case '5':
+			case '95':
 			$c = round($c);
 			$th = $_SESSION['skos'];
 
@@ -896,7 +896,7 @@ class Thesa extends CI_Controller {
 			$this -> cab(0);
 
 			$data = $this -> skoses -> le($c);
-			$data['form'] = $this -> skoses -> form_concept_tg($th, $c);
+			$data['form'] = $this -> skoses -> form_concept_tg($th, $c, 'TG');
 			$this -> load -> view('thesa/view/concept_mini', $data);
 
 			$action = get("action");
