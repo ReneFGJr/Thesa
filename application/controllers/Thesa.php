@@ -1236,6 +1236,8 @@ class Thesa extends CI_Controller {
 				case '' :
 				redirect(base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/1'));
 				break;
+
+				/******************************************************** 11111111111111111111 */
 				case '1' :
 				$this -> cab();
 				$html = '<h1>' . msg('phase') . ' 1</h1>';
@@ -1258,6 +1260,8 @@ class Thesa extends CI_Controller {
 				$this -> load -> view('content', $data);
 				$this -> footer();
 				break;
+
+				/*************************************************************** 2 */
 				case '2' :
 				$this -> cab();
 				$html = '<h1>' . msg('phase') . ' 2</h1>';
@@ -1284,7 +1288,7 @@ class Thesa extends CI_Controller {
 				$html .= '<div class="alert alert-info" role="alert">
 				Aguarde! Processando registros
 				<hr>
-				Processando Glossário Html
+				Processando Glossario Alfabetico Hhtml
 				<hr>                                                                                            
 				</div>
 				<br><br>';
@@ -1298,16 +1302,26 @@ class Thesa extends CI_Controller {
 				$this -> load -> view('content', $data);
 				$this -> footer();
 				break;
+
+				/************************************************************************************/
 				case '4' :
 				$this -> cab();
-				$html = '<h1>' . msg('phase') . ' 3</h1>';
+				$html = '<h1>' . msg('phase') . ' 4</h1>';
 				$html .= '<div class="alert alert-info" role="alert">
-				Aguarde! Processando registros
+				Aguarde! Processando registros - Mapa conceitual
 				</div>';
-				$html .= '<meta http-equiv="refresh" content="2; url=' . base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/9') . '">';
 
-				$txt = $this -> skoses -> le_tree($id, 'txt');
+				$html .= $this -> skoses -> le_tree($id, 'txt');
                         //$this -> skoses -> save($id, '4', $txt);
+				if (!strpos($html,'ERROR: ['))
+				{
+					$html .= '<meta http-equiv="refresh" content="2; url=' . base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/9') . '">';				
+				} else {
+					$html = '<h2>Erros</h2>
+							Foram localizados erros no relacionamento de termos
+							<hr>
+							<a class="btn btn-warning" href="' . base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/9').'">Continuar</a>'.'<hr>'.$html;
+				}
 
 				$txt = $this -> skoses -> le_tree_sistematic($id);
 				$this -> skoses -> save($id, '5', $txt);
@@ -1316,7 +1330,9 @@ class Thesa extends CI_Controller {
 				$data['title'] = 'Export to PDF';
 				$this -> load -> view('content', $data);
 				$this -> footer();
-				break;                        
+				break;
+
+
 				case '9' :
 				$this -> cab();
 				$html = $this -> skoses -> make_pdf($id);
