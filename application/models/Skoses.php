@@ -1910,9 +1910,9 @@ function from_to_xml($th = 0)
     }
     header('Content-Type: application/xml; charset=utf-8');            
     $sx = '<?xml version="1.0" encoding="UTF-8"?>'.cr();
-    $sx .= '<corporate>'.cr();
+    $sx .= '<concepts>'.cr();
     foreach ($x as $key => $value) {
-        $sx .= '<institution>'.cr();;
+        $sx .= '<concept>'.cr();;
         $sx .= '<id>thesa:c'.$key.'</id>'.cr();
         $sx .= '<url>'.base_url(PATH.'c/'.$key).'</url>'.cr();
         $sx .= '<name>'.$x[$key]['nome'].'</name>'.cr();
@@ -1929,9 +1929,9 @@ function from_to_xml($th = 0)
             $sx .= '<image></image>'.cr();
         }
 
-        $sx .= '</institution>'.cr();            
+        $sx .= '</concept>'.cr();            
     }
-    $sx .= '</corporate>'.cr();
+    $sx .= '</concepts>'.cr();
     echo $sx;
     exit;  
 }
