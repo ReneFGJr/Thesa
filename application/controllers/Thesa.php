@@ -47,6 +47,13 @@ class Thesa extends CI_Controller {
 		$this -> load -> view('thesa/header/footer', $data);
 	}
 
+	function apis()
+		{
+			$this->cab();
+			$this->load->view('docummentation/api',null);
+			$this->footer();
+		}
+
 	function api($d1='',$d2='')
 	{
 		$this->load->model("thesa_api");

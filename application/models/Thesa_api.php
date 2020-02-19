@@ -26,29 +26,133 @@ class thesa_api extends CI_model {
     }
 
     function le($id)
+    {
+        $sql = "select * from th_thesaurus where id_pa = ".$id;
+        $rlt = $this->db->query($sql);
+        $rlt = $rlt->result_array();
+        $line = $rlt[0];
+        return($line);
+    }
+    function check_token()
+    {
+        return(1);
+    }
+
+    function index($d1 = '', $d2 = '') 
+    {
+        if ($this->check_token() ==1)
         {
-            $sql = "select * from th_thesaurus where id_pa = ".$id;
-            $rlt = $this->db->query($sql);
-            $rlt = $rlt->result_array();
-            $line = $rlt[0];
-            return($line);
+            $dt['erro'] = 0;
+            $dt['status'] = 'ok';
+            $dt['api'] = $d1;
+            switch($d1)
+            {
+                case 'check':
+                $dt['term'] = get("q");
+                $dt['thesa'] = get("th");
+                $dt['result'] = $this->api_check($dt['term'],$dt['thesa']);
+            }
+            echo json_encode($dt);
+        } else {
+            echo json_encode(array("erro"=>1,"status"=>"Token Invalid"));
         }
-    function index($d1 = '', $d2 = '') {
+    }
+
+    function checksum($term)
+    {
+        $term = lowercasesql($term);
+        $cs = 0;
+        for ($r=0;$r < count($term);$r++)
+        {
+            $c = substr($term,$r,1);
+            $cs = $cs + ord($c);
+        }
+        return($cs);
+    }
+
+    function api_check($term,$th)
+    {
+        $this->load->model("frbrs");
+        $new = get("new");
+        $t = troca($term,' ',';').';';
+        $t = splitx(';',$t);
+        $wh = '';
+        if (round($th) == 0) { return(array()); }
+        for ($r=0;$r < count($t);$r++)
+        {
+            if (strlen($wh) > 0) { $wh .= ' AND '; }
+            $wh .= '(rl_value like  \'%' . $t[$r] . '%\') ';
+        }
+        if (count($t) == 0)
+        {
+            return(array());
+        }
+        $sql = "select * from rdf_literal
+        INNER JOIN th_concept_term ON ct_term = id_rl and ct_th = $th
+        INNER JOIN rdf_resource ON ct_propriety = id_rs 
+        where $wh";
+
+        $csm = $this->checksum($term);
+
+        $rlt = $this -> db -> query($sql);
+        $rlt = $rlt -> result_array();   
+        $dt = array(); 
+        $dts = array();
+        $dtc = array();
+        for ($r=0;$r < count($rlt);$r++)
+        {
+            $line = $rlt[$r];
+            $cs = $this->checksum($line['rl_value']);
+            $idcp = $cs/$csm;
+            {
+                $idc = $line['ct_concept'];
+                if (!isset($dts[$idc]))
+                {
+                    array_push($dtc,array('idc'=>$line['ct_concept'],'name'=>$line['rl_value'],'lang'=>$line['rl_lang'],'ind'=>$idcp));
+                    $dts[$idc] = 1;
+                }
+            }
+        }
+
+        for ($r=0;$r < count($dtc);$r++)
+        {
+            $idc = $dtc[$r]['idc'];
+            $da = $this->le_concept($idc);
+            $dtc[$r]['autho'] = $da['rl_value'];
+        }
+        $dt['conecpt'] = $dtc;
+        return($dt);
+    }
+
+    function le_concept($idc)
+    {
+        $sql = "select * from th_concept_term
+        INNER JOIN rdf_literal ON ct_term = id_rl
+        where ct_propriety = 25 and ct_concept = ".$idc;
+        
+        $rlt = $this->db->query($sql);
+        $rlt = $rlt->result_array();
+        $line = $rlt[0];
+        return($line);
+    }
+
+    function index_old($dd1='',$dd2='')
+    {
         $user = get("user");
         $pass = get("password");
         $term = get("term");
         $lang = '';
         if (strpos($term,'@') > 0)
-            {
-                $lang = substr($term,strpos($term,'@')+1,5);
-                $term = substr($term,0,strpos($term,'@'));
-            }
+        {
+            $lang = substr($term,strpos($term,'@')+1,5);
+            $term = substr($term,0,strpos($term,'@'));
+        }
         $th = $d1;
         if ((strlen($term) == 0) or (strlen($th) == 0)) {
             //http_response_code(500);
             //header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
             echo "ERRO - Empty Term";
-			exit;
+            exit;
             return ("");
         }
         $this -> load -> model("Skoses");
@@ -58,9 +162,9 @@ class thesa_api extends CI_model {
         echo '<thesa>';
 
         $sql = "select * from rdf_literal
-                            INNER JOIN th_concept_term ON ct_term = id_rl and ct_th = $th
-                            INNER JOIN rdf_resource ON ct_propriety = id_rs 
-                            where rl_value = '" . $term . "'";
+        INNER JOIN th_concept_term ON ct_term = id_rl and ct_th = $th
+        INNER JOIN rdf_resource ON ct_propriety = id_rs 
+        where rl_value = '" . $term . "'";
         $rlt = $this -> db -> query($sql);
         $rlt = $rlt -> result_array();
         if (count($rlt) == 1) {
@@ -68,10 +172,10 @@ class thesa_api extends CI_model {
             $c = $line['ct_concept'];
 
             $sql = "
-                        select * from rdf_literal 
-                            INNER JOIN th_concept_term ON ct_term = id_rl and ct_th = 64 
-                            INNER JOIN rdf_resource ON ct_propriety = id_rs 
-                            where ct_concept = $c ";
+            select * from rdf_literal 
+            INNER JOIN th_concept_term ON ct_term = id_rl and ct_th = 64 
+            INNER JOIN rdf_resource ON ct_propriety = id_rs 
+            where ct_concept = $c ";
             $rlt2 = $this -> db -> query($sql);
             $rlt2 = $rlt2 -> result_array();
             echo '<concept>thesa:c' . $c . '</concept>';

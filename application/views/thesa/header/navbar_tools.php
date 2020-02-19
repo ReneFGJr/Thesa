@@ -35,6 +35,7 @@ if (!isset($_SESSION['id'])) {
                     <div class="dropdown-menu">
                       <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/th_edit/'.$th.'/'.checkpost_link($th)); ?>"><?php echo msg('edit_th'); ?></a>
                       <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/collaborators'); ?>"><?php echo msg('collaborators'); ?></a>                                                          
+                      <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/apis'); ?>"><?php echo msg('api'); ?></a>                                                          
                     </div>
                   </li>
                   <li class="nav-item dropdown">
