@@ -2,7 +2,7 @@
 
 Sistema desenvolvido em PHP/MySQL para construção de Tesauros com maior nível semântico entre os termos.
 
-# Versão atual v0.19.04.02
+# Versão atual v0.20.03.26
 
 # Instalação
 
@@ -51,8 +51,8 @@ $config['base_url'] = 'https://www.ufrgs.br/tesauros/';
 
 Restaure a base de dados com base no arquivo, crie uma base de dados em UTF8-bin:
 /_documment/sql/thesa.sql
-
-O login de acesso inicial é:
-usuário: thesa
-senha: admin
+<br>
+<br>O login de acesso inicial é:
+<br>usuário: thesa
+<br>senha: admin
  
