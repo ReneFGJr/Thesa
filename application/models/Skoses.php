@@ -1216,7 +1216,8 @@ function termos_pg($id, $ed = '1') {
 
 /* RESUMO DO THESAURUS */
 function myskoses_total() {
-    $id = $this -> socials -> user_id();
+    $socials = new socials;
+    $id = $socials -> user_id();
     $sql = "select count(*) as total from th_thesaurus where pa_creator = $id";
     $xrlt = $this -> db -> query($sql);
     $xrlt = $xrlt -> result_array();

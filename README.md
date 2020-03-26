@@ -41,7 +41,15 @@ $db['default'] = array(
 );
 </pre>
 
-Restaure a base de dados com base no arquivo:
+Arquivo /application/config/config.php ajustar, de acordo com o local de hospedagem do site (http ou https):
+
+<pre>
+$config['base_url'] = 'https://www.ufrgs.br/tesauros/';
+</pre>
+
+
+
+Restaure a base de dados com base no arquivo, crie uma base de dados em UTF8-bin:
 /_documment/sql/thesa.sql
 
 O login de acesso inicial é:

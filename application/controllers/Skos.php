@@ -5,6 +5,7 @@ class Skos extends CI_Controller {
 
     function __construct() {
         parent::__construct();
+        $this -> load -> library('session');
         $this -> lang -> load("skos", "portuguese");
         $this -> lang -> load("about", "portuguese");
         $this -> load -> library('form_validation');
@@ -12,12 +13,15 @@ class Skos extends CI_Controller {
         $this -> load -> helper('form');
         $this -> load -> helper('form_sisdoc');
         $this -> load -> helper('url');
-        $this -> load -> library('session');
+        
         $this -> load -> helper('xml');
         $this -> load -> helper('email');
         $this -> load -> library('email');
 
-        date_default_timezone_set('America/Sao_Paulo');
+        //date_default_timezone_set('America/Sao_Paulo');
+        date_default_timezone_set('Asia/Brunei');
+        print_r($_SESSION);
+        
         /* Security */
         //		$this -> security();
     }

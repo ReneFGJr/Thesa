@@ -1,27 +1,31 @@
 <?php
+define("LIBRARY_NAME","Thesa");
 class Thesa extends CI_Controller {
 
 	function __construct() {
 		parent::__construct();
-		$this -> lang -> load("skos", "portuguese");
+        //date_default_timezone_set('America/Sao_Paulo');
+        date_default_timezone_set('Asia/Brunei');	
+
+		$this -> load -> library('session');
+		$this -> lang -> load("thesa", "portuguese");
 		$this -> lang -> load("about", "portuguese");
 		$this -> load -> library('form_validation');
 		$this -> load -> database();
 		$this -> load -> helper('form');
 		$this -> load -> helper('form_sisdoc');
 		$this -> load -> helper('url');
-		$this -> load -> library('session');
+		
 		$this -> load -> helper('xml');
 		$this -> load -> helper('email');
 		$this -> load -> library('email');
-		//$this -> load -> library('tcpdf');
+
+		/* Security */
+		$this -> load -> helper('socials');
+		//      $this -> security();
 
 		$this -> load -> model('thesa_api');
-
-		date_default_timezone_set('America/Sao_Paulo');
-		$this -> load -> model('socials');
-		/* Security */
-		//      $this -> security();
+		
 		$this -> load -> model('skoses');
 	}
 
@@ -34,7 +38,6 @@ class Thesa extends CI_Controller {
 	}
 
 	private function cab($navbar = 1) {
-		$this -> load -> model("socials");
 		$data['title'] = 'Thesa - Library ::::';
 		$this -> load -> view('thesa/header/header', $data);
 		if ($navbar == 1) {
@@ -165,14 +168,19 @@ class Thesa extends CI_Controller {
 		$this -> load -> view('header/footer', null);
 	}
 
-	function thesaurus_my() {
+	function thesaurus_my() {		
+		if (!isset($_SESSION['id']) or (strlen($_SESSION['id'])==0))
+		{
+			redirect(base_url(PATH));
+		}
 		$this -> load -> model('skoses');
 		$this -> cab(1);
 		$data['content'] = '<h1 style="color: white;">' . msg('my_thesaurus') . '</h1>';
 		$this -> load -> view('thesa/home/parallax', $data);
 
 		/****** user id **********/
-		$us = $this -> socials -> user_id();
+		$socials = new socials;
+		$us = $socials -> user_id();
 
 		$tela = $this -> skoses -> myskoses($us);
 		$data['content'] = $tela;
@@ -530,6 +538,7 @@ class Thesa extends CI_Controller {
 	/***************************************************************************** Conecpt */
 	function c($c = '', $proto = '', $proto2 = '') 
 	{
+		$socials = new socials;
 		$this -> load -> model("skoses");
 		$this -> load -> model("frbrs");
 
@@ -560,10 +569,10 @@ class Thesa extends CI_Controller {
 			$this -> load -> view('thesa/header/navbar_tools', null);
 
 			/* user allow ****************************************************/
-			$user_id = $this -> socials -> user_id();
+			$user_id = $socials -> user_id();
 			$data['edit'] = '';
 			if ($user_id > 0) {
-				$user_id = $this -> socials -> user_id();
+				$user_id = $socials -> user_id();
 				$data['edit'] = isset($data['allow'][$user_id]);
 			}
 			$data['grapho'] = $this->frbrs->vis($data);
@@ -578,7 +587,7 @@ class Thesa extends CI_Controller {
 	}
 
 	function cedit($c = '', $th = '') {
-
+		$socials = new socials;
 		/* Load model */
 		$edit = true;
 		$this -> load -> model("skoses");
@@ -595,10 +604,10 @@ class Thesa extends CI_Controller {
 		$data['pg'] = 4;
 
 		/* user allow ****************************************************/
-		$user_id = $this -> socials -> user_id();
+		$user_id = $socials -> user_id();
 		$data['edit'] = '';
 		if ($user_id > 0) {
-			$user_id = $this -> socials -> user_id();
+			$user_id = $socials -> user_id();
 			$data['edit'] = isset($data['allow'][$user_id]);
 		}
 
@@ -700,18 +709,24 @@ class Thesa extends CI_Controller {
 
 	/* LOGIN */
 	function social($act = '') {
+		$socials = new socials;
 		switch($act) {
+			case 'forgot':
+			$this->cab();
+			$socials -> forgot();
+			break;
+
 			case 'pwsend' :
 			$this -> cab();
-			$this -> socials -> resend();
+			$socials -> resend();
 			break;
 			break;
 			case 'signup' :
 			$this -> cab();
-			$this -> socials -> signup();
+			$socials -> signup();
 			break;
 			case 'logout' :
-			$this -> socials -> logout();
+			$socials -> logout();
 			break;
 			case 'npass' :
 			$this -> cab();
@@ -723,14 +738,14 @@ class Thesa extends CI_Controller {
 				$data['content'] = 'Erro de Check';
 				$this -> load -> view('content', $data);
 			} else {
-				$dt = $this -> socials -> le_email($email);
+				$dt = $socials -> le_email($email);
 				if (count($dt) > 0) {
 					$id = $dt['id_us'];
 					$data['title'] = '';
 					$tela = '<br><br><h1>' . msg('change_password') . '</h1>';
 					$new = 1;
 						// Novo registro
-					$data['content'] = $tela . $this -> socials -> change_password($id, $new);
+					$data['content'] = $tela . $socials -> change_password($id, $new);
 					$this -> load -> view('content', $data);
 						//redirect(base_url("index.php/thesa/social/login"));
 				} else {
@@ -743,10 +758,10 @@ class Thesa extends CI_Controller {
 			break;
 			case 'login' :
 			$this -> cab();
-			$this -> socials -> login();
+			$socials -> login();
 			break;
 			case 'login_local' :
-			$ok = $this -> socials -> login_local();
+			$ok = $socials -> login_local();
 			if ($ok == 1) {
 				redirect(base_url('index.php/thesa/thesaurus_my'));
 			} else {

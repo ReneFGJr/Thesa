@@ -21,32 +21,32 @@ if (isset($_SESSION['id']) and ($_SESSION['id'] != '')) {
 				<a class="nav-link" href="<?php echo base_url('index.php/thesa/thesaurus_open'); ?>"><?php echo msg('open_thesauros'); ?> <span class="sr-only">(current)</span></a>
 			</li>
 			<?php 
-			if ((perfil('#ADM')==1) or (isset($_SESSION['id']))) { ?>
+			if ((perfil('#ADM')==1) or (isset($_SESSION['id']) and (strlen($_SESSION['id']) >0))) { ?>
             <li class="nav-item active">
                 <a class="nav-link" href="<?php echo base_url('index.php/thesa/thesaurus_my'); ?>"><?php echo msg('my_thesauros'); ?></a>
             </li>
             <?php } ?>
+
+            <?php
+            if (isset($_SESSION['skos']))
+				{
+					$ids = round($_SESSION['skos']);
+					$link = base_url(PATH.'terms/'.$ids);
+					echo '
+					<li class="nav-item">
+					<a class="nav-link" href="'.$link.'">'.msg('TH_atual').'</a>
+					</li>
+					';
+
+				}
+            ?>
 			<li class="nav-item">
-				<a class="nav-link" href="<?php echo base_url('index.php/thesa/contact'); ?>">Contato</a>
+				<a class="nav-link" href="<?php echo base_url('index.php/thesa/contact'); ?>"><?php echo msg("Contact");?></a>
 			</li>
-			<!------ catalog ---->
-			<?php 
-			if (perfil('#ADM')==1) 
-			{ ?>
-			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Catalogação </a>
-				<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-				    <a class="dropdown-item" href="<?php echo base_url('index.php/main/authority'); ?>"><?php echo msg("authority"); ?></a>
-				    <a class="dropdown-item" href="<?php echo base_url('index.php/main/catalog'); ?>">Preparo técnico</a>
-                    <a class="dropdown-item" href="<?php echo base_url('index.php/main/authority'); ?>">Autoridade</a>
-                    <a class="dropdown-item" href="<?php echo base_url('index.php/main/vocabulary'); ?>">Vocabulários controlados</a>
-				</div>
-			</li>
-			<?php } ?>
 			
 			<!------ ADMIN CONFIG ---->
             <?php 
-            if (perfil('#ADM')==1) 
+            if (perfil('#ADM')==10) 
             { ?>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="<?php echo base_url('index.php/main/config'); ?>" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo msg('menu_config'); ?></a>
@@ -59,7 +59,10 @@ if (isset($_SESSION['id']) and ($_SESSION['id'] != '')) {
             </li>                
             <?php } ?>
             <li class="nav-item navbar-toggler-right">
-                <?php echo $this -> socials -> menu_user(); ?>
+                <?php 
+                $socials = new socials;
+                echo $socials -> menu_user(); 
+                ?>
             </li>           
                        			
 		</ul>

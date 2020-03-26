@@ -10,6 +10,8 @@
 			<div class="col-md-3 text-left white">
 				<span class="big" style="family: RobotoThin;">THESA</span>
 				<span class="">Semantic Thesaurus</span>
+				<br>
+				<?php echo msg('Version').' 0.20.03.26';?>
                 
 				
 			</div>

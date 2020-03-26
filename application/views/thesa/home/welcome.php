@@ -1,3 +1,6 @@
+<?php
+$socials = new socials;
+?>
 <style>
 .parallax_background_1 {
 /* The image used */
@@ -51,7 +54,7 @@ background-image: url("<?php echo base_url('img/background/background_2.jpg'); ?
 			</div>
 			<div class="col-md-5 text-center" style="margin-top: 100px;">
 				<?php
-				if ($this->socials->user_id() > 0)
+				if ($socials->user_id() > 0)
 					{
 						
 					} else {
