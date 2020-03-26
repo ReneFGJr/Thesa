@@ -4,8 +4,8 @@ class Thesa extends CI_Controller {
 
 	function __construct() {
 		parent::__construct();
-        //date_default_timezone_set('America/Sao_Paulo');
-        date_default_timezone_set('Asia/Brunei');	
+        date_default_timezone_set('America/Sao_Paulo');
+        //date_default_timezone_set('Asia/Brunei');	
 
 		$this -> load -> library('session');
 		$this -> lang -> load("thesa", "portuguese");
