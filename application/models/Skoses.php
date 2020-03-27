@@ -3505,7 +3505,106 @@ function th_list($th='')
     $sx .= '</table>';
     return($sx);
 }    
+function import_file()
+    {
+        $form = new form;
+        $cp = array();
+        array_push($cp,array('$H8','','',false,false));
+        array_push($cp,array('$FILE','','',false,false));
 
+        array_push($cp,array('$A4','',msg('file_type_info'),false,false));
+        $op = 'ttl:Turtle RDF (.ttl)';
+        $op .= '&owlxml:XML OWL (.owl)';
+        $op .= '&txt:Term List (.txt)';
+        array_push($cp,array('$RO'.$op,'',msg('file_type'),true,true));
+        
+        $sx = $form->editar($cp,'');
+
+        
+        $saved = $form->saved;
+        if (isset($_FILES['fileToUpload']['tmp_name']))
+        {
+            if (strlen($_FILES['fileToUpload']['tmp_name']) > 0)
+            {
+                $saved++;
+            }
+        }
+
+        /********************************************/
+        if ($saved == 2)
+        {
+            $file = $_FILES['fileToUpload']['name'];
+            $tmp = $_FILES['fileToUpload']['tmp_name'];
+            $txt = file_get_contents($tmp);
+            $sx = $this->import_ttl($txt);
+        }
+
+
+        $data['content'] = 'Welcome'.$sx;
+        $data['title'] = msg('File import');
+        $this->load->view("content",$data);
+    }
+
+    function rdf_prefix_check($prefix='',$url='')
+        {
+            $sql = "select * from rdf_prefix where prefix_ref = '".trim($prefix)."' ";
+            $rlt = $this->db->query($sql);
+            $rlt = $rlt->result_array();            
+            if (count($rlt) == 0)
+            {
+                $sql = "insert into rdf_prefix
+                        (prefix_ref, prefix_url, prefix_ativo)
+                        values
+                        ('$prefix','$url',1)";
+                $this->db->query($sql);
+            }
+            //rdf_prefix
+            //@prefix countries:  <http://topbraid.org/countries#> .
+        }
+
+    function import_ttl($x)
+        {
+            $sx = '<h3>Importanto</h3>';
+            $ids = $_SESSION['skos'];
+
+            $ln = troca($x,';','.,');
+            $ln = troca($x,chr(13),';');
+            $ln = troca($x,chr(10),';');
+            $lns = splitx(';',$ln);
+
+            $pf = array();
+
+            /* Busca prefixos **********************************************/
+            for ($r=0;$r < count($lns);$r++)
+            {
+                $ln = trim($lns[$r]);
+                $p = substr($ln,0,7);
+                if (substr($ln,0,7)=='@prefix')
+                {
+                    $pre = substr($ln,7,strlen($ln));
+                    $pre = substr($pre,0,strpos($pre,':'));
+
+                    $url = substr($ln,strpos($ln,':')+1,strlen($ln));
+                    $url = troca($url,'<','');
+                    $url = troca($url,'>','');
+                    $url = trim($url);
+
+                    $sx .= '<br>Prefixo :'.$pre.'  '.$url;
+                    $this->rdf_prefix_check($pre,$url);
+                    $pf[$pre] = $pre;
+                }
+            }
+
+            /* Busca conceito **********************************************/
+            for ($r=0;$r < count($lns);$r++)
+            {
+                $ln = trim($lns[$r]); 
+                
+            }
+            echo 'linhas==>'.count($lns);
+            echo '===>'.$ids;
+            return($sx);
+        }
 }
 
 function parseToXML($htmlStr) {

@@ -59,9 +59,17 @@ class Thesa extends CI_Controller {
 
 	function api($d1='',$d2='')
 	{
-		$this->load->model("thesa_api");
+		$this->load->model("thesa_api");		
 		$this->thesa_api->index($d1,$d2);
 	}
+
+	function file_import()
+		{
+			$this->load->model("skoses");
+			$this->cab();
+			$this->skoses->import_file();
+			$this->footer();
+		}
 
 	function thesaurus_open() {
 		$this -> load -> model('skoses');

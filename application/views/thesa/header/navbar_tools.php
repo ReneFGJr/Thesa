@@ -42,7 +42,7 @@ if (!isset($_SESSION['id'])) {
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><?php echo msg('rules'); ?></a>
                     <div class="dropdown-menu">
                       <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/check_all/'); ?>"><?php echo msg('check_all'); ?></a>
-                      <a class="dropdown-item" href="#">Separated link</a>
+                      <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/file_import'); ?>"><?php echo msg('file_import'); ?></a>
                       <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/term_grapho/'.$th.'/'); ?>"><?php echo msg('grapho'); ?></a>
                       <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/terms_list/');?>"><?php echo msg('terms_list'); ?></a>
                       <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/terms_from_to/');?>"><?php echo msg('remissiva_de_para'); ?></a>
