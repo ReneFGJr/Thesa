@@ -1,4 +1,5 @@
 <?php
+$multiLanguage = 1;
 if (!isset($action)) {
 	$action = '';
 }
@@ -21,6 +22,19 @@ if (!isset($action)) {
 <div class="container">
 	<div class="row">
 		<div class="col-md-5">
+			<?php
+			/************* MULTI IDIOMAS */
+			if ($multiLanguage == 1)
+					{
+					echo '<h4>';
+					echo msg('prefLabel');
+					echo ' <a href="#" onclick="newxy(\''.base_url('index.php/thesa/tp/'.$id_c.'/'.checkpost_link($id_c)).'\',1024,500);">';
+					echo '<img src="'.base_url('img/icone/plus.png').'" width="32">';
+					echo '</a>';
+					echo '</h4>';
+					echo $this -> skoses -> concepts_show($terms_pref);
+					}
+			?>
 			<?php
 			if ((count($terms_bt) + $editar)  > 0) {
 				echo '<h4>';

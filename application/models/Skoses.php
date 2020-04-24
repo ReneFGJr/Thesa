@@ -161,6 +161,7 @@ class skoses extends CI_model {
             $line = $rlt[0];
 
             /* Read BT */
+            $line['terms_pref'] = $this -> le_c_propriety($id,'LABEL',$th);
             $line['terms_bt'] = $this -> le_c_broader($id, $th);
             $line['terms_nw'] = $this -> le_c_narrowed($id, $th);
             $line['terms_al'] = $this -> le_c_propriety($id, 'FE', $th);
@@ -912,7 +913,7 @@ function le_th($id = 0) {
     }
 
     /* Show */
-    function concepts_show($row) {
+    function concepts_show($row,$dt=array()) {
         $sx = '<ul>' . cr();
         for ($r = 0; $r < count($row); $r++) {
             $line = $row[$r];
@@ -1369,6 +1370,10 @@ function association_term_th($t, $lang, $th) {
             $sql = "insert into rdf_literal_th (lt_thesauros, lt_term) values ('$th','$idt')";
             $yrlt = $this -> db -> query($sql);
         }
+    } else {
+        echo "OPS";
+        echo '<br>'.$sql;
+        exit;
     }
 }
 
@@ -1721,8 +1726,12 @@ function termos_show_letter($th, $ltr) {
     $sx .= '<ul class="thesa">';
     $lt = '';
     for ($r = 0; $r < count($xrlt); $r++) {
-        $line = $xrlt[$r];
-        $lta = substr(utf8_decode(UpperCaseSql($line['rl_value'])), 0, 1);
+        $line = $xrlt[$r];        
+        $lta = trim($line['rl_value']);
+        $lta = troca($lta,"'",'');
+        $lta = troca($lta,'"','');
+        $lta = troca($lta,'Å','A');
+        $lta = substr(UpperCaseSql($lta), 0, 1);
         if ($lta != $lt) {
             if (strlen($lt) != '') {
                 $sx .= '<li>&nbsp;</li>' . cr();
@@ -1766,8 +1775,7 @@ function termos_show_rdf($th, $ltr) {
     INNER JOIN rdf_prefix ON rs_prefix = id_prefix
     where ct_th = $th and ct_term > 0
     order by ct_concept, ct_propriety";
-        //echo $sql;
-        //exit;
+
     $xrlt = $this -> db -> query($sql);
     $xrlt = $xrlt -> result_array();
     $terms = count($xrlt);
@@ -3506,105 +3514,344 @@ function th_list($th='')
     return($sx);
 }    
 function import_file()
+{
+    $form = new form;
+    $cp = array();
+    array_push($cp,array('$H8','','',false,false));
+    array_push($cp,array('$FILE','','',false,false));
+
+    array_push($cp,array('$A4','',msg('file_type_info'),false,false));
+    $op = 'ttl:Turtle RDF (.ttl)';
+    $op .= '&owlxml:XML OWL (.owl)';
+    $op .= '&txt:Term List (.txt)';
+    array_push($cp,array('$RO'.$op,'',msg('file_type'),true,true));
+
+    $sx = $form->editar($cp,'');
+
+
+    $saved = $form->saved;
+    if (isset($_FILES['fileToUpload']['tmp_name']))
     {
-        $form = new form;
-        $cp = array();
-        array_push($cp,array('$H8','','',false,false));
-        array_push($cp,array('$FILE','','',false,false));
-
-        array_push($cp,array('$A4','',msg('file_type_info'),false,false));
-        $op = 'ttl:Turtle RDF (.ttl)';
-        $op .= '&owlxml:XML OWL (.owl)';
-        $op .= '&txt:Term List (.txt)';
-        array_push($cp,array('$RO'.$op,'',msg('file_type'),true,true));
-        
-        $sx = $form->editar($cp,'');
-
-        
-        $saved = $form->saved;
-        if (isset($_FILES['fileToUpload']['tmp_name']))
+        if (strlen($_FILES['fileToUpload']['tmp_name']) > 0)
         {
-            if (strlen($_FILES['fileToUpload']['tmp_name']) > 0)
-            {
-                $saved++;
-            }
+            $saved++;
         }
-
-        /********************************************/
-        if ($saved == 2)
-        {
-            $file = $_FILES['fileToUpload']['name'];
-            $tmp = $_FILES['fileToUpload']['tmp_name'];
-            $txt = file_get_contents($tmp);
-            $sx = $this->import_ttl($txt);
-        }
-
-
-        $data['content'] = 'Welcome'.$sx;
-        $data['title'] = msg('File import');
-        $this->load->view("content",$data);
     }
 
-    function rdf_prefix_check($prefix='',$url='')
-        {
-            $sql = "select * from rdf_prefix where prefix_ref = '".trim($prefix)."' ";
-            $rlt = $this->db->query($sql);
-            $rlt = $rlt->result_array();            
-            if (count($rlt) == 0)
-            {
-                $sql = "insert into rdf_prefix
-                        (prefix_ref, prefix_url, prefix_ativo)
-                        values
-                        ('$prefix','$url',1)";
-                $this->db->query($sql);
-            }
+    /********************************************/
+    if ($saved == 2)
+    {
+        $file = $_FILES['fileToUpload']['name'];
+        $tmp = $_FILES['fileToUpload']['tmp_name'];           
+        $sx = $this->import_ttl($tmp);
+    }
+
+
+    $data['content'] = 'Welcome'.$sx;
+    $data['title'] = msg('File import');
+    $this->load->view("content",$data);
+}
+
+function rdf_prefix_check($prefix='',$url='')
+{
+    $prefix = trim($prefix);
+    $sql = "select * from rdf_prefix where prefix_ref = '".trim($prefix)."' ";
+    $rlt = $this->db->query($sql);
+    $rlt = $rlt->result_array();            
+    if (count($rlt) == 0)
+    {
+        $sql = "insert into rdf_prefix
+        (prefix_ref, prefix_url, prefix_ativo)
+        values
+        ('$prefix','$url',1)";
+        $this->db->query($sql);
+    }
             //rdf_prefix
             //@prefix countries:  <http://topbraid.org/countries#> .
+}
+
+function check_language($l)
+{
+    switch($l)
+    {
+        case 'pt':
+        return('por');
+        break;
+
+        case 'en':
+        return('en');
+        break;
+
+        default:
+        echo 'OPS, erro de idioma=>'.$l;
+        exit;
+    }
+}
+
+function th_linkdata($idt,$prop,$value)
+{
+    $value = troca($value,"'",'´');
+    $value = troca($value," ;",'');
+    $value = troca($value," .",'');
+
+
+    $sql = "select * from th_linkdata
+    where ld_concept = $idt
+    and ld_prop = '$prop'
+    and ld_value = '$value' ";    
+
+    $rlt = $this->db->query($sql);
+    $rlt = $rlt->result_array();
+    if (count($rlt) == 0)
+    {
+        $sql = "insert into th_linkdata
+        (ld_concept, ld_prop, ld_value)
+        values
+        ($idt,'$prop','$value')";
+        $rlt = $this->db->query($sql);                    
+    }
+    return(1);
+}
+
+function th_linkdata_show($idt)
+{
+    $sx = '';
+    $dt = $this->le($idt);
+    $pre = '';
+
+    $sql = "select * from th_linkdata
+    where ld_concept = $idt";
+    
+    $rlt = $this->db->query($sql);
+    $rlt = $rlt->result_array();
+    if (count($rlt) > 0)
+    {
+        $sx .= '<h4>Linked Data</h4>';
+        $sx = 'thesa:c'.strzero($idt,3).'<br/>';
+    }
+    $wh = "(prefix_ref = 'thesa')";
+    for ($r=0;$r < count($rlt);$r++)
+    {
+        $line = $rlt[$r];
+        $link = '';
+        $linka = '';
+        $vv = trim($line['ld_value']);
+        if (strpos($vv,'http') > 0)
+        {
+            $h = troca($vv,'&lt;','<');
+            $h = troca($h,'&gt;','>');
+            $h = substr($h,strpos($vv,'<')+1,strlen($vv));
+            $h = substr($h,0,strpos($h,'>'));
+            $h = trim($h);
+            $link = '<a href="'.$h.'" target="_new">';
+            $linka .= '</a>';
+        }
+        /*************************************************************************/
+        $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;'.$line['ld_prop'].' '.$link.$vv.$linka;
+        if ($r == (count($rlt)-1))
+        {
+            $sx .= ' .';
+        } else {
+            $sx .= ' ;';
+        }
+        $sx .= cr();
+        /* Prefixos */
+        $p = substr($line['ld_prop'],0,strpos($line['ld_prop'],':'));
+        if (strlen($p) > 0)
+        {
+            $wh .= " or (prefix_ref = '$p') ";
+        }
+    }
+
+    /******************* Prefixos ******************************/
+    $sql = "select * from rdf_prefix where ".$wh;
+    $rlt = $this->db->query($sql);
+    $rlt = $rlt->result_array();
+    $sp = '';
+    for ($r = 0;$r < count($rlt);$r++) 
+    {
+        $line = $rlt[$r];
+        $sp .= '@prefix '.$line['prefix_ref'].': ';
+        $sp .= '&lt;';
+        $sp .= $line['prefix_url'];
+        $sp .= '&gt;';
+        $sp .= '</br>';
+    }
+    $sx .= '<br/>';
+    $sx .= '<br/>';
+    return('<pre>'.$sp.chr(13).$sx.'</pre>');
+}
+
+function import_ttl($tmp)
+{
+    $x = file_get_contents($tmp);
+    $sx = '<h3>Importanto</h3>';
+    $ids = $_SESSION['skos'];
+
+    $ln = troca($x,';','.,');
+    $ln = troca($x,chr(13),';');
+    $ln = troca($x,chr(10),';');
+    $lns = splitx(';',$ln);
+
+    $pf = array();
+
+    /* Busca prefixos **********************************************/
+    $lp = 0;
+    for ($r=0;$r < count($lns);$r++)
+    {
+        $ln = trim($lns[$r]);
+        $p = substr($ln,0,7);
+        if (substr($ln,0,7)=='@prefix')
+        {
+            $pre = substr($ln,7,strlen($ln));
+            $pre = substr($pre,0,strpos($pre,':'));
+
+            $url = substr($ln,strpos($ln,':')+1,strlen($ln));
+            $url = troca($url,'<','');
+            $url = troca($url,'>','');
+            $url = trim($url);
+
+            $sx .= '<br>Prefixo :'.$pre.'  '.$url;
+            $this->rdf_prefix_check($pre,$url);
+            $pf[$pre] = $pre;
+            $lp = $r+2;
+        }
+    }
+
+    /* Busca conceito **********************************************/
+    $cnt = '';
+    $fn = fopen($tmp,"r");
+    $ln = 0;
+    $vlr = '';
+    $cps = array();
+    while (!feof($fn))
+    {
+        $ln++;
+        $l = fgets($fn);
+        $l = troca($l,'<','&lt;');
+        $l = troca($l,'>','&gt;');
+        $l = troca($l,chr(10),' ');
+
+        /******************************* troca espaco inicial por _ */
+        for ($r=0;$r < strlen($l);$r++)
+        {
+            if ($l[$r] == ' ')  
+                { $l[$r] = '_'; }
+            else 
+                { $r = strlen($l); }
         }
 
-    function import_ttl($x)
-        {
-            $sx = '<h3>Importanto</h3>';
-            $ids = $_SESSION['skos'];
-
-            $ln = troca($x,';','.,');
-            $ln = troca($x,chr(13),';');
-            $ln = troca($x,chr(10),';');
-            $lns = splitx(';',$ln);
-
-            $pf = array();
-
-            /* Busca prefixos **********************************************/
-            for ($r=0;$r < count($lns);$r++)
+        /*************************** Identificar linhas com conteúdo */
+        if (($ln > $lp) and (strlen(trim($l)) > 0))
+        {  
+            if ($l[0] != '_')
             {
-                $ln = trim($lns[$r]);
-                $p = substr($ln,0,7);
-                if (substr($ln,0,7)=='@prefix')
+                //echo '<br>'.$ln.'. '.$l;
+                $vlr = '';
+                $cnt = trim($l);
+                $cps[$cnt] = array();
+            } else {
+                $l = troca($l,'_','');
+                $l = trim($l);
+                $n = strlen($l);
+                if ($n > 1)
                 {
-                    $pre = substr($ln,7,strlen($ln));
-                    $pre = substr($pre,0,strpos($pre,':'));
+                    $lst = substr($l,$n-1,1);
+                    if (($lst == ';') or ($lst == '.'))
+                    {
 
-                    $url = substr($ln,strpos($ln,':')+1,strlen($ln));
-                    $url = troca($url,'<','');
-                    $url = troca($url,'>','');
-                    $url = trim($url);
-
-                    $sx .= '<br>Prefixo :'.$pre.'  '.$url;
-                    $this->rdf_prefix_check($pre,$url);
-                    $pf[$pre] = $pre;
+                        $vlr .= $l;
+                        array_push($cps[$cnt],$vlr);
+                        $vlr = '';
+                    } else {
+                        $vlr .= $l.' ';
+                    }
+                    //echo '<br>=('.$n.')=>'.$l.'['.$lst.']';
                 }
             }
 
-            /* Busca conceito **********************************************/
-            for ($r=0;$r < count($lns);$r++)
-            {
-                $ln = trim($lns[$r]); 
-                
-            }
-            echo 'linhas==>'.count($lns);
-            echo '===>'.$ids;
-            return($sx);
+
+
+        } else {
+            /*** Ignorar linhas anteiores ****/
+            //echo '<br>'.$ln.'. <i>ignored</i>';
         }
+    }
+    fclose($fn);
+
+    foreach ($cps as $key => $value) {
+        $ar = $value;
+        if (is_array($ar))
+        {
+            $type = '';
+            $prefTerm = '';
+            $idt = 0;      
+
+            for ($r=0;$r < count($ar);$r++)
+            {
+                $ln = $ar[$r];
+                $prop = substr($ln,0,strpos($ln,' '));
+                $value = substr($ln,strlen($prop),strlen($ln));
+
+                switch($prop)
+                {
+                    case 'rdf:type':
+                    $type = $value;
+                    break;
+
+                    case 'rdfs:comment':
+                    break;
+
+                    case 'rdfs:label':
+                    $prefTerm = $value;
+                    $language = 'por';
+                    if (strpos($prefTerm,'@') > 0)
+                    {
+                        $language = trim(substr($prefTerm,strpos($prefTerm,'@')+1,10));
+                        $language = troca($language,';','');
+                        $language = troca($language,'.','');
+                        $language = trim($language);
+                        $language = $this->check_language($language);                      
+
+                        $prefTerm = substr($prefTerm,0,strpos($prefTerm,'@'));
+                        $prefTerm = trim(troca($prefTerm,'"',''));
+                    }
+                    $prefTerm = troca($prefTerm,"'","´");
+                    $idt = $this->terms_add($prefTerm,0,$language);
+                    $th = $_SESSION['skos'];
+                    $this->association_term_th($prefTerm, $language, $th);
+                    $this->concept_create($idt, $th);
+                    break;
+
+                    /************************** Grava em LinkedData */
+                    default:
+
+                    break;
+                }
+                $this->th_linkdata($idt,$prop,$value);
+            }
+            $this->th_linkdata($idt,'owl:sameAs',$key);
+        }
+    }
+    print_r($ar);
+    exit;
+        //$this->terms_add
+        # code...    
+    exit;
+
+    for ($r=$lp;$r < count($lns);$r++)
+    {
+        $ln = $lns[$r]; 
+        if (substr($ln,0,1) != ' ')
+        {
+            echo '<br>'.$ln;
+        }
+
+    }
+    echo 'linhas==>'.count($lns);
+    echo '===>'.$ids;
+    return($sx);
+}
 }
 
 function parseToXML($htmlStr) {

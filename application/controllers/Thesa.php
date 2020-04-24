@@ -586,7 +586,10 @@ class Thesa extends CI_Controller {
 			$data['grapho'] = $this->frbrs->vis($data);
 			$this -> load -> view("thesa/view/schema", $data);
 			$this -> load -> view("thesa/view/concept", $data);
-
+			$sx = $this->skoses->th_linkdata_show($c);			
+			$data['content'] = $sx;
+			$data['title'] = '';
+			$this->load->view('content',$data);
 			break;
 		}
 
@@ -603,6 +606,10 @@ class Thesa extends CI_Controller {
 
 		/* RECUPERA SCHEMA */
 		if (strlen($th) == 0) {
+			if (!isset($_SESSION['skos']))
+			{
+				redirect(base_url(PATH));
+			}
 			$th = $_SESSION['skos'];
 		}
 
@@ -876,6 +883,37 @@ class Thesa extends CI_Controller {
 			//$this->skoes->
 		}
 	}
+
+	/******************************************************* Termo preferencial */
+	function tp($c = '') {
+		$c = round($c);
+		$th = $this->skoses->th();
+
+		/* Load model */
+		$this -> load -> model("skoses");
+		$this -> cab(0);
+
+		$data = $this -> skoses -> le($c);
+		$data['form'] = $this -> skoses -> form_concept($th, $c, 'LABEL');
+		$this -> load -> view('thesa/view/concept_mini', $data);
+
+		$action = get("action");
+		$desc = get("tm");
+		$tr = get("tr");
+
+		if ((strlen($action) > 0) and (strlen($tr) > 0) and (strlen($desc) > 0)) {
+			echo 'SAVED';
+			$ac = get("action");
+			$this -> skoses -> assign_as_propriety($c, $th, $tr, $desc);
+			if ($ac == msg('save')) {
+				$this -> load -> view('header/close', null);
+			} else {
+				redirect(base_url('index.php/thesa/tz/' . $c));
+			}
+
+			//$this->skoes->
+		}
+	}	
 
 	/***************************************************************************** TG Geral */
 	function tg($c = '') {
@@ -1168,7 +1206,7 @@ class Thesa extends CI_Controller {
 		$sx = '<h1>' . $data['rl_value'] . '</h1>';
 		$sx .= '<form method="post">';
 		$sx .= '<ul style="list-style-type: none;">';
-		$terms = array_merge($data['terms_al'], $data['terms_hd'], $data['terms_ge']);
+		$terms = array_merge($data['terms_pref'],$data['terms_al'], $data['terms_hd'], $data['terms_ge']);
 
 		for ($r = 0; $r < count($terms); $r++) {
 			$line = $terms[$r];

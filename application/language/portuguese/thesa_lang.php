@@ -380,4 +380,6 @@ $lang['login_recover_password'] = 'Recuperar a senha';
 $lang['password'] = 'senha de acesso';
 $lang['signup_success'] = 'Sucesso!';
 $lang['signup_success_msg'] = 'Foi enviado um e-mail para sua conta com instruções';
+$lang['already_an_account'] = 'Já tem uma conta?';
+
 ?>
