@@ -13,6 +13,7 @@ class Skos extends CI_Controller {
         $this -> load -> helper('form');
         $this -> load -> helper('form_sisdoc');
         $this -> load -> helper('url');
+        $this -> load -> helper('language');
         
         $this -> load -> helper('xml');
         $this -> load -> helper('email');
@@ -20,7 +21,6 @@ class Skos extends CI_Controller {
 
         //date_default_timezone_set('America/Sao_Paulo');
         date_default_timezone_set('Asia/Brunei');
-        print_r($_SESSION);
         
         /* Security */
         //		$this -> security();

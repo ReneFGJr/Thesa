@@ -43,6 +43,21 @@ $linkr .= '/thesa/c/' . $id_c . '/rdf';
     <div class="row">
         <div class="col-md-5">
                 <?php
+                /******************************************** PREF LABEL ***********/
+                if (count($terms_pref) > 1)
+                {
+                echo '<span>'.msg('pref_term_other_language').': '.'</span>';
+                echo '<ul>';
+                for ($r=0;$r < count($terms_pref);$r++)
+                    {
+                        $line = $terms_pref[$r];
+                        echo '<li>';
+                        echo $line['rl_value'];
+                        echo '<sup>('.$line['rl_lang'].')</sup>';
+                        echo '</li>';
+                    }
+                echo '</ul>';
+                }
                 /******************************************** TG *******************/
                 if (count($terms_bt) > 0) {
                     for ($r = 0; $r < count($terms_bt); $r++) {

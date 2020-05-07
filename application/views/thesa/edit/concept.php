@@ -1,4 +1,5 @@
 <?php
+$alter_pref_onclick = ' onclick="newwin(\''.base_url('index.php/thesa/concept_change_preflabel/'.$id_c.'/'.$c_th.'/'.checkpost_link($id_c.$c_th)).'\',600,600);" ';
 $multiLanguage = 1;
 if (!isset($action)) {
 	$action = '';
@@ -6,16 +7,36 @@ if (!isset($action)) {
 ?>
 <div class="container">
 	<div class="row">
-		<div class="col-md-9 small"><?php echo msg('pref_term'); ?></br><font class="big"><?php echo $rl_value; ?>
+		<div class="col-md-9">
+			<?php echo msg('pref_term'); ?></br>
+			<a href="<?php echo base_url(PATH.'c/'.$id_c);?>">
+			<span class="big"><?php echo $rl_value; ?>
+			</a>
 			<sup>(<?php echo $rl_lang;?>)</sup>
-		</font>			
+		</span>	
+			<!---- alter_pref_onclick -->
+			<br/>
+			<a href="#" <?php echo $alter_pref_onclick;?> class="small"><?php echo msg('change_prefLabel');?></a>				
 		</div>
 		<div class="col-md-1">
 			<a href="#" onclick="newxy('<?php echo base_url('index.php/thesa/cremove/'.$id_c.'/'.checkpost_link($id_c));?>',1024,500);" title="<?php echo msg('delete concept');?>">
 			<img src="<?php echo base_url('img/icone/exclud.png');?>" class="img-fluid trash">
 			</a>
 		</div>
-		<div class="col-md-2 btn btn-secondary"><?php echo msg('concept'); ?></br><font class="xxxbig"><?php echo $c_concept; ?></font></div>
+		<div class="col-md-2 btn btn-secondary">
+			<?php echo msg('concept'); ?></br><font class="xxxbig"><?php echo $c_concept; ?></font>
+		</div>
+	</div>
+</div>
+<br>
+<?php
+
+?>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+				
+		</div>
 	</div>
 </div>
 <br>
@@ -28,7 +49,7 @@ if (!isset($action)) {
 					{
 					echo '<h4>';
 					echo msg('prefLabel');
-					echo ' <a href="#" onclick="newxy(\''.base_url('index.php/thesa/tp/'.$id_c.'/'.checkpost_link($id_c)).'\',1024,500);">';
+					echo '<a href="#" onclick="newxy(\''.base_url('index.php/thesa/tp/'.$id_c.'/'.checkpost_link($id_c)).'\',1024,500);">';
 					echo '<img src="'.base_url('img/icone/plus.png').'" width="32">';
 					echo '</a>';
 					echo '</h4>';
@@ -102,7 +123,6 @@ if (!isset($action)) {
 				?>				
 			</div>
 		<div class="col-md-2">
-			<a href="<?php echo base_url('index.php/thesa/json/'.$c_concept);?>" target="_new" class="btn btn-secondary">JSON</a>
 			<h4><?php echo msg('concept_IMG'); ?>
 			<?php
 			if ($editar == 1)

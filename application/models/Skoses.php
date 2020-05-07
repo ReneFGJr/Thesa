@@ -186,6 +186,14 @@ class skoses extends CI_model {
         }
     }
 
+    function recupera_idiomas_pref_label($id)
+        {
+            $rdf = new rdf;
+            $d = $rdf->le_data($id);
+            print_r($d);
+            exit;
+        }
+
     /*************************************************************************** FROM */
     function form_concept($th, $id, $gr = 'FE') {
         $th = round(sonumero($th));
@@ -194,7 +202,7 @@ class skoses extends CI_model {
         /* ASSOCIATION TYPE */
         $sql = "select * from rdf_resource
         inner join rdf_prefix on id_prefix = rs_prefix 
-        where rs_group = '$gr' and rs_public = 1
+        where rs_group = '$gr' and rs_public = 1 
         order by id_rs";
 
         $rlt = $this -> db -> query($sql);
@@ -248,11 +256,30 @@ class skoses extends CI_model {
             $wh = " AND (rl_value like '%$wh%')";
         }
     }
+
+        /* label - prefterm */
+        $whlh = '';
+        if ($gr == 'LABEL')
+        {
+            $d = $this->le_c_preflabel($id);
+            for ($r=0;$r < count($d);$r++)
+                {
+                    $lg = trim($d[$r]['rl_lang']);
+                    if (strlen($whlh) > 0) { $whlh .= ' AND '; }
+                    $whlh .= "(rl_lang <> '$lg')";
+                }
+                if (strlen($whlh) > 0) 
+                { 
+                    $whlh = ' and ('.$whlh.') '; 
+                }
+        }
+
+
     $sx .= '<span class="font-size: 50%">' . msg('select_description') . '</span>';
     $sql = "SELECT * FROM rdf_literal_th
     INNER JOIN rdf_literal ON lt_term = id_rl
     LEFT JOIN th_concept_term on  id_rl = ct_term and ct_th = $th
-    where (lt_thesauros = $th and id_ct is null) $wh
+    where (lt_thesauros = $th and id_ct is null) $wh $whlh
     order by rl_value";
 
     $rlt = $this -> db -> query($sql);
@@ -265,7 +292,10 @@ class skoses extends CI_model {
         if ($line['id_rl'] == get("tm")) { $op = ' selected ';
     }
 
-    $sx .= '	<option value="' . $line['id_rl'] . '" class="middle" ' . $op . '>' . $line['rl_value'] . '</option>';
+    $sx .= '	<option value="' . $line['id_rl'] . '" class="middle" ' . $op . '>';
+    $sx .= $line['rl_value'];
+    $sx .= '@'.$line['rl_lang'];
+    $sx .= '</option>';
 }
 $sx .= '	</select>';
 $sx .= '</td></tr>';
@@ -581,6 +611,28 @@ function le_c_altlabel($id = '', $th = '') {
     $rlt = $rlt -> result_array();
     if (count($rlt) > 0) {
         /* Read BT */
+        return ($rlt);
+    } else {
+        return ( array());
+    }
+}
+
+function le_c_preflabel($id = '', $th = '') {
+    $th = round(sonumero($th));
+    $whth = '';
+    if ($th > 0)
+        {
+            $whth = " (and t1.ct_th = $th) ";
+        }
+    $sql = "select * from th_concept_term as t1
+    INNER JOIN rdf_literal ON id_rl = t1.ct_term
+    INNER JOIN rdf_resource ON id_rs = t1.ct_propriety
+    LEFT JOIN rdf_prefix ON id_prefix = rs_prefix
+    WHERE t1.ct_concept = $id $whth and rs_group = 'LABEL'";
+    $rlt = $this -> db -> query($sql);
+    $rlt = $rlt -> result_array();
+    if (count($rlt) > 0) {
+        /* Read PrefLabel */
         return ($rlt);
     } else {
         return ( array());
@@ -1439,20 +1491,33 @@ function cp_th_new($us = '') {
     return ($cp);
 }
 
+/* Recupera idiomas habilitados */
+function skoes_th_idiomas($th)
+    {
+        $wh = '';
+        $dt = $this->le_th($th);
+        $lang = round($dt['pa_language']);
+        if ($lang == 0) { $lang = 364; }
 
+        $sql = "select *
+                    from language_th 
+                    inner join language on id_lg = lgt_language
+                    where lgt_th = ".$th. " order by id_lgt";
+        return($sql);
+    }
 
+/* Campos para editar termos */
 function cp_term($id = '') {
     $cp = array();
+    $th = $this->th();
+
+    /* Idiomas selecionados */
+
     array_push($cp, array('$H8', 'id_rl', '', true, true));
     array_push($cp, array('$S100', 'rl_value', msg('term_name'), true, true));
-
-    $sql = "select * from language order by lg_order";
-        //array_push($cp, array('$Q  lg_code:lg_language:' . $sql, 'rl_lang', msg('language'), true, true));
-    $op = 'por:Portugues';
-    $op .= '&eng:Inglês';
-    $op .= '&spa:Espanhol';
-    $op .= '&fre:Francês';
-    array_push($cp, array('$R:' . $op, 'rl_lang', msg('language'), true, true));
+    array_push($cp, array('$S10','rl_lang', msg('language'), false, false));
+    $sql = $this->skoes_th_idiomas($th);
+    array_push($cp, array('$QR lg_code:lg_language:' . $sql, 'rl_lang', msg('language'), true, true));
 
     array_push($cp, array('$B8', '', msg('save'), false, true));
     return ($cp);
@@ -3852,6 +3917,160 @@ function import_ttl($tmp)
     echo '===>'.$ids;
     return($sx);
 }
+function language_action($th,$ac,$id)
+    {
+        $sql = "select * from language_th where lgt_th = ".$th." and lgt_language = ".$id;
+        $rlt = $this->db->query($sql);
+        $rlt = $rlt->result_array();
+        $sql = "";
+        if (count($rlt) > 0)
+            {
+                if ($ac == 'D')
+                    {
+                        $sql = "delete from language_th where lgt_th = ".$th." and lgt_language = ".$id;
+                    }
+            } else {
+                if ($ac == 'I')
+                    {
+                        $sql = "insert into language_th (lgt_th, lgt_language, lgt_order) values ($th,$id,5)";
+                    }
+            }
+            if (strlen($sql) > 0)
+                {
+                    $rlt = $this->db->query($sql);
+                }
+            return(1);
+    }
+function th_languages($th)
+    {
+        /* Faz o registro dos idiomas */
+        $lg1 = get("dd1");
+        $lg2 = get("dd2");
+        $act = get("action");
+        if (strlen($act) > 0)
+            {
+                if (substr($act,1,1) == '<')
+                    {
+                        if (strlen($lg2) > 0) 
+                        {
+                        $this->language_action($th,'I',$lg2);
+                        }
+                    } else {
+                        if (strlen($lg1) > 0)
+                        {
+                        $this->language_action($th,'D',$lg1);
+                        }
+                    }
+            }
+
+        /* Formulario de registro */
+        $sql = "select * from language as lgn
+                    left join language_th on id_lg = lgt_language
+                    and lgt_th = $th 
+                    where lg_active = 1
+                    order by id_lgt, lgn.lg_order, lgn.lg_language";
+      
+        $rlt = $this->db->query($sql);
+        $rlt = $rlt->result_array();
+        $s1 = '';
+        $s2 = '';
+        for ($r=0;$r < count($rlt);$r++)
+            {
+                $line = $rlt[$r];
+                $s = '<option value="'.$line['id_lg'].'">';
+                $s .= $line['lg_language'];
+                $s .= '</option>';
+                if (strlen(trim($line['id_lgt'])) > 0)
+                {
+                    $s1 .= $s.cr();
+                } else {
+                    $s2 .= $s.cr();
+                }
+            }
+        $sx = '<h1>'.msg('language').'</h1>';
+        $sx .= msg('language_include_info');
+        $sx .= '<form method="post">';
+        $sx .= '<table width="100%" class="table">';
+        $sx .= '<tr>';
+        $sx .= '<th class="text-center">'.msg('col_language_enable').'</th>';
+        $sx .= '<th class="text-center">'.msg('action').'</th>';
+        $sx .= '<th class="text-center">'.msg('col_language_disable').'</th>';
+        $sx .= '</tr>';
+
+        $sx .= '<tr>';
+        $sx .= '<td width="45%"><select name="dd1" size=20 style="width: 100%;">'.$s1.'</select></td>';
+        $sx .= '<td width="10%" class="text-center">';
+        $sx .= '<input type="submit" name="action" class="btn btn-outline-primary" value="<<<<<">';
+        $sx .= '<br/>';
+        $sx .= '<br/>';
+        $sx .= '<input type="submit" name="action" class="btn btn-outline-primary" value=">>>>>">';
+        $sx .= '</td>';
+        $sx .= '<td width="45%"><select name="dd2" size=20 style="width: 100%;">'.$s2.'</select></td>';
+        $sx .= '</tr>';
+        $sx .= '</table>';
+        $sx .= '</form>';
+
+        return($sx);
+    }
+    function admin($act,$d1,$d2,$d3)
+        {
+            $sx = '';
+            switch($act)
+                {
+                    case 'languages':
+                        switch($d1)
+                            {
+                                default:
+                                $sx = $this->language_row($d1,$d2,$d3);
+                                break;
+                            }
+                    break;
+
+                    default:
+                    $sx .= '<h2>'.msg('admin_menu').'</h2>';
+                    $sx .= '<ul>';
+                    $sx .= '<a href="'.base_url(PATH.'admin/languages').'">'.msg('languages').'</a>';
+                    $sx .= '</ul>';
+                    break;
+                }
+                return($sx);
+        }
+
+        function language_cp()
+            {
+                $cp = array();
+                array_push($cp,array('$H8',"id_lg","id_lg",False,False,False));
+                array_push($cp,array('$S5',"lg_code","lg_code",True,True,True));
+                array_push($cp,array('$S100',"lg_language","lg_language",True,True,True));
+                array_push($cp,array('$[1-99]',"lg_order","lg_order",True,True,True));
+                array_push($cp,array('$SN',"lg_active","lg_active",True,True,True));
+                array_push($cp,array('$S10',"lg_cod_marc","lg_cod_marc",True,False,True));
+                return($cp);
+            }
+
+        function language_row($p,$id,$chk)
+            {
+                switch($p)
+                    {
+                        case 'ed':
+                        $form = new form;
+                        $form->id = $id;
+                        $cp = $this->language_cp();
+                        $sx = $form->editar($cp,'language');
+                        if ($form->saved > 0) { redirect(base_url(PATH.'admin/languages')); }
+                        break;
+
+                        default:
+                        $cp = array();
+                        $form = new form;
+                        $form->tabela = 'language';
+                        $form->edit = true;
+                        $sx = row($form,$p);
+                        break;
+                    }
+                return($sx);
+            }
+        
 }
 
 function parseToXML($htmlStr) {

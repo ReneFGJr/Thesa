@@ -11,7 +11,7 @@
 				<span class="big" style="family: RobotoThin;">THESA</span>
 				<span class="">Semantic Thesaurus</span>
 				<br>
-				<?php echo msg('Version').' 0.20.03.26';?>
+				<?php echo msg('Version').' 0.20.05.06';?>
                 
 				
 			</div>

@@ -357,7 +357,7 @@ function age($data)
     return($idade);
 } 
 
-function view($sx,$dt=array())
+function view_body($sx,$dt=array())
 {
     $CI = &get_instance();
     $dt['content'] = $sx;

@@ -9,6 +9,9 @@ class thesa_api extends CI_model {
         array_push($cp, array('$T80:8', 'pa_introdution', msg('thesaurus_introdution'), false, true));
         array_push($cp, array('$T80:3', 'pa_audience', msg('thesaurus_audience'), false, true));
         array_push($cp, array('$T80:6', 'pa_methodology', msg('thesaurus_methodology'), false, true));
+        array_push($cp, array('$Q id_lg:lg_language:select * from language order by lg_order', 'pa_language', msg('thesaurus_language_pref'), true, true));
+        array_push($cp, array('$C1', 'pa_multi_language', msg('thesaurus_multilanguage'), false, false));
+                
 
         $op = '1:' . msg('th_type_1');
         $op .= '&2:' . msg('th_type_2');

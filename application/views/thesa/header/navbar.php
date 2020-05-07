@@ -9,7 +9,8 @@ if (isset($_SESSION['id']) and ($_SESSION['id'] != '')) {
 	$loged = 0;
 }
 ?>
-<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded ">
 	<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
@@ -56,15 +57,24 @@ if (isset($_SESSION['id']) and ($_SESSION['id'] != '')) {
                     <a class="dropdown-item" href="<?php echo base_url('index.php/main/config/authority'); ?>"><?php echo msg("menu_authority"); ?></a>
                     <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/admin_thesauros'); ?>"><?php echo msg("admin_thesauros"); ?></a>
                 </div>
-            </li>                
-            <?php } ?>
-            <li class="nav-item navbar-toggler-right">
-                <?php 
-                $socials = new socials;
-                echo $socials -> menu_user(); 
-                ?>
-            </li>           
-                       			
+			</li>   
+            <?php } ?> 
+			</ul>
+
+			<ul class="navbar-nav">	
+			<!-- language -->
+			<?php 
+			$language = new language;
+			echo $language -> menu_language(); 
+			?>
+
+			<!-- user -->						
+			<?php 
+			$socials = new socials;
+			echo $socials -> menu_user(); 
+			?>
+			</ul>
 		</ul>
 	</div>
 </nav>
+

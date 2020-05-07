@@ -34,7 +34,8 @@ if (!isset($_SESSION['id'])) {
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><?php echo msg('configuration'); ?></a>
                     <div class="dropdown-menu">
                       <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/th_edit/'.$th.'/'.checkpost_link($th)); ?>"><?php echo msg('edit_th'); ?></a>
-                      <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/collaborators'); ?>"><?php echo msg('collaborators'); ?></a>                                                          
+                      <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/collaborators'); ?>"><?php echo msg('collaborators'); ?></a>
+                      <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/languages'); ?>"><?php echo msg('languages_config'); ?></a>
                       <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/apis'); ?>"><?php echo msg('api'); ?></a>                                                          
                     </div>
                   </li>
@@ -52,8 +53,8 @@ if (!isset($_SESSION['id'])) {
                     </div>
                   </li>
                   <?php if (($ed == 1) or ($this -> skoses -> autho('', $th))) { ?>
-                  <li class="nav-item">
-                    <a class="nav-link" href="<?php echo base_url('index.php/thesa/concept_add/'.$th);?>" title="<?php echo msg('add_term_title');?>"><?php echo msg('add');?></a>
+                  <li class="nav-item2 btn " style="background-color: #c0c0ff;" title="'.msg('add_new_terms').'" >
+                    <a class="" href="<?php echo base_url('index.php/thesa/concept_add/'.$th);?>" title="<?php echo msg('add_term_title');?>"><?php echo msg('add');?></a>
                   </li>
                   <?php } ?>
                 </ul>                

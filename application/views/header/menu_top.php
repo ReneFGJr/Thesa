@@ -19,15 +19,14 @@
         <li><a href="<?php echo base_url('index.php/skos');?>">Tesauros e Vocabularios</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-      	<?php
-      	if (isset($_SESSION['check']))
-			{
-				print_r($_SESSION);
-				echo '<li style="background-color: orange;">'.$_SESSION['nome'].'</li>';
-			} else {
-				echo '<li style="background-color: orange;"><a href="'.base_url('index.php/login').'" style="color: white;">Acesso2</a></li>';		
-			}        
-        ?>
+     	<?php
+          if (isset($_SESSION['check']))
+          {
+            echo '<li style="background-color: orange;">'.$_SESSION['nome'].'</li>';
+          } else {
+            echo '<li style="background-color: orange;"><a href="'.base_url('index.php/login').'" style="color: white;">Acesso2</a></li>';		
+          }                 
+      ?>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
