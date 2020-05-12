@@ -15,9 +15,7 @@
 		<div class="col-md-4"></div>
 		<div class="col-md-4 box100">
 			<form method="post" action="<?php echo base_url(PATH.'social/forgot');?>">
-				<span class="form_title"> BRAPCI <sup>2.0</sup> </span>
-				<br/>
-				<span class="login100-form-title p-b-48"> <i class="zmdi zmdi-font">information science database</i> </span>
+				<span class="form_title"> <?php echo LIBRARY_NAME;?> </span>
 				<br/>
 				<br/>
 				<center>

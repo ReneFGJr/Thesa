@@ -159,7 +159,7 @@ class socials {
 
         if ((($chk != $chk2) AND ($chk != $chk3)) AND (!isset($_POST['dd1']))) {
             $data['content'] = 'Erro de Check';
-            $this -> load -> view('content', $data);
+            $CI -> load -> view('content', $data);
         } else {
             $dt = $this ->  le_email($email);
             if (count($dt) > 0) {

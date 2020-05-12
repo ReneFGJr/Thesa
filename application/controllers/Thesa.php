@@ -50,6 +50,9 @@ class Thesa extends CI_Controller {
 	
 	private function footer() {
 		$data = array();
+		$data['content'] = '<br/><br/><br/><br/>';
+		$data['title'] = '';
+		$this->load->view('content',$data);
 		$this -> load -> view('thesa/header/footer', $data);
 	}
 	
@@ -147,7 +150,7 @@ class Thesa extends CI_Controller {
 					$form -> id = $id;
 					
 					$data['content'] = $form -> editar($cp, $this -> skoses -> table_thesaurus);
-					$data['title'] = msg('my_thesauros');
+					$data['title'] = msg('Thesaurus');
 					$this -> load -> view('content', $data);
 					
 					if ($form -> saved > 0) {
@@ -162,27 +165,38 @@ class Thesa extends CI_Controller {
 					
 					/* ICONE */
 					$data['title'] = msg('icones');
-					$data['content'] = $this -> skoses -> show_icone($data['pa_icone']);
-					$data['content'] .= '<br><span onclick="newxy(\'' . base_url('index.php/thesa/icone/') . '\',600,600);" class="link">' . msg('alter') . '</span>';
+					$sx = '<div class="content"><div class="row">';
+					$sx .= '<div class="col-md-2">';
+					$sx .= '<h1>'.msg('Icone').'</h1>';
+					$sx .= $this -> skoses -> show_icone($data['pa_icone'],$data);
+					$sx .= '</div>';
+
+					$sx .= '<div class="col-md-2">';
+					$sx .= '<br><span onclick="newxy(\'' . base_url('index.php/thesa/icone/') . '\',600,600);" class="btn btn-outline-primary">' . msg('alter_icone') . '</span>';
+					$sx .= '</div>';
+
+					$sx .= '</div></div>';
+					$data['title'] = '';
+					$data['content'] = $sx;
 					$this -> load -> view('content', $data);
 					
 					/* Colaboradores */
 					$msg = $this -> skoses -> th_collaborators($id) . $msg;
+					$data['title'] = msg('authors');
 					$data['content'] = $msg;
-					$this -> load -> view('skos/thesa_users', $data);
+					$this -> load -> view('content', $data);
 				} else {
-					$tela = '	<div class="alert alert-danger" role="alert">
+					$tela = '<div class="alert alert-danger" role="alert">
 					' . msg('Unauthorized_access') . '
 					</div>';
-					$data['content'] = $tela;
+					$data['content'] = '<br>'.$tela;
+					$data['title'] = '';
 					$this -> load -> view('content', $data);
 				}
 			}
 			$this -> load -> view('header/footer', null);
 		} else {
-			$tela = '	<div class="alert alert-danger" role="alert">
-			' . msg('Unauthorized_access') . '
-			</div>';
+			$tela = message(msg('Unauthorized_access'),3);
 			$data['content'] = $tela;
 			$this -> load -> view('content', $data);
 		}
@@ -233,80 +247,55 @@ class Thesa extends CI_Controller {
 		if (strlen($sel) > 0) {
 			$chk2 = checkpost_link('icone' . $sel);
 			if ($chk == $chk2) {
+				$this -> skoses -> icone_remove($th);
 				$this -> skoses -> icone_update($th, $sel);
 				$txt = '<script> window.opener.location.reload(); close(); </script>';
 				echo $txt;
 				exit ;
 			}
 		}
+
 		
-		/******************/
-		$img = $this -> skoses -> show_icone($th);
-		$data['content'] = $img;
-		$data['title'] = 'THESA: ' . $data['pa_name'];
+
+		/******************
+		 * icone selected
+		 */
+		$img = $this -> skoses -> show_icone($data['pa_icone'],$data);
+		$s = '<div class="container"><div class="row">';
+		$s .= '<div class="col-sm-3">'.$img.'</div>';
+		$s .= '<div class="col-sm-9"><h2>'.$data['pa_name'].'</h2></div>';
+		$s .= '</div></div>';
+		$s .= '<hr>';
+		$data['content'] = $s;
+		$data['title'] = '';
 		$this -> load -> view('content', $data);
-		
+
+
+		/********************
+		 * icone_upload
+		 */
+		$s = $this->skoses->icone_upload($th,$data);
+		$data['content'] = $s.'<hr>';
+		$data['title'] = '';
+		$this -> load -> view('content', $data);
+
+		/********************
+		 * icone selected
+		 */
+
+		$s = msg('click_icone_to_select');		
 		/******************/
-		$txt = $this -> skoses -> icones_select($th);
-		$data['content'] = $txt;
+		$s .= $this -> skoses -> icones_select($th);
+		$data['content'] = $s;
 		$data['title'] = '';
 		$this -> load -> view('content', $data);
 		
-		$target_dir = "img/icone/custon/";
-		$target_file = $target_dir . 'background_icone_' . $th . '.png';
-		$uploadOk = 1;
-		$imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-		// Check if image file is a actual image or fake image
-		if (isset($_POST["submit"])) {
-			$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-			if ($check !== false) {
-				echo "File is an image - " . $check["mime"] . ".";
-				$uploadOk = 1;
-			} else {
-				echo "File is not an image.";
-				$uploadOk = 0;
-			}
-		}
-		
-		// Allow certain file formats
-		$err = '';
-		if (!isset($_FILES["fileToUpload"]["tmp_name"])) {
-			$uploadOk = 0;
-		}
-		if ($imageFileType != "jpg" && $imageFileType != "jpeg") {
-			$err = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-			$uploadOk = 0;
-		}
-		
-		// Check if $uploadOk is set to 0 by an error
-		if ($uploadOk == 0) {
-			$err = "Sorry, your file was not uploaded.";
-			// if everything is ok, try to upload file
-		} else {
-			if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-				$err = "The file " . basename($_FILES["fileToUpload"]["name"]) . " has been uploaded.";
-			} else {
-				$err = "Sorry, there was an error uploading your file.";
-			}
-		}
-		/**********************/
-		
-		$html = '';
-		$html .= '<hr>';
-		$html .= $err;
-		$html .= '<form action="upload.php" method="post" enctype="multipart/form-data">
-		Select image to upload:
-		<input type="file" name="fileToUpload" id="fileToUpload">
-		<input type="submit" value="Upload Image" name="submit">
-		</form>';
-		$html .= '<hr>';
-		$data['content'] = $html;
-		$data['title'] = '';
-		$this -> load -> view('content', $data);
+
 		
 	}
 	
 	function imagem($tp) {
+		$sx = '';
 		$this -> load -> model('skoses');
 		$th = $this -> skoses -> th();
 		$data = $this -> skoses -> le_th($th);
@@ -326,10 +315,10 @@ class Thesa extends CI_Controller {
 				$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
 				if ($check !== false) 
 				{
-					echo "File is an image - " . $check["mime"] . ".";
+					$sx = "File is an image - " . $check["mime"] . ".";
 					$uploadOk = 1;
 				} else {
-					echo "File is not an image.";
+					$sx = "File is not an image.";
 					$uploadOk = 0;
 				}
 			}
@@ -352,8 +341,10 @@ class Thesa extends CI_Controller {
 		} else {
 			if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
 				$err = "The file " . basename($_FILES["fileToUpload"]["name"]) . " has been uploaded.";
+				$sx .= message(msg('image_uploaded').' => '.$target_file,2);
 			} else {
 				$err = "Sorry, there was an error uploading your file.";
+				$err .= '<hr>';
 			}
 		}
 		/**********************/
@@ -368,6 +359,7 @@ class Thesa extends CI_Controller {
 		</form>';
 		$html .= '<hr>';
 		$html .= '<img src="' . $data['image_bk'] . '" width="100%">';
+		$html .= $sx;
 		$data['content'] = $html;
 		$data['title'] = 'THESA: ' . $data['pa_name'];
 		$this -> load -> view('content', $data);
@@ -741,743 +733,687 @@ class Thesa extends CI_Controller {
 	}
 	
 	/* LOGIN */
-	function social($act = '') {
+	function social($act = '',$d1='',$d2='',$d3='') {
+		$this->cab();
 		$socials = new socials;
-		switch($act) {
-			case 'forgot':
-				$this->cab();
-				$socials -> forgot();
-			break;
-			
-			case 'pwsend' :
-				$this -> cab();
-				$socials -> resend();
-			break;
-		break;
-		case 'signup' :
-			$this -> cab();
-			$socials -> signup();
-		break;
-		case 'logout' :
-			$socials -> logout();
-		break;
-		case 'npass' :
-			$this -> cab();
-			$email = get("dd0");
-			$chk = get("chk");
-			$chk2 = checkpost_link($email . $email);
-			
-			if (($chk != $chk2) AND (!isset($_POST['dd1']))) {
-				$data['content'] = 'Erro de Check';
-				$this -> load -> view('content', $data);
-			} else {
-				$dt = $socials -> le_email($email);
-				if (count($dt) > 0) {
-					$id = $dt['id_us'];
-					$data['title'] = '';
-					$tela = '<br><br><h1>' . msg('change_password') . '</h1>';
-					$new = 1;
-					// Novo registro
-					$data['content'] = $tela . $socials -> change_password($id, $new);
-					$this -> load -> view('content', $data);
-					//redirect(base_url("index.php/thesa/social/login"));
-				} else {
-					$data['content'] = 'Email não existe!';
-					$this -> load -> view('error', $data);
-				}
-			}
-			
-			$this -> footer();
-		break;
-		case 'login' :
-			$this -> cab();
-			$socials -> login();
-		break;
-		case 'login_local' :
-			$ok = $socials -> login_local();
-			if ($ok == 1) {
-				redirect(base_url('index.php/thesa/thesaurus_my'));
-			} else {
-				redirect(base_url('index.php/thesa/social/login/') . '?erro=ERRO_DE_LOGIN');
-			}
-		break;
-		default :
-		echo "Function not found";
-	break;
-}
-}
-
-/***************************************************************************** Termo equivalente */
-function te($c = '') {
-	$c = round($c);
-	$th = $_SESSION['skos'];
-	
-	/* Load model */
-	$this -> load -> model("skoses");
-	$this -> cab(0);
-	
-	$data = $this -> skoses -> le($c);
-	$data['form'] = $this -> skoses -> form_concept($th, $c, 'FE');
-	$this -> load -> view('thesa/view/concept_mini', $data);
-	
-	$action = get("action");
-	$desc = get("tm");
-	$tr = get("tr");
-	
-	if ((strlen($action) > 0) and (strlen($tr) > 0) and (strlen($desc) > 0)) {
+		$socials->social($act,$d1,$d2);
+		$this -> footer();
+		return('');
 		
-		echo 'SAVED';
-		$this -> skoses -> assign_as_propriety($c, $th, $tr, $desc);
-		$this -> load -> view('header/close', null);
-		
-		$line2 = $this -> skoses -> le_term($desc, $th);
-		$line3 = $this -> skoses -> le_propriety($tr);
-		$desc = msg('associated') . ' ' . msg($line3['rs_propriety']) . ' - "<b>' . $line2['rl_value'] . '</b>" ' . ' (<i>' . $tr . '</i>)';
-		$this -> skoses -> log_insert($c, $th, 'ADDT', $desc);
-		
-		//$this->skoes->
+		$socials = new socials;
+		$sx = $socials->social($act,$id1,$id2,$id3);
 	}
-}
-
-function te_remove($id = '', $chk = '') {
-	$this -> load -> model("skoses");
-	$this -> cab(2);
 	
-	$ok = get("confirm");
-	if ($ok == '1') {
-		$this -> skoses -> te_remove($id);
-		$this -> load -> view('wclose');
-	} else {
-		$data['content'] = '<br><br><h1>' . msg('remove_propriety') . '</h1>';
-		$data['content'] .= msg('content');
-		$data['link'] = base_url('index.php/thesa/te_remove/' . $id . '/' . $chk);
-		$this -> load -> view('confirm.php', $data);
-	}
-}
-
-function tr_remove($id = '', $chk = '') {
-	$this -> load -> model("skoses");
-	$this -> cab(2);
-	
-	$ok = get("confirm");
-	if ($ok == '1') {
-		$this -> skoses -> te_remove($id);
-		$this -> load -> view('wclose');
-	} else {
-		$data['content'] = '<br><br><h1>' . msg('remove_propriety') . '</h1>';
-		$data['content'] .= msg('content');
-		$data['link'] = base_url('index.php/thesa/te_remove/' . $id . '/' . $chk);
-		$this -> load -> view('confirm.php', $data);
-	}
-}
-
-/***************************************************************************** Termo oculto */
-function tz($c = '') {
-	$c = round($c);
-	$th = $this->skoses->th();
-	
-	/* Load model */
-	$this -> load -> model("skoses");
-	$this -> cab(0);
-	
-	$data = $this -> skoses -> le($c);
-	$data['form'] = $this -> skoses -> form_concept($th, $c, 'TH');
-	$this -> load -> view('thesa/view/concept_mini', $data);
-	
-	$action = get("action");
-	$desc = get("tm");
-	$tr = get("tr");
-	
-	if ((strlen($action) > 0) and (strlen($tr) > 0) and (strlen($desc) > 0)) {
-		echo 'SAVED';
-		$ac = get("action");
-		$this -> skoses -> assign_as_propriety($c, $th, $tr, $desc);
-		if ($ac == msg('save')) {
-			$this -> load -> view('header/close', null);
-		} else {
-			redirect(base_url('index.php/thesa/tz/' . $c));
-		}
+	/***************************************************************************** Termo equivalente */
+	function te($c = '') {
+		$c = round($c);
+		$th = $_SESSION['skos'];
 		
-		//$this->skoes->
-	}
-}
-
-/******************************************************* Termo preferencial */
-function tp($c = '') {
-	$c = round($c);
-	$th = $this->skoses->th();
-	
-	/* Load model */
-	$this -> load -> model("skoses");
-	$this -> cab(0);
-	
-	$data = $this -> skoses -> le($c);
-	$data['form'] = $this -> skoses -> form_concept($th, $c, 'LABEL');
-	$this -> load -> view('thesa/view/concept_mini', $data);
-	
-	$action = get("action");
-	$desc = get("tm");
-	$tr = get("tr");
-	
-	if ((strlen($action) > 0) and (strlen($tr) > 0) and (strlen($desc) > 0)) {
-		$ac = get("action");
-		$this -> skoses -> assign_as_propriety($c, $th, $tr, $desc);
-		if ($ac == msg('save')) {
-			$this -> load -> view('header/close', null);
-		} else {
-			redirect(base_url('index.php/thesa/tp/' . $c));
-		}
-		
-		//$this->skoes->
-	}
-}	
-
-/***************************************************************************** TG Geral */
-function tg($c = '') {
-	
-	/***************************** TERMO GERAL ************/
-	$c = round($c);
-	$th = $_SESSION['skos'];
-	
-	$dt = $this->thesa_api->le($th);
-	
-	switch($dt['pa_type'])
-	{
-		case '95':
-			$c = round($c);
-			$th = $_SESSION['skos'];
-			
-			/* Load model */
-			$this -> load -> model("skoses");
-			$this -> cab(0);
-			
-			$data = $this -> skoses -> le($c);
-			$data['form'] = $this -> skoses -> form_concept($th, $c, 'TG');
-			$this -> load -> view('thesa/view/concept_mini', $data);
-			
-			$action = get("action");
-			$desc = get("tm");
-			$tr = get("tr");
-			
-			if ((strlen($action) > 0) and (strlen($tr) > 0) and (strlen($desc) > 0)) {
-				
-				echo 'SAVED';
-				$this -> skoses -> assign_as_propriety($c, $th, $tr, $desc);
-				$this -> load -> view('header/close', null);
-				
-				$line2 = $this -> skoses -> le_term($desc, $th);
-				$line3 = $this -> skoses -> le_propriety($tr);
-				$desc = msg('associated') . ' ' . msg($line3['rs_propriety']) . ' - "<b>' . $line2['rl_value'] . '</b>" ' . ' (<i>' . $tr . '</i>)';
-				$this -> skoses -> log_insert($c, $th, 'ADDT', $desc);
-				
-				//$this->skoes->
-			}		
-			
-		break;
-		
-		default:
 		/* Load model */
 		$this -> load -> model("skoses");
 		$this -> cab(0);
 		
 		$data = $this -> skoses -> le($c);
-		$data['form'] = $this -> skoses -> form_concept_tg($th, $c, 'TG');
+		$data['form'] = $this -> skoses -> form_concept($th, $c, 'FE');
+		$this -> load -> view('thesa/view/concept_mini', $data);
+		
+		$action = get("action");
+		$desc = get("tm");
+		$tr = get("tr");
+		
+		if ((strlen($action) > 0) and (strlen($tr) > 0) and (strlen($desc) > 0)) {
+			
+			echo 'SAVED';
+			$this -> skoses -> assign_as_propriety($c, $th, $tr, $desc);
+			$this -> load -> view('header/close', null);
+			
+			$line2 = $this -> skoses -> le_term($desc, $th);
+			$line3 = $this -> skoses -> le_propriety($tr);
+			$desc = msg('associated') . ' ' . msg($line3['rs_propriety']) . ' - "<b>' . $line2['rl_value'] . '</b>" ' . ' (<i>' . $tr . '</i>)';
+			$this -> skoses -> log_insert($c, $th, 'ADDT', $desc);
+			
+			$this->skoses->th_update($th);
+			
+			//$this->skoes->
+		}
+	}
+	
+	function te_remove($id = '', $chk = '') {
+		$this -> load -> model("skoses");
+		$this -> cab(2);
+		
+		$ok = get("confirm");
+		if ($ok == '1') {
+			$th = $_SESSION['skos'];
+			$this->skoses->th_update($th);
+			$this -> skoses -> te_remove($id);
+			$this -> load -> view('wclose');
+		} else {
+			$data['content'] = '<br><br><h1>' . msg('remove_propriety') . '</h1>';
+			$data['content'] .= msg('content');
+			$data['link'] = base_url('index.php/thesa/te_remove/' . $id . '/' . $chk);
+			$this -> load -> view('confirm.php', $data);
+		}
+	}
+	
+	function tr_remove($id = '', $chk = '') {
+		$this -> load -> model("skoses");
+		$this -> cab(2);
+		
+		$ok = get("confirm");
+		if ($ok == '1') {
+			$th = $_SESSION['skos'];
+			$this->skoses->th_update($th);
+			$this -> skoses -> te_remove($id);
+			$this -> load -> view('wclose');
+		} else {
+			$data['content'] = '<br><br><h1>' . msg('remove_propriety') . '</h1>';
+			$data['content'] .= msg('content');
+			$data['link'] = base_url('index.php/thesa/te_remove/' . $id . '/' . $chk);
+			$this -> load -> view('confirm.php', $data);
+		}
+	}
+	
+	/***************************************************************************** Termo oculto */
+	function tz($c = '') {
+		$c = round($c);
+		$th = $this->skoses->th();
+		
+		/* Load model */
+		$this -> load -> model("skoses");
+		$this -> cab(0);
+		
+		$data = $this -> skoses -> le($c);
+		$data['form'] = $this -> skoses -> form_concept($th, $c, 'TH');
+		$this -> load -> view('thesa/view/concept_mini', $data);
+		
+		$action = get("action");
+		$desc = get("tm");
+		$tr = get("tr");
+		
+		if ((strlen($action) > 0) and (strlen($tr) > 0) and (strlen($desc) > 0)) {
+			echo 'SAVED';
+			$ac = get("action");
+			$this -> skoses -> assign_as_propriety($c, $th, $tr, $desc);
+			if ($ac == msg('save')) {
+				$this -> load -> view('header/close', null);
+			} else {
+				redirect(base_url('index.php/thesa/tz/' . $c));
+			}
+			$th = $_SESSION['skos'];
+			$this->skoses->th_update($th);
+			//$this->skoes->
+		}
+	}
+	
+	/******************************************************* Termo preferencial */
+	function tp($c = '') {
+		$c = round($c);
+		$th = $this->skoses->th();
+		
+		/* Load model */
+		$this -> load -> model("skoses");
+		$this -> cab(0);
+		
+		$data = $this -> skoses -> le($c);
+		$data['form'] = $this -> skoses -> form_concept($th, $c, 'LABEL');
+		$this -> load -> view('thesa/view/concept_mini', $data);
+		
+		$action = get("action");
+		$desc = get("tm");
+		$tr = get("tr");
+		
+		if ((strlen($action) > 0) and (strlen($tr) > 0) and (strlen($desc) > 0)) {
+			$ac = get("action");
+			$this -> skoses -> assign_as_propriety($c, $th, $tr, $desc);
+			if ($ac == msg('save')) {
+				$th = $_SESSION['skos'];
+				$this->skoses->th_update($th);			
+				$this -> load -> view('header/close', null);
+			} else {
+				redirect(base_url('index.php/thesa/tp/' . $c));
+			}
+			
+			//$this->skoes->
+		}
+	}	
+	
+	/***************************************************************************** TG Geral */
+	function tg($c = '') {
+		
+		/***************************** TERMO GERAL ************/
+		$c = round($c);
+		$th = $_SESSION['skos'];
+		
+		$dt = $this->thesa_api->le($th);
+		
+		switch($dt['pa_type'])
+		{
+			case '95':
+				$c = round($c);
+				$th = $_SESSION['skos'];
+				
+				/* Load model */
+				$this -> load -> model("skoses");
+				$this -> cab(0);
+				
+				$data = $this -> skoses -> le($c);
+				$data['form'] = $this -> skoses -> form_concept($th, $c, 'TG');
+				$this -> load -> view('thesa/view/concept_mini', $data);
+				
+				$action = get("action");
+				$desc = get("tm");
+				$tr = get("tr");
+				
+				if ((strlen($action) > 0) and (strlen($tr) > 0) and (strlen($desc) > 0)) {
+					
+					echo 'SAVED';
+					$th = $_SESSION['skos'];
+					$this->skoses->th_update($th);				
+					
+					$this -> skoses -> assign_as_propriety($c, $th, $tr, $desc);
+					$this -> load -> view('header/close', null);
+					
+					$line2 = $this -> skoses -> le_term($desc, $th);
+					$line3 = $this -> skoses -> le_propriety($tr);
+					$desc = msg('associated') . ' ' . msg($line3['rs_propriety']) . ' - "<b>' . $line2['rl_value'] . '</b>" ' . ' (<i>' . $tr . '</i>)';
+					$this -> skoses -> log_insert($c, $th, 'ADDT', $desc);
+					
+					//$this->skoes->
+				}		
+				
+			break;
+			
+			default:
+			/* Load model */
+			$this -> load -> model("skoses");
+			$this -> cab(0);
+			
+			$data = $this -> skoses -> le($c);
+			$data['form'] = $this -> skoses -> form_concept_tg($th, $c, 'TG');
+			$this -> load -> view('thesa/view/concept_mini', $data);
+			
+			$action = get("action");
+			$tg = get("tg");
+			if ((strlen($action) > 0) and (strlen($tg) > 0)) {
+				$this -> skoses -> assign_as_narrower($tg, $c, $th, 0);
+				$this -> load -> view('header/close', null);
+				//$this->skoes->
+			}
+		}
+	}
+	
+	/***************************************************************************** Notas de definição */
+	function tf($c = '') {
+		$c = round($c);
+		$th = $_SESSION['skos'];
+		
+		/* Load model */
+		$this -> load -> model("skoses");
+		$this -> cab(0);
+		
+		$data = $this -> skoses -> le($c);
+		$data['form'] = $this -> skoses -> form_concept_tf($th, $c);
+		$this -> load -> view('thesa/view/concept_mini', $data);
+		
+		$action = get("action");
+		$texto = get("nt");
+		$idioma = get("tt");
+		$tr = get("tr");
+		
+		if ((strlen($action) > 0) and (strlen($tr) > 0) and (strlen($idioma) > 0) and (strlen($tr) > 0)) {
+			
+			$this -> skoses -> assign_as_note($c, $th, $tr, $texto, $idioma);
+			$this -> load -> view('header/close', null);
+			//$this->skoes->
+		}
+	}
+	
+	/***************************************************************************** TR Relacionado */
+	function tr($c = '') {
+		$c = round($c);
+		$th = $_SESSION['skos'];
+		
+		/* Load model */
+		$this -> load -> model("skoses");
+		$this -> cab(0);
+		
+		$data = $this -> skoses -> le($c);
+		$data['form'] = $this -> skoses -> form_concept_tr($th, $c);
 		$this -> load -> view('thesa/view/concept_mini', $data);
 		
 		$action = get("action");
 		$tg = get("tg");
-		if ((strlen($action) > 0) and (strlen($tg) > 0)) {
-			$this -> skoses -> assign_as_narrower($tg, $c, $th, 0);
+		$tgr = get("tgr");
+		if ((strlen($action) > 0) and (strlen($tg) > 0) and (strlen($tgr) > 0)) {
+			echo $this -> TG;
+			$this -> skoses -> assign_as_relation($tg, $c, $th, $tgr);
 			$this -> load -> view('header/close', null);
 			//$this->skoes->
 		}
-	break;
-	
-	
-}
-
-
-}
-
-/***************************************************************************** Notas de definição */
-function tf($c = '') {
-	$c = round($c);
-	$th = $_SESSION['skos'];
-	
-	/* Load model */
-	$this -> load -> model("skoses");
-	$this -> cab(0);
-	
-	$data = $this -> skoses -> le($c);
-	$data['form'] = $this -> skoses -> form_concept_tf($th, $c);
-	$this -> load -> view('thesa/view/concept_mini', $data);
-	
-	$action = get("action");
-	$texto = get("nt");
-	$idioma = get("tt");
-	$tr = get("tr");
-	
-	if ((strlen($action) > 0) and (strlen($tr) > 0) and (strlen($idioma) > 0) and (strlen($tr) > 0)) {
-		
-		$this -> skoses -> assign_as_note($c, $th, $tr, $texto, $idioma);
-		$this -> load -> view('header/close', null);
-		//$this->skoes->
-	}
-}
-
-/***************************************************************************** TR Relacionado */
-function tr($c = '') {
-	$c = round($c);
-	$th = $_SESSION['skos'];
-	
-	/* Load model */
-	$this -> load -> model("skoses");
-	$this -> cab(0);
-	
-	$data = $this -> skoses -> le($c);
-	$data['form'] = $this -> skoses -> form_concept_tr($th, $c);
-	$this -> load -> view('thesa/view/concept_mini', $data);
-	
-	$action = get("action");
-	$tg = get("tg");
-	$tgr = get("tgr");
-	if ((strlen($action) > 0) and (strlen($tg) > 0) and (strlen($tgr) > 0)) {
-		echo $this -> TG;
-		$this -> skoses -> assign_as_relation($tg, $c, $th, $tgr);
-		$this -> load -> view('header/close', null);
-		//$this->skoes->
-	}
-	
-}
-
-function timg($c = '', $chk = '') {
-	$c = round($c);
-	$th = $_SESSION['skos'];
-	
-	/* Load model */
-	$this -> load -> model("skoses");
-	$this -> cab(0);
-	
-	$form = new form;
-	$tela = '<h1>'.msg('image_upload').'</h1>';
-	$tela .= '<p>'.msg('image_upload_info').'</p>';
-	$tela .= form_open_multipart() . cr();
-	$tela .= '<!-- MAX_FILE_SIZE deve preceder o campo input -->
-	<input type="hidden" name="MAX_FILE_SIZE" value="3000000" />
-	<!-- O Nome do elemento input determina o nome da array $_FILES -->
-	Enviar esse arquivo: <input name="userfile" type="file" class="control-form" />
-	<input type="submit" value="Enviar arquivo" />' . cr();
-	$tela .= '</form>' . cr();
-	
-	if (isset($_FILES['userfile']['tmp_name'])) {
-		$fl = $_FILES['userfile']['name'];
-		
-		/* ACERVO */
-		$temp = '_acervo';
-		dircheck($temp);
-		
-		/* IMAGES */
-		$temp = '_acervo/image';
-		dircheck($temp);
-		
-		/* IMAGES - DATA */
-		$temp = '_acervo/image/' . date("Y");
-		dircheck($temp);
-		
-		/* IMAGES - DATA */
-		$temp = '_acervo/image/' . date("Y") . '/' . date("m") . '/';
-		dircheck($temp);
-		
-		$img = strzero($c, 7);
-		$ext = substr($fl, strlen($fl) - 4, 5);
-		$ext = troca($ext, '.', '');
-		
-		$uploadfile = $temp . 'img-' . $img . '-' . substr(checkpost_link($img), 2, 10) . '.' . $ext;
-		
-		switch($ext) {
-			case 'png' :
-				$ok = 1;
-			break;
-			case 'jpg' :
-				$ok = 1;
-			break;
-			default :
-			$ok = 0;
-			echo message(msg('ERRO #515').' <b>"'. $ext.'"</b>',3);
-		}
-		if ($ok == 1) {
-			if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-				echo "Arquivo válido e enviado com sucesso.\n";
-				$this -> skoses -> image_concept($c, $uploadfile);
-				$tela = 'Sucesso!';
-				$tela .= $this -> load -> view('wclose');
-			} else {
-				echo "Possível ataque de upload de arquivo!\n";
-			}
-		}
 		
 	}
 	
-	$data['content'] = $tela;
-	$data['title'] = '';
-	$this -> load -> view('content', $data);
-}
-
-/************************************************************** Concept */
-function concept_create($id, $chk = '', $t) {
-	/* Load model */
-	$this -> load -> model('skoses');
-	$th = $_SESSION['skos'];
-	if ($id != $th) {
-		echo 'OPS-402';
-		exit ;
-	}
-	$this -> cab();
-	
-	$is_active = $this -> skoses -> is_concept($t, $th);
-	
-	if ($is_active == 0) {
-		//$this->skoses->
-		$sql = "select * from rdf_literal where id_rl = " . $t;
-		$rlt = $this -> db -> query($sql);
-		$rlt = $rlt -> result_array();
-		$desc = '';
-		$act = 'CREAT';
-		if (count($rlt) > 0) {
-			$line = $rlt[0];
-			$desc = msg('concept_create') . ' <b>' . $line['rl_value'] . '</b>';
-		}
-		$id = $this -> skoses -> concept_create($t, $th);
-		$this -> skoses -> log_insert($id, $th, $act, $desc);
-		
-		redirect(base_url('index.php/thesa/c/' . $id));
-	}
-	
-}
-
-function concept_add() {
-	$this -> cab();
-	$id = $_SESSION['skos'];
-	$data = $this -> skoses -> le_skos($id);
-	$this -> load -> view('thesa/view/thesaurus', $data);
-	$data['pg'] = 2;
-	//$this -> load -> view('skos/skos_nav', $data);
-	$this -> load -> view('thesa/header/navbar_tools', null);
-	
-	$form = new form;
-	$cp = array();
-	array_push($cp, array('$A3', '', msg('terms_add'), False, False));
-	array_push($cp, array('$T80:8', '', msg('terms'), True, False));
-	array_push($cp, array('$M', '', '<font class="small">' . msg('terms_info') . '</font>', False, False));
-	$sql = $this->skoses->skoes_th_idiomas($id);
-	array_push($cp, array('$QC lg_code:lg_language:'.$sql, '', msg('language'), True, False));
-	array_push($cp, array('$C', '', msg('Lowercase'), False, False));
-	array_push($cp, array('$B8', '', msg('save'), False, False));
-	$tela = $form -> editar($cp, '');
-
-	if ($form -> saved > 0) {
-		$lc = splitx(';',get("dd3"));
-		$data['content'] = '';
-		for($r=0;$r < count($lc);$r++)
-		{
-			$data['content'] .= $this -> skoses -> incorpore_terms(get("dd1"), $id, $lc[$r], '');
-		}
-		$data['title'] = '';
-		$this -> load -> view('content', $data);
-	} else {
-		$data['content'] = '<div class="row">';
-		$data['content'] .= '<div class="col-md-8">'.$tela.'</div>';
-		$data['content'] .= '<div class="col-md-3"><br/><h4>'.msg('help_info').'</h4>'.msg('concept_add_infor').'</div>';
-		$data['content'] .= '</div>';
-		$data['title'] = '';
-		$this -> load -> view('content', $data);
-	}
-	$this -> load -> view('header/footer', null);
-}
-
-function concept_change_preflabel($id = '', $th = '', $chk = '') {
-	$this -> load -> model('skoses');
-	$this -> cab(0);
-	
-	$chk2 = checkpost_link($id . $th);
-	if ($chk2 != $chk) {
-		$data['title'] = 'Checksum error';
-		$data['content'] = 'action canceled';
-		$this -> load -> view('skos/510', $data);
-		return ('');
-	}
-	
-	$data = $this -> skoses -> le_c($id, $th);
-	
-	/*************** action *********************/
-	$idn = get("dd5");
-	if (strlen($idn) > 0) {
-		//echo '===>' . $idn;
-		//echo '<br>===>' . $data['ct_term'];
-		//echo '<br>===>' . $id;
-		
-		$ok = $this -> skoses -> concept_chage($id, $idn, $data['ct_term'], $data['c_th']);
-		if ($ok == 1) {
-			$this -> load -> view('wclose');
-			//$this->load->
-			return ('ok');
-		} else {
-			$data['title'] = 'Fail';
-			$data['content'] = 'Error on save';
-			$this -> load -> view('skos/510', $data);
-			return ('');
-		}
-	}
-	
-	$sx = '<h1>' . $data['rl_value'] . '</h1>';
-	$sx .= '<form method="post">';
-	$sx .= '<ul style="list-style-type: none;">';
-	$terms = array_merge($data['terms_pref'],$data['terms_al'], $data['terms_hd'], $data['terms_ge']);
-	
-	for ($r = 0; $r < count($terms); $r++) {
-		$line = $terms[$r];
-		$rd = '<input type="radio" name="dd5" value="' . $line['ct_term'] . '">';
-		$sx .= '<li>' . $rd . ' ' . $line['rl_value'] . '</li>';
-	}
-	$sx .= '</ul>';
-	$sx .= '<input type="submit" value="' . msg('change') . '">';
-	$sx .= '</form>';
-	$data['content'] = $sx;
-	$data['title'] = '';
-	$this -> load -> view('content', $data);
-	
-}
-
-/***************************************************************************** Conecpt */
-function json($id = '') {
-	/* Load model */
-	$this -> load -> model("skoses");
-	$this -> cab();
-	
-	$this -> skoses -> to_json($id);
-	
-}
-
-/* Terms */
-function term_delete($th = '', $chk = '', $idt = '', $act = '', $chk2 = '') {
-	$this -> load -> model('skoses');
-	$this -> cab();
-	
-	if (strlen($th) == 0) {
+	function timg($c = '', $chk = '') {
+		$c = round($c);
 		$th = $_SESSION['skos'];
-	}
-	$data = $this -> skoses -> le_th($th);
-	
-	$data2 = $this -> skoses -> le_term($idt, $th);
-	
-	if (count($data2) == 0) {
-		redirect(base_url('index.php/thesa/terms/' . $th));
-	}
-	
-	$data = array_merge($data, $data2);
-	
-	$this -> load -> view('thesa/view/thesaurus', $data);
-	/******************************/
-	
-	$this -> load -> view('thesa/view/term', $data);
-	
-	$chk3 = checkpost_link($th . 'DEL' . $idt);
-	if ($chk2 == $chk3) {
 		
-		$rs = $this -> skoses -> delete_term_from_th($th, $idt);
+		/* Load model */
+		$this -> load -> model("skoses");
+		$this -> cab(0);
 		
-		if ($rs == 1) {
-			$tela = $this -> load -> view('success', $data, true);
-			//$tela .= '<br>';
-			//$tela .= '<a href="'.base_url('index.php/thesa/terms/').'" class="btn btn-secondary">'.msg('return').'</div>';
-			$url = base_url('index.php/thesa/terms/' . $th);
-			$tela .= redirect2($url, 2);
-			$data['content'] = $tela;
-			$data['title'] = '';
+		$form = new form;
+		$tela = '<h1>'.msg('image_upload').'</h1>';
+		$tela .= '<p>'.msg('image_upload_info').'</p>';
+		$tela .= form_open_multipart() . cr();
+		$tela .= '<!-- MAX_FILE_SIZE deve preceder o campo input -->
+		<input type="hidden" name="MAX_FILE_SIZE" value="3000000" />
+		<!-- O Nome do elemento input determina o nome da array $_FILES -->
+		Enviar esse arquivo: <input name="userfile" type="file" class="control-form" />
+		<input type="submit" value="Enviar arquivo" />' . cr();
+		$tela .= '</form>' . cr();
+		
+		if (isset($_FILES['userfile']['tmp_name'])) {
+			$fl = $_FILES['userfile']['name'];
 			
-			$this -> load -> view('content', $data);
-		} else {
-			$data['content'] = msg('item_already_deleted');
-			$tela = $this -> load -> view('success', $data, true);
-			$data['content'] = $tela;
-			$data['title'] = '';
-			$this -> load -> view('content', $data);
+			/* ACERVO */
+			$temp = '_acervo';
+			dircheck($temp);
+			
+			/* IMAGES */
+			$temp = '_acervo/image';
+			dircheck($temp);
+			
+			/* IMAGES - DATA */
+			$temp = '_acervo/image/' . date("Y");
+			dircheck($temp);
+			
+			/* IMAGES - DATA */
+			$temp = '_acervo/image/' . date("Y") . '/' . date("m") . '/';
+			dircheck($temp);
+			
+			$img = strzero($c, 7);
+			$ext = substr($fl, strlen($fl) - 4, 5);
+			$ext = troca($ext, '.', '');
+			
+			$uploadfile = $temp . 'img-' . $img . '-' . substr(checkpost_link($img), 2, 10) . '.' . $ext;
+			
+			switch($ext) {
+				case 'png' :
+					$ok = 1;
+				break;
+				case 'jpg' :
+					$ok = 1;
+				break;
+				default :
+				$ok = 0;
+				echo message(msg('ERRO #515').' <b>"'. $ext.'"</b>',3);
+			}
+			if ($ok == 1) {
+				if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
+					echo "Arquivo válido e enviado com sucesso.\n";
+					$this -> skoses -> image_concept($c, $uploadfile);
+					$tela = 'Sucesso!';
+					$tela .= $this -> load -> view('wclose');
+				} else {
+					echo "Possível ataque de upload de arquivo!\n";
+				}
+			}
+			
 		}
 		
-	} else {
-		$data['link'] = base_url('index.php/thesa/term_delete/' . $th . '/' . $chk . '/' . $idt . '/DEL/' . $chk3);
-		$data['content'] = msg('delete_term_confirm');
-		$tela = $this -> load -> view('confirm', $data, True);
 		$data['content'] = $tela;
 		$data['title'] = '';
 		$this -> load -> view('content', $data);
 	}
 	
-	$this -> load -> view('header/footer', null);
-}
-
-function terms_from_to($id = '', $exp = '', $p = '') {
-	$this -> load -> model('skoses');
-	if (strlen($id) == 0) {
-		$id = $_SESSION['skos'];
+	/************************************************************** Concept */
+	function concept_create($id, $chk = '', $t) {
+		/* Load model */
+		$this -> load -> model('skoses');
+		$th = $_SESSION['skos'];
+		if ($id != $th) {
+			echo 'OPS-402';
+			exit ;
+		}
+		$this -> cab();
+		
+		$is_active = $this -> skoses -> is_concept($t, $th);
+		
+		if ($is_active == 0) {
+			//$this->skoses->
+			$sql = "select * from rdf_literal where id_rl = " . $t;
+			$rlt = $this -> db -> query($sql);
+			$rlt = $rlt -> result_array();
+			$desc = '';
+			$act = 'CREAT';
+			if (count($rlt) > 0) {
+				$line = $rlt[0];
+				$desc = msg('concept_create') . ' <b>' . $line['rl_value'] . '</b>';
+			}
+			$id = $this -> skoses -> concept_create($t, $th);
+			$this -> skoses -> log_insert($id, $th, $act, $desc);
+			
+			redirect(base_url('index.php/thesa/c/' . $id));
+		}
+		
 	}
 	
-	$tp = 1;
-	
-	switch ($exp) {
-		case 'pdf' :
-			switch($p) {
-				case '' :
-					redirect(base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/1'));
-				break;
-				
-				/******************************************************** 11111111111111111111 */
-				case '1' :
-					$this -> cab();
-					$html = '<h1>' . msg('phase') . ' 1</h1>';
-					$html .= '<div class="alert alert-info" role="alert">
-					Aguarde! Processando registros
-					<hr>
-					Processando Glossário Html
-					<hr>
-					</div>
-					<br>
-					<br>
-					';
-					$html .= '<meta http-equiv="refresh" content="2; url=' . base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/2') . '">';
-					
-					$txt = $this -> skoses -> glossario_html($id, 'txt');
-					$this -> skoses -> save($id, '1', $txt);
-					
-					$data['content'] = $html;
-					$data['title'] = 'Export to PDF';
-					$this -> load -> view('content', $data);
-					$this -> footer();
-				break;
-				
-				/*************************************************************** 2 */
-				case '2' :
-					$this -> cab();
-					$html = '<h1>' . msg('phase') . ' 2</h1>';
-					$html .= '<div class="alert alert-info" role="alert">
-					Aguarde! Processando registros
-					<hr>
-					Processando Glossário Html
-					<hr>                                              											  
-					</div>
-					<br><br>';
-					$html .= '<meta http-equiv="refresh" content="2; url=' . base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/3') . '">';
-					
-					$txt = $this -> skoses -> glossario_alfabetico_html($id, 'txt');
-					$this -> skoses -> save($id, '2', $txt);
-					
-					$data['content'] = $html;
-					$data['title'] = 'Export to PDF';
-					$this -> load -> view('content', $data);
-					$this -> footer();
-				break;
-				case '3' :
-					$this -> cab();
-					$html = '<h1>' . msg('phase') . ' 3</h1>';
-					$html .= '<div class="alert alert-info" role="alert">
-					Aguarde! Processando registros
-					<hr>
-					Processando Glossario Alfabetico Hhtml
-					<hr>                                                                                            
-					</div>
-					<br><br>';
-					$html .= '<meta http-equiv="refresh" content="2; url=' . base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/4') . '">';
-					
-					$txt = $this -> skoses -> ficha_terminologica_html($id, 'txt');
-					$this -> skoses -> save($id, '3', $txt);
-					
-					$data['content'] = $html;
-					$data['title'] = 'Export to PDF';
-					$this -> load -> view('content', $data);
-					$this -> footer();
-				break;
-				
-				/************************************************************************************/
-				case '4' :
-					$this -> cab();
-					$html = '<h1>' . msg('phase') . ' 4</h1>';
-					$html .= '<div class="alert alert-info" role="alert">
-					Aguarde! Processando registros - Mapa conceitual
-					</div>';
-					
-					$html .= $this -> skoses -> le_tree($id, 'txt');
-					//$this -> skoses -> save($id, '4', $txt);
-					if (!strpos($html,'ERROR: ['))
-					{
-						$html .= '<meta http-equiv="refresh" content="2; url=' . base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/9') . '">';				
-					} else {
-						$html = '<h2>Erros</h2>
-						Foram localizados erros no relacionamento de termos
-						<hr>
-						<a class="btn btn-warning" href="' . base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/9').'">Continuar</a>'.'<hr>'.$html;
-					}
-					
-					$txt = $this -> skoses -> le_tree_sistematic($id);
-					$this -> skoses -> save($id, '5', $txt);
-					
-					$data['content'] = $html;
-					$data['title'] = 'Export to PDF';
-					$this -> load -> view('content', $data);
-					$this -> footer();
-				break;
-				
-				
-				case '9' :
-					$this -> cab();
-					$html = $this -> skoses -> make_pdf($id);
-					$data['content'] = $html;
-					$data['title'] = '';
-					$this -> load -> view('content', $data);
-				break;
+	function concept_add() {
+		$this -> cab();
+		$id = $_SESSION['skos'];
+		$data = $this -> skoses -> le_skos($id);
+		$this -> load -> view('thesa/view/thesaurus', $data);
+		$data['pg'] = 2;
+		//$this -> load -> view('skos/skos_nav', $data);
+		$this -> load -> view('thesa/header/navbar_tools', null);
+		
+		$form = new form;
+		$cp = array();
+		array_push($cp, array('$A3', '', msg('terms_add'), False, False));
+		array_push($cp, array('$T80:8', '', msg('terms'), True, False));
+		array_push($cp, array('$M', '', '<font class="small">' . msg('terms_info') . '</font>', False, False));
+		$sql = $this->skoses->skoes_th_idiomas($id);
+		array_push($cp, array('$QC lg_code:lg_language:'.$sql, '', msg('language'), True, False));
+		array_push($cp, array('$C', '', msg('Lowercase'), False, False));
+		array_push($cp, array('$B8', '', msg('save'), False, False));
+		$tela = $form -> editar($cp, '');
+		
+		if ($form -> saved > 0) {
+			$lc = splitx(';',get("dd3"));
+			$data['content'] = '';
+			for($r=0;$r < count($lc);$r++)
+			{
+				$data['content'] .= $this -> skoses -> incorpore_terms(get("dd1"), $id, $lc[$r], '');
 			}
-		break;
-		case 'csv' :
-			$arquivo = "thesa_" . strzero($id, 4) . '_' . date("Ymd") . ".csv";
-			// Configurações header para forçar o download
-			header("Expires: Mon, " . gmdate("D,d M YH:i:s") . " GMT");
-			header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
-			header("Cache-Control: no-cache, must-revalidate");
-			header("Pragma: no-cache");
-			header("Content-type: application/x-msexcel");
-			header("Content-Disposition: attachment; filename=\"{$arquivo}\"");
-			header("Content-Description: PHP Generated Data");
-			echo utf8_decode($this -> skoses -> from_to($id, ';', '"'));
+			$data['title'] = '';
+			$this -> load -> view('content', $data);
+		} else {
+			$data['content'] = '<div class="row">';
+			$data['content'] .= '<div class="col-md-8">'.$tela.'</div>';
+			$data['content'] .= '<div class="col-md-3"><br/><h4>'.msg('help_info').'</h4>'.msg('concept_add_infor').'</div>';
+			$data['content'] .= '</div>';
+			$data['title'] = '';
+			$this -> load -> view('content', $data);
+		}
+		$this -> load -> view('header/footer', null);
+	}
+	
+	function concept_change_preflabel($id = '', $th = '', $chk = '') {
+		$this -> load -> model('skoses');
+		$this -> cab(0);
+		
+		$chk2 = checkpost_link($id . $th);
+		if ($chk2 != $chk) {
+			$data['title'] = 'Checksum error';
+			$data['content'] = 'action canceled';
+			$this -> load -> view('skos/510', $data);
 			return ('');
-		break;
-		case 'txt' :
-			$arquivo = "thesa_" . strzero($id, 4) . '_' . date("Ymd") . ".txt";
-			// Configurações header para forçar o download
-			header("Expires: Mon, " . gmdate("D,d M YH:i:s") . " GMT");
-			header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
-			header("Cache-Control: no-cache, must-revalidate");
-			header("Pragma: no-cache");
-			header("Content-type: text/html");
-			header("Content-Disposition: attachment; filename=\"{$arquivo}\"");
-			header("Content-Description: PHP Generated Data");
-			echo($this -> skoses -> from_to($id, '=>', ''));
-		break;
-		case 'json' :
-			$arquivo = "thesa_" . strzero($id, 4) . '_' . date("Ymd") . ".txt";
-			// Configurações header para forçar o download
-			//header("Expires: Mon, " . gmdate("D,d M YH:i:s") . " GMT");
-			//header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
-			//header("Cache-Control: no-cache, must-revalidate");
-			//header("Pragma: no-cache");
-			//header("Content-type: text/html");
-			//header("Content-Disposition: attachment; filename=\"{$arquivo}\"");
-			//header("Content-Description: PHP Generated Data");
-			$rst = $this -> skoses -> from_to($id, ':', '"');
-			$rst = '{' . troca($rst, chr(13) . chr(10), '};{') . '"fim":"fim"}';
-			$rst = troca($rst, '};{', '},' . cr() . '{');
-				echo $rst;
+		}
+		
+		$data = $this -> skoses -> le_c($id, $th);
+		
+		/*************** action *********************/
+		$idn = get("dd5");
+		if (strlen($idn) > 0) {
+			//echo '===>' . $idn;
+			//echo '<br>===>' . $data['ct_term'];
+			//echo '<br>===>' . $id;
+			
+			$ok = $this -> skoses -> concept_chage($id, $idn, $data['ct_term'], $data['c_th']);
+			if ($ok == 1) {
+				$this->skoses->th_update($th);
+				$this -> load -> view('wclose');
+				//$this->load->
+				return ('ok');
+			} else {
+				$data['title'] = 'Fail';
+				$data['content'] = 'Error on save';
+				$this -> load -> view('skos/510', $data);
+				return ('');
+			}
+		}
+		
+		$sx = '<h1>' . $data['rl_value'] . '<sup>('.$data['rl_lang'].')</sup></h1>';
+		$sx .= '<form method="post">';
+		$sx .= '<ul style="list-style-type: none;">';
+		$terms = array_merge($data['terms_pref'],$data['terms_al'], $data['terms_hd'], $data['terms_ge']);
+		
+		for ($r = 0; $r < count($terms); $r++) {
+			$line = $terms[$r];
+			$rd = '<input type="radio" name="dd5" value="' . $line['ct_term'] . '">';
+			$sx .= '<li>' . $rd . ' ' . $line['rl_value'] . '<sup>('.$line['rl_lang'].')</sup></li>';
+		}
+		$sx .= '</ul>';
+		$sx .= '<input type="submit" value="' . msg('change') . '">';
+		$sx .= '</form>';
+		$data['content'] = $sx;
+		$data['title'] = '';
+		$this -> load -> view('content', $data);
+		
+	}
+	
+	/***************************************************************************** Conecpt */
+	function json($id = '') {
+		/* Load model */
+		$this -> load -> model("skoses");
+		$this -> cab();
+		
+		$this -> skoses -> to_json($id);
+		
+	}
+	
+	/* Terms */
+	function term_delete($th = '', $chk = '', $idt = '', $act = '', $chk2 = '') {
+		$this -> load -> model('skoses');
+		$this -> cab();
+		
+		if (strlen($th) == 0) {
+			$th = $_SESSION['skos'];
+		}
+		$data = $this -> skoses -> le_th($th);
+		
+		$data2 = $this -> skoses -> le_term($idt, $th);
+		
+		if (count($data2) == 0) {
+			redirect(base_url('index.php/thesa/terms/' . $th));
+		}
+		
+		$data = array_merge($data, $data2);
+		
+		$this -> load -> view('thesa/view/thesaurus', $data);
+		/******************************/
+		
+		$this -> load -> view('thesa/view/term', $data);
+		
+		$chk3 = checkpost_link($th . 'DEL' . $idt);
+		if ($chk2 == $chk3) {
+			
+			$rs = $this -> skoses -> delete_term_from_th($th, $idt);
+			
+			if ($rs == 1) {
+				$tela = $this -> load -> view('success', $data, true);
+				//$tela .= '<br>';
+				//$tela .= '<a href="'.base_url('index.php/thesa/terms/').'" class="btn btn-secondary">'.msg('return').'</div>';
+				$url = base_url('index.php/thesa/terms/' . $th);
+				$tela .= redirect2($url, 2);
+				$data['content'] = $tela;
+				$data['title'] = '';
+				
+				$this -> load -> view('content', $data);
+			} else {
+				$data['content'] = msg('item_already_deleted');
+				$tela = $this -> load -> view('success', $data, true);
+				$data['content'] = $tela;
+				$data['title'] = '';
+				$this -> load -> view('content', $data);
+			}
+			
+		} else {
+			$data['link'] = base_url('index.php/thesa/term_delete/' . $th . '/' . $chk . '/' . $idt . '/DEL/' . $chk3);
+			$data['content'] = msg('delete_term_confirm');
+			$tela = $this -> load -> view('confirm', $data, True);
+			$data['content'] = $tela;
+			$data['title'] = '';
+			$this -> load -> view('content', $data);
+		}
+		
+		$this -> load -> view('header/footer', null);
+	}
+	
+	function terms_from_to($id = '', $exp = '', $p = '') {
+		$this -> load -> model('skoses');
+		if (strlen($id) == 0) {
+			$id = $_SESSION['skos'];
+		}
+		
+		$tp = 1;
+		
+		switch ($exp) {
+			case 'pdf' :
+				switch($p) {
+					case '' :
+						redirect(base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/1'));
+					break;
+					
+					/******************************************************** 11111111111111111111 */
+					case '1' :
+						$this -> cab();
+						$html = '<h1>' . msg('phase') . ' 1</h1>';
+						$html .= '<div class="alert alert-info" role="alert">
+						Aguarde! Processando registros
+						<hr>
+						Processando Glossário Html
+						<hr>
+						</div>
+						<br>
+						<br>
+						';
+						$html .= '<meta http-equiv="refresh" content="2; url=' . base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/2') . '">';
+						
+						$txt = $this -> skoses -> glossario_html($id, 'txt');
+						$this -> skoses -> save($id, '1', $txt);
+						
+						$data['content'] = $html;
+						$data['title'] = 'Export to PDF';
+						$this -> load -> view('content', $data);
+						$this -> footer();
+					break;
+					
+					/*************************************************************** 2 */
+					case '2' :
+						$this -> cab();
+						$html = '<h1>' . msg('phase') . ' 2</h1>';
+						$html .= '<div class="alert alert-info" role="alert">
+						Aguarde! Processando registros
+						<hr>
+						Processando Glossário Html
+						<hr>                                              											  
+						</div>
+						<br><br>';
+						$html .= '<meta http-equiv="refresh" content="2; url=' . base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/3') . '">';
+						
+						$txt = $this -> skoses -> glossario_alfabetico_html($id, 'txt');
+						$this -> skoses -> save($id, '2', $txt);
+						
+						$data['content'] = $html;
+						$data['title'] = 'Export to PDF';
+						$this -> load -> view('content', $data);
+						$this -> footer();
+					break;
+					case '3' :
+						$this -> cab();
+						$html = '<h1>' . msg('phase') . ' 3</h1>';
+						$html .= '<div class="alert alert-info" role="alert">
+						Aguarde! Processando registros
+						<hr>
+						Processando Glossario Alfabetico Hhtml
+						<hr>                                                                                            
+						</div>
+						<br><br>';
+						$html .= '<meta http-equiv="refresh" content="2; url=' . base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/4') . '">';
+						
+						$txt = $this -> skoses -> ficha_terminologica_html($id, 'txt');
+						$this -> skoses -> save($id, '3', $txt);
+						
+						$data['content'] = $html;
+						$data['title'] = 'Export to PDF';
+						$this -> load -> view('content', $data);
+						$this -> footer();
+					break;
+					
+					/************************************************************************************/
+					case '4' :
+						$this -> cab();
+						$html = '<h1>' . msg('phase') . ' 4</h1>';
+						$html .= '<div class="alert alert-info" role="alert">
+						Aguarde! Processando registros - Mapa conceitual
+						</div>';
+						
+						$html .= $this -> skoses -> le_tree($id, 'txt');
+						//$this -> skoses -> save($id, '4', $txt);
+						if (!strpos($html,'ERROR: ['))
+						{
+							$html .= '<meta http-equiv="refresh" content="2; url=' . base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/9') . '">';				
+						} else {
+							$html = '<h2>Erros</h2>
+							Foram localizados erros no relacionamento de termos
+							<hr>
+							<a class="btn btn-warning" href="' . base_url(PATH . 'terms_from_to/' . $id . '/' . $exp . '/9').'">Continuar</a>'.'<hr>'.$html;
+						}
+						
+						$txt = $this -> skoses -> le_tree_sistematic($id);
+						$this -> skoses -> save($id, '5', $txt);
+						
+						$data['content'] = $html;
+						$data['title'] = 'Export to PDF';
+						$this -> load -> view('content', $data);
+						$this -> footer();
+					break;
+					
+					
+					case '9' :
+						$this -> cab();
+						$html = $this -> skoses -> make_pdf($id);
+						$data['content'] = $html;
+						$data['title'] = '';
+						$this -> load -> view('content', $data);
+					break;
+					
+					default:
+					/* fim */
+				}
 			break;
-			case 'xml' :
-				$arquivo = "thesa_" . strzero($id, 4) . '_' . date("Ymd") . ".xml";
+			
+			case 'csv' :
+				$arquivo = "thesa_" . strzero($id, 4) . '_' . date("Ymd") . ".csv";
+				// Configurações header para forçar o download
+				header("Expires: Mon, " . gmdate("D,d M YH:i:s") . " GMT");
+				header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+				header("Cache-Control: no-cache, must-revalidate");
+				header("Pragma: no-cache");
+				header("Content-type: application/x-msexcel");
+				header("Content-Disposition: attachment; filename=\"{$arquivo}\"");
+				header("Content-Description: PHP Generated Data");
+				echo utf8_decode($this -> skoses -> from_to($id, ';', '"'));
+				return ('');
+			break;
+			
+			case 'txt' :
+				$arquivo = "thesa_" . strzero($id, 4) . '_' . date("Ymd") . ".txt";
+				// Configurações header para forçar o download
+				header("Expires: Mon, " . gmdate("D,d M YH:i:s") . " GMT");
+				header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+				header("Cache-Control: no-cache, must-revalidate");
+				header("Pragma: no-cache");
+				header("Content-type: text/html");
+				header("Content-Disposition: attachment; filename=\"{$arquivo}\"");
+				header("Content-Description: PHP Generated Data");
+				echo($this -> skoses -> from_to($id, '=>', ''));
+			break;
+			
+			case 'json' :
+				$arquivo = "thesa_" . strzero($id, 4) . '_' . date("Ymd") . ".txt";
 				// Configurações header para forçar o download
 				//header("Expires: Mon, " . gmdate("D,d M YH:i:s") . " GMT");
 				//header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
@@ -1486,26 +1422,42 @@ function terms_from_to($id = '', $exp = '', $p = '') {
 				//header("Content-type: text/html");
 				//header("Content-Disposition: attachment; filename=\"{$arquivo}\"");
 				//header("Content-Description: PHP Generated Data");
-				$rst = $this -> skoses -> from_to_xml($id);
-				echo $rst;
-			break;                
-			default :
-			echo mst($this -> skoses -> from_to($id, '=>', ''));
-			return ('');
-		break;
+				$rst = $this -> skoses -> from_to($id, ':', '"');
+				$rst = '{' . troca($rst, chr(13) . chr(10), '};{') . '"fim":"fim"}';
+				$rst = troca($rst, '};{', '},' . cr() . '{');
+					echo $rst;
+				break;
+				case 'xml' :
+					$arquivo = "thesa_" . strzero($id, 4) . '_' . date("Ymd") . ".xml";
+					// Configurações header para forçar o download
+					//header("Expires: Mon, " . gmdate("D,d M YH:i:s") . " GMT");
+					//header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+					//header("Cache-Control: no-cache, must-revalidate");
+					//header("Pragma: no-cache");
+					//header("Content-type: text/html");
+					//header("Content-Disposition: attachment; filename=\"{$arquivo}\"");
+					//header("Content-Description: PHP Generated Data");
+					$rst = $this -> skoses -> from_to_xml($id);
+					echo $rst;
+				break;                
+				default :
+				echo mst($this -> skoses -> from_to($id, '=>', ''));
+				return ('');
+			break;
+		}
 	}
-}
-
-function ajax($id = '', $id2 = '', $refresh = '0') {
-	$this -> load -> model('skoses');
 	
-	switch($id) {
-		case 'collaborators_add' :
-			$refresh = '0';
-			$email = get("dd1");
-			$type = get("dd2");
-			$th = $_SESSION['skos'];
-			$refresh = $this -> skoses -> th_collabotors_add($email, $th, $type);
+	function ajax($id = '', $id2 = '', $refresh = '0') {
+		$this -> load -> model('skoses');
+		
+		switch($id) {
+			case 'collaborators_add' :
+				$refresh = '0';
+				$email = get("dd1");
+				$type = get("dd2");
+				$th = $_SESSION['skos'];
+				$refresh = $this -> skoses -> th_collabotors_add($email, $th, $type);
+			break;
 		}
 		if ($refresh == '1') {
 			echo ' <meta http-equiv="refresh" content="0">';
@@ -1584,13 +1536,27 @@ function ajax($id = '', $id2 = '', $refresh = '0') {
 	function languages()
 	{
 		$this->cab();
-		$id = $_SESSION['skos'];
+		$id = $_SESSION['skos'];		
 		$data = $this -> skoses -> le_skos($id);
 		$this -> load -> view('thesa/view/thesaurus', $data);
 		$data['pg'] = 2;
 		//$this -> load -> view('skos/skos_nav', $data);
 		$this -> load -> view('thesa/header/navbar_tools', null);
-		
+
+
+		/********************
+		 * SEGURANÇA
+		 */
+		if (!((isset($_SESSION['id']) and ($_SESSION['id']) == $data['pa_creator']) and ($data['id_pa'] == $id)))
+		{		
+			$tela = message(msg('Unauthorized_access'),3);
+			$data['title'] = '';
+			$data['content'] = $tela;
+			$this -> load -> view('content', $data);
+			$this->footer();
+			return("");
+		}
+
 		if (isset($_SESSION['skos']))
 		{
 			$th = $_SESSION['skos'];
@@ -1613,7 +1579,7 @@ function ajax($id = '', $id2 = '', $refresh = '0') {
 		$data['pg'] = 2;
 		//$this -> load -> view('skos/skos_nav', $data);
 		$this -> load -> view('thesa/header/navbar_tools', null);
-
+		
 		$data['title'] = '';
 		$data['content'] = $this->skoses->admin($act,$d1,$d2,$d3);
 		$this->load->view('content',$data);	

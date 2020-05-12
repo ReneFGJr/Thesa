@@ -1,3 +1,8 @@
+<?php
+/* 
+versão 0.20.04.20 
+*/
+?>
 <style>
     .box100 {
         border: 2px solid #cccccc;
@@ -53,6 +58,13 @@
 				</div>
 				<br>
 			</form>
+			<?php 
+			$err = get("err");
+			if (strlen($err) > 0)
+			{
+				echo message(msg($err),3);
+			}
+			?>
 		</div>
 		<div class="col-md-2 col-lg-3 col-sm-1"></div>
 	</div>

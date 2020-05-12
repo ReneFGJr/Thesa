@@ -188,6 +188,7 @@ $lang['login_name'] = 'Informe seu login';
 $lang['login_password'] = 'Informe sua senha';
 $lang['login_recover_password'] = 'Recuperar a senha';
 $lang['login_social'] = 'Logue com uma conta existente (recomendado)';
+$lang['login_error'] = 'Usuário ou senha incorreta!';
 $lang['logout'] = 'Sair';
 $lang['Lowercase'] = 'Forçar caixa baixa dos termos';
 $lang['lowercase'] = 'Inserir em caixa baixa';
@@ -387,4 +388,14 @@ $lang['ERRO #515'] = 'Erro 515 - Formato não suportado!';
 $lang['image_upload'] = 'Upload de Imagem';
 $lang['image_upload_info'] = 'Relaciona uma imagem a um conceito do Thesa, são aceito os formatos JPG, PNG e GIF.';
 $lang['pref_term_other_language'] = 'Termos preferenciais';
+
+$lang['sc_local'] = 'Entrada local';
+
+$lang['TITLE'] = 'TÍTULO';
+$lang['AUTHORS'] = 'AUTORES/ORGS.';
+$lang['TITLE'] = 'TÍTULO';
+$lang['TITLE'] = 'TÍTULO';
+$lang['TITLE'] = 'TÍTULO';
+$lang['TITLE'] = 'TÍTULO';
+$lang['TITLE'] = 'TÍTULO';
 ?>

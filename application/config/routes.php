@@ -50,5 +50,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 $route['default_controller'] = 'Thesa';
-$route['404_override'] = 'skos/show_404';
+$route['404_override'] = 'thesa/show_404';
 $route['translate_uri_dashes'] = FALSE;

@@ -8,11 +8,22 @@ if (strlen($image_bk) > 0)
 ?>
 <style>
 .parallax_background_5 {
-        /* The image used */
-        background-image: <?php echo 'url("' . $img . '")'; ?>
+				/* The image used */
+				background-image: <?php echo 'url("' . $img . '")'; ?>;
+				background-size: 100%;
+				background-position: 0px 0px;
+				background-attachment: fixed;
+				border: 1px solid #333;
             }
 .bg_cor {
     color: #333333;
+	opacity: 1;
+}
+.backtext
+{
+	background-color: #fff;
+	opacity: 0.6;
+	padding: 0px 10px;
 }
 </style>
 <?php
@@ -23,8 +34,8 @@ $pa = '';
 	    <div class="col-xs-2 col-md-2 small text-right">
 	        <?php echo msg("thesauro"); ?>
 	    </div>
-		<div class="col-xs-8 col-md-8 big">
-			<span class="thesa thesa_under" style="font-size: 120%;"><b><?php echo $pa_name; ?></b></span>
+		<div class="col-xs-8 col-md-8 big ">
+			<span class="thesa thesa_under backtext" style="font-size: 120%;"><b><span class="bg_cor"><?php echo $pa_name; ?></span></b></span>
 		</div>
         <div class="col-xs-2 col-md-2 big text-right nopr">
             &nbsp;
@@ -55,14 +66,14 @@ $pa = '';
         <div class="col-xs-2 col-md-2 big">
             &nbsp;
         </div>  	    
-		<div class="col-md-1"><span class="small"><?php echo msg('linguage'); ?></span>
-		    <br><font class="bg_cor"><?php echo $pa; ?></font></div>
+		<div class="col-md-2"><span class="small"><?php echo msg('linguage'); ?></span>
+		    <br><font class="bg_cor backtext"><?php echo $lg_language; ?></font></div>
 		<div class="col-md-1"><span class="small"><?php echo msg('created'); ?></span>
-		    <br><font class="bg_cor"><?php echo stodbr($pa_created); ?></font></div>
+		    <br><font class="bg_cor backtext"><?php echo stodbr($pa_created); ?></font></div>
 		<div class="col-md-1"><span class="small"><?php echo msg('updated'); ?></span>
-		    <br><font class="bg_cor"><?php echo stodbr($pa_update); ?></font></div>
+		    <br><font class="bg_cor backtext"><?php echo stodbr($pa_update); ?></font></div>
 		<div class="col-md-4"><span class="small"><?php echo msg('URI'); ?></span>
-		    <br><font class="bg_cor">
+		    <br><font class="bg_cor backtext">
 		    <?php echo base_url('index.php/thesa/terms/' . $id_pa); ?></font></div>
 	</div>
 </div>
