@@ -48,7 +48,7 @@ background-image: url("<?php echo base_url('img/background/background_2.jpg'); ?
 			<div class="col-md-5 text-center" style="margin-top: 100px;">
 				<span class="logo_thesa_text">THESA</span>
 				<br>
-				<span class="logo_thesa_text_sub">Semantic Thesaurus</span>
+				<span class="logo_thesa_text_sub"><?php echo msg('applied_semantic_thesaurus');?></span>
 			</div>
 			<div class="col-md-2 text-center" style="margin-top: 100px;">
 			</div>

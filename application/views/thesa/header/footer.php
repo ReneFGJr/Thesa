@@ -9,9 +9,10 @@
 		<div class="row">
 			<div class="col-md-3 text-left white">
 				<span class="big" style="family: RobotoThin;">THESA</span>
-				<span class="">Semantic Thesaurus</span>
-				<br>
-				<?php echo msg('Version').' 0.20.05.06';?>
+				<br/>
+				<span class=""><?php echo msg('applied_semantic_thesaurus');?></span>
+				<br/>
+				<?php echo msg('Version').' 0.20.05.18';?>
                 
 				
 			</div>
@@ -20,15 +21,13 @@
 			    <span class="white">
 				Universidade Federal do Rio Grande do Sul - UFRGS
 				</span>
-                <br>
+                <br/>
                 <span class="small"><?php echo msg('contact'); ?>:</span> 
                 <a href="mailto:rene.gabriel@ufrgs.br" >rene.gabriel@ufrgs.br</a>
-                <br>
-                <br>
-                <span class="small">Copyright &copy; <?php echo '2016-' . date("Y"); ?></span>
-				
+                <br/>
+                <br/>
+                <span class="small">Copyright &copy; <?php echo '2016-' . date("Y"); ?></span>				
 			</div>
-
 		</div>
 	</div>
 </div>

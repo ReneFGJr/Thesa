@@ -30,6 +30,7 @@ class Thesa extends CI_Controller {
 		$this -> load -> model('thesa_api');
 		
 		$this -> load -> model('skoses');
+		$this -> load -> model('creativecommons');
 	}
 	
 	function index() {
@@ -41,7 +42,14 @@ class Thesa extends CI_Controller {
 	}
 	
 	private function cab($navbar = 1) {
-		$data['title'] = 'Thesa - Library ::::';
+		if (is_array($navbar))
+			{
+				$data['title'] = 'Thesa - '.msg('th_type_'.$navbar['pa_type']).' '.$navbar['pa_name'];
+				$navbar = 1;
+			} else {
+				$data['title'] = 'Thesa - Tesauro Semântico Aplicado';
+			}
+		
 		$this -> load -> view('thesa/header/header', $data);
 		if ($navbar == 1) {
 			$this -> load -> view('thesa/header/navbar', null);
@@ -170,11 +178,11 @@ class Thesa extends CI_Controller {
 					$sx .= '<h1>'.msg('Icone').'</h1>';
 					$sx .= $this -> skoses -> show_icone($data['pa_icone'],$data);
 					$sx .= '</div>';
-
+					
 					$sx .= '<div class="col-md-2">';
 					$sx .= '<br><span onclick="newxy(\'' . base_url('index.php/thesa/icone/') . '\',600,600);" class="btn btn-outline-primary">' . msg('alter_icone') . '</span>';
 					$sx .= '</div>';
-
+					
 					$sx .= '</div></div>';
 					$data['title'] = '';
 					$data['content'] = $sx;
@@ -254,12 +262,12 @@ class Thesa extends CI_Controller {
 				exit ;
 			}
 		}
-
 		
-
+		
+		
 		/******************
-		 * icone selected
-		 */
+		* icone selected
+		*/
 		$img = $this -> skoses -> show_icone($data['pa_icone'],$data);
 		$s = '<div class="container"><div class="row">';
 		$s .= '<div class="col-sm-3">'.$img.'</div>';
@@ -269,20 +277,20 @@ class Thesa extends CI_Controller {
 		$data['content'] = $s;
 		$data['title'] = '';
 		$this -> load -> view('content', $data);
-
-
+		
+		
 		/********************
-		 * icone_upload
-		 */
+		* icone_upload
+		*/
 		$s = $this->skoses->icone_upload($th,$data);
 		$data['content'] = $s.'<hr>';
 		$data['title'] = '';
 		$this -> load -> view('content', $data);
-
+		
 		/********************
-		 * icone selected
-		 */
-
+		* icone selected
+		*/
+		
 		$s = msg('click_icone_to_select');		
 		/******************/
 		$s .= $this -> skoses -> icones_select($th);
@@ -290,7 +298,7 @@ class Thesa extends CI_Controller {
 		$data['title'] = '';
 		$this -> load -> view('content', $data);
 		
-
+		
 		
 	}
 	
@@ -380,14 +388,13 @@ class Thesa extends CI_Controller {
 	
 	function terms($id = '', $ltr = '') {
 		$this -> load -> model('skoses');
-		$this -> cab();
-		
 		if (strlen($id) == 0) {
-			$id = $_SESSION['skos'];
+			$id = $this->skos->th();
 		}
-		
-		/*********************************************************************** PART 1 **/
 		$data = $this -> skoses -> le_skos($id);
+		
+		$this -> cab($data);				
+		/*********************************************************************** PART 1 **/
 		$this -> load -> view('thesa/view/thesaurus', $data);
 		
 		/*********************************************************************** PART 2 **/
@@ -401,7 +408,12 @@ class Thesa extends CI_Controller {
 		$tela .= '<div class="row">';
 		
 		$tela .= '  <div class="col-md-9">';
-		$tela .= $this -> skoses -> termos_show_letter($id, $ltr);
+		if ($ltr == '')
+		{
+			$tela .= $this-> skoses->about($id);
+		} else {
+			$tela .= $this -> skoses -> termos_show_letter($id, $ltr);	
+		}
 		$tela .= '  </div>';
 		
 		$tela .= '  <div class="col-md-3">';
@@ -454,6 +466,7 @@ class Thesa extends CI_Controller {
 			$tela .= row($form, $pag);
 			$tela .= '</div></div>';
 			$data['content'] = $tela;
+			$data['title'] = '';
 			$this -> load -> view('content', $data);
 			
 			$this -> load -> view('header/footer', null);
@@ -579,9 +592,10 @@ class Thesa extends CI_Controller {
 				break;
 				
 				default :
-				/* CAB */
-				$this -> cab();
+				/* CAB */	
 				$datask = $this -> skoses -> le_skos($data['c_th']);
+				$datask['pa_name'] .= ' - #'.$data['rl_value'];
+				$this -> cab($datask);
 				$this -> load -> view('thesa/view/thesaurus', $datask);
 				/* menu */
 				$this -> load -> view('thesa/header/navbar_tools', null);
@@ -641,6 +655,7 @@ class Thesa extends CI_Controller {
 		
 		/* Recupera informações sobre o Concecpt */
 		$data2 = $this -> skoses -> le_c($c, $th);
+		$this->skoses->th_update($th);
 		
 		if (count($data2) == 0) {
 			redirect(base_url('index.php/thesa/terms'));
@@ -1090,6 +1105,7 @@ class Thesa extends CI_Controller {
 			if (count($rlt) > 0) {
 				$line = $rlt[0];
 				$desc = msg('concept_create') . ' <b>' . $line['rl_value'] . '</b>';
+				$this->skoses->th_update($th);
 			}
 			$id = $this -> skoses -> concept_create($t, $th);
 			$this -> skoses -> log_insert($id, $th, $act, $desc);
@@ -1101,8 +1117,12 @@ class Thesa extends CI_Controller {
 	
 	function concept_add() {
 		$this -> cab();
-		$id = $_SESSION['skos'];
+		$id = $_SESSION['skos'];		
 		$data = $this -> skoses -> le_skos($id);
+		
+		/* Checa idiomas de entrada */
+		$this->skoses->check_language_setup($id);
+		
 		$this -> load -> view('thesa/view/thesaurus', $data);
 		$data['pg'] = 2;
 		//$this -> load -> view('skos/skos_nav', $data);
@@ -1458,6 +1478,13 @@ class Thesa extends CI_Controller {
 				$th = $_SESSION['skos'];
 				$refresh = $this -> skoses -> th_collabotors_add($email, $th, $type);
 			break;
+
+			case 'collaborators_del':
+				$this->cab(0);
+				$data['content'] = $this->skoses->th_collabotors_del($id2,$refresh);
+				$data['title'] = '';
+				$this->load->view('content',$data);
+			break;
 		}
 		if ($refresh == '1') {
 			echo ' <meta http-equiv="refresh" content="0">';
@@ -1466,8 +1493,11 @@ class Thesa extends CI_Controller {
 	
 	function tools($fc = '') {
 		$this -> load -> model("tools");
-		$this -> cab();
-		
+		$id = $this->skoses->th();
+		$data = $this -> skoses -> le_skos($id);
+		$this -> cab($data);		
+		$this -> load -> view('thesa/view/thesaurus', $data);
+		$this -> load -> view('thesa/header/navbar_tools', null);
 		$tela = $this -> tools -> form();
 		
 		$data['content'] = $tela;
@@ -1542,11 +1572,11 @@ class Thesa extends CI_Controller {
 		$data['pg'] = 2;
 		//$this -> load -> view('skos/skos_nav', $data);
 		$this -> load -> view('thesa/header/navbar_tools', null);
-
-
+		
+		
 		/********************
-		 * SEGURANÇA
-		 */
+		* SEGURANÇA
+		*/
 		if (!((isset($_SESSION['id']) and ($_SESSION['id']) == $data['pa_creator']) and ($data['id_pa'] == $id)))
 		{		
 			$tela = message(msg('Unauthorized_access'),3);
@@ -1556,7 +1586,7 @@ class Thesa extends CI_Controller {
 			$this->footer();
 			return("");
 		}
-
+		
 		if (isset($_SESSION['skos']))
 		{
 			$th = $_SESSION['skos'];

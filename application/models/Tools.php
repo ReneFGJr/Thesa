@@ -16,6 +16,12 @@ class tools extends CI_model {
                 case '3' :
                     $_POST['dd1'] = $this -> word_count(get("dd2"));
                     break;                    
+                case '4':
+                    $_POST['dd1'] = $this -> change_terms(get("dd2"),get("dd4"));
+                    break;
+                case '5':
+                    $_POST['dd1'] = $this -> duplicate_lines(get("dd2"));
+                    break;
 			}
 
 			array_push($cp, array('$T80:10', '', 'Result', True, True));
@@ -23,12 +29,60 @@ class tools extends CI_model {
 			array_push($cp, array('$H8', '', '', False, False));
 		}
 
-		array_push($cp, array('$T80:10', '', 'Content', True, True));
-		array_push($cp, array('$O 1:Remove char&2:List Names&3:Word Count', '', 'Function', False, True));
-		array_push($cp, array('$S5', '', 'Separador', False, True));
+		array_push($cp, array('$T80:10', '', msg('Content'), True, True));
+        $ops = '1:'.msg('Remove char');
+        $ops .= '&2:'.msg('List Names');
+        $ops .= '&3:'.msg('Word Count');
+        $ops .= '&4:'.msg('Change_terms');
+        $ops .= '&5:'.msg('Remove_duplicate_lines');
+
+		array_push($cp, array('$O '.$ops, '', msg('Function'), False, True));
+		array_push($cp, array('$S5', '', msg('Separador'), False, True));
 		$tela = $form -> editar($cp, '');
 		return ($tela);
 	}
+
+    function duplicate_lines($txt)
+        {
+            $ln = explode(chr(10),$txt);
+            $l = array();
+            $sx = '';
+            $i = 0;
+            for ($r=0;$r < count($ln);$r++)
+                {
+                    if (isset($l[$ln[$r]]))
+                        {
+                            $i++;
+                        } else {
+                            $l[$ln[$r]] = 1;
+                            $sx .= $ln[$r].chr(10);
+                        }
+                }
+            $sx = '#################### '.$i.' '.msg('deleted_lines').chr(10).$sx;
+            return($sx);
+        }
+
+    function change_terms($txt='',$sep='')
+        {
+            $th = $this -> skoses -> th(); 
+            $ter = $this -> skoses -> from_to($th, '¢', '');
+            $ln = explode(chr(13).chr(10),$ter);
+            for ($r=0;$r < count($ln);$r++)
+                {
+                    $sz = substr($ln[$r],0,strpos($ln[$r],'¢'));
+                    $ln[$r] = strzero(strlen($sz),5).'¢'.$ln[$r];
+                }
+            rsort($ln);
+            for ($r=0;$r < count($ln);$r++)
+                {
+                    $t = explode('¢',$ln[$r]);
+                    if (count($t) == 3)
+                    {
+                        $txt = troca($txt,$sep.$t[1].$sep,$sep.$t[2].$sep.' ');
+                    }
+                }
+            return($txt);
+        }
 
 	function remove_parentes($txt = '', $c1 = '[', $c2 = ']') {
 		$txt = '####' . $txt;

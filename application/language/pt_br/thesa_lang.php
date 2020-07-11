@@ -17,44 +17,16 @@
  */
 
 $lang['context_01_section'] = 'Apresentação do Thesa';
-$lang['context_01'] = '
-<p>O Thesa foi desenvolvido objetivando disponibilizar um instrumento para os estudantes de graduação de biblioteconomia na disciplina de Linguagens Documentárias para a elaboração de tesauros, de modo que possibilite reduzir o trabalho operacional e dar maior atenção ao trabalho de desenvolvimento cognitivo e conceitual referente a modelagem do domínio.</p>
-<p>Como norteador do aplicativo, baseou-se nas normas ISO e NISO vigentes, de forma a compatibilizar suas diretrizes com os requisitos semânticos prementes nas novas demandas dos SOCs. Com base na literatura disponível, nas normas de construção de tesauros da ISO e NISO foram identificados os elementos necessários para o desenvolvimento do protótipo, principalmente no que tange ao levantamento das propriedades de ligação entre os conceitos.</p>
-<p>A estrutura do Thesa é baseada na concepção das relações entre os conceitos, partido do pressuposto que um conceito pode ser representado por um termo, uma imagem, um som, um link ou qualquer outra forma que possa ser explicitada. Nessa abordagem, o conceito é perene, enquanto a sua representação pode variar conforme o contexto histórico ou social, sendo definida uma forma preferencial, e inúmeras formas alternativas e ocultas.</p>
-<p>Como citar: GABRIEL JUNIOR, R. F.; LAIPELT, R. C. Thesa: ferramenta para construção de tesauro semântico aplicado interoperável. <b>Revista P2P & Inovação</b>, Rio de Janeiro, v. 3, n. 2, p.124-145, Mar./Set. 2017.</p>
-';
+$lang['context_01'] = '<p>O Thesa foi desenvolvido objetivando disponibilizar um instrumento para os estudantes de graduação de biblioteconomia na disciplina de Linguagens Documentárias para a elaboração de tesauros, de modo que possibilite reduzir o trabalho operacional e dar maior atenção ao trabalho de desenvolvimento cognitivo e conceitual referente a modelagem do domínio.</p><p>Como norteador do aplicativo, baseou-se nas normas ISO e NISO vigentes, de forma a compatibilizar suas diretrizes com os requisitos semânticos prementes nas novas demandas dos SOCs. Com base na literatura disponível, nas normas de construção de tesauros da ISO e NISO foram identificados os elementos necessários para o desenvolvimento do protótipo, principalmente no que tange ao levantamento das propriedades de ligação entre os conceitos.</p><p>A estrutura do Thesa é baseada na concepção das relações entre os conceitos, partido do pressuposto que um conceito pode ser representado por um termo, uma imagem, um som, um link ou qualquer outra forma que possa ser explicitada. Nessa abordagem, o conceito é perene, enquanto a sua representação pode variar conforme o contexto histórico ou social, sendo definida uma forma preferencial, e inúmeras formas alternativas e ocultas.</p><p>Como citar: GABRIEL JUNIOR, R. F.; LAIPELT, R. C. Thesa: ferramenta para construção de tesauro semântico aplicado interoperável. <b>Revista P2P & Inovação</b>, Rio de Janeiro, v. 3, n. 2, p.124-145, Mar./Set. 2017.</p>';
 
 $lang['context_02_section'] = 'Sobre o Thesa';
-$lang['context_02'] = '
-<p>O Thesa foi desenvolvido inicialmente como um protótipo utilizando a linguagem php e banco de dados MySql, de forma a possibilitar o compartilhamento e desenvolvimento colaborativo da ferramenta.</p> 
-<p>O software funciona em ambiente Web e pode ser baixado gratuitamente, podendo ser utilizado para fins didáticos em disciplinas dos cursos de graduação e pós-graduação ou para uso profissional. O Thesa foi desenvolvido com o princípio de multi-idioma, podendo ser traduzido para qualquer idioma, entretanto sua versão de teste está somente em português, as traduções vão depender de se estabelecerem convênios com instituições nativas de outros idiomas, que demonstrarem interesse pelo uso do software.</p>
-<p>O Thesa utiliza uma concepção de múltiplos tesauros, ou múltiplos esquemas, ou seja, o usuário pode criar um número ilimitado de tesauros em diferentes áreas do conhecimento, os usuários/elaboradores desses tesauros, podem deixá-los para uso público ou privado, possibilitando o acesso de outros usuários. No Thesa partiu-se da concepção de URI, empregada pelo SKOS e sistemas baseados na Web Semântica, ou seja, cada conceito é associado a um endereço permanente na Internet e a um identificador único do conceito, e esse representado por termos por meio de propriedades.</p>
-';
+$lang['context_02'] = '<p>O Thesa foi desenvolvido inicialmente como um protótipo utilizando a linguagem php e banco de dados MySql, de forma a possibilitar o compartilhamento e desenvolvimento colaborativo da ferramenta.</p> <p>O software funciona em ambiente Web e pode ser baixado gratuitamente, podendo ser utilizado para fins didáticos em disciplinas dos cursos de graduação e pós-graduação ou para uso profissional. O Thesa foi desenvolvido com o princípio de multi-idioma, podendo ser traduzido para qualquer idioma, entretanto sua versão de teste está somente em português, as traduções vão depender de se estabelecerem convênios com instituições nativas de outros idiomas, que demonstrarem interesse pelo uso do software.</p><p>O Thesa utiliza uma concepção de múltiplos tesauros, ou múltiplos esquemas, ou seja, o usuário pode criar um número ilimitado de tesauros em diferentes áreas do conhecimento, os usuários/elaboradores desses tesauros, podem deixá-los para uso público ou privado, possibilitando o acesso de outros usuários. No Thesa partiu-se da concepção de URI, empregada pelo SKOS e sistemas baseados na Web Semântica, ou seja, cada conceito é associado a um endereço permanente na Internet e a um identificador único do conceito, e esse representado por termos por meio de propriedades.</p>';
 
 $lang['context_03_section'] = 'Como baixar uma versão do Thesa';
-$lang['context_03'] = '
-<p>A versão beta (de teste) do Thesa pode ser acessada no endereço <a href="http://www.ufrgs.br/tesauros">http://www.ufrgs.br/tesauros</a>, 
-    o software também pode ser baixado no GitHub em <a href="https://github.com/ReneFGJr/Thesa" target="_new">https://github.com/ReneFGJr/Thesa</a>. Ressalta-se que o Thesa é um open source (código aberto), podendo ser modificado ou aperfeiçoado, desde que mantendo os créditos, e ainda aceita contribuições de melhoramentos pela comunidade.</p>
-';
+$lang['context_03'] = '<p>A versão beta (de teste) do Thesa pode ser acessada no endereço <a href="http://www.ufrgs.br/tesauros">http://www.ufrgs.br/tesauros</a>,     o software também pode ser baixado no GitHub em <a href="https://github.com/ReneFGJr/Thesa" target="_new">https://github.com/ReneFGJr/Thesa</a>. Ressalta-se que o Thesa é um open source (código aberto), podendo ser modificado ou aperfeiçoado, desde que mantendo os créditos, e ainda aceita contribuições de melhoramentos pela comunidade.</p>';
 
 $lang['context_04_section'] = 'Contato';
-$lang['context_04'] = '
-<p>
-<b>Universidade Federal do Rio Grande do Sul</b>
-<br>Departamento de Ciência da Informação
-<br>Curso de Biblioteconomia
-<br>
-<br>
-Pesquisadores envolvidos:
-<ul>
-<li>Prof. Dr. Rene Faustino Gabriel Junior &lt;renefgj@gmail.com&gt;</li>
-<li>Prof. Dr. Rita do Carmo Laipelt &lt;ritacarmo@yahoo.com.br&gt;</li>
-</ul>
-</p>
-<br><br>
-<p class="small"><a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />Este trabalho está licenciado com uma Licença <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
-<br>Creative Commons - Atribuição  4.0 Internacional</a>.
-';
+$lang['context_04'] = '<p><b>Universidade Federal do Rio Grande do Sul</b><br>Departamento de Ciência da Informação<br>Curso de Biblioteconomia<br><br>Pesquisadores envolvidos:<ul><li>Prof. Dr. Rene Faustino Gabriel Junior &lt;renefgj@gmail.com&gt;</li><li>Prof. Dr. Rita do Carmo Laipelt &lt;ritacarmo@yahoo.com.br&gt;</li></ul></p><br><br><p class="small"><a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />Este trabalho está licenciado com uma Licença <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><br>Creative Commons - Atribuição  4.0 Internacional</a>.';
 
 $lang['language_include_info'] = 'Na coluna da esqueda estão os idiomas habilitados no seu tesauro.';
 $lang['col_language_enable'] = 'idiomas habilitados';
@@ -65,7 +37,7 @@ $lang['::: select_the_relation'] = '::: selecione uma opção :::';
 $lang['about'] = "SOBRE";
 $lang['Action'] = 'Ação';
 $lang['action_not_defined'] = 'Ação não definida no sistema';
-$lang['add'] = 'adicionar';
+$lang['add'] = 'adicionar termo';
 $lang['add_term'] = 'Termo adicionado com sucesso!';
 $lang['add_term_title'] = 'Adicionar novo Termo';
 $lang['adds'] = 'Adicionar';
@@ -130,7 +102,7 @@ $lang['description'] = 'Descrição';
 $lang['Don’t have an account?'] = 'Não tem uma conta?';
 $lang['download'] = "DOWNLOAD";
 $lang['edit'] = 'editar';
-$lang['edit_th'] = 'Personalizar Thesa';
+$lang['edit_th'] = 'Configurações do tesauro';
 $lang['email_already_inserted'] = 'E-mail já cadastrado!';
 $lang['email_invalid'] = 'e-mail inválido';
 $lang['email_not_exist'] = 'e-mail não cadastrado';
@@ -165,7 +137,7 @@ $lang['gerar_list_nomes'] = 'Extrair nomes de uma Matrix';
 $lang['gerar_matriz'] = 'Gerar Matrix';
 $lang['gerar_pajek'] = 'Gerar arquivo para o Pajek (.pjk)';
 $lang['glossario'] = 'Glossário';
-$lang['glossario_cap'] = 'Apresentação Alfabética';
+$lang['glossario_cap'] = 'Home';
 $lang['has_prefTerm'] = 'como preferencial';
 $lang['has_send_email_to'] = 'Verifique seu e-mail, vou enviado uma confirmação para o endereço ';
 $lang['help_info'] = 'Ajuda';
@@ -209,6 +181,7 @@ $lang['mes_09a'] = 'Set.';
 $lang['mes_10a'] = 'Out.';
 $lang['mes_11a'] = 'Nov.';
 $lang['mes_12a'] = 'Dez.';
+$lang['applied_semantic_thesaurus'] = 'Tesauro Semântico Aplicado';
 $lang['my_thesauros'] = 'Meu Thesa';
 $lang['my_thesauros'] = 'Meus tesauros';
 $lang['my_thesaurus'] = 'Meus tesauros';
@@ -217,7 +190,6 @@ $lang['no_match_password'] = 'Senhas não conferem';
 $lang['not_record'] = 'sem registro';
 $lang['oai_journals'] = 'Publicações compatíveis com OAI-PMH';
 $lang['open_thesauros'] = 'TH abertos';
-$lang['open_thesaurus'] = 'Tesauros Abertos';
 $lang['outputs'] = 'Relatórios';
 $lang['password'] = 'senha de acesso';
 $lang['password_is_requered'] = 'Senha é obrigatória';
@@ -226,6 +198,8 @@ $lang['perfil_coordenador'] = 'Coordenador';
 $lang['por'] = 'Português';
 $lang['Portuguese'] = 'Português';
 $lang['pref_term'] = 'Descritor';
+$lang['sep_decimal'] = ',';
+$lang['sep_thousand'] = '.';
 $lang['preferences'] = 'Dados do tesauro';
 $lang['presentation'] = "APRESENTAÇÃO";
 $lang['printer'] = 'Imprimir';
@@ -332,6 +306,7 @@ $lang['term_relations'] = 'Termos relacionados';
 $lang['term_search'] = 'buscar termos';
 $lang['Terms'] = 'Descritores';
 $lang['Terms'] = 'Termos';
+$lang['terms'] = 'termos';
 $lang['terms_add'] = 'Inserção de novos termos';
 $lang['terms_info'] = 'Qualificação dos termos';
 $lang['terms_list'] = 'Descritores do tesauro';
@@ -345,19 +320,18 @@ $lang['th_type_4'] = 'Tesauro';
 $lang['th_type_5'] = 'Tesauro Semântico';
 $lang['th_type_6'] = 'Ontologia';
 $lang['th_type_7'] = 'StopWords';
-$lang['thesaurus_audience'] = 'Público alvo/audiência';
 $lang['thesaurus_audience'] = 'Público alvo';
 $lang['thesaurus_description'] = 'Descrição do vocabulário / tesauro';
-$lang['thesaurus_description'] = 'Sobre o tesauro';
 $lang['thesaurus_introdution'] = 'Introdução';
 $lang['thesaurus_language_pref'] = 'Idioma preferencial';
 $lang['thesaurus_methodology'] = 'Metodologia';
+$lang['thesaurus_audience'] = 'Público alvo';
 $lang['thesaurus_multilanguage'] = 'Multi-idioma';
+$lang['thesaurus_licence'] = 'Licença de uso';
 $lang['thesaurus_myth'] = "MEUS TESAUROS";
 $lang['thesaurus_name'] = 'Nome do tesauro';
 $lang['thesaurus_open'] = "TESAUROS ABERTOS";
 $lang['thesaurus_status'] = 'Acesso';
-$lang['thesaurus_status'] = 'Tipo';
 $lang['thesaurus_type'] = 'Tipo';
 $lang['to index'] = 'indexando';
 $lang['to review'] = 'para revisão';
@@ -393,9 +367,26 @@ $lang['sc_local'] = 'Entrada local';
 
 $lang['TITLE'] = 'TÍTULO';
 $lang['AUTHORS'] = 'AUTORES/ORGS.';
-$lang['TITLE'] = 'TÍTULO';
-$lang['TITLE'] = 'TÍTULO';
-$lang['TITLE'] = 'TÍTULO';
-$lang['TITLE'] = 'TÍTULO';
-$lang['TITLE'] = 'TÍTULO';
+
+$lang['presentation_thesa'] = 'Apresentação do Thesa';
+$lang['presentation_thesa_1'] = 'O Thesa foi desenvolvido objetivando disponibilizar um instrumento para os estudantes de graduação de biblioteconomia na disciplina de Linguagens Documentárias para a elaboração de tesauros, de modo que possibilite reduzir o trabalho operacional e dar maior atenção ao trabalho de desenvolvimento cognitivo e conceitual referente a modelagem do domínio.';
+$lang['presentation_thesa_2'] = 'Como norteador do aplicativo, baseou-se nas normas ISO e NISO vigentes, de forma a compatibilizar suas diretrizes com os requisitos semânticos prementes nas novas demandas dos SOCs. Com base na literatura disponível, nas normas de construção de tesauros da ISO e NISO foram identificados os elementos necessários para o desenvolvimento do protótipo, principalmente no que tange ao levantamento das propriedades de ligação entre os conceitos.';
+$lang['presentation_thesa_3'] = 'A estrutura do Thesa é baseada na concepção das relações entre os conceitos, partido do pressuposto que um conceito pode ser representado por um termo, uma imagem, um som, um link ou qualquer outra forma que possa ser explicitada. Nessa abordagem, o conceito é perene, enquanto a sua representação pode variar conforme o contexto histórico ou social, sendo definida uma forma preferencial, e inúmeras formas alternativas e ocultas.';
+$lang['presentation_thesa_4'] = 'Como citar: GABRIEL JUNIOR, R. F.; LAIPELT, R. C. Thesa: ferramenta para construção de tesauro semântico aplicado interoperável. <b>Revista P2P & Inovação</b>, Rio de Janeiro, v. 3, n. 2, p.124-145, Mar./Set. 2017.';
+
+$lang['about_thesa'] = 'Sobre o Thesa';
+$lang['about_thesa_1'] = 'O Thesa foi desenvolvido inicialmente como um protótipo utilizando a linguagem php e banco de dados MySql, de forma a possibilitar o compartilhamento e desenvolvimento colaborativo da ferramenta.';
+$lang['about_thesa_2'] = 'O software funciona em ambiente Web e pode ser baixado gratuitamente, podendo ser utilizado para fins didáticos em disciplinas dos cursos de graduação e pós-graduação ou para uso profissional. O Thesa foi desenvolvido com o princípio de multi-idioma, podendo ser traduzido para qualquer idioma, entretanto sua versão de teste está somente em português, as traduções vão depender de se estabelecerem convênios com instituições nativas de outros idiomas, que demonstrarem interesse pelo uso do software.';
+$lang['about_thesa_3'] = 'O Thesa utiliza uma concepção de múltiplos tesauros, ou múltiplos esquemas, ou seja, o usuário pode criar um número ilimitado de tesauros em diferentes áreas do conhecimento, os usuários/elaboradores desses tesauros, podem deixá-los para uso público ou privado, possibilitando o acesso de outros usuários. No Thesa partiu-se da concepção de URI, empregada pelo SKOS e sistemas baseados na Web Semântica, ou seja, cada conceito é associado a um endereço permanente na Internet e a um identificador único do conceito, e esse representado por termos por meio de propriedades.';
+$lang['thesauros'] = 'tesauros';
+
+$lang['text_processing'] = 'Processamento de texto';
+$lang['remissiva_de_para'] = 'Trocas "de" "para"';
+$lang['Content'] = 'Conteúdo';
+$lang['Function'] = 'Função';
+$lang['Separador'] = 'Separador';
+
+$lang['Change_terms'] = 'Trocar termos';
+$lang['confirm_exclude_collaborators'] = 'Confirma exclusão de colaborador?';
+$lang['confirm'] = 'confirmar';
 ?>

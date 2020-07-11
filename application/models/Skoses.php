@@ -43,6 +43,70 @@ class skoses extends CI_model {
         }
     }
     
+    /* Checha idiomas de entrada */
+    function check_language_setup($th)
+    {
+        $sql = "select * from language_th where lgt_th = ".$th;
+        $rlt = $this->db->query($sql);
+        $rlt = $rlt->result_array();
+        
+        if (count($rlt) == 0)
+        {
+            $sql = "insert into language_th 
+            (lgt_th, lgt_language, lgt_order)
+            values
+            ($th,364,5)";
+            $rlt = $this->db->query($sql);
+        }
+    }
+    /*********
+     * Informações sobre o tesauros
+     */
+    function about($id)
+        {
+            $data = $this->le_skos($id);
+            $sx = '<hr>';
+            $sx .= '<h3><b>'.$data['pa_name'].'</b></h3>';
+            
+            for ($r=0;$r < count($data['authors']);$r++)
+                {
+                    if ($r > 0) { $sx .= '; '; }
+                    $sx .= '<span class="authors">';
+                    $sx .= '<i>'.$data['authors'][$r]['us_nome'].'</i>';
+                    $sx .= '</span>';
+                }            
+            $sx .= '.<br/>';
+            if (strlen($data['pa_introdution']))
+                {
+                    $sx .= '<br/>';
+                    $sx .= '<br/>';
+                    $sx .= '<h5>'.msg('thesaurus_introdution').'</h5>';
+                    $sx .= mst($data['pa_introdution']);
+                }
+
+            if (strlen($data['pa_methodology']))
+                {
+                    $sx .= '<br/>';
+                    $sx .= '<br/>';
+                    $sx .= '<h5>'.msg('thesaurus_methodology').'</h5>';
+                    $sx .= mst($data['pa_methodology']);
+                }
+
+            if (strlen($data['pa_audience']))
+                {
+                    $sx .= '<br/>';
+                    $sx .= '<br/>';
+                    $sx .= '<h5>'.msg('thesaurus_audience').'</h5>';
+                    $sx .= mst($data['pa_audience']);
+                }    
+
+                $sx .= '<br/>';
+                $sx .= '<br/>';
+                $sx .= '<h5>'.msg('thesaurus_licence').'</h5>';
+                $sx .= $data['licence'];
+            return($sx);
+        }
+    
     /* Recover ID Thesaurus */
     function th($th = '') {
         if (strlen($th) == 0) {
@@ -107,6 +171,8 @@ class skoses extends CI_model {
             } else {
                 $line['image_bk'] = base_url('img/background_custumer/biulings.jpg');
             }
+
+            $line['licence'] = $this->creativecommons->licence(0);
             $line['authors'] = array();
             $sql = "select distinct us_nome, id_up, up_tipo from th_users
             INNER JOIN users ON id_us = ust_user_id                        
@@ -1212,8 +1278,8 @@ class skoses extends CI_model {
                     return ($sa);
                 }
                 /*************************
-                 * UPLOAD ICONE
-                 */
+                * UPLOAD ICONE
+                */
                 function icone_upload($th,$data)
                 {
                     $target_dir = "img/icone/custon/";
@@ -1341,11 +1407,13 @@ class skoses extends CI_model {
                     
                     function thesaurus_resume($id) {
                         $co = $this -> find_class('Concept');
+                        $co = 25;
                         
-                        $sql = "select count(*) as total from rdf_literal_th where lt_thesauros = $id";
+                        $sql = "select count(*) as total 
+                                    from rdf_literal_th 
+                                    where lt_thesauros = $id";
                         
-                        /*** TERMS WIDTHOUT CONCEPT ***/
-                        
+                        /*** TERMS WIDTHOUT CONCEPT ***/                        
                         $xrlt = $this -> db -> query($sql);
                         $xrlt = $xrlt -> result_array();
                         $sx = '<table class="table" width="100%">';
@@ -1357,9 +1425,11 @@ class skoses extends CI_model {
                         }
                         
                         /***/
-                        $sql = "select count(*) as total from th_concept_term 
-                        where ct_th = $id and ct_propriety = " . $co;
-                        
+                        $sql = "select count(*) as total 
+                                from th_concept_term 
+                                where ct_th = $id 
+                                and ct_propriety = " . $co;
+                                                        
                         $xrlt = $this -> db -> query($sql);
                         $xrlt = $xrlt -> result_array();
                         
@@ -1857,32 +1927,35 @@ class skoses extends CI_model {
                                     $lta = troca($lta,"'",'');
                                     $lta = troca($lta,'"','');
                                     $lta = troca($lta,'Å','A');
-                                    $lta = substr(UpperCaseSql($lta), 0, 1);
-                                    if ($lta != $lt) {
-                                        if (strlen($lt) != '') {
-                                            $sx .= '<li>&nbsp;</li>' . cr();
+                                    if ($line['rs_propriety'] != 'hiddenLabel')
+                                    {
+                                        $lta = substr(UpperCaseSql($lta), 0, 1);
+                                        if ($lta != $lt) {
+                                            if (strlen($lt) != '') {
+                                                $sx .= '<li>&nbsp;</li>' . cr();
+                                            }
+                                            $sx .= '<li class="big">' . $lta . '</li>' . chr(13);
+                                            $lt = $lta;
                                         }
-                                        $sx .= '<li class="big">' . $lta . '</li>' . chr(13);
-                                        $lt = $lta;
-                                    }
-                                    $sa = '';
-                                    $saf = '';
-                                    $link = '<a href="' . base_url('index.php/thesa/term/' . $th . '/' . $line['id_rl']) . '" class="term_word">';
-                                    if (round($line['ct_propriety']) == $co) {
-                                        $sa = '<img src="' . base_url('img/icone/tag.png') . '" height="24" border=0>'; ;
-                                        $link = '<a href="' . base_url('index.php/thesa/c/' . $line['ct_concept']) . '/' . $th . '/" class="term">';
-                                    } else {
-                                        if (strlen(trim($line['altTerm'])) > 0) {
+                                        $sa = '';
+                                        $saf = '';
+                                        $link = '<a href="' . base_url('index.php/thesa/term/' . $th . '/' . $line['id_rl']) . '" class="term_word">';
+                                        if (round($line['ct_propriety']) == $co) {
+                                            $sa = '<img src="' . base_url('img/icone/tag.png') . '" height="24" border=0>'; ;
                                             $link = '<a href="' . base_url('index.php/thesa/c/' . $line['ct_concept']) . '/' . $th . '/" class="term">';
-                                            $sa = ' ';
-                                            $saf = ' </a><span style="color: #808080"><i>' . msg('use') . '</i></span> ' . $link . $line['altTerm'];
+                                        } else {
+                                            if (strlen(trim($line['altTerm'])) > 0) {
+                                                $link = '<a href="' . base_url('index.php/thesa/c/' . $line['ct_concept']) . '/' . $th . '/" class="term">';
+                                                $sa = ' ';
+                                                $saf = ' </a><span style="color: #808080"><i>' . msg('use') . '</i></span> ' . $link . $line['altTerm'];
+                                            }
                                         }
+                                        $sx .= '<li>' . $link . $sa . ' ' . $line['rl_value'];
+                                        $sx .= $saf;
+                                        $sx .= '</a>';
+                                        $sx .= '<sup>('.$line['rl_lang'].')</sup>';
+                                        $sx .= '</li>';
                                     }
-                                    $sx .= '<li>' . $link . $sa . ' ' . $line['rl_value'];
-                                    $sx .= $saf;
-                                    $sx .= '</a>';
-                                    $sx .= '<sup>('.$line['rl_lang'].')</sup>';
-                                    $sx .= '</li>';
                                 }
                                 $sx .= '</ul>' . cr();
                                 $sx .= '</div>';
@@ -2753,6 +2826,35 @@ class skoses extends CI_model {
                                                                 print_r($data);
                                                                 return ($sx);
                                                             }
+
+                                                            function th_collabotors_del($id, $chk) {
+                                                                $chk2 = checkpost_link($id);
+                                                                $sx = '';
+
+                                                                if ($chk == $chk2)
+                                                                    {
+                                                                        $ok = get("confirm");
+                                                                        if ($ok == 'ok')
+                                                                            {
+                                                                                $sql = "update th_users set ust_status = -1, ust_th = (ust_th * -1) where id_ust = ".$id;
+                                                                                $rlt = $this->db->query($sql);
+                                                                                $sx .= '<script> wclose(); </script>';
+                                                                            } else {
+                                                                                $sx .= '<h1>'.msg('confirm_exclude_collaborators').'</h1>';
+                                                                                $sx .= '<form method="post">';
+                                                                                $sx .= '<input type="hidden" value="ok" name="confirm" >';
+                                                                                $sx .= '<input type="submit" value="'.msg('confirm').'" class="btn btn-danger">';
+                                                                                $sx .= ' ';
+                                                                                $sx .= '<input type="button" value="'.msg('cancel').'" class="btn btn-secondary" onclick="wclose();">';
+                                                                                $sx .= '</form>';
+                                                                                
+                                                                            }
+                                                                    
+                                                                    } else {
+                                                                        $sx .= message('CHECKPOST ERROR',3);
+                                                                    }
+                                                                return($sx);
+                                                            }                                                            
                                                             
                                                             function th_collabotors_add($email, $th, $type) {
                                                                 $ok = $this -> le_user_email($email);
@@ -2801,13 +2903,13 @@ class skoses extends CI_model {
                                                                 $rlt = $this -> db -> query($sql);
                                                                 $rlt = $rlt -> result_array();
                                                                 $line = $rlt[0];
-                                                                $data['nr_terms'] = $line['total'];
+                                                                $data['nr_concept'] = $line['total'];
                                                                 
                                                                 $sql = "select count(*) as total from rdf_literal";
                                                                 $rlt = $this -> db -> query($sql);
                                                                 $rlt = $rlt -> result_array();
                                                                 $line = $rlt[0];
-                                                                $data['nr_concept'] = $line['total'];
+                                                                $data['nr_terms'] = $line['total'];
                                                                 
                                                                 return ($data);
                                                             }
@@ -2842,8 +2944,9 @@ class skoses extends CI_model {
                                                                 $sql = "select * from th_users
                                                                 INNER JOIN users ON ust_user_id = id_us
                                                                 LEFT JOIN th_users_perfil ON ust_tipo = id_up
-                                                                WHERE ust_status = 1
-                                                                AND ust_th = $th ";
+                                                                WHERE (ust_status = 1 or ust_status = -1)
+                                                                AND (ust_th = $th or ust_th = -$th)
+                                                                order by ust_status desc, id_ust";
                                                                 $rlt = $this -> db -> query($sql);
                                                                 $rlt = $rlt -> result_array();
                                                                 $sx = '<table class="table" width="100%">' . cr();
@@ -2857,7 +2960,13 @@ class skoses extends CI_model {
                                                                 
                                                                 for ($r = 0; $r < count($rlt); $r++) {
                                                                     $line = $rlt[$r];
-                                                                    $sx .= '<tr>';
+                                                                    if ($line['ust_status'] == -1)
+                                                                        {
+                                                                            $st = ' style="text-decoration:line-through; color:#ddd;"';
+                                                                        } else {
+                                                                            $st = '';
+                                                                        }
+                                                                    $sx .= '<tr '.$st.'>';
                                                                     
                                                                     $sx .= '<td>';
                                                                     $sx .= ($r + 1);
@@ -2879,11 +2988,11 @@ class skoses extends CI_model {
                                                                     $sx .= $line['up_tipo'];
                                                                     $sx .= '</td>'; 
                                                                     
-                                                                    if ($thesa['pa_creator'] != $line['id_us']) {
-                                                                        $link = '<a href="#">';
+                                                                    if (($thesa['pa_creator'] != $line['id_us']) and ($line['ust_status'] == 1)) {
+                                                                        $link = '<a href="#" onclick="newwin(\''.base_url(PATH.'ajax/collaborators_del/'.$line['id_ust'].'/'.checkpost_link($line['id_ust'])).'\',400,200);">';
                                                                         $sx .= '<td>';
-                                                                        $sx .= $link;
-                                                                        $sx .= '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>';
+                                                                        $img = '<img src="'.base_url('img/icone/remove.png').'" height="20" alt="'.msg('exclude').'">';
+                                                                        $sx .= $link.$img;
                                                                         $sx .= '</a>';
                                                                         $sx .= '</td>';
                                                                     }
@@ -3111,7 +3220,7 @@ class skoses extends CI_model {
                                                                         $sx .= '</tr>';
                                                                     }
                                                                     $sx .= '</table>';
-
+                                                                    
                                                                     $sx = '<div class="row"><div class="col-md-12">'.$sx.'</div></div>';
                                                                     return ($sx);
                                                                 }
@@ -3314,13 +3423,13 @@ class skoses extends CI_model {
                                                                             $this -> db -> query($sql);
                                                                             return (1);
                                                                         }
-
+                                                                        
                                                                         function icone_remove($th) {
                                                                             $img = 'img/icone/custon/background_icone_' . $th . '.png';
                                                                             if (file_exists($img))
-                                                                                {
-                                                                                    unlink($img);
-                                                                                }
+                                                                            {
+                                                                                unlink($img);
+                                                                            }
                                                                             return (1);
                                                                         }                                                                        
                                                                         

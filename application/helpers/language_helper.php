@@ -53,8 +53,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         $l1 = $_SERVER['ORIG_SCRIPT_NAME'].'/';
                         $lk = substr($l1,strpos($l1,PATH)+strlen(PATH),strlen($l1));                
                     } else {
-                        $l1 = $_SERVER['DOCUMENT_URI'].'/';
-                        $lk = substr($l1,strpos($l1,PATH)+strlen(PATH),strlen($l1));                
+                        if (isset($_SERVER['DOCUMENT_URI']))
+                        {
+                            $l1 = $_SERVER['DOCUMENT_URI'].'/';
+                            $lk = substr($l1,strpos($l1,PATH)+strlen(PATH),strlen($l1));                
+                        } else {
+                            $lk = '';
+                        }
                     }
                 $url = base_url(PATH.$lk.'?lang=');
                 
