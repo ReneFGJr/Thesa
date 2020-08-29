@@ -42,6 +42,7 @@ if (!isset($_SESSION['id'])) {
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><?php echo msg('rules'); ?></a>
                     <div class="dropdown-menu">
+                      <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/reports/'.$th.'/'); ?>"><?php echo msg('management_reporting'); ?></a>
                       <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/check_all/'); ?>"><?php echo msg('check_all'); ?></a>
                       <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/file_import'); ?>"><?php echo msg('file_import'); ?></a>
                       <a class="dropdown-item" href="<?php echo base_url('index.php/thesa/term_grapho/'.$th.'/'); ?>"><?php echo msg('grapho'); ?></a>

@@ -43,12 +43,12 @@ class Thesa extends CI_Controller {
 	
 	private function cab($navbar = 1) {
 		if (is_array($navbar))
-			{
-				$data['title'] = 'Thesa - '.msg('th_type_'.$navbar['pa_type']).' '.$navbar['pa_name'];
-				$navbar = 1;
-			} else {
-				$data['title'] = 'Thesa - Tesauro Semântico Aplicado';
-			}
+		{
+			$data['title'] = 'Thesa - '.msg('th_type_'.$navbar['pa_type']).' '.$navbar['pa_name'];
+			$navbar = 1;
+		} else {
+			$data['title'] = 'Thesa - Tesauro Semântico Aplicado';
+		}
 		
 		$this -> load -> view('thesa/header/header', $data);
 		if ($navbar == 1) {
@@ -385,11 +385,49 @@ class Thesa extends CI_Controller {
 		}
 		redirect(base_url('index.php/thesa/terms/' . $id));
 	}
+
+	function reports($id='',$cmd='')
+		{
+		$this -> load -> model('skoses');
+		if (strlen($id) == 0) {
+			$id = $this->skoses->th();
+		}
+		$data = $this -> skoses -> le_skos($id);
+		
+		$this -> cab($data);				
+		/*********************************************************************** PART 1 **/
+		$this -> load -> view('thesa/view/thesaurus', $data);
+		
+		/*********************************************************************** PART 2 **/
+		$tela = '';
+		$tela .= $this -> load -> view('thesa/header/navbar_tools', null, true);
+		$tela .= '<h1>'.msg("Reports").'</h1>';
+		switch($cmd)
+			{
+				case '1':
+					$tela .= $this->skoses->reports($id);
+					break;
+				default:
+				$tela .= '<ul>';
+				$tela .= '<li><a href="'.base_url(PATH.'reports/'.$id.'/1').'">'.msg('management_reporting_1').'</a></li>';
+				$tela .= '</ul>';
+			}
+
+
+		/*********************************************************************** FOOTER 2 **/
+		$data['content'] = $tela;
+		$data['title'] = '';
+		$this -> load -> view('content', $data);
+		
+		$this->footer();			
+		}
+
+
 	
 	function terms($id = '', $ltr = '') {
 		$this -> load -> model('skoses');
 		if (strlen($id) == 0) {
-			$id = $this->skos->th();
+			$id = $this->skoses->th();
 		}
 		$data = $this -> skoses -> le_skos($id);
 		
@@ -1432,6 +1470,19 @@ class Thesa extends CI_Controller {
 				echo($this -> skoses -> from_to($id, '=>', ''));
 			break;
 			
+			case 'skos' :
+				$arquivo = "thesa_" . strzero($id, 4) . '_' . date("Ymd") . ".xml";
+				// Configurações header para forçar o download
+				header("Expires: Mon, " . gmdate("D,d M YH:i:s") . " GMT");
+				header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+				header("Cache-Control: no-cache, must-revalidate");
+				header("Pragma: no-cache");
+				header("Content-type: text/xml");
+				header("Content-Disposition: attachment; filename=\"{$arquivo}\"");
+				header("Content-Description: PHP Generated Data");
+				echo($this -> skoses -> skos_xml($id, '=>', ''));
+			break;			
+			
 			case 'json' :
 				$arquivo = "thesa_" . strzero($id, 4) . '_' . date("Ymd") . ".txt";
 				// Configurações header para forçar o download
@@ -1478,7 +1529,7 @@ class Thesa extends CI_Controller {
 				$th = $_SESSION['skos'];
 				$refresh = $this -> skoses -> th_collabotors_add($email, $th, $type);
 			break;
-
+			
 			case 'collaborators_del':
 				$this->cab(0);
 				$data['content'] = $this->skoses->th_collabotors_del($id2,$refresh);

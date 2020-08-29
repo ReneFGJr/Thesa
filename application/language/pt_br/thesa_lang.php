@@ -389,4 +389,12 @@ $lang['Separador'] = 'Separador';
 $lang['Change_terms'] = 'Trocar termos';
 $lang['confirm_exclude_collaborators'] = 'Confirma exclusão de colaborador?';
 $lang['confirm'] = 'confirmar';
+
+$lang['management_reporting'] = 'Relatórios Gerenciais';
+$lang['management_reporting_1'] = 'Crescimento da Base';
+$lang[''] = '';
+$lang[''] = '';
+$lang[''] = '';
+$lang[''] = '';
+
 ?>
