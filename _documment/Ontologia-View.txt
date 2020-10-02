@@ -1,0 +1,2 @@
+https://raw.githubusercontent.com/structureddynamics/Bibliographic-Ontology-BIBO/master/bibo.owl
+http://www.visualdataweb.de/webvowl/#iri=https://raw.githubusercontent.com/structureddynamics/Bibliographic-Ontology-BIBO/master/bibo.owl

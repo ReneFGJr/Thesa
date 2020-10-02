@@ -1131,8 +1131,7 @@ class Thesa extends CI_Controller {
 		}
 		$this -> cab();
 		
-		$is_active = $this -> skoses -> is_concept($t, $th);
-		
+		$is_active = $this -> skoses -> is_concept($t, $th);		
 		if ($is_active == 0) {
 			//$this->skoses->
 			$sql = "select * from rdf_literal where id_rl = " . $t;
@@ -1147,10 +1146,8 @@ class Thesa extends CI_Controller {
 			}
 			$id = $this -> skoses -> concept_create($t, $th);
 			$this -> skoses -> log_insert($id, $th, $act, $desc);
-			
-			redirect(base_url('index.php/thesa/c/' . $id));
 		}
-		
+		redirect(base_url('index.php/thesa/c/' . $id));
 	}
 	
 	function concept_add() {

@@ -1711,7 +1711,7 @@ class skoses extends CI_model {
         $rlt = $this -> db -> query($sql);
         $rlt = $rlt -> result_array();
         if (count($rlt) == 0) {
-            
+
             /* locate next concept ID */
             $sql = "select id_c from th_concept order by id_c desc limit 1 ";
             $rlt = $this -> db -> query($sql);
@@ -1741,6 +1741,8 @@ class skoses extends CI_model {
             $rrb = $this -> db -> query($sql);
             return ($idc);
         }
+    print_r($rlt);
+    exit;
         return (1);
     }
     
