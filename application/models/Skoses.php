@@ -2300,10 +2300,11 @@ class skoses extends CI_model {
                             $cpat = msg('definição');
                         break;
                         case 'scopeNote' :
-                            $cpat = msg('scopeNote');
+                            $cpat = msg('scopeNote');                            
                         break;
                         default :
                         $cpat = 'nota';
+                        $cpat = msg($line['prop_note']);
                     break;
                 }
                 $nota = trim($line['note']);

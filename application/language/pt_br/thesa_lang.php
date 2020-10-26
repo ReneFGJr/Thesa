@@ -392,8 +392,8 @@ $lang['confirm'] = 'confirmar';
 
 $lang['management_reporting'] = 'Relatórios Gerenciais';
 $lang['management_reporting_1'] = 'Crescimento da Base';
-$lang[''] = '';
-$lang[''] = '';
+$lang['garantiaLiteraria'] = 'garantia Literária';
+$lang['noteCited'] = 'nota de citação';
 $lang[''] = '';
 $lang[''] = '';
 
