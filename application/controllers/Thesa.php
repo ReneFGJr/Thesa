@@ -1466,6 +1466,19 @@ class Thesa extends CI_Controller {
 				header("Content-Description: PHP Generated Data");
 				echo($this -> skoses -> from_to($id, '=>', ''));
 			break;
+
+			case 'txtb' :
+				$arquivo = "thesa_" . strzero($id, 4) . '_' . date("Ymd") . ".txt";
+				// Configurações header para forçar o download
+				header("Expires: Mon, " . gmdate("D,d M YH:i:s") . " GMT");
+				header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+				header("Cache-Control: no-cache, must-revalidate");
+				header("Pragma: no-cache");
+				header("Content-type: text/html");
+				header("Content-Disposition: attachment; filename=\"{$arquivo}\"");
+				header("Content-Description: PHP Generated Data");
+				echo($this -> skoses -> from_to($id, '=>', '', True));
+			break;			
 			
 			case 'skos' :
 				$arquivo = "thesa_" . strzero($id, 4) . '_' . date("Ymd") . ".xml";

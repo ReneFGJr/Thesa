@@ -1711,7 +1711,7 @@ class skoses extends CI_model {
         $rlt = $this -> db -> query($sql);
         $rlt = $rlt -> result_array();
         if (count($rlt) == 0) {
-
+            
             /* locate next concept ID */
             $sql = "select id_c from th_concept order by id_c desc limit 1 ";
             $rlt = $this -> db -> query($sql);
@@ -1727,7 +1727,7 @@ class skoses extends CI_model {
             /* Insert Concept into the thesaurus */
             $sql = "insert into th_concept (c_th, c_concept) values ($th,'$co')";
             $rrb = $this -> db -> query($sql);
-            
+            SLEEP(0.5);
             $sql = "select * from th_concept where c_concept = '$co' ";
             $rrb = $this -> db -> query($sql);
             $rrb = $rrb -> result_array();
@@ -1741,8 +1741,6 @@ class skoses extends CI_model {
             $rrb = $this -> db -> query($sql);
             return ($idc);
         }
-    print_r($rlt);
-    exit;
         return (1);
     }
     
@@ -2023,9 +2021,8 @@ class skoses extends CI_model {
         $rlt = $this -> db -> query($sql);
     }
     
-    function assign_as_propriety($c, $th, $tr, $desc) {
+    function assign_as_propriety($c, $th, $tr, $desc, $c2=0) {
         /* Verifica */
-        $c2 = 0;
         $sql = "select * from th_concept_term 
         WHERE (ct_term = $desc and ct_th = $th)";
         $rlt = $this -> db -> query($sql);
@@ -2045,7 +2042,11 @@ class skoses extends CI_model {
         /* Verifica */
         $tm = 0;
         $sql = "select * from th_concept_term 
-        WHERE (ct_concept_2 = $c2 and ct_propriety = $tr and ct_concept = $c1)";
+        WHERE 
+        (ct_concept_2 = $c2 and ct_propriety = $tr and ct_concept = $c1)
+        or 
+        (ct_concept_2 = $c1 and ct_propriety = $tr and ct_concept = $c2)
+        ";
         $rlt = $this -> db -> query($sql);
         $rlt = $rlt -> result_array();
         if (count($rlt) == 0) {
@@ -2056,11 +2057,11 @@ class skoses extends CI_model {
             ( $c1, $th, $tm,
             $c2,'.$tr.'
             )";
+            $rlt = $this -> db -> query($sql);
+            return('Insered');
         } else {
-            
-        }
-        
-        $rlt = $this -> db -> query($sql);
+            return('already');
+        }     
     }
     
     function export_format($th) {
@@ -2152,7 +2153,7 @@ class skoses extends CI_model {
         exit;  
     }
     
-    function from_to($th = 0, $separador = '=>', $capc = '') {
+    function from_to($th = 0, $separador = '=>', $capc = '', $link_uri = False) {
         $sql = "select ct_concept, ct_propriety, rl_value, length(rl_value) as sz  from th_concept_term 
         INNER JOIN rdf_literal ON ct_term = id_rl
         where ct_th = $th and ct_term > 0
@@ -2166,12 +2167,18 @@ class skoses extends CI_model {
             $idcx = $line['ct_concept'];
             $prop = $line['ct_propriety'];
             $valo = trim($line['rl_value']);
+            $uri = '';
+            if ($link_uri == True)
+            {
+                $uri = '#Thesa-c'.$line['ct_concept'];
+            }
+            
             if ($prop == 25) {
                 $mst = trim($line['rl_value']);
-                $sx .= $capc . UpperCase($line['rl_value']) . $capc . $separador . $capc . $line['rl_value'] . $capc . cr();
+                $sx .= $capc . UpperCase($line['rl_value']) . $capc . $separador . $capc . $line['rl_value'] . $capc . $uri. cr();
             }
             if ($valo != $mst) {
-                $sx .= $capc . $line['rl_value'] . $capc . $separador . $capc . $mst . $capc . cr();
+                $sx .= $capc . $line['rl_value'] . $capc . $separador . $capc . $mst . $capc . $uri. cr();
             }
         }
         return ($sx);
@@ -3426,893 +3433,1013 @@ function user_insert_temp($email, $name) {
             
             function log_insert($idc, $th, $act, $desc) {
                 $user = $_SESSION['id'];
-                $sql = "insert into th_log
-                (
-                    lg_c, lg_user, lg_action, lg_descript, lg_th 
-                    ) values (
-                        $idc, $user, '$act', '$desc', $th
-                        )";
-                        $rlt = $this -> db -> query($sql);
-                        return (1);
+                $sql = "insert into th_log 
+                ( lg_c, lg_user, lg_action, lg_descript, lg_th ) 
+                values 
+                ( $idc, $user, '$act', '$desc', $th )";
+                $rlt = $this -> db -> query($sql);
+                return (1);
+            }
+            
+            function export($th, $type) {
+                $prefix = array();
+                
+                $sql = "select * from th_concept						
+                INNER JOIN th_concept_term ON ct_concept = id_c
+                LEFT JOIN rdf_literal ON ct_term = id_rl
+                INNER JOIN rdf_resource ON ct_propriety = id_rs
+                INNER JOIN rdf_prefix ON rs_prefix = id_prefix
+                INNER JOIN thesa ON c_agency = id_thesa						
+                WHERE c_th = $th
+                order by thesa_prefix, c_concept";
+                $rlt = $this -> db -> query($sql);
+                $rlt = $rlt -> result_array();
+                $sx = '';
+                for ($r = 0; $r < count($rlt); $r++) {
+                    $line = $rlt[$r];
+                    
+                    /* PREFIX */
+                    $pre = trim($line['thesa_prefix']);
+                    if (!isset($prefix[$pre])) { $prefix[$pre] = "url";
+                    }
+                    $pre = trim($line['prefix_ref']);
+                    if (!isset($prefix[$pre])) { $prefix[$pre] = "url";
                     }
                     
-                    function export($th, $type) {
-                        $prefix = array();
-                        
-                        $sql = "select * from th_concept						
-                        INNER JOIN th_concept_term ON ct_concept = id_c
-                        LEFT JOIN rdf_literal ON ct_term = id_rl
-                        INNER JOIN rdf_resource ON ct_propriety = id_rs
-                        INNER JOIN rdf_prefix ON rs_prefix = id_prefix
-                        INNER JOIN thesa ON c_agency = id_thesa						
-                        WHERE c_th = $th
-                        order by thesa_prefix, c_concept";
-                        $rlt = $this -> db -> query($sql);
-                        $rlt = $rlt -> result_array();
-                        $sx = '';
-                        for ($r = 0; $r < count($rlt); $r++) {
-                            $line = $rlt[$r];
-                            
-                            /* PREFIX */
-                            $pre = trim($line['thesa_prefix']);
-                            if (!isset($prefix[$pre])) { $prefix[$pre] = "url";
-                            }
-                            $pre = trim($line['prefix_ref']);
-                            if (!isset($prefix[$pre])) { $prefix[$pre] = "url";
-                            }
-                            
-                            $lang = '';
-                            
-                            $update = $line['c_created'];
-                            
-                            $p1 = $line['thesa_prefix'];
-                            $p1 .= ':';
-                            $p1 .= $line['c_concept'];
-                            
-                            $re = $line['prefix_ref'];
-                            $re .= ':';
-                            $re .= $line['rs_propriety'];
-                            
-                            if (strlen($line['rl_value']) == 0) {
-                                $p2 = $line['thesa_prefix'];
-                                $p2 .= ':';
-                                $p2 .= 'c' . $line['ct_concept_2'];
-                            } else {
-                                $p2 = parseToXML($line['rl_value']);
-                                $lang = ' language="' . $line['rl_lang'] . '" ';
-                                if ($line['rl_value'] == '') {
-                                    $p2 = '#';
-                                }
-                            }
-                            switch ($type) {
-                                case 'xml' :
-                                    $sx .= '<concept id="' . $p1 . '" propriety="' . $re . '" resource="' . $p2 . '" update="' . $update . '" ' . $lang . '/>' . cr();
-                                break;
-                                default :
-                                $sx .= $p1 . chr(9) . $re . chr(9) . '"' . $p2 . '"' . cr();
-                            break;
+                    $lang = '';
+                    
+                    $update = $line['c_created'];
+                    
+                    $p1 = $line['thesa_prefix'];
+                    $p1 .= ':';
+                    $p1 .= $line['c_concept'];
+                    
+                    $re = $line['prefix_ref'];
+                    $re .= ':';
+                    $re .= $line['rs_propriety'];
+                    
+                    if (strlen($line['rl_value']) == 0) {
+                        $p2 = $line['thesa_prefix'];
+                        $p2 .= ':';
+                        $p2 .= 'c' . $line['ct_concept_2'];
+                    } else {
+                        $p2 = parseToXML($line['rl_value']);
+                        $lang = ' language="' . $line['rl_lang'] . '" ';
+                        if ($line['rl_value'] == '') {
+                            $p2 = '#';
                         }
-                        
                     }
-                    
                     switch ($type) {
                         case 'xml' :
-                            header("Content-type: text/xml");
-                            $sr = '<?xml version="1.0"?>' . cr();
-                            $sr .= '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:si="https://www.w3schools.com/rdf/">' . cr();
-                            foreach ($prefix as $key => $value) {
-                                $sr .= '<prefix id="' . $key . '" url="' . $value . '"/>' . cr();
-                            }
-                            $sr .= $sx;
-                            $sr .= '</rdf:RDF>';
-                            echo $sr;
-                            return ('');
+                            $sx .= '<concept id="' . $p1 . '" propriety="' . $re . '" resource="' . $p2 . '" update="' . $update . '" ' . $lang . '/>' . cr();
                         break;
                         default :
-                        echo '<pre>' . $sx . '</pre>';
+                        $sx .= $p1 . chr(9) . $re . chr(9) . '"' . $p2 . '"' . cr();
                     break;
                 }
                 
             }
             
-            function icone_update($th, $ic) {
-                $sql = "update th_thesaurus
-                set pa_icone = " . round($ic) . "
-                where id_pa = " . $th;
-                $this -> db -> query($sql);
-                return (1);
-            }
-            
-            function icone_remove($th) {
-                $img = 'img/icone/custon/background_icone_' . $th . '.png';
-                if (file_exists($img))
-                {
-                    unlink($img);
-                }
-                return (1);
-            }                                                                        
-            
-            function icones_select($th) {
-                $sx = '<div class="row">';
-                for ($r = 0; $r < 1000; $r++) {
-                    $img = 'img/icone/thema/' . strzero($r, 3) . '.png';
-                    if (file_exists($img)) {
-                        $link = '<a href="' . base_url('index.php/thesa/icone/' . $th . '/' . $r . '/' . checkpost_link('icone' . $r)) . '">';
-                        $sx .= '<div class="col-2">' . $r . $link . $this -> show_icone($r,array()) . '</a>' . '</div>' . cr();
+            switch ($type) {
+                case 'xml' :
+                    header("Content-type: text/xml");
+                    $sr = '<?xml version="1.0"?>' . cr();
+                    $sr .= '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:si="https://www.w3schools.com/rdf/">' . cr();
+                    foreach ($prefix as $key => $value) {
+                        $sr .= '<prefix id="' . $key . '" url="' . $value . '"/>' . cr();
                     }
-                    
-                }
-                $sx .= '</div>' . cr();
-                return ($sx);
+                    $sr .= $sx;
+                    $sr .= '</rdf:RDF>';
+                    echo $sr;
+                    return ('');
+                break;
+                default :
+                echo '<pre>' . $sx . '</pre>';
+            break;
+        }
+        
+    }
+    
+    function icone_update($th, $ic) {
+        $sql = "update th_thesaurus
+        set pa_icone = " . round($ic) . "
+        where id_pa = " . $th;
+        $this -> db -> query($sql);
+        return (1);
+    }
+    
+    function icone_remove($th) {
+        $img = 'img/icone/custon/background_icone_' . $th . '.png';
+        if (file_exists($img))
+        {
+            unlink($img);
+        }
+        return (1);
+    }                                                                        
+    
+    function icones_select($th) {
+        $sx = '<div class="row">';
+        for ($r = 0; $r < 1000; $r++) {
+            $img = 'img/icone/thema/' . strzero($r, 3) . '.png';
+            if (file_exists($img)) {
+                $link = '<a href="' . base_url('index.php/thesa/icone/' . $th . '/' . $r . '/' . checkpost_link('icone' . $r)) . '">';
+                $sx .= '<div class="col-2">' . $r . $link . $this -> show_icone($r,array()) . '</a>' . '</div>' . cr();
             }
             
-            function save($th, $type, $cnt) {
-                $path = 'docs';
-                if (!is_dir($path)) {
-                    mkdir($path);
-                }
-                $path .= '/' . $th;
-                if (!is_dir($path)) {
-                    mkdir($path);
-                }
-                $fld = $path . '/html_' . $type . '.html';
-                $f = fopen($fld, 'w');
-                fwrite($f, $cnt);
-                fclose($f);
-                return (1);
+        }
+        $sx .= '</div>' . cr();
+        return ($sx);
+    }
+    
+    function save($th, $type, $cnt) {
+        $path = 'docs';
+        if (!is_dir($path)) {
+            mkdir($path);
+        }
+        $path .= '/' . $th;
+        if (!is_dir($path)) {
+            mkdir($path);
+        }
+        $fld = $path . '/html_' . $type . '.html';
+        $f = fopen($fld, 'w');
+        fwrite($f, $cnt);
+        fclose($f);
+        return (1);
+    }
+    
+    function make_pdf($id) {
+        $data = $this -> skoses -> le_th($id);
+        $sx = '';
+        $auth = '';
+        $auth2 = '<br><br>';
+        for ($r = 0; $r < count($data['authors']); $r++) {
+            if (strlen($auth) > 0) {
+                $auth .= '; ';
+                $auth2 .= '<br>';
             }
-            
-            function make_pdf($id) {
-                $data = $this -> skoses -> le_th($id);
-                $sx = '';
-                $auth = '';
-                $auth2 = '<br><br>';
-                for ($r = 0; $r < count($data['authors']); $r++) {
-                    if (strlen($auth) > 0) {
-                        $auth .= '; ';
-                        $auth2 .= '<br>';
-                    }
-                    $auth .= $data['authors'][$r]['us_nome'];
-                    $auth2 .= UpperCase($data['authors'][$r]['us_nome']);
-                }
-                
-                if (@file_exists(dirname(__FILE__) . '/lang/eng.php')) {
-                    require_once (dirname(__FILE__) . '/lang/eng.php');
-                    $pdf -> setLanguageArray($l);
-                }
-                $page = '<hr style="page-break-after: always;">';
-                
-                // ---------------------------------------------------------
-                $sx .= '<div class="row" ><div class="col-12">';
-                $sx .= '<h2 style="text-align: center; font-size: 35px;">THESA: ' . $data['pa_name'] . '</h2>';
-                $sx .= '<center>';
-                $sx .= '<span style="text-align: center; font-size: 15px;">' . msg('th_type_' . $data['pa_type']) . '</span>';
-                $sx .= '<br>';
-                $sx .= '<br>';
-                /************************************ AUTHORS */
-                for ($r = 0; $r < count($data['authors']); $r++) {
-                    $auth2 = UpperCase($data['authors'][$r]['us_nome']);
-                    $tp = $data['authors'][$r]['id_up'];
-                    $compl = '';
-                    if ($tp != 1)
-                    {
-                        $compl = ' ('.msg($data['authors'][$r]['up_tipo']).')'; 
-                    }
-                    $sx .= '<span style="text-align: center; font-size: 15px;">' . $auth2 . $compl .'</span><br>';
-                }
-                $sx .= '</center>';
-                $sx .= '<br>';
-                
-                /******************* IMAGEM *********************/
-                $img = 'img/background_custumer/biulings.jpg';
-                $filename = 'img/background/background_thema_' . $id . '.jpg';
-                if (file_exists($filename)) {
-                    $img = $filename;
-                }
-                $sx .= '<center><img src="' . base_url($img) . '" class="img-fluid" width="100%"></center>';
-                $sx .= '<br>';
-                $sx .= '<br>';
-                $sx .= '</div>';
-                $sx .= '</div>';
-                
-                if (strlen($data['pa_description']) > 0) {
-                    
-                }
-                
-                /********************************************************************/
-                $sx .= $page;
-                /************************************************ METHODOLOGY *******/
-                $sx .= '<div class="row" >
-                <div class="col-12">';
-                $sx .= '    <div style="line-height: 170%; text-align:justify">';
-                
-                if (strlen($data['pa_introdution']) > 0) {
-                    $sx .= '<h1>' . msg('thesaurus_introdution') . '</h1>';
-                    $sx .= mst($data['pa_introdution']);
-                }
-                
-                if (strlen($data['pa_audience']) > 0) {
-                    $sx .= '<h1>' . msg('thesaurus_audience') . '</h1>';
-                    $sx .= mst($data['pa_audience']);
-                }
-                
-                if (strlen($data['pa_methodology']) > 0) {
-                    $sx .= '<h1>' . msg('thesaurus_methodology') . '</h1>';
-                    $sx .= mst($data['pa_methodology']);
-                }
-                $sx = troca($sx, '<br/>', '<br>&nbsp;<br>');
-                $sx .= '    </div>
-                </div>
-                </div>';
-                
-                /******************************** GRAPHO ****************************/
-                $data['file'] = $id;
-                $sx .= $this -> load -> view('grapho/mind_map_full', $data, true);
-                
-                /******************************** GLOSSARIO ****************************/
-                $filename = 'docs/' . $id . '/html_5.html';
-                
-                if (file_exists($filename)) {
-                    /********************************************************************/
-                    $sx .= $page;
-                    /********************************************************************/
-                    $sx .= '<div class="row"><div class="col-12" >';
-                    $sx .= '<h1>Apresentação Sistemática</h1>';
-                    $sx .= '</div></div><br>' . cr();
-                    $sx .= '<div class="row"><div class="col-12" >';
-                    $sx .= load_file_local($filename) . '';
-                    $sx .= '</div></div>' . cr();
-                } else {
-                    echo 'Falha';
-                }
-                
-                /******************************** GLOSSARIO ****************************/
-                $filename = 'docs/' . $id . '/html_1.html';
-                
-                if (file_exists($filename)) {
-                    /********************************************************************/
-                    $sx .= $page;
-                    /********************************************************************/
-                    $sx .= '<div class="row"><div class="col-12" >';
-                    $sx .= '<h1>Glossário</h1>';
-                    $sx .= '</div></div>' . cr();
-                    $sx .= '<div class="row"><div class="col-12 prt" >';
-                    $sx .= load_file_local($filename);
-                    $sx .= '</div></div>' . cr();
-                } else {
-                    echo 'Falha';
-                }
-                
-                $filename = 'docs/' . $id . '/html_2.html';
-                if (file_exists($filename)) {
-                    /********************************************************************/
-                    $sx .= $page;
-                    /********************************************************************/
-                    $sx .= '<div class="row"><div class="col-12" >';
-                    $sx .= '<h1>Apresentação Alfabética</h1>';
-                    $sx .= '</div></div>' . cr();
-                    $sx .= '<div class="row"><div class="col-12 prt" >';
-                    $sx .= load_file_local($filename);
-                    $sx .= '</div></div>' . cr();
-                }
-                
-                $filename = 'docs/' . $id . '/html_3.html';
-                if (file_exists($filename)) {
-                    /********************************************************************/
-                    $sx .= $page;
-                    /********************************************************************/
-                    $sx .= '<div class="row"><div class="col-12">';
-                    $sx .= '<h1>Ficha Terminológica para Coleta dos Termos</h1>';
-                    $sx .= '</div></div>' . cr();
-                    $sx .= '<div class="row"><div class="col-12 prt">';
-                    $sx .= load_file_local($filename);
-                    $sx .= '</div></div>' . cr();
-                }
-                return ($sx);
-            }
-            
-            function make_pdf_2($id) {
-                $data = $this -> skoses -> le_th($id);
-                
-                $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-                $pdf -> setPrintFooter(false);
-                
-                // set document information
-                $pdf -> SetCreator(PDF_CREATOR);
-                $auth = '';
-                $auth2 = '<br><br>';
-                for ($r = 0; $r < count($data['authors']); $r++) {
-                    if (strlen($auth) > 0) {
-                        $auth .= '; ';
-                        $auth2 .= '<br>';
-                    }
-                    $auth .= $data['authors'][$r]['us_nome'];
-                    $auth2 .= UpperCase($data['authors'][$r]['us_nome']);
-                }
-                $pdf -> SetAuthor($auth);
-                $pdf -> SetTitle('Thesa: ' . $data['pa_name']);
-                $pdf -> SetSubject('Thesaurus');
-                $pdf -> SetKeywords('Thesaurus');
-                
-                $pdf -> SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-                $pdf -> setImageScale(PDF_IMAGE_SCALE_RATIO);
-                
-                if (@file_exists(dirname(__FILE__) . '/lang/eng.php')) {
-                    require_once (dirname(__FILE__) . '/lang/eng.php');
-                    $pdf -> setLanguageArray($l);
-                }
-                
-                // ---------------------------------------------------------
-                
-                // set font
-                $pdf -> SetFont('dejavusans', '', 10);
-                
-                // add a page
-                $pdf -> AddPage();
-                
-                $pdf -> setXY(0, 70);
-                $pdf -> SetFont('dejavusans', '', 25);
-                $html = '<h2 style="text-align: center;">THESA: ' . $data['pa_name'] . '</h2>';
-                $html .= '<span style="text-align: center; font-size: 15px;">' . msg('th_type_' . $data['pa_type']) . '</span>';
-                $pdf -> writeHTML($html, true, false, true, false, '');
-                
-                /************************************ AUTHORS */
-                $pdf -> setXY(0, 10);
-                $pdf -> SetFont('dejavusans', '', 10);
-                for ($r = 0; $r < count($data['authors']); $r++) {
-                    $pdf -> setXY(10, 5 * $r + 20);
-                    $auth2 = UpperCase($data['authors'][$r]['us_nome']);
-                    $pdf -> Cell(0, 0, $auth2, 0, false, 'C', 0, '', 0, false, 'M', 'M');
-                }
-                
-                /******************* IMAGEM *********************/
-                $img = 'img/background_custumer/biulings.jpg';
-                $filename = 'img/background/background_thema_' . $id . '.jpg';
-                if (file_exists($filename)) {
-                    $img = $filename;
-                }
-                $pdf -> Image($img, 0, 140, 210, 0);
-                
-                $pdf -> AddPage();
-                $pdf -> SetFont('dejavusans', '', 10);
-                
-                $html = '<div style="line-height: 170%; text-align:justify">';
-                
-                if (strlen($data['pa_methodology']) > 0) {
-                    $html .= '<h1>' . msg('thesaurus_introdution') . '</h1>';
-                    $html .= mst($data['pa_introdution']);
-                }
-                
-                if (strlen($data['pa_methodology']) > 0) {
-                    $html .= '<h1>' . msg('thesaurus_audience') . '</h1>';
-                    $html .= mst($data['pa_audience']);
-                }
-                
-                if (strlen($data['pa_methodology']) > 0) {
-                    $html .= '<h1>' . msg('thesaurus_methodology') . '</h1>';
-                    $html .= mst($data['pa_methodology']);
-                }
-                $html = troca($html, '<br/>', '<br>&nbsp;<br>');
-                $pdf -> writeHTML($html, true, false, true, false, '');
-                
-                /******************************** GLOSSARIO ****************************/
-                $filename = 'docs/' . $id . '/html_1.html';
-                
-                if (file_exists($filename)) {
-                    $pdf -> AddPage();
-                    $html = '<h1>Glossário</h1>';
-                    $html = load_file_local($filename);
-                    $pdf -> writeHTML($html, true, false, true, false, '');
-                } else {
-                    echo 'Falha';
-                }
-                
-                $filename = 'docs/' . $id . '/html_2.html';
-                if (file_exists($filename)) {
-                    $pdf -> AddPage();
-                    $html = '<h1>Glossário - Apresentação Alfabética</h1>';
-                    $html = load_file_local($filename);
-                    $pdf -> writeHTML($html, true, false, true, false, '');
-                }
-                
-                $filename = 'docs/' . $id . '/html_3.html';
-                if (file_exists($filename)) {
-                    $pdf -> AddPage();
-                    $html = '<h1>Glossário - Ficha Terminológica para Coleta dos Termos</h1>';
-                    $html = load_file_local($filename);
-                    $pdf -> writeHTML($html, true, false, true, false, '');
-                }
-                $pdf -> AddPage();
-                
-                // reset pointer to the last page
-                $pdf -> lastPage();
-                
-                // ---------------------------------------------------------
-                //Close and output PDF document
-                $pdf -> Output('example_006.pdf', 'I');
-                
-                //============================================================+
-                // END OF FILE
-                //============================================================+
-                
-            }
-            function th_list($th='')
+            $auth .= $data['authors'][$r]['us_nome'];
+            $auth2 .= UpperCase($data['authors'][$r]['us_nome']);
+        }
+        
+        if (@file_exists(dirname(__FILE__) . '/lang/eng.php')) {
+            require_once (dirname(__FILE__) . '/lang/eng.php');
+            $pdf -> setLanguageArray($l);
+        }
+        $page = '<hr style="page-break-after: always;">';
+        
+        // ---------------------------------------------------------
+        $sx .= '<div class="row" ><div class="col-12">';
+        $sx .= '<h2 style="text-align: center; font-size: 35px;">THESA: ' . $data['pa_name'] . '</h2>';
+        $sx .= '<center>';
+        $sx .= '<span style="text-align: center; font-size: 15px;">' . msg('th_type_' . $data['pa_type']) . '</span>';
+        $sx .= '<br>';
+        $sx .= '<br>';
+        /************************************ AUTHORS */
+        for ($r = 0; $r < count($data['authors']); $r++) {
+            $auth2 = UpperCase($data['authors'][$r]['us_nome']);
+            $tp = $data['authors'][$r]['id_up'];
+            $compl = '';
+            if ($tp != 1)
             {
-                $sql = "select * from th_thesaurus
-                INNER JOIN users ON pa_creator = id_us
-                order by pa_name";
-                $rlt = $this->db->query($sql);
-                $rlt = $rlt->result_array();
-                $sx = '<table class="table">';
-                for ($r=0;$r < count($rlt);$r++)
-                {
-                    $line = $rlt[$r];
-                    $link = '<a href="'.base_url('index.php/thesa/select/'.$line['id_pa'].'/'.checkpost_link($line['id_pa'])).'">';
-                    $sx .= '<tr>';
-                    $sx .= '<td align="center">'.$line['id_pa'].'</td>';
-                    $sx .= '<td>'.$link.$line['pa_name'].'</a>'.'</td>';
-                    $sx .= '<td>'.$link.$line['us_nome'].'</a>'.'</td>';
-                    $sx .= '</tr>';
-                }
-                $sx .= '</table>';
-                return($sx);
-            }    
-            function import_file()
+                $compl = ' ('.msg($data['authors'][$r]['up_tipo']).')'; 
+            }
+            $sx .= '<span style="text-align: center; font-size: 15px;">' . $auth2 . $compl .'</span><br>';
+        }
+        $sx .= '</center>';
+        $sx .= '<br>';
+        
+        /******************* IMAGEM *********************/
+        $img = 'img/background_custumer/biulings.jpg';
+        $filename = 'img/background/background_thema_' . $id . '.jpg';
+        if (file_exists($filename)) {
+            $img = $filename;
+        }
+        $sx .= '<center><img src="' . base_url($img) . '" class="img-fluid" width="100%"></center>';
+        $sx .= '<br>';
+        $sx .= '<br>';
+        $sx .= '</div>';
+        $sx .= '</div>';
+        
+        if (strlen($data['pa_description']) > 0) {
+            
+        }
+        
+        /********************************************************************/
+        $sx .= $page;
+        /************************************************ METHODOLOGY *******/
+        $sx .= '<div class="row" >
+        <div class="col-12">';
+        $sx .= '    <div style="line-height: 170%; text-align:justify">';
+        
+        if (strlen($data['pa_introdution']) > 0) {
+            $sx .= '<h1>' . msg('thesaurus_introdution') . '</h1>';
+            $sx .= mst($data['pa_introdution']);
+        }
+        
+        if (strlen($data['pa_audience']) > 0) {
+            $sx .= '<h1>' . msg('thesaurus_audience') . '</h1>';
+            $sx .= mst($data['pa_audience']);
+        }
+        
+        if (strlen($data['pa_methodology']) > 0) {
+            $sx .= '<h1>' . msg('thesaurus_methodology') . '</h1>';
+            $sx .= mst($data['pa_methodology']);
+        }
+        $sx = troca($sx, '<br/>', '<br>&nbsp;<br>');
+        $sx .= '    </div>
+        </div>
+        </div>';
+        
+        /******************************** GRAPHO ****************************/
+        $data['file'] = $id;
+        $sx .= $this -> load -> view('grapho/mind_map_full', $data, true);
+        
+        /******************************** GLOSSARIO ****************************/
+        $filename = 'docs/' . $id . '/html_5.html';
+        
+        if (file_exists($filename)) {
+            /********************************************************************/
+            $sx .= $page;
+            /********************************************************************/
+            $sx .= '<div class="row"><div class="col-12" >';
+            $sx .= '<h1>Apresentação Sistemática</h1>';
+            $sx .= '</div></div><br>' . cr();
+            $sx .= '<div class="row"><div class="col-12" >';
+            $sx .= load_file_local($filename) . '';
+            $sx .= '</div></div>' . cr();
+        } else {
+            echo 'Falha';
+        }
+        
+        /******************************** GLOSSARIO ****************************/
+        $filename = 'docs/' . $id . '/html_1.html';
+        
+        if (file_exists($filename)) {
+            /********************************************************************/
+            $sx .= $page;
+            /********************************************************************/
+            $sx .= '<div class="row"><div class="col-12" >';
+            $sx .= '<h1>Glossário</h1>';
+            $sx .= '</div></div>' . cr();
+            $sx .= '<div class="row"><div class="col-12 prt" >';
+            $sx .= load_file_local($filename);
+            $sx .= '</div></div>' . cr();
+        } else {
+            echo 'Falha';
+        }
+        
+        $filename = 'docs/' . $id . '/html_2.html';
+        if (file_exists($filename)) {
+            /********************************************************************/
+            $sx .= $page;
+            /********************************************************************/
+            $sx .= '<div class="row"><div class="col-12" >';
+            $sx .= '<h1>Apresentação Alfabética</h1>';
+            $sx .= '</div></div>' . cr();
+            $sx .= '<div class="row"><div class="col-12 prt" >';
+            $sx .= load_file_local($filename);
+            $sx .= '</div></div>' . cr();
+        }
+        
+        $filename = 'docs/' . $id . '/html_3.html';
+        if (file_exists($filename)) {
+            /********************************************************************/
+            $sx .= $page;
+            /********************************************************************/
+            $sx .= '<div class="row"><div class="col-12">';
+            $sx .= '<h1>Ficha Terminológica para Coleta dos Termos</h1>';
+            $sx .= '</div></div>' . cr();
+            $sx .= '<div class="row"><div class="col-12 prt">';
+            $sx .= load_file_local($filename);
+            $sx .= '</div></div>' . cr();
+        }
+        return ($sx);
+    }
+    
+    function make_pdf_2($id) {
+        $data = $this -> skoses -> le_th($id);
+        
+        $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $pdf -> setPrintFooter(false);
+        
+        // set document information
+        $pdf -> SetCreator(PDF_CREATOR);
+        $auth = '';
+        $auth2 = '<br><br>';
+        for ($r = 0; $r < count($data['authors']); $r++) {
+            if (strlen($auth) > 0) {
+                $auth .= '; ';
+                $auth2 .= '<br>';
+            }
+            $auth .= $data['authors'][$r]['us_nome'];
+            $auth2 .= UpperCase($data['authors'][$r]['us_nome']);
+        }
+        $pdf -> SetAuthor($auth);
+        $pdf -> SetTitle('Thesa: ' . $data['pa_name']);
+        $pdf -> SetSubject('Thesaurus');
+        $pdf -> SetKeywords('Thesaurus');
+        
+        $pdf -> SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+        $pdf -> setImageScale(PDF_IMAGE_SCALE_RATIO);
+        
+        if (@file_exists(dirname(__FILE__) . '/lang/eng.php')) {
+            require_once (dirname(__FILE__) . '/lang/eng.php');
+            $pdf -> setLanguageArray($l);
+        }
+        
+        // ---------------------------------------------------------
+        
+        // set font
+        $pdf -> SetFont('dejavusans', '', 10);
+        
+        // add a page
+        $pdf -> AddPage();
+        
+        $pdf -> setXY(0, 70);
+        $pdf -> SetFont('dejavusans', '', 25);
+        $html = '<h2 style="text-align: center;">THESA: ' . $data['pa_name'] . '</h2>';
+        $html .= '<span style="text-align: center; font-size: 15px;">' . msg('th_type_' . $data['pa_type']) . '</span>';
+        $pdf -> writeHTML($html, true, false, true, false, '');
+        
+        /************************************ AUTHORS */
+        $pdf -> setXY(0, 10);
+        $pdf -> SetFont('dejavusans', '', 10);
+        for ($r = 0; $r < count($data['authors']); $r++) {
+            $pdf -> setXY(10, 5 * $r + 20);
+            $auth2 = UpperCase($data['authors'][$r]['us_nome']);
+            $pdf -> Cell(0, 0, $auth2, 0, false, 'C', 0, '', 0, false, 'M', 'M');
+        }
+        
+        /******************* IMAGEM *********************/
+        $img = 'img/background_custumer/biulings.jpg';
+        $filename = 'img/background/background_thema_' . $id . '.jpg';
+        if (file_exists($filename)) {
+            $img = $filename;
+        }
+        $pdf -> Image($img, 0, 140, 210, 0);
+        
+        $pdf -> AddPage();
+        $pdf -> SetFont('dejavusans', '', 10);
+        
+        $html = '<div style="line-height: 170%; text-align:justify">';
+        
+        if (strlen($data['pa_methodology']) > 0) {
+            $html .= '<h1>' . msg('thesaurus_introdution') . '</h1>';
+            $html .= mst($data['pa_introdution']);
+        }
+        
+        if (strlen($data['pa_methodology']) > 0) {
+            $html .= '<h1>' . msg('thesaurus_audience') . '</h1>';
+            $html .= mst($data['pa_audience']);
+        }
+        
+        if (strlen($data['pa_methodology']) > 0) {
+            $html .= '<h1>' . msg('thesaurus_methodology') . '</h1>';
+            $html .= mst($data['pa_methodology']);
+        }
+        $html = troca($html, '<br/>', '<br>&nbsp;<br>');
+        $pdf -> writeHTML($html, true, false, true, false, '');
+        
+        /******************************** GLOSSARIO ****************************/
+        $filename = 'docs/' . $id . '/html_1.html';
+        
+        if (file_exists($filename)) {
+            $pdf -> AddPage();
+            $html = '<h1>Glossário</h1>';
+            $html = load_file_local($filename);
+            $pdf -> writeHTML($html, true, false, true, false, '');
+        } else {
+            echo 'Falha';
+        }
+        
+        $filename = 'docs/' . $id . '/html_2.html';
+        if (file_exists($filename)) {
+            $pdf -> AddPage();
+            $html = '<h1>Glossário - Apresentação Alfabética</h1>';
+            $html = load_file_local($filename);
+            $pdf -> writeHTML($html, true, false, true, false, '');
+        }
+        
+        $filename = 'docs/' . $id . '/html_3.html';
+        if (file_exists($filename)) {
+            $pdf -> AddPage();
+            $html = '<h1>Glossário - Ficha Terminológica para Coleta dos Termos</h1>';
+            $html = load_file_local($filename);
+            $pdf -> writeHTML($html, true, false, true, false, '');
+        }
+        $pdf -> AddPage();
+        
+        // reset pointer to the last page
+        $pdf -> lastPage();
+        
+        // ---------------------------------------------------------
+        //Close and output PDF document
+        $pdf -> Output('example_006.pdf', 'I');
+        
+        //============================================================+
+        // END OF FILE
+        //============================================================+
+        
+    }
+    function th_list($th='')
+    {
+        $sql = "select * from th_thesaurus
+        INNER JOIN users ON pa_creator = id_us
+        order by pa_name";
+        $rlt = $this->db->query($sql);
+        $rlt = $rlt->result_array();
+        $sx = '<table class="table">';
+        for ($r=0;$r < count($rlt);$r++)
+        {
+            $line = $rlt[$r];
+            $link = '<a href="'.base_url('index.php/thesa/select/'.$line['id_pa'].'/'.checkpost_link($line['id_pa'])).'">';
+            $sx .= '<tr>';
+            $sx .= '<td align="center">'.$line['id_pa'].'</td>';
+            $sx .= '<td>'.$link.$line['pa_name'].'</a>'.'</td>';
+            $sx .= '<td>'.$link.$line['us_nome'].'</a>'.'</td>';
+            $sx .= '</tr>';
+        }
+        $sx .= '</table>';
+        return($sx);
+    }    
+    function import_file()
+    {
+        $form = new form;
+        $cp = array();
+        array_push($cp,array('$H8','','',false,false));
+        array_push($cp,array('$FILE','','',false,false));
+        
+        array_push($cp,array('$A4','',msg('file_type_info'),false,false));
+        $op = 'ttl:Turtle RDF (.ttl)';
+        $op .= '&owlxml:XML OWL (.owl)';
+        $op .= '&txt:Term List (.txt)';
+        $op .= '&rdf:Skos-Core (.rdf)';
+        $op .= '&lst:Lista Alfabética (TemaTres) (.txt)';
+        array_push($cp,array('$RO'.$op,'',msg('file_type'),true,true));
+        
+        $sx = $form->editar($cp,'');
+        
+        
+        $saved = $form->saved;
+        if (isset($_FILES['fileToUpload']['tmp_name']))
+        {
+            if (strlen($_FILES['fileToUpload']['tmp_name']) > 0)
             {
-                $form = new form;
-                $cp = array();
-                array_push($cp,array('$H8','','',false,false));
-                array_push($cp,array('$FILE','','',false,false));
-                
-                array_push($cp,array('$A4','',msg('file_type_info'),false,false));
-                $op = 'ttl:Turtle RDF (.ttl)';
-                $op .= '&owlxml:XML OWL (.owl)';
-                $op .= '&txt:Term List (.txt)';
-                array_push($cp,array('$RO'.$op,'',msg('file_type'),true,true));
-                
-                $sx = $form->editar($cp,'');
-                
-                
-                $saved = $form->saved;
-                if (isset($_FILES['fileToUpload']['tmp_name']))
-                {
-                    if (strlen($_FILES['fileToUpload']['tmp_name']) > 0)
-                    {
-                        $saved++;
-                    }
-                }
-                
-                /********************************************/
-                if ($saved == 2)
-                {
+                $saved++;
+            }
+        }
+        
+        /********************************************/
+        $tp = get("dd3");  
+        if ($saved == 2)
+        {
+            switch($tp)
+            {
+                case 'lst':
                     $file = $_FILES['fileToUpload']['name'];
                     $tmp = $_FILES['fileToUpload']['tmp_name'];           
-                    $sx = $this->import_ttl($tmp);
-                }
+                    $sx = $this->import_txt_lst($tmp);
+                break;
+                case 'rdf':
+                    $file = $_FILES['fileToUpload']['name'];
+                    $tmp = $_FILES['fileToUpload']['tmp_name'];           
+                    $sx = $this->import_skos_core($tmp);
+                break;
                 
-                
-                $data['content'] = 'Welcome'.$sx;
-                $data['title'] = msg('File import');
-                $this->load->view("content",$data);
+                case 'ttl':
+                    $file = $_FILES['fileToUpload']['name'];
+                    $tmp = $_FILES['fileToUpload']['tmp_name'];           
+                    $sx = $this->import_ttl($tmp);                            
+                break;
             }
-            
-            function rdf_prefix_check($prefix='',$url='')
-            {
-                $prefix = trim($prefix);
-                $sql = "select * from rdf_prefix where prefix_ref = '".trim($prefix)."' ";
-                $rlt = $this->db->query($sql);
-                $rlt = $rlt->result_array();            
-                if (count($rlt) == 0)
-                {
-                    $sql = "insert into rdf_prefix
-                    (prefix_ref, prefix_url, prefix_ativo)
-                    values
-                    ('$prefix','$url',1)";
-                    $this->db->query($sql);
-                }
-                //rdf_prefix
-                //@prefix countries:  <http://topbraid.org/countries#> .
-            }
-            
-            function check_language($l)
-            {
-                switch($l)
-                {
-                    case 'pt':
-                        return('por');
-                    break;
-                    
-                    case 'en':
-                        return('en');
-                    break;
-                    
-                    default:
-                    echo 'OPS, erro de idioma=>'.$l;
-                    exit;
-                }
-            }
-            
-            function th_linkdata($idt,$prop,$value)
-            {
-                $value = troca($value,"'",'´');
-                $value = troca($value," ;",'');
-                $value = troca($value," .",'');
-                
-                
-                $sql = "select * from th_linkdata
-                where ld_concept = $idt
-                and ld_prop = '$prop'
-                and ld_value = '$value' ";    
-                
-                $rlt = $this->db->query($sql);
-                $rlt = $rlt->result_array();
-                if (count($rlt) == 0)
-                {
-                    $sql = "insert into th_linkdata
-                    (ld_concept, ld_prop, ld_value)
-                    values
-                    ($idt,'$prop','$value')";
-                    $rlt = $this->db->query($sql);                    
-                }
-                return(1);
-            }
-            
-            function th_linkdata_show($idt)
-            {
-                $sx = '';
-                $dt = $this->le($idt);
-                $pre = '';
-                
-                $sql = "select * from th_linkdata
-                where ld_concept = $idt";
-                
-                $rlt = $this->db->query($sql);
-                $rlt = $rlt->result_array();
-                if (count($rlt) > 0)
-                {
-                    $sx .= '<h4>Linked Data</h4>';
-                    $sx = 'thesa:c'.strzero($idt,3).'<br/>';
-                }
-                $wh = "(prefix_ref = 'thesa')";
-                for ($r=0;$r < count($rlt);$r++)
-                {
-                    $line = $rlt[$r];
-                    $link = '';
-                    $linka = '';
-                    $vv = trim($line['ld_value']);
-                    if (strpos($vv,'http') > 0)
-                    {
-                        $h = troca($vv,'&lt;','<');
-                        $h = troca($h,'&gt;','>');
-                        $h = substr($h,strpos($vv,'<')+1,strlen($vv));
-                        $h = substr($h,0,strpos($h,'>'));
-                        $h = trim($h);
-                        $link = '<a href="'.$h.'" target="_new">';
-                        $linka .= '</a>';
-                    }
-                    /*************************************************************************/
-                    $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;'.$line['ld_prop'].' '.$link.$vv.$linka;
-                    if ($r == (count($rlt)-1))
-                    {
-                        $sx .= ' .';
-                    } else {
-                        $sx .= ' ;';
-                    }
-                    $sx .= cr();
-                    /* Prefixos */
-                    $p = substr($line['ld_prop'],0,strpos($line['ld_prop'],':'));
-                    if (strlen($p) > 0)
-                    {
-                        $wh .= " or (prefix_ref = '$p') ";
-                    }
-                }
-                
-                /******************* Prefixos ******************************/
-                $sql = "select * from rdf_prefix where ".$wh;
-                $rlt = $this->db->query($sql);
-                $rlt = $rlt->result_array();
-                $sp = '';
-                for ($r = 0;$r < count($rlt);$r++) 
-                {
-                    $line = $rlt[$r];
-                    $sp .= '@prefix '.$line['prefix_ref'].': ';
-                    $sp .= '&lt;';
-                    $sp .= $line['prefix_url'];
-                    $sp .= '&gt;';
-                    $sp .= '</br>';
-                }
-                $sx .= '<br/>';
-                $sx .= '<br/>';
-                return('<pre>'.$sp.chr(13).$sx.'</pre>');
-            }
-            
-            function import_ttl($tmp)
-            {
-                $x = file_get_contents($tmp);
-                $sx = '<h3>Importanto</h3>';
-                $ids = $_SESSION['skos'];
-                
-                $ln = troca($x,';','.,');
-                $ln = troca($x,chr(13),';');
-                $ln = troca($x,chr(10),';');
-                $lns = splitx(';',$ln);
-                
-                $pf = array();
-                
-                /* Busca prefixos **********************************************/
-                $lp = 0;
-                for ($r=0;$r < count($lns);$r++)
-                {
-                    $ln = trim($lns[$r]);
-                    $p = substr($ln,0,7);
-                    if (substr($ln,0,7)=='@prefix')
-                    {
-                        $pre = substr($ln,7,strlen($ln));
-                        $pre = substr($pre,0,strpos($pre,':'));
-                        
-                        $url = substr($ln,strpos($ln,':')+1,strlen($ln));
-                        $url = troca($url,'<','');
-                        $url = troca($url,'>','');
-                        $url = trim($url);
-                        
-                        $sx .= '<br>Prefixo :'.$pre.'  '.$url;
-                        $this->rdf_prefix_check($pre,$url);
-                        $pf[$pre] = $pre;
-                        $lp = $r+2;
-                    }
-                }
-                
-                /* Busca conceito **********************************************/
-                $cnt = '';
-                $fn = fopen($tmp,"r");
-                $ln = 0;
-                $vlr = '';
-                $cps = array();
-                while (!feof($fn))
-                {
-                    $ln++;
-                    $l = fgets($fn);
-                    $l = troca($l,'<','&lt;');
-                    $l = troca($l,'>','&gt;');
-                    $l = troca($l,chr(10),' ');
-                    
-                    /******************************* troca espaco inicial por _ */
-                    for ($r=0;$r < strlen($l);$r++)
-                    {
-                        if ($l[$r] == ' ')  
-                        { $l[$r] = '_'; }
-                        else 
-                        { $r = strlen($l); }
-                    }
-                    
-                    /*************************** Identificar linhas com conteúdo */
-                    if (($ln > $lp) and (strlen(trim($l)) > 0))
-                    {  
-                        if ($l[0] != '_')
-                        {
-                            //echo '<br>'.$ln.'. '.$l;
-                            $vlr = '';
-                            $cnt = trim($l);
-                            $cps[$cnt] = array();
-                        } else {
-                            $l = troca($l,'_','');
-                            $l = trim($l);
-                            $n = strlen($l);
-                            if ($n > 1)
-                            {
-                                $lst = substr($l,$n-1,1);
-                                if (($lst == ';') or ($lst == '.'))
-                                {
-                                    
-                                    $vlr .= $l;
-                                    array_push($cps[$cnt],$vlr);
-                                    $vlr = '';
-                                } else {
-                                    $vlr .= $l.' ';
-                                }
-                                //echo '<br>=('.$n.')=>'.$l.'['.$lst.']';
-                            }
-                        }
-                        
-                        
-                        
-                    } else {
-                        /*** Ignorar linhas anteiores ****/
-                        //echo '<br>'.$ln.'. <i>ignored</i>';
-                    }
-                }
-                fclose($fn);
-                
-                foreach ($cps as $key => $value) {
-                    $ar = $value;
-                    if (is_array($ar))
-                    {
-                        $type = '';
-                        $prefTerm = '';
-                        $idt = 0;      
-                        
-                        for ($r=0;$r < count($ar);$r++)
-                        {
-                            $ln = $ar[$r];
-                            $prop = substr($ln,0,strpos($ln,' '));
-                            $value = substr($ln,strlen($prop),strlen($ln));
-                            
-                            switch($prop)
-                            {
-                                case 'rdf:type':
-                                    $type = $value;
-                                break;
-                                
-                                case 'rdfs:comment':
-                                break;
-                                
-                                case 'rdfs:label':
-                                    $prefTerm = $value;
-                                    $language = 'por';
-                                    if (strpos($prefTerm,'@') > 0)
-                                    {
-                                        $language = trim(substr($prefTerm,strpos($prefTerm,'@')+1,10));
-                                        $language = troca($language,';','');
-                                        $language = troca($language,'.','');
-                                        $language = trim($language);
-                                        $language = $this->check_language($language);                      
-                                        
-                                        $prefTerm = substr($prefTerm,0,strpos($prefTerm,'@'));
-                                        $prefTerm = trim(troca($prefTerm,'"',''));
-                                    }
-                                    $prefTerm = troca($prefTerm,"'","´");
-                                    $idt = $this->terms_add($prefTerm,0,$language);
-                                    $th = $_SESSION['skos'];
-                                    $this->association_term_th($prefTerm, $language, $th);
-                                    $this->concept_create($idt, $th);
-                                break;
-                                
-                                /************************** Grava em LinkedData */
-                                default:
-                                
-                            break;
-                        }
-                        $this->th_linkdata($idt,$prop,$value);
-                    }
-                    $this->th_linkdata($idt,'owl:sameAs',$key);
-                }
-            }
-            print_r($ar);
-            exit;
-            //$this->terms_add
-            # code...    
-            exit;
-            
-            for ($r=$lp;$r < count($lns);$r++)
-            {
-                $ln = $lns[$r]; 
-                if (substr($ln,0,1) != ' ')
-                {
-                    echo '<br>'.$ln;
-                }
-                
-            }
-            echo 'linhas==>'.count($lns);
-            echo '===>'.$ids;
-            return($sx);
         }
-        function language_action($th,$ac,$id)
+        
+        
+        $data['content'] = 'Welcome'.$sx;
+        $data['title'] = msg('File import');
+        $this->load->view("content",$data);
+    }
+    
+    function rdf_prefix_check($prefix='',$url='')
+    {
+        $prefix = trim($prefix);
+        $sql = "select * from rdf_prefix where prefix_ref = '".trim($prefix)."' ";
+        $rlt = $this->db->query($sql);
+        $rlt = $rlt->result_array();            
+        if (count($rlt) == 0)
         {
-            $sql = "select * from language_th where lgt_th = ".$th." and lgt_language = ".$id;
-            $rlt = $this->db->query($sql);
-            $rlt = $rlt->result_array();
-            $sql = "";
-            if (count($rlt) > 0)
-            {
-                if ($ac == 'D')
-                {
-                    $sql = "delete from language_th where lgt_th = ".$th." and lgt_language = ".$id;
-                }
-            } else {
-                if ($ac == 'I')
-                {
-                    $sql = "insert into language_th (lgt_th, lgt_language, lgt_order) values ($th,$id,5)";
-                }
-            }
-            if (strlen($sql) > 0)
-            {
-                $rlt = $this->db->query($sql);
-            }
-            return(1);
+            $sql = "insert into rdf_prefix
+            (prefix_ref, prefix_url, prefix_ativo)
+            values
+            ('$prefix','$url',1)";
+            $this->db->query($sql);
         }
-        function th_languages($th)
+        //rdf_prefix
+        //@prefix countries:  <http://topbraid.org/countries#> .
+    }
+    
+    function check_language($l)
+    {
+        switch($l)
         {
-            /* Faz o registro dos idiomas */
-            $lg1 = get("dd1");
-            $lg2 = get("dd2");
-            $act = get("action");
-            if (strlen($act) > 0)
-            {
-                if (substr($act,1,1) == '<')
-                {
-                    if (strlen($lg2) > 0) 
-                    {
-                        $this->language_action($th,'I',$lg2);
-                    }
-                } else {
-                    if (strlen($lg1) > 0)
-                    {
-                        $this->language_action($th,'D',$lg1);
-                    }
-                }
-            }
+            case 'pt':
+                return('por');
+            break;
             
-            /* Formulario de registro */
-            $sql = "select * from language as lgn
-            left join language_th on id_lg = lgt_language
-            and lgt_th = $th 
-            where lg_active = 1
-            order by id_lgt, lgn.lg_order, lgn.lg_language";
-            
-            $rlt = $this->db->query($sql);
-            $rlt = $rlt->result_array();
-            $s1 = '';
-            $s2 = '';
-            for ($r=0;$r < count($rlt);$r++)
-            {
-                $line = $rlt[$r];
-                $s = '<option value="'.$line['id_lg'].'">';
-                $s .= $line['lg_language'];
-                $s .= '</option>';
-                if (strlen(trim($line['id_lgt'])) > 0)
-                {
-                    $s1 .= $s.cr();
-                } else {
-                    $s2 .= $s.cr();
-                }
-            }
-            $sx = '<h1>'.msg('language').'</h1>';
-            $sx .= msg('language_include_info');
-            $sx .= '<form method="post">';
-            $sx .= '<table width="100%" class="table">';
-            $sx .= '<tr>';
-            $sx .= '<th class="text-center">'.msg('col_language_enable').'</th>';
-            $sx .= '<th class="text-center">'.msg('action').'</th>';
-            $sx .= '<th class="text-center">'.msg('col_language_disable').'</th>';
-            $sx .= '</tr>';
-            
-            $sx .= '<tr>';
-            $sx .= '<td width="45%"><select name="dd1" size=20 style="width: 100%;">'.$s1.'</select></td>';
-            $sx .= '<td width="10%" class="text-center">';
-            $sx .= '<input type="submit" name="action" class="btn btn-outline-primary" value="<<<<<">';
-            $sx .= '<br/>';
-            $sx .= '<br/>';
-            $sx .= '<input type="submit" name="action" class="btn btn-outline-primary" value=">>>>>">';
-            $sx .= '</td>';
-            $sx .= '<td width="45%"><select name="dd2" size=20 style="width: 100%;">'.$s2.'</select></td>';
-            $sx .= '</tr>';
-            $sx .= '</table>';
-            $sx .= '</form>';
-            
-            return($sx);
-        }
-        function admin($act,$d1,$d2,$d3)
-        {
-            $sx = '';
-            switch($act)
-            {
-                case 'languages':
-                    switch($d1)
-                    {
-                        default:
-                        $sx = $this->language_row($d1,$d2,$d3);
-                    break;
-                }
+            case 'en':
+                return('en');
             break;
             
             default:
-            $sx .= '<h2>'.msg('admin_menu').'</h2>';
-            $sx .= '<ul>';
-            $sx .= '<a href="'.base_url(PATH.'admin/languages').'">'.msg('languages').'</a>';
-            $sx .= '</ul>';
-        break;
+            echo 'OPS, erro de idioma=>'.$l;
+            exit;
+        }
     }
+    
+    function th_linkdata($idt,$prop,$value)
+    {
+        $value = troca($value,"'",'´');
+        $value = troca($value," ;",'');
+        $value = troca($value," .",'');
+        
+        
+        $sql = "select * from th_linkdata
+        where ld_concept = $idt
+        and ld_prop = '$prop'
+        and ld_value = '$value' ";    
+        
+        $rlt = $this->db->query($sql);
+        $rlt = $rlt->result_array();
+        if (count($rlt) == 0)
+        {
+            $sql = "insert into th_linkdata
+            (ld_concept, ld_prop, ld_value)
+            values
+            ($idt,'$prop','$value')";
+            $rlt = $this->db->query($sql);                    
+        }
+        return(1);
+    }
+    
+    function th_linkdata_show($idt)
+    {
+        $sx = '';
+        $dt = $this->le($idt);
+        $pre = '';
+        
+        $sql = "select * from th_linkdata
+        where ld_concept = $idt";
+        
+        $rlt = $this->db->query($sql);
+        $rlt = $rlt->result_array();
+        if (count($rlt) > 0)
+        {
+            $sx .= '<h4>Linked Data</h4>';
+            $sx = 'thesa:c'.strzero($idt,3).'<br/>';
+        }
+        $wh = "(prefix_ref = 'thesa')";
+        for ($r=0;$r < count($rlt);$r++)
+        {
+            $line = $rlt[$r];
+            $link = '';
+            $linka = '';
+            $vv = trim($line['ld_value']);
+            if (strpos($vv,'http') > 0)
+            {
+                $h = troca($vv,'&lt;','<');
+                $h = troca($h,'&gt;','>');
+                $h = substr($h,strpos($vv,'<')+1,strlen($vv));
+                $h = substr($h,0,strpos($h,'>'));
+                $h = trim($h);
+                $link = '<a href="'.$h.'" target="_new">';
+                $linka .= '</a>';
+            }
+            /*************************************************************************/
+            $sx .= '&nbsp;&nbsp;&nbsp;&nbsp;'.$line['ld_prop'].' '.$link.$vv.$linka;
+            if ($r == (count($rlt)-1))
+            {
+                $sx .= ' .';
+            } else {
+                $sx .= ' ;';
+            }
+            $sx .= cr();
+            /* Prefixos */
+            $p = substr($line['ld_prop'],0,strpos($line['ld_prop'],':'));
+            if (strlen($p) > 0)
+            {
+                $wh .= " or (prefix_ref = '$p') ";
+            }
+        }
+        
+        /******************* Prefixos ******************************/
+        $sql = "select * from rdf_prefix where ".$wh;
+        $rlt = $this->db->query($sql);
+        $rlt = $rlt->result_array();
+        $sp = '';
+        for ($r = 0;$r < count($rlt);$r++) 
+        {
+            $line = $rlt[$r];
+            $sp .= '@prefix '.$line['prefix_ref'].': ';
+            $sp .= '&lt;';
+            $sp .= $line['prefix_url'];
+            $sp .= '&gt;';
+            $sp .= '</br>';
+        }
+        $sx .= '<br/>';
+        $sx .= '<br/>';
+        return('<pre>'.$sp.chr(13).$sx.'</pre>');
+    }
+    
+    function import_txt_lst($tmp)
+    {
+        $x = file_get_contents($tmp);
+        $sx = '<h3>Importanto</h3>';
+        $th = $_SESSION['skos'];
+        $x = troca($x,';','.,');
+        $x = troca($x,chr(10),';');
+        $x = substr($x,strpos($x,'__'),strlen($x));
+        $x = substr($x,strpos($x,';'),strlen($x));                
+        $ln = splitx(';',$x);
+        $list = array();
+        for ($r=0;$r < count($ln);$r++)
+        {
+            $t = $ln[$r];
+            $t = troca($t,'-',' ');
+            $c = strpos($t,':');
+            if ($c == 0)
+            {
+                $new = $this -> terms_add($t, 0, 'por');
+                /* Insert Term intro the Thesaurus */
+                $t = lowercase($t);
+                $t = Uppercase(substr($t,0,1)).substr($t,1,strlen($t));
+                $idt = $this -> association_term_th($t, 'por', $th);
+                
+                $is_active = $this -> skoses -> is_concept($new, $th);
+                if ($is_active == 0)
+                {
+                    $id = $this -> skoses -> concept_create($new, $th);
+                    $desc = 'Import TemaTres';
+                    $this -> skoses -> log_insert($id, $th, 'IMPOR', $desc);
+                    $this->skoses->th_update($th);    
+                    $sx .= $t.' - Novo<br>';
+                    $list[$t] = $id;
+                } else {
+                    $sx .= $t.' - já existe<br>';
+                    $id = $is_active;
+                    $list[$t] = $id;
+                }
+            }
+        }
+        $t=0;        
+        for ($r=0;$r < count($ln);$r++)
+        {
+            $t = $ln[$r];
+            $t = troca($t,'-',' ');
+            $c = strpos($t,':');
+            $tp = substr(trim($t),0,2);
+            if ($c > 0)
+                {
+                    $t = trim(substr($t,3,strlen($t)));
+                }            
+            $t = lowercase($t);
+            $t = Uppercase(substr($t,0,1)).substr($t,1,strlen($t));
+
+            if ($c == 0)
+                {
+                    $id = $list[$t];
+                }
+            
+            if (($tp == 'UP') and ($c > 1))
+            {
+                $new = $this -> terms_add($t, 0, 'por');
+                $idt = $this -> association_term_th($t, 'por', $th);
+                $prop = 65;
+                $this->assign_as_propriety($id,$th,$prop,$new);                    
+            } 
+            
+            if (($tp == 'TR') and ($c > 1))
+            {                
+                $new = $this -> terms_add($t, 0, 'por');
+                $ids = $this -> skoses -> is_concept($new, $th);
+                $prop = 71;
+                $this->assign_as_relation($id, $ids, $th, $prop);
+            }             
+            
+            if (($tp == 'TG') and ($c > 1))
+            {
+                $new = $this -> terms_add($t, 0, 'por');
+                $ids = $this -> skoses -> is_concept($new, $th);
+                $this->assign_as_narrower($ids, $id, $th, 0);
+            }            
+        }        
+        return($sx); 
+    }
+    
+    function import_skos_core($xml)
+    {
+        $ids = $_SESSION['skos'];                
+        ini_set('display_errors','1');
+        
+        $sxe = new SimpleXMLElement($xml);               
+        $ns = $sxe->getNamespaces(true);                
+        $child = $sxe->children($ns['channel']);                
+        print_r($child);
+        echo '<hr>';
+        foreach ($child->skos as $out_ns)
+        {
+            echo $out_ns;
+        }                  
+        
+        
+    }
+    
+    function import_ttl($tmp)
+    {
+        $x = file_get_contents($tmp);
+        $sx = '<h3>Importanto</h3>';
+        $ids = $_SESSION['skos'];
+        
+        $ln = troca($x,';','.,');
+        $ln = troca($x,chr(13),';');
+        $ln = troca($x,chr(10),';');
+        $lns = splitx(';',$ln);
+        
+        $pf = array();
+        
+        /* Busca prefixos **********************************************/
+        $lp = 0;
+        for ($r=0;$r < count($lns);$r++)
+        {
+            $ln = trim($lns[$r]);
+            $p = substr($ln,0,7);
+            if (substr($ln,0,7)=='@prefix')
+            {
+                $pre = substr($ln,7,strlen($ln));
+                $pre = substr($pre,0,strpos($pre,':'));
+                
+                $url = substr($ln,strpos($ln,':')+1,strlen($ln));
+                $url = troca($url,'<','');
+                $url = troca($url,'>','');
+                $url = trim($url);
+                
+                $sx .= '<br>Prefixo :'.$pre.'  '.$url;
+                $this->rdf_prefix_check($pre,$url);
+                $pf[$pre] = $pre;
+                $lp = $r+2;
+            }
+        }
+        
+        /* Busca conceito **********************************************/
+        $cnt = '';
+        $fn = fopen($tmp,"r");
+        $ln = 0;
+        $vlr = '';
+        $cps = array();
+        while (!feof($fn))
+        {
+            $ln++;
+            $l = fgets($fn);
+            $l = troca($l,'<','&lt;');
+            $l = troca($l,'>','&gt;');
+            $l = troca($l,chr(10),' ');
+            
+            /******************************* troca espaco inicial por _ */
+            for ($r=0;$r < strlen($l);$r++)
+            {
+                if ($l[$r] == ' ')  
+                { $l[$r] = '_'; }
+                else 
+                { $r = strlen($l); }
+            }
+            
+            /*************************** Identificar linhas com conteúdo */
+            if (($ln > $lp) and (strlen(trim($l)) > 0))
+            {  
+                if ($l[0] != '_')
+                {
+                    //echo '<br>'.$ln.'. '.$l;
+                    $vlr = '';
+                    $cnt = trim($l);
+                    $cps[$cnt] = array();
+                } else {
+                    $l = troca($l,'_','');
+                    $l = trim($l);
+                    $n = strlen($l);
+                    if ($n > 1)
+                    {
+                        $lst = substr($l,$n-1,1);
+                        if (($lst == ';') or ($lst == '.'))
+                        {
+                            
+                            $vlr .= $l;
+                            array_push($cps[$cnt],$vlr);
+                            $vlr = '';
+                        } else {
+                            $vlr .= $l.' ';
+                        }
+                        //echo '<br>=('.$n.')=>'.$l.'['.$lst.']';
+                    }
+                }
+                
+                
+                
+            } else {
+                /*** Ignorar linhas anteiores ****/
+                //echo '<br>'.$ln.'. <i>ignored</i>';
+            }
+        }
+        fclose($fn);
+        
+        foreach ($cps as $key => $value) {
+            $ar = $value;
+            if (is_array($ar))
+            {
+                $type = '';
+                $prefTerm = '';
+                $idt = 0;      
+                
+                for ($r=0;$r < count($ar);$r++)
+                {
+                    $ln = $ar[$r];
+                    $prop = substr($ln,0,strpos($ln,' '));
+                    $value = substr($ln,strlen($prop),strlen($ln));
+                    
+                    switch($prop)
+                    {
+                        case 'rdf:type':
+                            $type = $value;
+                        break;
+                        
+                        case 'rdfs:comment':
+                        break;
+                        
+                        case 'rdfs:label':
+                            $prefTerm = $value;
+                            $language = 'por';
+                            if (strpos($prefTerm,'@') > 0)
+                            {
+                                $language = trim(substr($prefTerm,strpos($prefTerm,'@')+1,10));
+                                $language = troca($language,';','');
+                                $language = troca($language,'.','');
+                                $language = trim($language);
+                                $language = $this->check_language($language);                      
+                                
+                                $prefTerm = substr($prefTerm,0,strpos($prefTerm,'@'));
+                                $prefTerm = trim(troca($prefTerm,'"',''));
+                            }
+                            $prefTerm = troca($prefTerm,"'","´");
+                            $idt = $this->terms_add($prefTerm,0,$language);
+                            $th = $_SESSION['skos'];
+                            $this->association_term_th($prefTerm, $language, $th);
+                            $this->concept_create($idt, $th);
+                        break;
+                        
+                        /************************** Grava em LinkedData */
+                        default:
+                        
+                    break;
+                }
+                $this->th_linkdata($idt,$prop,$value);
+            }
+            $this->th_linkdata($idt,'owl:sameAs',$key);
+        }
+    }
+    print_r($ar);
+    exit;
+    //$this->terms_add
+    # code...    
+    exit;
+    
+    for ($r=$lp;$r < count($lns);$r++)
+    {
+        $ln = $lns[$r]; 
+        if (substr($ln,0,1) != ' ')
+        {
+            echo '<br>'.$ln;
+        }
+        
+    }
+    echo 'linhas==>'.count($lns);
+    echo '===>'.$ids;
     return($sx);
+}
+function language_action($th,$ac,$id)
+{
+    $sql = "select * from language_th where lgt_th = ".$th." and lgt_language = ".$id;
+    $rlt = $this->db->query($sql);
+    $rlt = $rlt->result_array();
+    $sql = "";
+    if (count($rlt) > 0)
+    {
+        if ($ac == 'D')
+        {
+            $sql = "delete from language_th where lgt_th = ".$th." and lgt_language = ".$id;
+        }
+    } else {
+        if ($ac == 'I')
+        {
+            $sql = "insert into language_th (lgt_th, lgt_language, lgt_order) values ($th,$id,5)";
+        }
+    }
+    if (strlen($sql) > 0)
+    {
+        $rlt = $this->db->query($sql);
+    }
+    return(1);
+}
+function th_languages($th)
+{
+    /* Faz o registro dos idiomas */
+    $lg1 = get("dd1");
+    $lg2 = get("dd2");
+    $act = get("action");
+    if (strlen($act) > 0)
+    {
+        if (substr($act,1,1) == '<')
+        {
+            if (strlen($lg2) > 0) 
+            {
+                $this->language_action($th,'I',$lg2);
+            }
+        } else {
+            if (strlen($lg1) > 0)
+            {
+                $this->language_action($th,'D',$lg1);
+            }
+        }
+    }
+    
+    /* Formulario de registro */
+    $sql = "select * from language as lgn
+    left join language_th on id_lg = lgt_language
+    and lgt_th = $th 
+    where lg_active = 1
+    order by id_lgt, lgn.lg_order, lgn.lg_language";
+    
+    $rlt = $this->db->query($sql);
+    $rlt = $rlt->result_array();
+    $s1 = '';
+    $s2 = '';
+    for ($r=0;$r < count($rlt);$r++)
+    {
+        $line = $rlt[$r];
+        $s = '<option value="'.$line['id_lg'].'">';
+        $s .= $line['lg_language'];
+        $s .= '</option>';
+        if (strlen(trim($line['id_lgt'])) > 0)
+        {
+            $s1 .= $s.cr();
+        } else {
+            $s2 .= $s.cr();
+        }
+    }
+    $sx = '<h1>'.msg('language').'</h1>';
+    $sx .= msg('language_include_info');
+    $sx .= '<form method="post">';
+    $sx .= '<table width="100%" class="table">';
+    $sx .= '<tr>';
+    $sx .= '<th class="text-center">'.msg('col_language_enable').'</th>';
+    $sx .= '<th class="text-center">'.msg('action').'</th>';
+    $sx .= '<th class="text-center">'.msg('col_language_disable').'</th>';
+    $sx .= '</tr>';
+    
+    $sx .= '<tr>';
+    $sx .= '<td width="45%"><select name="dd1" size=20 style="width: 100%;">'.$s1.'</select></td>';
+    $sx .= '<td width="10%" class="text-center">';
+    $sx .= '<input type="submit" name="action" class="btn btn-outline-primary" value="<<<<<">';
+    $sx .= '<br/>';
+    $sx .= '<br/>';
+    $sx .= '<input type="submit" name="action" class="btn btn-outline-primary" value=">>>>>">';
+    $sx .= '</td>';
+    $sx .= '<td width="45%"><select name="dd2" size=20 style="width: 100%;">'.$s2.'</select></td>';
+    $sx .= '</tr>';
+    $sx .= '</table>';
+    $sx .= '</form>';
+    
+    return($sx);
+}
+function admin($act,$d1,$d2,$d3)
+{
+    $sx = '';
+    switch($act)
+    {
+        case 'languages':
+            switch($d1)
+            {
+                default:
+                $sx = $this->language_row($d1,$d2,$d3);
+            break;
+        }
+    break;
+    
+    default:
+    $sx .= '<h2>'.msg('admin_menu').'</h2>';
+    $sx .= '<ul>';
+    $sx .= '<a href="'.base_url(PATH.'admin/languages').'">'.msg('languages').'</a>';
+    $sx .= '</ul>';
+break;
+}
+return($sx);
 }
 
 function language_cp()
