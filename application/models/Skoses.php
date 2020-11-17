@@ -1267,7 +1267,9 @@ class skoses extends CI_model {
             if ((isset($_SESSION['id']) and ($line['pa_creator'] == $_SESSION['id']))) {
                 if ($line['pa_creator'] == $_SESSION['id']) {
                     $sa .= '<br>';
-                    $sa .= '<a href="' . base_url('index.php/thesa/th_edit/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'] . $this -> chave)) . '" class="small">' . msg('edit') . '</a>';
+                    $sa .= '<a href="' . base_url('index.php/thesa/select/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'])) . '" class="small">' . msg('access') . '</a>';
+                    $sa .= ' &nbsp; ';
+                    $sa .= '<a href="' . base_url('index.php/thesa/th_edit/' . $line['id_pa'] . '/' . checkpost_link($line['id_pa'])) . '" class="small">' . msg('edit') . '</a>';
                 }
             }
             
