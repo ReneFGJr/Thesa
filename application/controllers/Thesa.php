@@ -1090,7 +1090,7 @@ class Thesa extends CI_Controller {
 			$ext = troca($ext, '.', '');
 			
 			$uploadfile = $temp . 'img-' . $img . '-' . substr(checkpost_link($img), 2, 10) . '.' . $ext;
-			
+			$ext = strtolower($ext);
 			switch($ext) {
 				case 'png' :
 					$ok = 1;
