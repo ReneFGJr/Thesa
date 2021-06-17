@@ -1,5 +1,6 @@
 <?php
 define("LIBRARY_NAME","Thesa");
+define("LIBRARY","4000");
 class Thesa extends CI_Controller {
 	
 	function __construct() {
@@ -17,6 +18,7 @@ class Thesa extends CI_Controller {
 		$this -> load -> helper('form');
 		$this -> load -> helper('form_sisdoc');
 		$this -> load -> helper('url');
+		$this -> load -> helper('bootstrap');
 		
 		
 		$this -> load -> helper('xml');
@@ -1490,7 +1492,7 @@ class Thesa extends CI_Controller {
 				header("Content-type: text/xml");
 				header("Content-Disposition: attachment; filename=\"{$arquivo}\"");
 				header("Content-Description: PHP Generated Data");
-				echo($this -> skoses -> skos_xml($id, '=>', ''));
+				echo($this -> skoses -> skos_xml($id));
 			break;			
 			
 			case 'json' :

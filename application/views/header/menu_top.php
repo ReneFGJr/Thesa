@@ -16,7 +16,7 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="<?php echo base_url('index.php');?>">Home <span class="sr-only">(current)</span></a></li>
         <li><a href="<?php echo base_url('index.php');?>">Catalogo de Livros Infantins</a></li>
-        <li><a href="<?php echo base_url('index.php/skos');?>">Tesauros e Vocabularios</a></li>
+        <li><a href="<?php echo base_url('index.php/skos');?>">Tesauros e Vocabularios</a></li>       
       </ul>
       <ul class="nav navbar-nav navbar-right">
      	<?php

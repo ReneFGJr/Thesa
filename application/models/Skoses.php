@@ -3074,18 +3074,44 @@ function xml($data) {
     
     function language_skos($lang)
     {
-        $lang = 'pt';
+//        $lang = 'pt';
         switch($lang)
         {
             case 'por':
                 $lang = 'pt';
             break;
+
             case 'pt':
                 $lang = 'pt';
+            break;  
+
+            case 'pt-PT':
+                $lang = 'pt';
+            break;
+
+            case 'spa':
+                $lang = 'es';
+            break; 
+
+            case 'es':
+                $lang = 'es';
             break;            
+
+            case 'es-ES':
+                $lang = 'es';
+            break; 
+
+            case 'en':
+                $lang = 'en';
+            break; 
+
+            case 'eng':
+                $lang = 'en';
+            break;                                 
+
             default:
-            echo 'OPS LANGUAGE '.$lang;
-            exit;
+                $lang = '??'.$lang;
+            break;
         }
         return($lang);
     }
@@ -3104,12 +3130,28 @@ function xml($data) {
         $rlt = $rlt -> result_array();
         
         $sx = '<?xml version="1.0" encoding="UTF-8"?>'.cr();
-        $sx .= '<rdf:RDF xmlns="http://www.w3.org/2004/02/skos/core#" ';
-        $sx .= 'xmlns:dc="http://purl.org/dc/elements/1.1/" ';
-        $sx .= 'xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ';
-        $sx .= 'xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">'.cr();
+        $sx .= '<rdf:RDF xmlns="http://www.w3.org/2004/02/skos/core#" '.cr();;
+        $sx .= 'xmlns:dc="http://purl.org/dc/elements/1.1/" '.cr();;
+        $sx .= 'xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" '.cr();;
+        $sx .= 'xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"'.cr();
+        $sx .= 'xmlns:thesa="http://www.ufrgs.br/thesa/index.php/c/">'.cr();
         //        $sx .= '<concepts>'.cr();        
         
+        /******************************************************* Collection */
+        $dt = $this->le_th($th);
+        $sx .= '<Collection>'.cr();
+        $sx .= '<name>'.$dt['pa_name'].'</name>'.cr();
+        $sx .= '<idth>'.$th.'</idth>'.cr();
+        $sx .= '<description>'.$dt['pa_description'].'</description>'.cr();
+        $sx .= '<created>'.$dt['pa_created'].'</created>'.cr();
+        $sx .= '<update>'.$dt['pa_update'].'</update>'.cr();
+        $sx .= '<introdution>'.$dt['pa_introdution'].'</introdution>'.cr();
+        $sx .= '<methodology>'.$dt['pa_methodology'].'</methodology>'.cr();
+        $sx .= '<audience>'.$dt['pa_audience'].'</audience>'.cr();
+        $sx .= '<language>'.$dt['pa_language'].'</language>'.cr();
+        $sx .= '<url>'.'https://www.ufrgs.br/tesauros/index.php/thesa/terms/'.$th.'</url>'.cr();
+        $sx .= '</Collection>'.cr();
+
         $x = array();
         $cp = 0;
         for ($r=0;$r < count($rlt);$r++)
@@ -3127,48 +3169,62 @@ function xml($data) {
                     $rrr = $rrr->result_array();
                     for ($y=0;$y < count($rrr);$y++)
                     {
-                        $sx .= '<broader rdf:resource="xx'.base_url(PATH.'c/'.trim($line['ct_concept'])).'"/>'.cr();        
+                        $sx .= '<broader rdf:resource="'.base_url(PATH.'c/'.trim($line['ct_concept'])).'"/>'.cr();        
                     }
+
                     /* mostra notas de escopo */
                     $sql = "select * from rdf_literal_note where rl_c = ".$xcp;
                     $rrr = $this->db->query($sql);
                     $rrr = $rrr->result_array();
                     for ($y=0;$y < count($rrr);$y++)
                     {
-                        $sx .= '<scopeNote xml:lang="'.$rrr[$y]['rl_lang'].'">'.trim($rrr[$y]['rl_value']).'</scopeNote>'.cr();        
+                        $note = troca(trim($rrr[$y]['rl_value']),'&','&amp;');
+                        $note = troca($note,'<','&lt;');
+                        $note = troca($note,'>','&gt;');
+                        $sx .= '<scopeNote xml:lang="'.$rrr[$y]['rl_lang'].'">'.$note.'</scopeNote>'.cr();        
                     }                                         
                     $sx .= '</Concept>'.cr();
                 }                
-                $sx .= '<Concept rdf:about="'.base_url(PATH."c/".$xcp.'#').'">'.cr();
+                $sx .= '<Concept rdf:about="'."thesa:".$xcp.'#">'.cr();
             }
             
             /************** PROPRIEDADES */
             $cp = $xcp;
             $prop = $line['rs_propriety'];
+            $pref = false;
             switch($prop)
             {
                 case 'prefLabel':
-                    $sx .= '<prefLabel xml:lang="'.$this->language_skos($line['rl_lang']).'" >'.trim($line['rl_value']).'</prefLabel>'.cr();
+                    if (strlen(trim($line['rl_value'])) > 0)
+                    {
+                    $sx .= '<prefLabel xml:lang="'.$this->language_skos($line['rl_lang']).'" >'.troca(trim($line['rl_value']),'&','&amp;').'</prefLabel>'.cr();
+                    $pref = True;
+                    }
                 break;
                 
                 case 'hiddenLabel':
-                    $sx .= '<hiddenLabel xml:lang="'.$this->language_skos($line['rl_lang']).'" >'.trim($line['rl_value']).'</hiddenLabel>'.cr();
+                    $sx .= '<hiddenLabel xml:lang="'.$this->language_skos($line['rl_lang']).'" >'.troca(trim($line['rl_value']),'&','&amp;').'</hiddenLabel>'.cr();
+                    $pref = True;
                 break;
                 
                 default:
                 switch($line['rs_group'])
                 {
                     case 'FE':
-                        $sx .= '<altLabel xml:lang="'.$this->language_skos($line['rl_lang']).'" >'.trim($line['rl_value']).'</altLabel>'.cr();
+                        $sx .= '<altLabel xml:lang="'.$this->language_skos($line['rl_lang']).'" >'.troca(trim($line['rl_value']),'&','&amp;').'</altLabel>'.cr();
+                        $pref = True;
                     break;
                     case 'TG':
-                        $sx .= '<narrower rdf:resource="'.base_url(PATH.'c/'.trim($line['ct_concept_2'])).'"/>'.cr();
+                        $sx .= '<narrower rdf:resource="'."thesa:".trim($line['ct_concept_2']).'"/>'.cr();
+                        $pref = True;
                     break;
                     case 'TR':                                
-                        $sx .= '<related rdf:resource="'.base_url(PATH.'c/'.trim($line['ct_concept_2'])).'"/>'.cr();
+                        $sx .= '<related rdf:resource="'."thesa:".trim($line['ct_concept_2']).'"/>'.cr();
+                        $pref = True;
                     break;
                     default:
-                    echo '==>'.$prop.'-'.$line['rs_group'].'<br>';
+                        echo '==>'.$prop.'-'.$line['rs_group'].'<br>';
+                        exit;
                 }
             }            
         }   
