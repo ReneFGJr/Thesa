@@ -2,7 +2,7 @@
 
 Sistema desenvolvido em PHP/MySQL para construção de Tesauros com maior nível semântico entre os termos.
 
-# Versão atual v0.20.03.26
+# Versão atual v0.21.06.16
 
 # Instalação
 
