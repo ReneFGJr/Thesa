@@ -78,8 +78,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         function browser_detect()
             {
-                $lang = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-                $lang = substr($lang,0,strpos($lang,','));
+                if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
+                    {
+                        $lang = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+                        $lang = substr($lang,0,strpos($lang,','));
+                    } else {
+                        $lang = 'pt_br';
+                    }
                 switch($lang)
                     {
                         case 'pt-BR':

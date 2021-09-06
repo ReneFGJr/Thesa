@@ -23,7 +23,7 @@ global $lang;
 			</div>
 			<div class="col-md-2">
 				<a class="btn btn-outline-primary" style="width: 100%;" href="<?php echo base_url(PATH.'thesaurus_open');?>"><?php echo msg('open_thesauros');?></a>
-				<? if (isset($_SESSION['user'])) { ?>
+				<?php if (isset($_SESSION['user'])) { ?>
 				<br/><br/>
 				<a class="btn btn-outline-primary" style="width: 100%;" href="<?php echo base_url(PATH.'thesaurus_my');?>"><?php echo msg('my_thesauros');?></a>
 				<?php } ?>

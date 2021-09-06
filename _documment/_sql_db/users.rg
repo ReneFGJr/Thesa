@@ -1,3 +1,0 @@
-
-INSERT INTO `users` (`id_us`, `us_nome`, `us_email`, `us_cidade`, `us_pais`, `us_codigo`, `us_link`, `us_ativo`, `us_nivel`, `us_image`, `us_genero`, `us_verificado`, `us_autenticador`, `us_cadastro`, `us_revisoes`, `us_colaboracoes`, `us_acessos`, `us_pesquisa`, `us_erros`, `us_outros`, `us_last`, `us_perfil`, `us_login`, `us_password`, `us_created`, `us_last_access`, `us_institution`, `us_perfil_check`, `us_badge`) VALUES
-(1, 'Rene F. Gabriel Junior', 'renefgj@gmail.com', '', '', '0000006', 'https://www.facebook.com/app_scoped_user_id/730800790295507/', 1, '9', '', 'M', '1', 'F', 20140706, 0, 0, 283, 0, 0, 0, 20170110, '#ADM#BIB', 'renefgj@gmail.com', '448545ct', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', 0, '00001')
