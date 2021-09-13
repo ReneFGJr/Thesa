@@ -6,8 +6,10 @@ class Thesa extends CI_Controller {
 	function __construct() {
 		global $lang;
 		parent::__construct();
-		date_default_timezone_set('America/Sao_Paulo');		
+		date_default_timezone_set('America/Sao_Paulo');
+		//date_default_timezone_set('Asia/Brunei');	
 		
+		$this -> load -> library('session');
 		$this -> load -> helper('language');
 		$language = new language;
 		$this -> lang -> load("thesa", $language->language());
@@ -17,9 +19,6 @@ class Thesa extends CI_Controller {
 		$this -> load -> helper('form_sisdoc');
 		$this -> load -> helper('url');
 		$this -> load -> helper('bootstrap');
-
-		$this -> load -> model('_install');
-		$this->_install->check();
 		
 		
 		$this -> load -> helper('xml');
@@ -33,9 +32,7 @@ class Thesa extends CI_Controller {
 		$this -> load -> model('thesa_api');
 		
 		$this -> load -> model('skoses');
-		$this -> load -> model('creativecommons');		
-
-		$this -> load -> library('session');
+		$this -> load -> model('creativecommons');
 	}
 	
 	function index() {
@@ -1495,7 +1492,7 @@ class Thesa extends CI_Controller {
 				header("Content-type: text/xml");
 				header("Content-Disposition: attachment; filename=\"{$arquivo}\"");
 				header("Content-Description: PHP Generated Data");
-				echo($this -> skoses -> skos_xml($id));
+				echo($this -> skoses -> skos_xml($id, '=>', ''));
 			break;			
 			
 			case 'json' :
