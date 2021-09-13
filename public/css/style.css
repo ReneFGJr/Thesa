@@ -1,0 +1,46 @@
+body
+    {
+        background-color: #fff;
+    }
+
+.navbar-brand
+    {
+        font-family: 'Handel Gothic';
+        font-size: 200%;
+        padding: 0px 0px;
+        color: white;
+    }
+.navbar
+    {
+        padding: 0px 0px;
+    }
+.bc
+    {
+        background-color:#0093DD;
+    }
+
+a, a::after
+    {
+        text-decoration: none;
+        color: #888;
+    }
+
+a:hover
+    {
+        text-decoration: none;
+        color: #000;
+    }   
+    
+.supersmall
+    {
+        font-size: 60%;
+    }
+
+.card-text
+        {
+        font-size: 80%;
+        line-height: 110%;
+        color: black;
+        text-align: center;
+        }
+
