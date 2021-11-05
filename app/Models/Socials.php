@@ -69,9 +69,9 @@ class Socials extends Model
 						'.$user.'
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="'.base_url(PATH.'social/perfil').'">Perfil</a>
+						<a class="dropdown-item" href="'.PATH.MODULE.'social/perfil'.'">Perfil</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="'.base_url(PATH.'social/logout').'">Logout</a>
+						<a class="dropdown-item" href="'.PATH.MODULE.'social/logout'.'">Logout</a>
 						</div>
 					</li>				
 				';
@@ -79,18 +79,36 @@ class Socials extends Model
 			return($sx);
 		}
 
-	function index($d1, $id, $dt=array(),$cab='')
+	function index($cmd='',$id='', $dt='', $cab='')
 	{
-		switch ($d1) {
+		$sx = '';
+		if (strlen($cmd) == 0)
+			{
+				$cmd = get("cmd");
+			}
+		
+		switch ($cmd) {
+			case 'login':
+				$sx = $cab;
+				$sx .= $this->login();
+				break;
 			case 'ajax':
 				$sx = $this->ajax($id);
 				break;
+			case 'signin':
+				$sx = $this->ajax($cmd);
+				break;	
+			case 'signup':
+				$sx = $this->ajax($cmd);
+				break;
 			case 'perfil':
-				$sx = $cab;
 				$sx .= $this->perfil();
 				break;
+			case 'profile':
+				$sx .= $cab;
+				$sx .= $this->perfil();
+				break;				
 			case 'view':
-				$sx = $cab;
 				$sx .= h("Usuários - View", 1);
 				$this->id = $id;
 				$dt =
@@ -101,42 +119,32 @@ class Socials extends Model
 				$sx .= tableview($this,$dt);
 				break;
 			case 'edit':
-				$sx = $cab;
 				$sx .= bs(12);
 				$sx .= h("Users - Editar", 1);
 				$this->id = $id;				
 				$sx .= form($this);
 				$sx .= bsdivclose(3);
 				break;
-			case 'signup':
-					$sx = $cab;
-					$sx .= bs(12);
-					$sx .= h("Users - Signup", 1);
-					$this->id = $id;					
-					$sx .= form($this);
-					$sx .= bsdivclose(3);
-					break;				
-			case 'access_denied':
-				$sx = view('access_denied');
-				break;				
+		
 			case 'delete':
-				$sx = $cab;
 				$sx .= h("Serviços - Excluir", 1);
 				$this->Social->id = $id;
 				$sx .= form_del($this);
 				break;
 			case 'logout':
-				return $this->logout();
-				break;
-			case 'signin':
-				return $this->login_local($dt);
+				$sx = $this->logout();		
 				break;
 			default:
 				$sx = $cab;
-				$sx .= bs(12);
-				$sx .= h('Service not found - ' . $d1, 1);
-				$sx .= anchor("main/social/access_denied","Acesso Negado (Page)",["class"=>"btn btn-outline-primary"]);
-				$sx .= bsclose(3);
+				$st =  h(lang('Social'),1);
+				if ($cmd == '')
+					 	{
+							$st .= h('Service not informed', 5);
+						 } else {
+							$st .= h('Service not found - [' . $cmd.']', 5);
+						 }					 
+				$st .= anchor(PATH,"Acesso Negado (Page)",["class"=>"btn btn-outline-primary"]);
+				$sx .= bs(bsc($st,12));
 				break;
 		}
 		return $sx;
@@ -180,7 +188,12 @@ class Socials extends Model
 				{
 					$id = round($_SESSION['id']);
 					if ($id > 0)
-						{ $rsp = 1; }
+					{
+						$dt = $this->Find($id);
+						$rsp = view('Pages/profile.php',$dt);
+					} else {
+						$rsp = metarefresh(base_url());
+					}
 				}
 			return $rsp;
 		}
@@ -200,7 +213,7 @@ class Socials extends Model
 						$_SESSION['user'] = $dt[0]['us_nome'];	
 						$_SESSION['email'] = $dt[0]['us_email'];
 						$sx .= '<h2>'.lang('social.success').'<h2>';
-						$sx .= '<meta http-equiv="refresh" content="1;URL=\''.base_url(PATH).'\'">';
+						$sx .= '<meta http-equiv="refresh" content="2;URL=\''.PATH.MODULE.'\'">';
 					} else {
 						$sx .= '<h2>'.lang('ERROR').'<h2>';
 						$sx .= '<span class="singin" onclick="showLogin()">'.lang('social.return').'</span>';						
@@ -225,7 +238,7 @@ class Socials extends Model
 			if (!isset($dt[0]))
 				{
 					$this->user_add($user,$pw1);
-					$sx .= '<h2>'.lang('social.user_add_success').'<h2>';
+					$sx .= '<h2>'.lang('social.social_user_add_success').'<h2>';
 					$sx .= '<span class="singin" onclick="showLogin()">'.lang('social.return').'</span>';
 				} else {
 					$sx .= '<h2>'.lang('social.user_already').'<h2>';
@@ -277,11 +290,18 @@ class Socials extends Model
 				$sx .= '            '.$email.cr();
 				$sx .= '          </a>'.cr();
 				$sx .= '          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">'.cr();
-				$sx .= '            <li><a class="dropdown-item" href="'.base_url(PATH.'social/perfil').'">'.lang('social.perfil').'</a></li>'.cr();
-				$sx .= '            <li><a class="dropdown-item" href="'.base_url(PATH.'social/logout').'">'.lang('social.logout').'</a></li>'.cr();
+				$sx .= '            <li><a class="dropdown-item" href="'.(PATH.MODULE.'social/?cmd=perfil').'">'.lang('social.perfil').'</a></li>'.cr();
+				$sx .= '            <li><a class="dropdown-item" href="'.(PATH.MODULE.'social/?cmd=logout').'">'.lang('social.logout').'</a></li>'.cr();
 				$sx .= '          </ul>'.cr();
 				$sx .= '        </li>'.cr();
 				$sx .= '</ul>'.cr();
+			} else {
+				$sx .= '<li class="nav-item d-flex align-items-center">';
+              	$sx .= '
+              		<a href="'.(PATH.MODULE.'social/login').'" class="nav-link text-body font-weight-bold px-0">
+                	<i class="fa fa-user me-sm-1"></i>
+                	<span class="d-sm-inline d-none">'.lang('social.social_sign_in').'</span></a>';
+				$sx .= '</li>';
 			}
 			return $sx;			
 		}
@@ -289,7 +309,8 @@ class Socials extends Model
 		{
 			if ((isset($_SESSION['id'])) and ($_SESSION['id'] != ''))
 			{
-				return(1);
+				$id = $_SESSION['id'];
+				return($id);
 			} else {
 				return(0);
 			}
@@ -645,7 +666,7 @@ class Socials extends Model
 			</div>
 		  </div>
 		</div>
-			<script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-8216c69d01441f36c0ea791ae2d4469f0f8ff5326f00ae2d00e4bb7d20e24edb.js"></script>
+		<script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-8216c69d01441f36c0ea791ae2d4469f0f8ff5326f00ae2d00e4bb7d20e24edb.js"></script>
 		
 		  
 		<script id="rendered-js" >
@@ -675,7 +696,7 @@ class Socials extends Model
 					data.append("signup_retype_password", document.getElementById("signup_retype_password").value);
 				}
 
-            var url = "'.base_url(PATH.'social/ajax/').'" + "/" + cmd;
+            var url = "'.PATH.MODULE.'social/ajax/"+cmd;
             var xhttp = new XMLHttpRequest();
             xhttp.open("POST", url, false);
             xhttp.send(data);

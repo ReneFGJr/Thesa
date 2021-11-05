@@ -43,4 +43,16 @@ a:hover
         color: black;
         text-align: center;
         }
+.logo_thesa_text
+    {
+        font-family: Roboto, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: white;
+        font-size: 600%;
+    }
 
+.logo_thesa_text_sub  
+{
+    font-family: Roboto, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    font-size: 200%;
+}

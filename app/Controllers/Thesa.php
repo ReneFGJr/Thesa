@@ -8,7 +8,10 @@ $this->session = \Config\Services::session();
 $language = \Config\Services::language();
 
 helper(['boostrap','url','graphs','sisdoc_forms','form','nbr']);
-define("PATH","index.php/thesa/");
+
+define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix']);
+define("MODULE", '/');
+define('PREFIX','thesa.');
 
 class Thesa extends BaseController
 {
@@ -19,7 +22,7 @@ class Thesa extends BaseController
 	
 		helper(['boostrap','url','canvas']);
 		define("LIBRARY", "5000");
-		define("LIBRARY_NAME", "THESA");				
+		define("LIBRARY_NAME", "THESA");						
 		}
 
     public function index()
@@ -45,7 +48,11 @@ private function cab($dt=array())
 			$sx .= '  <link rel="icon" type="image/png" sizes="16x16" href="'.base_url('img/favicon.png').'" />'.cr();
 			$sx .= '  <!-- CSS -->'.cr();
 			$sx .= '  <link rel="stylesheet" href="'.base_url('/css/bootstrap.css').'" />'.cr();
-			$sx .= '  <link rel="stylesheet" href="'.base_url('/css/style.css?v=0.0.6').'" />'.cr();
+			$sx .= '  <link rel="stylesheet" href="'.base_url('/css/style.css?v=0.0.9').'" />'.cr();
+			/* GOogle Fonts */
+			$sx .= ' <style>
+						@import url(\'https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap\');
+					</style>';
 			$sx .= ' '.cr();
 			$sx .= '  <!-- CSS -->'.cr();
 			$sx .= '  <script src="'.base_url('/js/bootstrap.js?v=5.0.2').'"></script>'.cr();
@@ -171,7 +178,7 @@ private function cab($dt=array())
 						<div class="col-md-3 col-lg-4 col-xl-3 mb-4">
 
 							<!-- Content -->
-							<h6 class="text-uppercase font-weight-bold">'.lang('social.COMPANY NAME').'</h6>
+							<h6 class="text-uppercase font-weight-bold">'.lang('thesa.COMPANY NAME').'</h6>
 							<hr class="teal accent-3 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
 							<p>Here you can use rows and columns to organize your footer content. Lorem ipsum dolor sit amet,
 							consectetur
@@ -184,7 +191,7 @@ private function cab($dt=array())
 						<div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
 
 							<!-- Links -->
-							<h6 class="text-uppercase font-weight-bold">'.lang('social.Products').'</h6>
+							<h6 class="text-uppercase font-weight-bold">'.lang('thesa.Products').'</h6>
 							<hr class="teal accent-3 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
 							<p>
 							<a class="dark-grey-text" href="#!">MDBootstrap</a>
@@ -209,10 +216,10 @@ private function cab($dt=array())
 							<h6 class="text-uppercase font-weight-bold">'.lang('social.Useful_links').'</h6>
 							<hr class="teal accent-3 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
 							<p>
-							<a class="dark-grey-text" href="#!">'.lang('social.profile').'</a>
+							<a class="dark-grey-text" href="#!">'.'rene.gabriel@ufrgs.br'.'</a>
 							</p>
 							<p>
-							<a class="dark-grey-text" href="#!">'.lang('social.help').'</a>
+							<a class="dark-grey-text" href="#!">'.lang('thesa.help').'</a>
 							</p>
 
 						</div>
@@ -222,17 +229,11 @@ private function cab($dt=array())
 						<div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
 
 							<!-- Links -->
-							<h6 class="text-uppercase font-weight-bold">'.lang('social.Contact').'</h6>
+							<h6 class="text-uppercase font-weight-bold">'.lang('social.Develepoment').'</h6>
+							
+							<img src="'.base_url('img/logo/logo_orcalab-70.png').'" class="img-fluid">
 							<hr class="teal accent-3 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
-							<p>
-							<i class="fas fa-home mr-3"></i> New York, NY 10012, US</p>
-							<p>
-							<i class="fas fa-envelope mr-3"></i> info@example.com</p>
-							<p>
-							<i class="fas fa-phone mr-3"></i> + 01 234 567 88</p>
-							<p>
-							<i class="fas fa-print mr-3"></i> + 01 234 567 89</p>
-
+							<img src="'.base_url('img/logo/logo_ppgcin-70.png').'" class="img-fluid">
 						</div>
 						<!-- Grid column -->
 
@@ -289,16 +290,19 @@ private function cab($dt=array())
             $sx = '';
             $sx .= $this->cab();
             $sx .= $this->navbar();
-            $sx .= $ThThesaurus->term($id);
+            $sx .= $ThThesaurus->v($id);
             $sx .= $this->footer();
             return $sx; 
 		}
     function thopen()
         {
+			$view = \Config\Services::renderer();
             $ThOpen = new \App\Models\ThThesaurus();
             $sx = '';
             $sx .= $this->cab();
+			//$sx .= $this->view('paralax');			
             $sx .= $this->navbar();
+			$sx .= $view->render('paralax');
             $sx .= $ThOpen->index();
             $sx .= $this->footer();
 

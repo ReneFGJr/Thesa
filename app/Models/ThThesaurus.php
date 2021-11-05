@@ -61,18 +61,37 @@ class ThThesaurus extends Model
         {
             $ThConcept = new \App\Models\ThConcept();
             $sx = $ThConcept->TermLetter($id,$lt);
-            $sx = $ThConcept->TermLetter($id,$lt);
             return $sx;
         } 
 
-    function term($id='',$ltr='A')
+    function v($id='',$ltr='A')
         {
             $sx = '';
             $ThUsers = new \App\Models\ThUsers();
             $ThConcept = new \App\Models\ThConcept();
-            $dt = $ThConcept->find($id);
+            $ThConceptTerms = new \App\Models\ThConceptTerms();
+            $dt = $ThConcept->le($id);
+
+            $th = $dt['c_th'];
+            $dtt = $this->find($th);
+
+            /********************************** Authors *************/
+            $authors = $ThUsers->authors($th);
+            /********************************** Titulo do Thesaurus */
+            $sx .= bs($this->title($dtt,$authors));  
+
+            $sx .= bs($ThConcept->show($id));
+
+            return $sx;          
+
+//            $RDF = new \App\Models\RDF();
+//            $dt = $RDF->le($id);
+            echo '<pre>';
+            print_r($dt);
+            exit;
 
             $idth = 1;
+
                 $dt = $this->Find($idth);
 
                 /********************************** Authors *************/
@@ -84,8 +103,9 @@ class ThThesaurus extends Model
                 /********************************** Lista de Termos *****/
                 $sm1 = $this->terms($idth,$ltr);
                 $sm2 = $ThConcept->show($id);
-                $sx .=  bsc($sm1,3,'p-3 mb-1').
-                        bsc($sm2,9,'shadow p-3 mb-1 bg-white rounded');                
+                $sm2 .= $ThConceptTerms->data($id);
+                $sx .=  bsc($sm1,4,'p-3 mb-1').
+                        bsc($sm2,8,'shadow p-3 mb-1 bg-white rounded');                
                 $sx = bs($sx);
 
                 return($sx);
@@ -96,6 +116,8 @@ class ThThesaurus extends Model
             $ThUsers = new \App\Models\ThUsers();
             $ThConcept = new \App\Models\ThConcept();
             $sx = '';
+
+            /*************************************** mostra todos os thesauros ********/
             if ($id=='')
             {
             $dt = $this->where('pa_status',2)
@@ -108,12 +130,13 @@ class ThThesaurus extends Model
                     $card = $img;
                     $desc = '<a href="'.base_url(PATH.'th/'.$line['id_pa']).'" class="h4 text-bold">'.$line['pa_name'].'</a>';
                     $desc .= '<br>';
-                    $ds = bsc($img,3);
-                    $ds .= bsc($desc,9);
+                    $ds = bsc($img,4);
+                    $ds .= bsc($desc,8);
                     $ds = '<div class="row" style="min-height: 200px;">'.$ds.'</div>';
                     $sx .= bsc($ds,4);
                 }
             } else {
+                /*************************************** mostra um thesauros ************/
                 $dt = $this->Find($id);
 
                 /********************************** Authors *************/
@@ -127,9 +150,9 @@ class ThThesaurus extends Model
                 $sx .= $ThConcept->paginations($id,$ltr);
                 /********************************** Lista de Termos *****/
                 $sm1 = $this->terms($id,$ltr);
-                $sm2 = 'xxxxxxxxxxxxxxxxxxxxxxx';
-                $sx .=  bsc($sm1,3,'p-3 mb-1').
-                        bsc($sm2,9,'shadow p-3 mb-1 bg-white rounded');                
+                $sm2 = '';
+                $sx .=  bsc($sm1,4,'p-3 mb-1').
+                        bsc($sm2,8,'shadow p-3 mb-1 bg-white rounded');                
             }            
             $sx = bs($sx);
             return $sx;
