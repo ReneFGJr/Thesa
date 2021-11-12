@@ -29,8 +29,37 @@ class Thesa extends BaseController
     {
         $sx = '';
         $sx .= $this->cab();
-        $sx .= $this->navbar();
-        $sx .= $this->footer();
+        //$sx .= $this->navbar();
+		
+		
+		//$sx .= view('front/Psycho');		
+		//$sx .= view('front/Hexagon');
+		//$sx .= view('front/Ribbons2');
+		//$sx .= view('front/Glitch');
+		//$sx .= view('front/Mystic');
+		//$sx .= view('front/Contour');
+		//$sx .= view('front/Code');
+		//$sx .= view('front/Clouds');
+		//$sx .= view('front/Electro');
+		//$sx .= view('front/Cell');
+		//$sx .= view('front/Orbital');
+		//$sx .= view('front/Boom');
+		$data['title'] = 'THESA';
+		$data['subtitle'] = lang('Tesauro Semântico Aplicado');
+		$sx .= '<style> body { background-color: black; } </style>';
+		$tela1 = '
+		<span style="color: red">xxxxxxxxx</span>
+		<span style="color: white">xxxxxx</span>
+		<span style="color: red">xxxx</span>
+		
+		<nav>
+			<a href="'.PATH.'thopen'.'">thopen</a>
+		</nav>
+		';
+		$sx .= bsc($tela1,6,'p-5');
+		$sx .= bsc(view('front/LigthWire',$data,),6);		
+		$sx = '<div class="container-fluid"><div class="row">'.$sx.'</div></div>';
+		
         return $sx;
     }
 
