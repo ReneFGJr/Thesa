@@ -20,6 +20,7 @@ function ajax($dir, $arr_file_types = ['image/png', 'image/gif', 'image/jpg', 'i
 
 function upload($url='')
 {
+    //$URL = 'http://localhost/sisdoc/';
     //https://stackoverflow.com/questions/53950415/how-to-upload-multiple-files-with-drag-drop-and-browse-with-ajax
     $sx = '';
     $sx .= '

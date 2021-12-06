@@ -7,7 +7,7 @@
 * @category    Helpers
 * @author      Rene F. Gabriel Junior <renefgj@gmail.com>
 * @link        http://www.sisdoc.com.br/CodIgniter
-* @version     v0.21.07.27
+* @version     v0.21+12.03
 */
 
 function bsicone($type='',$w=16)
@@ -15,7 +15,17 @@ function bsicone($type='',$w=16)
         $sx = '<svg xmlns="http://www.w3.org/2000/svg" width="'.$w.'" height="'.$w.'" fill="currentColor" class="bi" viewBox="0 0 16 16">';
         switch($type)
             {
-
+                case 'homefill':
+                $sx .= '<path fill-rule="evenodd" d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                        <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+                        ';
+                break;
+                case 'home':
+                    $sx .= '
+                        <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                        <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+                    ';
+                    break;
                 case 'folder-0':
                     $sx .= '<path d="M1 3.5A1.5 1.5 0 0 1 2.5 2h2.764c.958 0 1.76.56 2.311 1.184C7.985 3.648 8.48 4 9 4h4.5A1.5 1.5 0 0 1 15 5.5v7a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 12.5v-9zM2.5 3a.5.5 0 0 0-.5.5V6h12v-.5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 3.334 5.82 3 5.264 3H2.5zM14 7H2v5.5a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5V7z"/>';
                     break;                   
@@ -279,6 +289,16 @@ function h($t='',$s=1,$class='')
         $sx = '<h'.$s.' class="'.$class.'">'.$t.'</h'.$s.'>';
         return($sx);
     }  
+function p($t='',$label='',$class='')
+    {
+        $sx = '';
+        if (strlen($label) > 0)
+            {
+                $sx .= '<span class="small">'.$label.'</span>';
+            }
+        $sx .= '<p class="'.$class.'">'.$t.'</p>';
+        return($sx);
+    }      
 
 function small($text)
     {

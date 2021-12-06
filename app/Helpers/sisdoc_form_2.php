@@ -1,4 +1,26 @@
 <?php
+function show_array($ar)
+    {
+        $sx = '<table class="table">';
+        $sx .= '<tr>';
+        $sx .= '<th>'.lang('ai.ID').'</th>';
+        $sx .= '<th>'.lang('ai.HEAD').'</th>';
+        $sx .= '</tr>';
+        foreach ($ar as $k=>$v)
+            {
+                $sx .= '<tr>';
+                $sx .= '<td>';
+                $sx .= $k;
+                $sx .= '</td>';
+                $sx .= '<td>';
+                $sx .= $v;
+                $sx .= '</td>';
+                $sx .= '</tr>';
+
+            }
+        $sx .= '</table>';
+        return $sx;
+    }
 function strzero($id,$z)
     {
         $txt = str_pad($id,$z,'0',STR_PAD_LEFT);
@@ -128,4 +150,15 @@ function version()
             $sx .= bsdivclose();
             return($sx);    
         }  
-?>
+function user_id()
+{
+	if (isset($_SESSION['id'])) 
+	{
+		$user = $_SESSION["id"];
+		if (strlen($user) > 0) 
+			{
+			return ($user);
+			}
+	}
+	return (0);
+}
