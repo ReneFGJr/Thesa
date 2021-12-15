@@ -7,7 +7,8 @@ use App\Controllers\BaseController;
 $this->session = \Config\Services::session();
 $language = \Config\Services::language();
 
-helper(['boostrap', 'URL', 'graphs', 'sisdoc_forms', 'form', 'nbr']);
+helper(['boostrap', 'graphs', 'sisdoc_forms', 'form', 'nbr']);
+helper("URL");
 
 define("PATH", $_SERVER['app.baseURL'] . $_SERVER['app.sufix']);
 define("URL", $_SERVER['app.baseURL']);
@@ -31,8 +32,7 @@ class Thesa extends BaseController
 		$view = \Config\Services::renderer();
 		$ThOpen = new \App\Models\ThThesaurus();
 		$sx = '';
-		$sx .= $this->cab();
-		//$sx .= $this->view('paralax');			
+		$sx .= $this->cab();		
 		$sx .= $this->navbar();
 		$sx .= $view->render('paralax');
 		$sx .= $ThOpen->index();
