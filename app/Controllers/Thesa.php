@@ -7,7 +7,7 @@ use App\Controllers\BaseController;
 $this->session = \Config\Services::session();
 $language = \Config\Services::language();
 
-helper(['boostrap', 'url', 'graphs', 'sisdoc_forms', 'form', 'nbr']);
+helper(['boostrap', 'URL', 'graphs', 'sisdoc_forms', 'form', 'nbr']);
 
 define("PATH", $_SERVER['app.baseURL'] . $_SERVER['app.sufix']);
 define("URL", $_SERVER['app.baseURL']);
@@ -21,7 +21,7 @@ class Thesa extends BaseController
 	{
 		$this->Socials = new \App\Models\Socials();
 
-		helper(['boostrap', 'url', 'canvas']);
+		helper(['boostrap', 'URL', 'canvas']);
 		define("LIBRARY", "5000");
 		define("LIBRARY_NAME", "THESA");
 	}
