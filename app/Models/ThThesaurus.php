@@ -53,7 +53,7 @@ class ThThesaurus extends Model
             } else {
                 $img = 'img/icone/custon/background_icone_' . $id . '.png';        
             }
-        $sa = base_url($img);
+        $sa = (URL.$img);
         return $sa;
     } 
 
