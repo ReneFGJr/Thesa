@@ -66,24 +66,24 @@ class Thesa extends BaseController
 		$sx .= '<head>' . cr();
 		$sx .= '<title>' . $title . '</title>' . cr();
 		$sx .= '  <meta charset="utf-8" />' . cr();
-		$sx .= '  <link rel="apple-touch-icon" sizes="180x180" href="' . base_url('img/icone/favicon.png') . '" />' . cr();
-		$sx .= '  <link rel="icon" type="image/png" sizes="32x32" href="' . base_url('img/icone/favicon.png') . '" />' . cr();
-		$sx .= '  <link rel="icon" type="image/png" sizes="16x16" href="' . base_url('img/icone/favicon.png') . '" />' . cr();
+		$sx .= '  <link rel="apple-touch-icon" sizes="180x180" href="' . URL.('img/icone/favicon.png') . '" />' . cr();
+		$sx .= '  <link rel="icon" type="image/png" sizes="32x32" href="' . URL.('img/icone/favicon.png') . '" />' . cr();
+		$sx .= '  <link rel="icon" type="image/png" sizes="16x16" href="' . URL.('img/icone/favicon.png') . '" />' . cr();
 		$sx .= '  <!-- CSS -->' . cr();
-		$sx .= '  <link rel="stylesheet" href="' . base_url('/css/bootstrap.css') . '" />' . cr();
-		$sx .= '  <link rel="stylesheet" href="' . base_url('/css/style.css?v=0.0.9') . '" />' . cr();
+		$sx .= '  <link rel="stylesheet" href="' . URL.('/css/bootstrap.css') . '" />' . cr();
+		$sx .= '  <link rel="stylesheet" href="' . URL.('/css/style.css?v=0.0.9') . '" />' . cr();
 		/* GOogle Fonts */
 		$sx .= ' <style>
 						@import url(\'https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap\');
 					</style>';
 		$sx .= ' ' . cr();
 		$sx .= '  <!-- CSS -->' . cr();
-		$sx .= '  <script src="' . base_url('/js/bootstrap.js?v=5.0.2') . '"></script>' . cr();
+		$sx .= '  <script src="' . URL.('/js/bootstrap.js?v=5.0.2') . '"></script>' . cr();
 		$sx .= '<style>
 					@font-face {font-family: "Handel Gothic";
-					src: url("' . base_url('css/fonts/HandelGothic/handel_gothic.eot') . '"); /* IE9*/
-					src: url("' . base_url('css/fonts/HandelGothic/handel_gothic.eot?#iefix') . '") format("embedded-opentype"), /* IE6-IE8 */
-					url("' . base_url('css/fonts/HandelGothic/handel_gothic.svg#Handel Gothic') . '") format("svg"); /* iOS 4.1- */
+					src: url("' . URL.('css/fonts/HandelGothic/handel_gothic.eot') . '"); /* IE9*/
+					src: url("' . URL.('css/fonts/HandelGothic/handel_gothic.eot?#iefix') . '") format("embedded-opentype"), /* IE6-IE8 */
+					url("' . URL.('css/fonts/HandelGothic/handel_gothic.svg#Handel Gothic') . '") format("svg"); /* iOS 4.1- */
 					}
 					@import url(\'https://fonts.googleapis.com/css2?family=Nunito:wght@200&family=Roboto:wght@100&display=swap\');
 					</style>
@@ -103,7 +103,7 @@ class Thesa extends BaseController
 		if (isset($dt['title'])) {
 			$title = $dt['title'];
 		}
-		$title = '<img src="' . base_url('img/logo/logo_thesa.jpg') . '" style="height: 28px;">';
+		$title = '<img src="' . URL.('img/logo/logo_thesa.jpg') . '" style="height: 28px;">';
 		$sx = '<nav class="navbar navbar-expand-lg navbar-light ">' . cr();
 		$sx .= '  <div class="container-fluid">' . cr();
 		$sx .= '    <a class="navbar-brand" href="' . PATH . MODULE . '">' . $title . '</a>' . cr();
@@ -267,9 +267,9 @@ class Thesa extends BaseController
 							<!-- Links -->
 							<h6 class="text-uppercase font-weight-bold">' . lang('social.Develepoment') . '</h6>
 							
-							<img src="' . base_url('img/logo/logo_orcalab-70.png') . '" class="img-fluid">
+							<img src="' . URL.('img/logo/logo_orcalab-70.png') . '" class="img-fluid">
 							<hr class="teal accent-3 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
-							<img src="' . base_url('img/logo/logo_ppgcin-70.png') . '" class="img-fluid">
+							<img src="' . URL.('img/logo/logo_ppgcin-70.png') . '" class="img-fluid">
 						</div>
 						<!-- Grid column -->
 
@@ -319,6 +319,11 @@ class Thesa extends BaseController
 
 		return $sx;
 	}
+
+    function c($id)
+        {
+            return $this->v($id);
+        }  	
 
 	function v($id = '')
 	{

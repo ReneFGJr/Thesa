@@ -193,7 +193,7 @@ function form_del($th)
                 $sx .= bsmessage('Erro de exclusão',2);
             }
 
-        $url = base_url($_SERVER['REQUEST_URI']);
+        $url = URL.($_SERVER['REQUEST_URI']);
         $url = substr($url,0,strpos($url,'/delete'));
         $sx .= anchor($url,'Voltar',['class'=>'btn btn-danger']);
         $sx = redireciona($url);

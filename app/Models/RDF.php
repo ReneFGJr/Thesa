@@ -115,7 +115,7 @@ class RDF extends Model
 							$fi[$flx] = '';
 							
 						}
-					$link = '<a href="'.base_url(PATH.'v/'.$line['id_cc']).'">';
+					$link = '<a href="'.URL.(PATH.'v/'.$line['id_cc']).'">';
 					$linka = '</a>';
 					$fi[$flx] .= $link.$name.$linka.'<br>';
 				}
@@ -173,7 +173,7 @@ class RDF extends Model
 		$sx .= '</ul>';		
 		if (count($dt) > 0)
 		{
-			$sx .= metarefresh(base_url(PATH.'export/rdf/'.(round($d2)+1)),2);
+			$sx .= metarefresh(URL.(PATH.'export/rdf/'.(round($d2)+1)),2);
 		} else {
 			$sx .= bsmessage(lang('Export_Finish'));
 		}
@@ -320,8 +320,8 @@ class RDF extends Model
 						$sx = $cab;
 						$sx .= lang('command not found').': '.$d1;
 						$sx .= '<ul>';
-						$sx .= '<li><a href="'.base_url(PATH.'rdf/inport?type=prefix').'">'.lang('Inport Prefix').'</a></li>';
-						$sx .= '<li><a href="'.base_url(PATH.'rdf/inport?type=class').'">'.lang('Inport Class').'</a></li>';
+						$sx .= '<li><a href="'.URL.(PATH.MODULE.'rdf/inport?type=prefix').'">'.lang('Inport Prefix').'</a></li>';
+						$sx .= '<li><a href="'.URL.(PATH.MODULE.'rdf/inport?type=class').'">'.lang('Inport Class').'</a></li>';
 						$sx .= '</ul>';
 				}
 			$sx = bs($sx);

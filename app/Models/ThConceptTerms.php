@@ -51,55 +51,21 @@ class ThConceptTerms extends Model
             $sx = '';    
 
             $this->where('ct_concept',$id); 
-            $this->orwhere('ct_concept_2',$id); 
-            $dt =  $this->findAll();
-
-            for($r=0;$r < count($dt);$r++)
-                {
-                    $line = $dt[$r];
-                    echo '<pre>';
-                    print_r($line);
-                    echo '</pre>';                    
-                    //$sx .= bsc(strtoupper($line['rs_propriety']),3);
-                    //$sx .= bsc($line['rl_value'],9);
-                } 
-            return '';
-
-
-            $this->join('rdf_resource','ct_propriety = id_rs');
             $this->join('rdf_literal','ct_term = id_rl','left');
-            $this->where('ct_concept',$id);   
-            $this->orWhere('th_concept_term.ct_concept_2',$id);
+            $this->join('rdf_class','ct_propriety = id_c','left');            
+            $this->where('ct_concept',$id); 
             $dt =  $this->findAll();
 
             for($r=0;$r < count($dt);$r++)
                 {
                     $line = $dt[$r];
-                    echo '<pre>';
-                    print_r($line);
-                    echo '</pre>';                    
-                    $sx .= bsc(strtoupper($line['rs_propriety']),3);
+                    $sx .= bsc('',1);
+                    $sx .= bsc($line['c_class'].':',2,'text-end mb-2');
                     $sx .= bsc($line['rl_value'],9);
                 } 
+ 
 
-            
-            $this->join('th_concept_term as lt1','th_concept_term.ct_propriety = lt1.id_ct');
-            $this->join('rdf_resource','th_concept_term.ct_propriety = id_rs');
-            $this->join('rdf_literal','lt1.ct_term = id_rl', 'rifght');
-            $this->where('th_concept_term.ct_concept_2',$id);
-            $dt =  $this->findAll();
-
-            for($r=0;$r < count($dt);$r++)
-                {
-                    $line = $dt[$r];
-                    echo '<pre>';
-                    print_r($line);
-                    echo '</pre>';
-                    $sx .= bsc($line['rs_propriety'],3);
-                    //$sx .= bsc($line['rl_value'],9);
-                }
-
-            $sx = '<div class="row">'.$sx.'</div>';    
+            $sx = bs($sx);    
             return $sx;
         }
 

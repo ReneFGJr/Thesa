@@ -59,6 +59,11 @@ class ThConcept extends Model
             return($dt);
         }
 
+    function boarder($id)
+        {
+            
+        }
+
     function show($id)
         {
             $sx = 'SHOW';
@@ -91,7 +96,7 @@ class ThConcept extends Model
             $sx = '<ul>';
             foreach($dt as $id=>$line)
                 {
-                    $link = '<a href="'.base_url(PATH.'v/'.$line['ct_concept']).'">';
+                    $link = '<a href="'.(PATH.MODULE.'v/'.$line['ct_concept']).'">';
                     $linka = '</a>';
                     $sx .= '<li>'.
                                 $link.$line['rl_value'].'<sup> ('.$line['rl_lang'].')</sup>';
@@ -120,7 +125,7 @@ class ThConcept extends Model
             for ($r=0;$r < count($dt);$r++)
                 {
                     $line = $dt[$r];
-                    $sx .= '<li class="page-item"><a class="page-link" href="'.base_url(PATH.'th/'.$id.'/'.$line['ltr']).'">'.$line['ltr'].'</a></li>'.cr();
+                    $sx .= '<li class="page-item"><a class="page-link" href="'.(PATH.MODULE.'th/'.$id.'/'.$line['ltr']).'">'.$line['ltr'].'</a></li>'.cr();
                 }
             $sx .= '</ul>';
             $sx .= '</nav>';

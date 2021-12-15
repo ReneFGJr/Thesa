@@ -55,7 +55,7 @@ class ThThesaurus extends Model
             }
         $sa = base_url($img);
         return $sa;
-    }   
+    } 
 
     function terms($id,$lt='A')
         {
@@ -81,6 +81,10 @@ class ThThesaurus extends Model
             $sx .= bs($this->title($dtt,$authors));  
 
             $sx .= bs($ThConcept->show($id));
+
+            //$sx .= bs($ThConcept->boader($id));
+            $sx .= bs($ThConceptTerms->data($id));
+
 
             return $sx;          
 
@@ -128,7 +132,7 @@ class ThThesaurus extends Model
                     $line = $dt[$r];
                     $img = '<img src="'.$this->show_icone($line).'" class="img-fluid">';
                     $card = $img;
-                    $desc = '<a href="'.base_url(PATH.'th/'.$line['id_pa']).'" class="h4 text-bold">'.$line['pa_name'].'</a>';
+                    $desc = '<a href="'.(PATH.MODULE.'th/'.$line['id_pa']).'" class="h4 text-bold">'.$line['pa_name'].'</a>';
                     $desc .= '<br>';
                     $ds = bsc($img,4);
                     $ds .= bsc($desc,8);

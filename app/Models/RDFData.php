@@ -77,7 +77,7 @@ class RDFData extends Model
 							{
 								if ($ID == $line['d_r2'])
 									{
-										$link = base_url(PATH.'v/'.$line['d_r1']);
+										$link = URL.(PATH.'v/'.$line['d_r1']);
 										$txt = $RDF->info($line['d_r1'],1);
 										if (strlen($txt) > 0)
 											{
@@ -87,7 +87,7 @@ class RDFData extends Model
 											}
 										
 									} else {
-										$link = base_url(PATH.'v/'.$line['d_r2']);
+										$link = URL.(PATH.'v/'.$line['d_r2']);
 										$txt = $RDF->info($line['d_r2'],1);
 										if (strlen($txt) > 0)
 											{
