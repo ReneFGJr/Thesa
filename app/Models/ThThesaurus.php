@@ -71,48 +71,35 @@ class ThThesaurus extends Model
             $ThConcept = new \App\Models\ThConcept();
             $ThConceptTerms = new \App\Models\ThConceptTerms();
             $dt = $ThConcept->le($id);
+            $ltr = Uppercase(substr(ascii($dt['rl_value']),0,1));
+            if ($ltr = '') { $ltr = 'A'; }
 
             $th = $dt['c_th'];
             $dtt = $this->find($th);
-
+      
             /********************************** Authors *************/
             $authors = $ThUsers->authors($th);
             /********************************** Titulo do Thesaurus */
-            $sx .= bs($this->title($dtt,$authors));  
+            $sx .= $this->title($dtt,$authors);  
 
-            $sx .= bs($ThConcept->show($id));
+            /********************************** Description *********/
+            $sx .= $this->description($dtt);
+            $sx .= $this->show_resume($dtt);
+            /********************************** Sumários das letras */            
+            $sx .= bs(bsc($ThConcept->paginations($th,$ltr),12));
+            /********************************** Lista de Termos *****/
 
-            //$sx .= bs($ThConcept->boader($id));
-            $sx .= bs($ThConceptTerms->data($id));
+            $sm1 = $this->terms($th,$ltr);
+            $sm2 = '<div class="row">'.
+                    $ThConcept->show($id).
+                    $ThConceptTerms->data($id).
+                    '</div>';
+            $sx .=  bsc($sm1,4,'p-3 mb-1').
+                    bsc($sm2,8,'shadow p-3 mb-1 bg-white rounded');            
 
+            $sx = bs($sx);
 
             return $sx;          
-
-//            $RDF = new \App\Models\RDF();
-//            $dt = $RDF->le($id);
-            echo '<pre>';
-            print_r($dt);
-            exit;
-
-            $idth = 1;
-
-                $dt = $this->Find($idth);
-
-                /********************************** Authors *************/
-                $authors = $ThUsers->authors($id);                
-                /********************************** Titulo do Thesaurus */
-                $sx .= $this->title($dt,$authors);               
-                /********************************** Sumários das letras */
-                $sx .= $ThConcept->paginations($idth,$ltr);
-                /********************************** Lista de Termos *****/
-                $sm1 = $this->terms($idth,$ltr);
-                $sm2 = $ThConcept->show($id);
-                $sm2 .= $ThConceptTerms->data($id);
-                $sx .=  bsc($sm1,4,'p-3 mb-1').
-                        bsc($sm2,8,'shadow p-3 mb-1 bg-white rounded');                
-                $sx = bs($sx);
-
-                return($sx);
         }   
 
     function index($id='',$ltr='A')

@@ -66,18 +66,36 @@ class ThConcept extends Model
 
     function show($id)
         {
+            $ThConceptTerms = new \App\Models\ThConceptTerms();
             $sx = 'SHOW';
-            $dt = $this->le($id);
+            $dt = $ThConceptTerms->prefLabel($id);
+            //$dt = $this->le($id);
+
 
             $sx = '';
             $classCss = 'border-bottom border-2';
 
             /*************************************************** PREFERENCIAL TERM */
             $sx .= bsc(strtoupper(lang('thesa.prefLabel')).':',3,$classCss.' text-right');
-            $sx .= bsc('<h2>'.$dt['rl_value'].'</h2>',9,$classCss);
-
-            $sx = '<div class="row">'.$sx.'</div>';
+            $prefs = '';
+            for ($r=0;$r < count($dt);$r++)
+                {
+                    $dtt = (array)$dt[$r];
+                    $lang = '';
+                    if (count($dt) > 1) 
+                        { $lang = ' <sup>('.$dtt['rl_lang'].')</sup>'; }
+                    $prefs .= '<h3>'.$dtt['rl_value'].$lang.'</h3>';
+                }
+            $img = $this->image($id);
+            $sx .= bsc($prefs,7,$classCss);
+            $sx .= bsc($img,2,$classCss);
             return $sx;
+        }
+    function image($id)
+        {
+            $img = URL.'img/no_image.jpg';
+            $img = '<img src="'.$img.'" class="img-fluid">';
+            return $img;
         }
 
     function TermLetter($id,$lt)
