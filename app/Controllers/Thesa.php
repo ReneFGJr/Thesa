@@ -41,6 +41,8 @@ class Thesa extends BaseController
 		return $sx;
 	}
 
+
+	/************************************** Thesauros Abertos */
 	function tho($id)
 	{
 		$sx = $this->cab();
@@ -49,8 +51,6 @@ class Thesa extends BaseController
 
 		$tela1 = $view->render('header/head_search');
 		$sx .= $tela1;
-
-
 
 		return $sx;
 	}
@@ -121,22 +121,24 @@ class Thesa extends BaseController
     		$sx .= '		</li>'.cr();
 			*/
 
-		$sx .= '
-							<li class="nav-item">
+		$sx .= '			<li class="nav-item">
 								<a class="nav-link" href="' . (PATH . MODULE . 'thopen/') . '">' . lang('thesa.th_open') . '</a>
-							</li>			
-			';
+							</li>';
+		/*************************************** TH ATUAL */
+		if ((isset($_SESSION['th'])) and ($_SESSION['th'] != '')) {
+			$id = $_SESSION['th'];
+			$sx .= '		<li class="nav-item">
+								<a class="nav-link" href="' . (PATH .MODULE .'th/'.$id) . '">' . lang('thesa.th_actual') . '</a>
+							</li>';
+		}
+
 		if ((isset($_SESSION['id'])) and ($_SESSION['id'] != '')) {
-			$sx .= '
-							<li class="nav-item">
-								<a class="nav-link" href="' . (PATH .MODULE .'my_thesa/') . '">' . lang('thesa.th_open') . '</a>
-							</li>			
-					';
-			$sx .= '
-							<li class="nav-item">
-								<a class="nav-link" href="' . (PATH . MODULE .'th_config/') . '">' . lang('thesa.th_open') . '</a>
-							</li>			
-			';
+			$sx .= '		<li class="nav-item">
+								<a class="nav-link" href="' . (PATH .MODULE .'th_my/') . '">' . lang('thesa.th_my') . '</a>
+							</li>';
+			$sx .= '		<li class="nav-item">
+								<a class="nav-link" href="' . (PATH . MODULE .'th_config/') . '">' . lang('thesa.th_config') . '</a>
+							</li>';
 		}
 
 		$sx .= '
@@ -367,4 +369,15 @@ class Thesa extends BaseController
 		}
 		return $sx;
 	}
+
+	function th_config($id=0,$d1='',$d2='',$d3='')
+		{
+			$sx = '';
+			$sx .= $this->cab();
+			$sx .= $this->navbar();
+			/********** Security */
+			$ThThesaurus = new \App\Models\ThThesaurus();
+			$sx .= $ThThesaurus->config($id,$d1,$d2,$d3);
+			return $sx;
+		}
 }

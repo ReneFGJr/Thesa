@@ -140,6 +140,9 @@ function form_fields($typ, $fld, $vlr, $th = array())
     if ($t == 'index') {
         $t = 'hidden';
     }
+    if ($t == 'sql') {
+        $t = 'qr';
+    }    
     if ($t == 'hi') {
         $t = 'hidden';
     }
@@ -283,6 +286,7 @@ function form_fields($typ, $fld, $vlr, $th = array())
 
             $sx .= $td . ($fld) . $tdc;
             $sx .= $td;
+            print_r($q);
             $sql = 'select * from ' . $q[3];
             if (isset($q[4])) {
                 $sql .= ' where ' . $q[4];
@@ -316,7 +320,7 @@ function form_fields($typ, $fld, $vlr, $th = array())
             $sx .= '<div class="form-group">' . cr();
             $sx .= '<small id="emailHelp" class="form-text text-muted">' . lang($lib . $fld) . '</small>';
             $sx .= '<select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="' . $fld . '" name="' . $fld . '">';
-            $sx .= '<option>Select...</option>' . cr();
+            $sx .= '<option>'.lang('Select an option').'</option>' . cr();
             for ($r = 0; $r < count($opt); $r++) {
                 $chk = '';
                 if ($vlr == $r) {

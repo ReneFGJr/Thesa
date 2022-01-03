@@ -127,6 +127,72 @@ class ThConcept extends Model
             $sx .= '</ul>';
             return $sx;
         }
+
+    function TermQuery($id,$lt)
+        {
+            $this->select("id_c as id_c, c_concept as c_concept, rl1.rl_value, rl2.rl_value as name2, rl1.rl_lang as rl_lang, rl2.rl_lang as rl_lang2, lt1.ct_propriety, lt1.ct_concept, lt1.ct_concept_2 ");
+            $this->join('th_concept_term as lt1','id_c = ct_concept');
+            $this->join('rdf_literal as rl1','lt1.ct_term = rl1.id_rl');
+            $this->join('th_concept_term as lt2','(lt1.ct_concept = lt2.ct_concept) and (lt2.ct_propriety = 25)');
+            $this->join('rdf_literal as rl2','lt2.ct_term = rl2.id_rl');
+            $this->where('c_th',$id);
+            $this->where('c_ativo',1);
+            $this->like('rl1.rl_value',$lt, 'after');
+            $this->orderBy('rl1.rl_value');
+            $dt = $this->findAll();
+            //echo $this->db->getLastQuery();
+            $sx = '<ul>';
+            foreach($dt as $id=>$line)
+                {
+                    $link = '<a href="'.(PATH.MODULE.'v/'.$line['ct_concept']).'">';
+                    $linka = '</a>';
+                    $sx .= '<li>'.
+                                $link.$line['rl_value'].'<sup> ('.$line['rl_lang'].')</sup>';
+                                if (trim($line['rl_value']) != trim($line['name2']))
+                                    {
+                                        $sx .= ' <i><b>USE</b></i> '.$line['name2'].'<sup> ('.$line['rl_lang2'].')</sup>';
+                                    }                                
+                                $sx .= $linka.'</li>';
+                }
+            $sx .= '</ul>';
+            return $sx;
+        }        
+
+    function search($id)
+        {
+            $sx = '
+                    <form class="form-busca-site" action="'.PATH.MODULE.'th/'.$id.'/">
+                        <input class="btn-text-top" type="text" name="q" placeholder="'.lang('thesa.search').'">
+                        <div><button class="btn-buscar-top" type="submit"></button></div>
+                    </form>
+                   ';
+            $sx .= "<style>
+                    .btn-text-top {
+                    background-color: #f5f6fa;
+                    border: 1px solid rgba(255, 255, 255, .1);
+                    padding: 15px 30px 15px 40px;
+                    border-radius: 20px;
+                    width: 100%!important;
+                    height: 42px;
+                    font-weight: 300;
+                    color: #8795a2;
+                    }
+                        
+                    .btn-buscar-top {
+                    width: 20px!important;
+                    height: 22px;
+                    background: url(".URL."img/icone/buscar_grey.png) no-repeat;
+                    cursor: pointer!important;
+                    border: none;
+                    transform: translateY(-50%);
+                    padding: 0;
+                    position: relative;
+                    top: -20px;
+                    left: 10px;
+                    }
+                    </style>";
+            return $sx;
+        }
     function paginations($id)
         {
             $this->select("substr(rl_value,1,1) as ltr");
@@ -137,8 +203,8 @@ class ThConcept extends Model
             $this->groupBy('ltr');
             $this->orderBy('ltr');
             $dt = $this->findAll();
-
-            $sx = '<nav aria-label="Page navigation example">';
+            $sx = '';
+            $sx .= '<div aria-label="Page navigation example">';
             $sx .= '<ul class="pagination">';
             for ($r=0;$r < count($dt);$r++)
                 {
@@ -146,7 +212,9 @@ class ThConcept extends Model
                     $sx .= '<li class="page-item"><a class="page-link" href="'.(PATH.MODULE.'th/'.$id.'/'.$line['ltr']).'">'.$line['ltr'].'</a></li>'.cr();
                 }
             $sx .= '</ul>';
-            $sx .= '</nav>';
+            $sx .= '</div>';
+            $sx = bsc($sx,10);
+            $sx .= bsc($this->search($id),2);
             return $sx;
         }
 }

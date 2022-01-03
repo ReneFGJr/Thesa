@@ -58,8 +58,8 @@
             <div class="col-md-2 text-center" style="margin-top: 50px;">
             </div>
             <div class="col-md-5 text-center" style="margin-top: 50px;">
-                <span style="color: white;" class="h1"><?php echo lang('welcome_paralax_title');?></span>
-                <span style="color: white;"><?php echo lang('welcome_paralax_description');?></span>
+                <span style="color: white;" class="h1"><?php echo lang('thesa.welcome_paralax_title');?></span><br/>
+                <span style="color: white;"><?php echo lang('thesa.welcome_paralax_description');?></span>
                 <div class="separador">
                     <div class="separator-line"></div>
                     <span style="color: white;">Já tem uma conta?</span>

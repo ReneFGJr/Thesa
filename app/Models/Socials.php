@@ -9,7 +9,7 @@ use \app\Model\MainModel;
 class Socials extends Model
 {
 	protected $DBGroup              = 'default';
-	var $table                = 'users2';
+	var $table                		= 'users2';
 	protected $primaryKey           = 'id_us';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;

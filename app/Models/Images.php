@@ -54,7 +54,7 @@ class Images extends Model
 		{
 			$id = str_pad($id,5,'0',STR_PAD_LEFT);
 			$file = $path.$id;
-			$file = URL.('img/other/face_no_picture.png');
+			$file = base_url('img/other/face_no_picture.png');
 			return $file;
 		}
 
@@ -91,7 +91,7 @@ class Images extends Model
             if (file_exists($tmp))
                 {
                     $img_mst = '
-                            <img id="imagemConvertida" src="'.URL.($tmp.'?v='.time()).'" class="img-fluid"/>            
+                            <img id="imagemConvertida" src="'.base_url($tmp.'?v='.time()).'" class="img-fluid"/>            
                             <p>'.$tmp.'</p>
                         ';
                 }

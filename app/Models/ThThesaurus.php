@@ -64,6 +64,13 @@ class ThThesaurus extends Model
             return $sx;
         } 
 
+    function terms_query($id,$lt='A')
+        {
+            $ThConcept = new \App\Models\ThConcept();
+            $sx = $ThConcept->TermQuery($id,$lt);
+            return $sx;
+        } 
+
     function v($id='',$ltr='A')
         {
             $sx = '';
@@ -111,25 +118,25 @@ class ThThesaurus extends Model
             /*************************************** mostra todos os thesauros ********/
             if ($id=='')
             {
-            $dt = $this->where('pa_status',2)
-                ->OrderBy('pa_name')
-                ->FindAll();
-            for ($r=0;$r < count($dt);$r++)
-                {
-                    $line = $dt[$r];
-                    $img = '<img src="'.$this->show_icone($line).'" class="img-fluid">';
-                    $card = $img;
-                    $desc = '<a href="'.(PATH.MODULE.'th/'.$line['id_pa']).'" class="h4 text-bold">'.$line['pa_name'].'</a>';
-                    $desc .= '<br>';
-                    $ds = bsc($img,4);
-                    $ds .= bsc($desc,8);
-                    $ds = '<div class="row" style="min-height: 200px;">'.$ds.'</div>';
-                    $sx .= bsc($ds,4);
-                }
+                $dt = $this->where('pa_status',2)
+                    ->OrderBy('pa_name')
+                    ->FindAll();
+                for ($r=0;$r < count($dt);$r++)
+                    {
+                        $line = $dt[$r];
+                        $img = '<img src="'.$this->show_icone($line).'" class="img-fluid">';
+                        $card = $img;
+                        $desc = '<a href="'.(PATH.MODULE.'th/'.$line['id_pa']).'" class="h4 text-bold">'.$line['pa_name'].'</a>';
+                        $desc .= '<br>';
+                        $ds = bsc($img,4);
+                        $ds .= bsc($desc,8);
+                        $ds = '<div class="row" style="min-height: 200px;">'.$ds.'</div>';
+                        $sx .= bsc($ds,4);
+                    }
             } else {
                 /*************************************** mostra um thesauros ************/
+                $this->setTh($id);
                 $dt = $this->Find($id);
-
                 /********************************** Authors *************/
                 $authors = $ThUsers->authors($id);                
                 /********************************** Titulo do Thesaurus */
@@ -140,13 +147,26 @@ class ThThesaurus extends Model
                 /********************************** Sumários das letras */
                 $sx .= $ThConcept->paginations($id,$ltr);
                 /********************************** Lista de Termos *****/
-                $sm1 = $this->terms($id,$ltr);
-                $sm2 = '';
+                $q = get("q");
+                if (strlen($q) > 0)
+                    {
+                        $sm1 = $this->terms_query($id,$q);
+                        $sm2 = '';
+                    } else {
+                        $sm1 = $this->terms($id,$ltr);
+                        $sm2 = '';
+                    }               
+                
                 $sx .=  bsc($sm1,4,'p-3 mb-1').
                         bsc($sm2,8,'shadow p-3 mb-1 bg-white rounded');                
             }            
             $sx = bs($sx);
             return $sx;
+        }
+    function setTh($id)
+        {
+            $_SESSION['th'] = $id;
+            return True;
         }
     function show_resume($dt)
         {
@@ -208,4 +228,41 @@ class ThThesaurus extends Model
             );
             return $sx;
         }
+    function th($id)
+        {
+            if ($id==0)
+                {
+                    if (isset($_SESSION['th']))
+                        {
+                            $id = $_SESSION['th'];
+                            $_SESSION['th'] = $id;
+                        } else {
+                            $id = 0;
+                            echo metarefresh(PATH.MODULE);
+                        }
+                }
+            return $id;
+        }
+    function config($id,$d1,$d2,$d3)
+        {   
+            $sx = '';    
+            $ThConfig = new \App\Models\ThConfig();
+            $ThUsers = new \App\Models\ThUsers();
+            $id = $this->th($id);
+            $dtt = $this->find($id);      
+            /********************************** Authors *************/
+            $authors = $ThUsers->authors($id);
+            /********************************** Titulo do Thesaurus */
+            $sx .= bs($this->title($dtt,$authors));  
+
+			$t1 = bsc(bsicone('gear',64).h(lang('thesa.config')),12);
+
+			$sx .= bs($t1);
+            //
+			$t1 = $ThConfig->config_menu($id,$d1);
+			$t2 = $ThConfig->config_itens($id,$d1,$d2,$d3);
+            $sx .= bs(bsc($t1,2).bsc($t2,10));
+            return $sx;
+        }
+
 }
