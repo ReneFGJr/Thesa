@@ -45,14 +45,12 @@ class ThConfigLanguage extends Model
 
     function edit($id)
         {
-        PRINT_R($_POST);
             if (get("action")!='')
                 {
                     $action = get("action");
                     $lang1 = get("s1");
                     $lang2 = get("s2");
 
-                    echo '<h1>'.$action.'</h1>';
                     if ($action==lang("thesa.add"))
                         {
                             $lang = $lang2;
@@ -62,10 +60,11 @@ class ThConfigLanguage extends Model
                             $this->language_del($id,$lang);
                         }
                 }
+        /*****************************************************************/
            $sql = "select * from language 
                         LEFT JOIN language_th ON (language.id_lg = lgt_language) AND (lgt_th = $id)
                     ORDER BY lg_order, lg_language"; 
-                    echo $sql;
+                    
             $rlt = $this->db->query($sql);
             $rlt = $rlt->getResultArray();
             $s1 = '';
@@ -82,10 +81,10 @@ class ThConfigLanguage extends Model
                         }
                     
                 }
-            $s1 = h(lang('thesa.languages_to_add'),6);
-            $s2 = h(lang('thesa.languages_to_del'),6);
-            $s1 .= '<select name="s2" size=10 class="form-control">'.$s1.'</select>';
-            $s2 .= '<select name="s1" size=10 class="form-control">'.$s2.'</select>';
+            $s1t = h(lang('thesa.languages_to_add'),6);
+            $s2t = h(lang('thesa.languages_to_del'),6);
+            $s1 = $s1t.'<select name="s2" size=10 class="form-control">'.$s1.'</select>';
+            $s2 = $s2t.'<select name="s1" size=10 class="form-control">'.$s2.'</select>';
             $s3 = '<input name="action" type="submit" class="btn btn-outline-primary" style="width: 100%;" value="'.lang('thesa.add').'">';
             $s3 .= '<br/>';
             $s3 .= '<br/>';
@@ -106,10 +105,11 @@ class ThConfigLanguage extends Model
             $this->where('lgt_th',$th);
             $this->where('lgt_language',$lang);
             $rlt = $this->findAll();
+
             if (count($rlt) == 0)
                 {
                     $dt['lgt_th'] = $th;
-                    $dt['lgt_language'] = $th;
+                    $dt['lgt_language'] = $lang;
                     $dt['lgt_order'] = 0;
                     $this->save($dt);
                 }
@@ -120,9 +120,10 @@ class ThConfigLanguage extends Model
             $this->where('lgt_th',$th);
             $this->where('lgt_language',$lang);
             $rlt = $this->findAll();
-            if (count($rlt) == 0)
+            if (count($rlt) > 0)
                 {
-                    $this->delete('id_lgt',$rlt[0]['id_lgt']);
+                    $id = $rlt[0]['id_lgt'];
+                    $this->delete($id);
                 }
             return "";
         }        

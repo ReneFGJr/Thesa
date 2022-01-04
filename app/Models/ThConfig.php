@@ -65,6 +65,9 @@ class ThConfig extends Model
                     default:
                         $sx = 'ERROR';
                         break;
+                    case 'colaboration':
+                        $sx = $this->colaboration($id);
+                        break;
                     case 'language':
                         $sx = $this->language($id);
                         break;                        
@@ -86,5 +89,11 @@ class ThConfig extends Model
             $Th = new \App\Models\ThConfiglanguage();
             $sx = $Th->edit($id);
             return $sx;
-        }        
+        } 
+    function colaboration($id)
+        {
+            $Th = new \App\Models\ThConfigColaboration();
+            $sx = $Th->edit($id);
+            return $sx;
+        }               
 }
