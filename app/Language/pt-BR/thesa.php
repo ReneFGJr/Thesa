@@ -7,8 +7,7 @@ return [
     'TermCand' => 'Termos candidatos',
     'Language'=>'Idioma(s)',
     'Update'=>'Atualizado',
-    'Autor'=>'Autor(es)',
-    'prefLabel'=>'Termo preferencial',
+    'Autor'=>'Autor(es)',    
     'about'=>'Sobre',
     'help'=>'Ajuda',
     'th_open'=>'Tesauros Abertos',
@@ -29,4 +28,7 @@ return [
     'languages_to_del'=>'Idiomas ativos',
     'add'=>'Adicionar >>>',
     'remove'=>'<<< Remover',
+    'prefLabel'=>'Descritor',
+    'narrower5'=>'TE (skos.narrower)',
+    'broader5'=>'TG (skos.broader)',
     ];

@@ -337,6 +337,24 @@ class Thesa extends BaseController
 		$sx .= $this->footer();
 		return $sx;
 	}
+
+	function a($id = '',$act='')
+	{
+		$ThThesaurus = new \App\Models\ThThesaurus();
+		$sx = '';
+		$sx .= $this->cab();
+		if (strlen($act) == 0)
+			{				
+				$sx .= $this->navbar();
+			}
+		$sx .= $ThThesaurus->a($id,$act);
+		if (strlen($act) == 0)
+			{
+				$sx .= $this->footer();
+			}
+		return $sx;
+	}
+
 	function thopen()
 	{
 		$view = \Config\Services::renderer();

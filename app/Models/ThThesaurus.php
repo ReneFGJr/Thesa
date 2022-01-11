@@ -69,19 +69,15 @@ class ThThesaurus extends Model
             $ThConcept = new \App\Models\ThConcept();
             $sx = $ThConcept->TermQuery($id,$lt);
             return $sx;
-        } 
+        }
 
-    function v($id='',$ltr='A')
+
+
+    function th_header($th,$ltr='')
         {
             $sx = '';
             $ThUsers = new \App\Models\ThUsers();
             $ThConcept = new \App\Models\ThConcept();
-            $ThConceptTerms = new \App\Models\ThConceptTerms();
-            $dt = $ThConcept->le($id);
-            $ltr = Uppercase(substr(ascii($dt['rl_value']),0,1));
-            if ($ltr = '') { $ltr = 'A'; }
-
-            $th = $dt['c_th'];
             $dtt = $this->find($th);
       
             /********************************** Authors *************/
@@ -89,24 +85,68 @@ class ThThesaurus extends Model
             /********************************** Titulo do Thesaurus */
             $sx .= $this->title($dtt,$authors);  
 
-            /********************************** Description *********/
-            $sx .= $this->description($dtt);
-            $sx .= $this->show_resume($dtt);
-            /********************************** Sumários das letras */            
-            $sx .= bs(bsc($ThConcept->paginations($th,$ltr),12));
+            
+            /********************************** Sumários das letras */ 
+            if ($ltr != FALSE)
+                {
+                    /********************************** Description *********/
+                    $sx .= $this->description($dtt);
+                    $sx .= $ThConcept->paginations($th,$ltr);
+                }
+            //$sx .= '<style> div { border: 1px solid #ccc; padding: 10px; } </style>';
             /********************************** Lista de Termos *****/
 
-            $sm1 = $this->terms($th,$ltr);
-            $sm2 = '<div class="row">'.
-                    $ThConcept->show($id).
-                    $ThConceptTerms->data($id).
-                    '</div>';
-            $sx .=  bsc($sm1,4,'p-3 mb-1').
-                    bsc($sm2,8,'shadow p-3 mb-1 bg-white rounded');            
-
             $sx = bs($sx);
+            return $sx;
+        }
 
-            return $sx;          
+    function a($id,$act='')
+        {
+            $sx = '';
+            $ThConcept = new \App\Models\ThConcept();
+
+            /******************************************* Conceito */
+            $dt = $ThConcept->find($id);
+
+            $th = $dt['c_th'];
+
+            switch($act)
+                {
+                    case 'change_preflabel':
+                        $sx .= h('change_preflabel');
+                        break;
+                    default:
+                        $sx .= $this->th_header($th,'');    
+                        $sx .=   $ThConcept->edit($id);
+                    break;
+                }
+            return $sx;
+        }         
+
+    function v($id='',$ltr='A')
+        {
+            $sx = '';
+            
+            $ThConcept = new \App\Models\ThConcept();
+            //$ThConceptTerms = new \App\Models\ThConceptTerms();
+            $ThConceptData = new \App\Models\ThConceptData();
+            $dt = $ThConcept->le($id);
+
+            $th = $dt['c_th'];
+            $sx .= $this->th_header($th,$ltr);
+
+            $sx .=   $ThConcept->show($id);
+            //$sx .= '<style> div { border: 1px solid #ccc; padding: 10px; } </style>';
+
+            /****************************************************** DADOS */
+            $sx .= bs($ThConceptData->data($id));
+
+            $sx .= '<hr>'.$ThConceptData->data_TG($id);
+            $sx .= '<hr>'.$ThConceptData->data_TE($id);
+
+            //$sx .= '</div>';
+
+            return $sx;
         }   
 
     function index($id='',$ltr='A')

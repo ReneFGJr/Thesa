@@ -66,31 +66,224 @@ class ThConcept extends Model
 
     function show($id)
         {
-            $ThConceptTerms = new \App\Models\ThConceptTerms();
-            $sx = 'SHOW';
-            $dt = $ThConceptTerms->prefLabel($id);
-            //$dt = $this->le($id);
+            return $this->header($id);
+        }
 
+    function list($id,$prop='')
+        {
+        /*****************************************************************/
+        $th = 64;
+        /*****************************************************************/
+        $th = round(sonumero($th));
+        $sql = "select * from th_concept_term as t1
+        INNER JOIN rdf_literal ON id_rl = t1.ct_term
+        INNER JOIN rdf_resource ON id_rs = t1.ct_propriety
+        INNER JOIN rdf_prefix on id_prefix = rs_prefix
+        WHERE t1.ct_concept = $id and t1.ct_th = $th and rs_group = '$prop'
+        order by rs_group ";
+        
+        $rlt = (array)$this ->query($sql)->getResult();
+        if (count($rlt) > 0) {
+            /* Read BT */
+            return "OK";
+            exit;
+            return ($rlt);
+        } else {
+            return "NONE";
+            exit;
+            return ( array());
+        }
+    }          
 
+    function edit($id)
+        {
+            $sx = $this->header_edit($id);
+            $sx .= $this->prefLabel_Add($id);
+            $sx .= $this->broader_Add($id);
+            $sx .= $this->narrower_Add($id);
+            $sx .= $this->notes_Add($id);
+            $sx .= $this->altLabel_Add($id);
+            $sx .= $this->hiddenLabel_Add($id);
+            return $sx;
+        }
+
+    function notes_Add($id)
+        {
             $sx = '';
-            $classCss = 'border-bottom border-2';
+            $txt = lang('thesa.notes_Add');
+            $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
+            $sx .= onclick(PATH.MODULE.'a/'.$id.'/notesAdd',800,600);
+            $sx .= h($txt,4);
 
-            /*************************************************** PREFERENCIAL TERM */
-            $sx .= bsc(strtoupper(lang('thesa.prefLabel')).':',3,$classCss.' text-right');
-            $prefs = '';
+            $sx .= $this->list($id,'notes');
+            
+            return $sx;
+        }         
+
+    function altLabel_Add($id)
+        {
+            $sx = '';
+            $txt = lang('thesa.altLabel_Add');
+            $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
+            $sx .= onclick(PATH.MODULE.'a/'.$id.'/altLabelAdd',800,600);
+            $sx .= h($txt,4);
+            
+            return $sx;
+        }        
+
+    function hiddenLabel_Add($id)
+        {
+            $sx = '';
+            $txt = lang('thesa.hiddenLabel_Add');
+            $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
+            $sx .= onclick(PATH.MODULE.'a/'.$id.'/prefLabelAdd',800,600);
+            $sx .= h($txt,4);
+            
+            return $sx;
+        }        
+
+    function prefLabel_Add($id)
+        {
+            $sx = '';
+            $txt = lang('thesa.prefLabel_Add');
+            $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
+            $sx .= onclick(PATH.MODULE.'a/'.$id.'/prefLabelAdd',800,600);
+            $sx .= h($txt,4);
+            
+            return $sx;
+        }
+
+    function broader_Add($id)
+        {
+            $sx = '';
+            $txt = lang('thesa.broader_Add');
+            $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
+            $sx .= onclick(PATH.MODULE.'a/'.$id.'/prefLabelAdd',800,600);
+            $sx .= h($txt,4);
+            
+            return $sx;
+        }
+
+    function narrower_Add($id)
+        {
+            $sx = '';
+            $txt = lang('thesa.narrower_Add');
+            $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
+            $sx .= onclick(PATH.MODULE.'a/'.$id.'/prefLabelAdd',800,600);
+            $sx .= h($txt,4);
+            
+            return $sx;
+        }                
+
+    function header_edit($id)
+        {
+            $ThConceptTerms = new \App\Models\ThConceptTerms();
+            $sx = '';
+            $dt = $ThConceptTerms->prefLabel($id);
+            $lab = '<span class="supermall">'.lang('thesa.prefLabel').'</span>';
+            $prefs = $lab;
             for ($r=0;$r < count($dt);$r++)
                 {
                     $dtt = (array)$dt[$r];
+                    $link = '<a href="'.PATH.MODULE.'v/'.$id.'" class="text-primary">';
+                    $linka = '</a>';
                     $lang = '';
                     if (count($dt) > 1) 
                         { $lang = ' <sup>('.$dtt['rl_lang'].')</sup>'; }
-                    $prefs .= '<h3>'.$dtt['rl_value'].$lang.'</h3>';
+                    $prefs .= '<h3>'.$link.$dtt['rl_value'].$lang.$linka.'</h3>';
                 }
-            $img = $this->image($id);
-            $sx .= bsc($prefs,7,$classCss);
-            $sx .= bsc($img,2,$classCss);
+            /********* Change PrefLabel */
+            $prefs .= $this->bt_prefLabel($id);
+            /********* Screen ************/                  
+            $sx .= bsc($prefs,8);
+            $sx .= bsc(
+                    $this->bt_remove($id) .' '.
+                    $this->bt_concept($id).' '
+            ,4,'text-end');
+            $sx = bs($sx);
             return $sx;
         }
+
+    function header($id)
+        {
+            $ThConceptTerms = new \App\Models\ThConceptTerms();
+            $sx = '';
+            $dt = $ThConceptTerms->prefLabel($id);
+            $lab = '<span class="supermall">'.lang('thesa.prefLabel').'</span>';
+            $prefs = $lab;
+            for ($r=0;$r < count($dt);$r++)
+                {
+                    $dtt = (array)$dt[$r];
+                    $link = '<a href="'.PATH.MODULE.'v/'.$id.'" class="text-primary">';
+                    $linka = '</a>';
+                    $lang = '';
+                    if (count($dt) > 1) 
+                        { $lang = ' <sup>('.$dtt['rl_lang'].')</sup>'; }
+                    $prefs .= '<h3>'.$link.$dtt['rl_value'].$lang.$linka.'</h3>';
+                }
+            /********* Copy to ClipBoard */
+            $prefs .= '<input type="text" id="cpc" 
+                        value="'.PATH.MODULE.'c/'.$id.'" class="small" style="width: 100%; border: 0px;" readonly="">';
+            $prefs .= clipboard();      
+
+            /********* Screen ************/                  
+            $sx .= bsc($prefs,8);
+            $sx .= bsc(
+                    $this->bt_editar($id) .' '.
+                    $this->bt_concept($id).' '.
+                    $this->bt_copy($id) .' '.
+                    $this->bt_rdf($id)
+            ,4,'text-end');
+            $sx = bs($sx);
+            return $sx;
+        }
+
+    function bt_prefLabel($id)
+        {
+            $url = PATH.MODULE.'a/'.$id.'/change_preflabel';
+            $sx = onclick($url,800,500);
+            $sx .= lang('thesa.PrefLabelChange');
+            $sx .= '</a>';
+            return $sx;
+        }
+
+    function bt_editar($id)
+        {
+            $sx = '<a href="'.PATH.MODULE.'a/'.$id.'" 
+                class="btn btn-outline-secondary">editar</a>';
+            return($sx);
+        }
+    function bt_concept($id)
+        {
+            $sx = '<a href="'.PATH.MODULE.'v/'.$id.'"
+                        class="btn btn-outline-secondary">thesa:c20679</a>';
+            return($sx);
+        }
+    function bt_copy($id)
+        {
+            $sx = '<button class="btnc btn btn-outline-secondary" data-clipboard-target="#cpc" 
+                title="Copiar para clipboard" onclick="copytoclipboard(\'cpc\');">
+                <img src="https://www.ufrgs.br/tesauros/img/icone/copy.png" height="18">
+            </button>';
+            return($sx);
+        }
+
+    function bt_rdf($id)
+        {
+            $sx = ' <a href="'.PATH.MODULE.'c/'.$id.'/rdf" 
+                    class="btn btn-outline-secondary" title="Arquivo RDF">
+                        <img src="'.URL.'img/icone/rdf_w3c.svg" height="18">
+                    </a>';
+            return $sx;
+        } 
+    function bt_remove($id)
+        {
+            $url = PATH.MODULE.'c/'.$id.'/remove';
+            $sx = onclick($url,800,300);
+            $sx .= '<img src="'.URL.'img/icone/exclud.png" height="32" title="Remove">
+                    </a>';
+            return $sx;
+        }               
     function image($id)
         {
             $img = URL.'img/no_image.jpg';
@@ -204,7 +397,7 @@ class ThConcept extends Model
             $this->orderBy('ltr');
             $dt = $this->findAll();
             $sx = '';
-            $sx .= '<div aria-label="Page navigation example">';
+            //$sx .= '<div aria-label="Page navigation example2">';
             $sx .= '<ul class="pagination">';
             for ($r=0;$r < count($dt);$r++)
                 {
@@ -212,7 +405,7 @@ class ThConcept extends Model
                     $sx .= '<li class="page-item"><a class="page-link" href="'.(PATH.MODULE.'th/'.$id.'/'.$line['ltr']).'">'.$line['ltr'].'</a></li>'.cr();
                 }
             $sx .= '</ul>';
-            $sx .= '</div>';
+            //$sx .= '</div>';
             $sx = bsc($sx,10);
             $sx .= bsc($this->search($id),2);
             return $sx;

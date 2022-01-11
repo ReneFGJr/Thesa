@@ -17,6 +17,21 @@ function onclick($url,$x=800,$y=800,$class="")
     return $a;
 }
 
+function clipboard()
+    {
+        $sx = '
+        <script>
+            function copytoclipboard($element) {
+            var copyText = document.getElementById($element);
+            copyText.select();
+            document.execCommand("Copy");
+            alert("Copied the text: " + copyText.value);
+            }
+        </script>';
+        return $sx;
+
+    }
+
 function wclose($tp='')
     {
         if ($tp != '')

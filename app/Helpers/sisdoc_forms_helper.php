@@ -12,6 +12,7 @@
 //$sx .= form($url,$dt,$this);
 require('sisdoc_form_1.php');
 require('sisdoc_form_2.php');
+require('sisdoc_form_3.php');
 require('sisdoc_form_js.php');
 require('sisdoc_drag_drop.php');
 
