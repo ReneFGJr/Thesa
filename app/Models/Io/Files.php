@@ -141,9 +141,8 @@ class Files extends Model
 
 	function directory($id)
 	{
-
 		$file = str_pad($id, 9, '0', STR_PAD_LEFT);
-		$dir[0] = '_c';
+		$dir[0] = '../.c';
 		$dir[1] = substr($file, 0, 3);
 		$dir[2] = substr($file, 3, 2);
 		$dir[3] = substr($file, 5, 2);
