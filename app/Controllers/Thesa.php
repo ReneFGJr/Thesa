@@ -30,7 +30,7 @@ class Thesa extends BaseController
 	public function index()
 	{
 		$view = \Config\Services::renderer();
-		$ThOpen = new \App\Models\ThThesaurus();
+		$ThOpen = new \App\Models\Thesaurus\ThThesaurus();
 		$sx = '';
 		$sx .= $this->cab();		
 		$sx .= $this->navbar();
@@ -99,6 +99,7 @@ class Thesa extends BaseController
 
 	private function navbar($dt = array())
 	{
+		$ThOpen = new \App\Models\Thesaurus\ThThesaurus();
 		$title = 'Thesa';
 		if (isset($dt['title'])) {
 			$title = $dt['title'];
@@ -136,6 +137,10 @@ class Thesa extends BaseController
 			$sx .= '		<li class="nav-item">
 								<a class="nav-link" href="' . (PATH .MODULE .'th_my/') . '">' . lang('thesa.th_my') . '</a>
 							</li>';
+		}
+		/*********************************** Configuração (Item do menu) */
+		if ($ThOpen->access())
+		{
 			$sx .= '		<li class="nav-item">
 								<a class="nav-link" href="' . (PATH . MODULE .'th_config/') . '">' . lang('thesa.th_config') . '</a>
 							</li>';
@@ -310,17 +315,133 @@ class Thesa extends BaseController
 
 		return $sx;
 	}
+
+	function term($id=0,$act='')
+		{
+			$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
+			$ThConcept = new \App\Models\Thesaurus\ThConcept();
+			$ThLiteral = new \App\Models\Thesaurus\ThLiteral();
+			$ltr = '';
+
+			$sa = $ThThesaurus->index($id);
+			$sx = '';
+			$sx .= $this->cab();
+			$sx .= $this->navbar();
+			$dt = $ThThesaurus->find($id);
+			$sa = $ThThesaurus->header($dt);
+			$sa .= $ThThesaurus->show_resume($dt);
+			$sa .= $ThConcept->paginations($id,$ltr);
+			$sx .= bs($sa);
+
+			switch($act)
+				{
+					case 'add':
+					$sx .= bs($ThLiteral->form($id));
+					break;
+
+					case 'concept':
+					$sx .= bs($ThLiteral->associate($id));
+					$sx .= '';
+					break;					
+				}
+			
+
+			$sx .= $this->footer();
+			return $sx;
+		}
+
 	function th($id = '', $ltr = '')
 	{
-		$ThThesaurus = new \App\Models\ThThesaurus();
+		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
+		$sa = $ThThesaurus->index($id, $ltr);
 		$sx = '';
 		$sx .= $this->cab();
 		$sx .= $this->navbar();
-		$sx .= $ThThesaurus->index($id, $ltr);
+		$sx .= $sa;
 		$sx .= $this->footer();
 
 		return $sx;
 	}
+
+	function edit($id=0,$ac='')
+		{
+			$sx = $this->cab();
+			$sx .= $this->navbar();		
+
+			$Thesauros = new \App\Models\Thesaurus\Index();
+			$sx = $Thesauros->edit($id,$ac);
+
+			return $sx;
+		}
+
+	function schema($type,$id,$act='')
+		{
+			$sx = $this->cab();
+			$sx .= $this->navbar();		
+
+			$SchemaExternal = new \App\Models\Schema\SchemaExternal();
+			
+			if ($type == 'skos')
+			{
+				$sx .= $SchemaExternal->showID($id,$act);
+			}	
+			$sx .= $this->footer();
+
+			return $sx;
+		}
+
+	function popup($d1='',$d2='',$d3='',$d4='',$d5='',$d6='')
+		{
+			$sx = '';
+			$sec = true;
+			$cab = $this->cab();
+
+			switch($d1)
+				{
+					case 'associate':
+						$ThLiteral = new \App\Models\Thesaurus\ThLiteral();
+						$sx = $cab;
+						$sx .= $ThLiteral->term_concept($d2,$d3);
+					break;
+
+					case 'relations':
+					$ThConfigRelations = new \App\Models\Thesaurus\ThConfigRelations();
+					if ($d4 == 'del')
+						{
+							$sx .= $ThConfigRelations->excluding($d2,$d3,$d4,$d5,$d6);
+							return $sx;
+						}					
+					break;
+
+					case 'colaboration':
+					$ThConfigColaboration = new \App\Models\Thesaurus\ThConfigColaboration();
+					if ($d4 == 'del')
+						{
+							$sx .= $ThConfigColaboration->excluding($d2,$d3,$d4,$d5,$d6);
+							return $sx;
+						}					
+					$sx = $cab;
+					$sx .= $ThConfigColaboration->add_colaboration($d2,$d3,$d4,$d5,$d6);
+					break;
+
+					case 'relation_thesa':
+					$ThConfigRelations = new \App\Models\Thesaurus\ThConfigRelations();
+					$sx = $cab;
+					$sx .= $ThConfigRelations->add_thesa_relations($d2,$d3,$d4,$d5,$d6);
+					break;
+
+					case 'relation_skos':
+					$ThConfigRelations = new \App\Models\Thesaurus\ThConfigRelations();
+					$sx = $cab;
+					$sx .= $ThConfigRelations->add_skos_relations($d2,$d3,$d4,$d5,$d6);
+					break;					
+					
+					default:
+					$sx = $cab;
+					$sx .= bsmessage('Popup não encontrado - '.$d1);
+				}
+			return $sx;
+		}
 
     function c($id)
         {
@@ -329,7 +450,7 @@ class Thesa extends BaseController
 
 	function v($id = '')
 	{
-		$ThThesaurus = new \App\Models\ThThesaurus();
+		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
 		$sx = '';
 		$sx .= $this->cab();
 		$sx .= $this->navbar();
@@ -340,7 +461,7 @@ class Thesa extends BaseController
 
 	function a($id = '',$act='')
 	{
-		$ThThesaurus = new \App\Models\ThThesaurus();
+		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
 		$sx = '';
 		$sx .= $this->cab();
 		if (strlen($act) == 0)
@@ -358,7 +479,7 @@ class Thesa extends BaseController
 	function thopen()
 	{
 		$view = \Config\Services::renderer();
-		$ThOpen = new \App\Models\ThThesaurus();
+		$ThOpen = new \App\Models\Thesaurus\ThThesaurus();
 		$sx = '';
 		$sx .= $this->cab();
 		//$sx .= $this->view('paralax');			
@@ -390,12 +511,25 @@ class Thesa extends BaseController
 
 	function th_config($id=0,$d1='',$d2='',$d3='')
 		{
+			$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
 			$sx = '';
 			$sx .= $this->cab();
 			$sx .= $this->navbar();
+
 			/********** Security */
-			$ThThesaurus = new \App\Models\ThThesaurus();
-			$sx .= $ThThesaurus->config($id,$d1,$d2,$d3);
+			if ($ThThesaurus->access($id))
+			{
+				/********** Config */			
+				$sx .= $ThThesaurus->config($id,$d1,$d2,$d3);
+			} else {
+				if ($id > 0)
+				{
+					$sx .= metarefresh(PATH.MODULE.'th/'.$id);
+				} else {
+					$sx .= metarefresh(PATH.MODULE);
+				}
+				
+			}
 			return $sx;
 		}
 }

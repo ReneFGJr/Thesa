@@ -43,5 +43,13 @@ class SchemaExternalTerms extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    
+    function resume($id)
+        {
+            $dt = $this
+                ->select('count(*) as total')
+                ->where('see_se',$id)
+                ->groupBy('see_se')
+                ->findAll();
+            return $dt;
+        }
 }

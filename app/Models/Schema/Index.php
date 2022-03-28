@@ -42,10 +42,15 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function own($id)
+        {
+            pre($_SESSION);
+        }
+
     function btn_inport_external($id)
         {
             $sx = form_open();
-            $sx .= h('thesa.import_external_schema',4);
+            $sx .= h(lang('thesa.import_external_schema'),4);
             $sx .= '<span class="small">'.lang('thesa.informe_url').' (XML)</span>';
             $sx .= form_input(array('name'=>'url_schema','class'=>'form-control'));            
             $sx .= '<span class="small">Ex: http://vocabularies.unesco.org/browser/rest/v1/thesaurus/data?format=application/rdf%2Bxml</span><br/>';
@@ -88,4 +93,44 @@ class Index extends Model
                 }
             return $sx;
         }
+
+    function list_thesa_show($id)
+        {
+            $SchemaExternalTh = new \App\Models\Schema\SchemaExternalTh();
+            $sx = h(lang('thesa.relations_thesa'),5);
+            $sx .= $SchemaExternalTh->show($id);
+            return $sx;
+        }
+
+    function list_skos_show($id)
+        {
+            $SchemaExternal = new \App\Models\Schema\SchemaExternal();
+            $sx = h(lang('thesa.relations_skos'),5);
+            $sx .= $SchemaExternal->show($id);
+            return $sx;
+        }    
+
+    function btn_relation_skos($th)
+        {
+            $url = PATH . MODULE . 'popup/relation_skos/' . $th;
+            $sx = '';
+            $sx = onclick($url,800,600,'btn btn-outline-primary');
+            $sx .= lang('thesa.relations_skos_add');
+            $sx .= '</span>';
+
+            return $sx;
+        }            
+
+    function btn_relation_thesa($th)
+        {
+            $url = PATH . MODULE . 'popup/relation_thesa/' . $th;
+            $sx = '';
+            $sx = onclick($url,800,600,'btn btn-outline-primary');
+            $sx .= lang('thesa.relations_thesa_add');
+            $sx .= '</span>';
+
+            return $sx;
+        }
+    
+    
 }

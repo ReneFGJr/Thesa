@@ -17,6 +17,14 @@ function onclick($url,$x=800,$y=800,$class="")
     return $a;
 }
 
+function newwin($url,$x=800,$y=600)
+    {
+    $a = '';
+    $a .= 'NewWindow=window.open(\''.$url.'\',\'newwin\',\'scrollbars=no,resizable=no,width='.$x.',height='.$y.',top=10,left=10\'); ';  
+    $a .= 'NewWindow.focus(); void(0); ';
+    return $a;
+    }
+
 function clipboard()
     {
         $sx = '
