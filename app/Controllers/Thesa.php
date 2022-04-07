@@ -443,13 +443,27 @@ class Thesa extends BaseController
 			return $sx;
 		}
 
-    function c($id)
+	function search($q='')
+		{
+			echo $q;
+		}
+
+    function c($id,$tp= '')
         {
-            return $this->v($id);
+            return $this->v($id,$tp);
         }  	
 
-	function v($id = '')
+	function v($id = '', $tp = '')
 	{
+		switch ($tp)
+			{
+				case 'rdf':
+					$ThThesaurus = new \App\Models\Api\Index();
+					$ThThesaurus->rdf($id);
+					exit;
+					break;
+			}
+		/****************************** Screen */
 		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
 		$sx = '';
 		$sx .= $this->cab();

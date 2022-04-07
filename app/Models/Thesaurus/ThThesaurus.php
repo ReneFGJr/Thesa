@@ -40,6 +40,14 @@ class ThThesaurus extends Model
     protected $beforeDelete         = [];
     protected $afterDelete          = [];
 
+    function rdf($id)
+        {
+            $ThConcept = new \App\Models\Thesaurus\ThConcept();
+            $ThConceptData = new \App\Models\Thesaurus\ThConceptData();
+            $dt = $ThConcept->le($id);
+            pre($dt);
+        }
+
     function access($th=0,$us='')
         {
             $ThAccess = new \App\Models\Thesaurus\ThAccess();

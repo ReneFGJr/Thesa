@@ -71,7 +71,7 @@ class ThConcept extends Model
         {
             $this->select("id_c, c_concept, rl_value, rl_lang, ct_propriety, ct_concept, c_th");
             $this->join('th_concept_term','id_c = ct_concept');
-            $this->join('rdf_literal','ct_term = id_rl');            
+            $this->join('rdf_literal','ct_term = id_rl');
             $this->where('id_c',$id);
             $this->orderBy('rl_value');
             $dt = $this->findAll();
@@ -87,6 +87,7 @@ class ThConcept extends Model
     function show($id)
         {
             return $this->header($id);
+            $ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
         }
 
     function list($id,$prop='')
