@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models\Thesaurus;
+namespace App\Models\Help;
 
 use CodeIgniter\Model;
 
-class ThConfig extends Model
+class Index extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'thconfigs';
+    protected $table            = 'indices';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
@@ -40,12 +40,22 @@ class ThConfig extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function config_menu($id, $ac = '')
+    function index($d1,$d2)
+        {
+            $sa = $this->help_menu($d1,$d2);
+            $sb = $this->help_itens($d1,$d2);
+
+            $sx = h('thesa.Help');
+            $sx = bs($sx.bsc($sa,3).bsc($sb,9));
+            return $sx;
+        }
+
+    function help_menu($id, $ac = '')
     {
         $sx = '';
 
         $sx .= '<ul class="nav flex-column">';
-        $it = array('description', 'language', 'colaboration', 'relations');
+        $it = array('about','api');
         if ($ac == '') {
             $ac = $it[0];
         }
@@ -56,59 +66,48 @@ class ThConfig extends Model
             } else {
                 $cl = '';
             }
-            $sx .= '<li class="mb-2 h5 nav-item text-end"><a href="' . PATH . MODULE . 'th_config/' . $id . '/' . $it[$r] . '" class="nav-link ' . $cl . '">' . lang('thesa.' . $it[$r]) . '</a></li>';
+            $sx .= '<li class="mb-2 h5 nav-item text-end"><a href="' . PATH . MODULE . 'help/'. $it[$r] . '" class="nav-link ' . $cl . '">' . lang('thesa.' . $it[$r]) . '</a></li>';
         }
         $sx .= '</ul>';
         return $sx;
-    }
+    }   
 
-    function config_itens($id, $ac = '')
+    function about()
+        {
+            $sx = h('thesa.About',4);
+            return $sx;
+        }
+
+    /***************************************************************************************** MD */     
+    function md($act)
+        {
+            $sx = '';
+            $dir = '../_document/help/';
+            $file = $dir.$act.'.md';
+            if (file_exists($file)) {
+                $sx = file_get_contents($file);
+                $sx = troca($sx,'$URL',URL);
+            } else {
+                $sx = bsmessage('File not found - '.$file);
+            }
+            return $sx;
+        }
+    
+    /***************************************************************************************** ITENS */     
+    function help_itens($ac = '')
     {
         if ($ac == '') {
             $ac = 'description';
         }
         switch ($ac) {
             default:
-                $sx = 'ERROR';
+                $sx = $this->about();
                 break;
-            case 'relations':
-                $sx = $this->relations($id, $ac);
-                break;
-            case 'colaboration':
-                $sx = $this->colaboration($id,$ac);
-                break;
-            case 'language':
-                $sx = $this->language($id,$ac);
-                break;
-            case 'description':
-                $sx = $this->description($id,$ac);
+            case 'api':
+                $sx = h('thesa.Api',4);
+                $sx .= $this->md($ac);
                 break;
         }
         return ($sx);
-    }
-    function description($id)
-    {
-        $Th = new \App\Models\Thesaurus\ThConfigDescription();
-        $sx = $Th->edit($id);
-        return $sx;
-    }
-
-    function language($id)
-    {
-        $Th = new \App\Models\Thesaurus\ThConfiglanguage();
-        $sx = $Th->edit($id);
-        return $sx;
-    }
-    function colaboration($id)
-    {
-        $Th = new \App\Models\Thesaurus\ThConfigColaboration();
-        $sx = $Th->edit($id);
-        return $sx;
-    }
-    function relations($id)
-    {
-        $Th = new \App\Models\Thesaurus\ThConfigRelations();
-        $sx = $Th->edit($id);
-        return $sx;
-    }
+    }        
 }

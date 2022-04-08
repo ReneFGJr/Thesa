@@ -15,23 +15,23 @@ class ThConfigDescription extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_pa','pa_name',
+        'id_pa','pa_name','pa_achronic',
         'pa_description','pa_status',
         'pa_classe','pa_version',
-        'pa_introdution','pa_methodology','	pa_audience',
+        'pa_introdution','pa_methodology','pa_audience',
         'pa_type',
 
     ];
     protected $typeFields    = [    
         'hidden',
-        'string:150',
+        'string:150*','asc:30*',
         'text',
-        'status',
-        'sql:id_pac:pac_name:th_thesaurus_class',
+        'status*',
+        'sql:id_pac:pac_name:th_thesaurus_class*',
         'string:10',
         'text',
         'text',
-        'text',
+        'text*',
         'hidden',
     ];
 
@@ -59,12 +59,13 @@ class ThConfigDescription extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function edit($id)
+    function edit($id,$type='')
         {
             $this->id = $id;
             
             $this->path = PATH.MODULE.'th_config/'.$id.'/description';
-            $this->path_back = PATH.MODULE.'th/'.$id.'/';
+            $this->path_back = PATH.MODULE.'th_config';
+            $this->pre = 'thesa';
             $sx = form($this);
             return $sx;
         }

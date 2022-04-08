@@ -152,6 +152,12 @@ class Thesa extends BaseController
 							</li>			
 			';
 
+		$sx .= '
+							<li class="nav-item">
+								<a class="nav-link" href="' . (PATH . MODULE .'help') . '">' . lang('thesa.Help') . '</a>
+							</li>			
+			';			
+
 		$sx .= '      </ul>' . cr();
 		$sx .= $this->Socials->nav_user();
 
@@ -160,8 +166,21 @@ class Thesa extends BaseController
 		$sx .= '</nav>' . cr();
 		return $sx;
 	}
+	
+	
+	function api($d1='',$d2='',$d3='')
+		{
+			$sx = $this->cab();
+			$sx .= $this->navbar();
+			$sa = bsc(h('API'),12);
+			$sa .= bsc(URL.'/rest/v1/search?query=',12);
+			$sa .= bsc(URL.'/rest/v1/data?uri=',12);
+			$sx .= bs($sa);
+			$sx .= $this->footer();
+			return $sx;
+		}
 
-	private function footer()
+	function footer()
 	{
 		$sx = '<!-- Footer -->
 					<footer class="page-footer font-small blue-grey lighten-5" style="margin-top: 50px;">
@@ -504,6 +523,21 @@ class Thesa extends BaseController
 
 		return $sx;
 	}
+
+	function help($d1='',$d2='')
+		{
+			$sx = '';
+			$Help = new \App\Models\Help\Index();
+			$view = \Config\Services::renderer();
+			$sx .= $this->cab();
+			$sx .= $this->navbar();
+			$sx .= $view->render('paralax');
+			$sx .= $Help->index($d1,$d2);
+			$sx .= $this->footer();			
+
+			return $sx;
+		}
+
 	function social($d1='',$d2='',$d3='')
 	{
 		$Socials = new \App\Models\Socials();

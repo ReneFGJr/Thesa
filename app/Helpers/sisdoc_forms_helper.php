@@ -17,6 +17,7 @@ require('sisdoc_date.php');
 require('sisdoc_cookies.php');
 require('sisdoc_form_js.php');
 require('sisdoc_drag_drop.php');
+require('sisdoc_css.php');
 
     function clog($msg)
         {
@@ -166,34 +167,6 @@ function redireciona($url='/main/service',$time=2)
     {
         $sx = redirect()->to($url);
         return ($sx);
-    }
-
-function linkdel($url)
-    {
-        global $js_del;
-        $sx = '';
-        $sx .= anchor($url,'&nbsp;X&nbsp;',['class'=>'btn-primary small','onclick'=>'return confirma();','style'=>'border: 1px solid #00000; border-radius: 5px;']);
-        if ($js_del == '')
-            {
-                $sx .= '
-                <script>
-                function confirma()
-                    {
-                        if (!confirm("Excluir registro?"))
-                            {
-                                return false;
-                            }
-                    }
-                </script>';
-                $js_del = true;
-            }
-        return($sx);
-    }
-
-function linked($url)
-    {
-        $sx = anchor($url,'&nbsp;ed&nbsp;',['class'=>'btn-warning small','style'=>'border: 1px solid #00000; border-radius: 5px;']);
-        return($sx);        
     }
 
 function form_del($th)

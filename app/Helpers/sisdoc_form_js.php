@@ -17,6 +17,24 @@ function onclick($url,$x=800,$y=800,$class="")
     return $a;
 }
 
+function btn_trash_popup($url,$class='text-secondary',$txt='')
+    {
+        $sx = '<a href="#" class="a '.$class.' text-danger" onclick="if (confirm(\''.lang('brapci.exclusion?').'\')) { NewWindow=window.open(\''.$url.'\',\'newwin\',\'scrollbars=no,resizable=no,width=800,height=400,top=10,left=10\'); NewWindow.focus(); void(0); }" style="cursor: pointer;">'.bsicone('trash').'</a>';
+        return $sx;
+    }
+
+function btn_trash($url,$class='text-secondary',$txt='')
+    {
+        $sx = '<a href="'.$url.'" class="a text-danger '.$class.'" onclick="return confirm(\''.lang('sisdoc.exclusion?').'\');">'.bsicone('trash').'</a>';
+        return $sx;
+    }
+function btn_edit($url,$class='')
+    {
+        $sx = '<a href="'.$url.'" class="a '.$class.'">'.bsicone('edit').'</a>';
+        return $sx;
+    }
+
+
 function newwin($url,$x=800,$y=600)
     {
     $a = '';

@@ -203,7 +203,7 @@ class Socials extends Model
 					$st .= h('Service not found - [' . $cmd . ']', 5);
 				}
 				
-				if ($this->getAccess('#ADM#GER'))
+				if ($this->getAccess('#ADM#GER')) 
 					{
 						$st .= $this->menu(9);
 					}

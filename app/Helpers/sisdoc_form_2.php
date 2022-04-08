@@ -76,7 +76,7 @@ function version()
             /**************************************************************** TABLE NAME */
             $sx = bsc('<h1>'.lang($th->table).'</h1>',12);
     
-            $st = '<table width="100%" border=1>';
+            $st = '<table width="100%" class="table">';
             $st .= '<tr><td>';
             $st .= form_open();
             $st .= '</td><td>';
@@ -109,17 +109,17 @@ function version()
 
             $sx .= bs($st,12);
 
-            $sx .= '<table class="table" border="1">';
+            $sx .= '<table class="table sisdoc_table">';
     
             /* Header */
             $heads = $th->allowedFields;
             $sx .= '<tr>';
-            $sx .= '<th>#</th>';
+            $sx .= '<th class="sisdoc_th">#</th>';
             for($h=1;$h < count($heads);$h++)
                 {
                     if (strpos($fl[0],'#'))
                     {                    
-                        $sx .= '<th>'.lang($heads[$h]).'</th>';
+                        $sx .= '<th class="sisdoc_th">'.lang($heads[$h]).'</th>';
                     }
                 }            
             $sx .= '</tr>'.cr();
@@ -128,17 +128,19 @@ function version()
             for ($r=0;$r < count($v);$r++)
                 {
                     $line = $v[$r];
-                    $sx .= '<tr>';
+                    $sx .= '<tr class="sisdoc_tr">';
                     foreach($fl as $field)
                         {                            
                             $vlr = $line[$field];
                             if (strlen($vlr) == 0) { $vlr = ' '; }
-                            $sx .= '<td>'.anchor(($url.'/viewid/'.$line[$fl[0]]),$vlr).'</td>';
+                            $sx .= '<td class="sisdoc_td">'.anchor(($url.'/viewid/'.$line[$fl[0]]),$vlr).'</td>';
                         }   
                     /* Botoes */
-                    $sx .= '<td>';
-                    $sx .= linked($url.'/edit/'.$line[$fl[0]],'[ed]').'&nbsp;';
-                    $sx .= linkdel($url.'/delete/'.$line[$fl[0]],'[x]');
+                    $sx .= '<td><nobr>';
+                    $sx .= btn_edit($url.'/edit/'.$line[$fl[0]]);
+                    $sx .= '&nbsp;';
+                    $sx .= btn_trash($url.'/delete/'.$line[$fl[0]]);
+                    $sx .= '</nobr>';
                     $sx .= '</td>';
 
                     $sx .= '</tr>'.cr();

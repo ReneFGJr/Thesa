@@ -32,8 +32,16 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Thesa::index');
-$routes->get('/rest/v1/search', 'Thesa::search');
+$routes->get('/rest/v1/search/(:any)/', 'Thesa::search/$1');
 $routes->get('/rest/v1/data', 'Thesa::data');
+$routes->get('/api/', 'Thesa::api');
+
+$multipleRoutes = [
+    'api/(:any)/(:any)'      => 'Thesa::api/$1/$2',
+    'api/(:alphanum)' => 'Thesa::api',
+];
+
+$routes->map($multipleRoutes);
 
 /*
  * --------------------------------------------------------------------
