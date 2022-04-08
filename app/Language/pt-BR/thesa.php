@@ -55,7 +55,7 @@ return [
     'status_0'=>'privado',
     'status_1'=>'publico',
     'Help'=>'Ajuda',
-    ''=>'',
+    'relations_custom'=>'Relações Associativas',
     ''=>'',
     ''=>'',
     ''=>'',

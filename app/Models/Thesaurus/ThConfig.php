@@ -45,7 +45,7 @@ class ThConfig extends Model
         $sx = '';
 
         $sx .= '<ul class="nav flex-column">';
-        $it = array('description', 'language', 'colaboration', 'relations');
+        $it = array('description', 'language', 'colaboration', 'relations','relations_custom');
         if ($ac == '') {
             $ac = $it[0];
         }
@@ -83,9 +83,18 @@ class ThConfig extends Model
             case 'description':
                 $sx = $this->description($id,$ac);
                 break;
+            case 'relations_custom':
+                $sx = $this->relations_custom($id,$ac);
+                break;                
         }
         return ($sx);
     }
+    function relations_custom($id,$ac)
+        {
+            $Th = new \App\Models\Thesaurus\ThRelations();
+            $sx = $Th->index($id,$ac);
+            return $sx;    
+        }
     function description($id)
     {
         $Th = new \App\Models\Thesaurus\ThConfigDescription();

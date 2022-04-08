@@ -33,7 +33,11 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Thesa::index');
 $routes->get('/rest/v1/search/(:any)/', 'Thesa::search/$1');
-$routes->get('/rest/v1/data', 'Thesa::data');
+$routes->get('/rest/v1/search/', 'Thesa::help/api/search');
+$routes->get('/rest/v1/data', 'Thesa::help/api/data');
+$routes->get('/rest/v1/', 'Thesa::help/api/');
+$routes->get('/rest/', 'Thesa::help/api/');
+$routes->get('/rest/v1/data/(:any)', 'Thesa::data/$1');
 $routes->get('/api/', 'Thesa::api');
 
 $multipleRoutes = [
