@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class ThUser extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'users';
+    protected $table            = 'users2';
     protected $primaryKey       = 'id_us';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;

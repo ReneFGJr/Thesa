@@ -44,7 +44,7 @@ class ThUsers extends Model
         {
             $sx = '';
             $this->select('us_nome, up_tipo, up_order');
-            $this->join('users','ust_user_id = users.id_us');
+            $this->join('users2','ust_user_id = users.id_us');
             $this->join('th_users_perfil','id_up = ust_user_role');
             $this->where('ust_th',$id);
             $this->where('ust_status',1);

@@ -40,6 +40,146 @@ class ThThesaurus extends Model
     protected $beforeDelete         = [];
     protected $afterDelete          = [];
 
+    function myth()
+        {
+            $sx = '';
+            $vtp = get("type");
+            $Socials = new \App\Models\Socials();
+            $ID = $Socials->getID();
+            if ($ID > 0)
+            {
+                $dt = $this
+                    ->select('id_pa, pa_name, pa_icone')
+                    ->join('th_users','ust_th = id_pa')
+                    ->where('ust_user_id',$ID)
+                    ->groupBy('id_pa, pa_name, pa_icone')
+                    ->OrderBy('pa_name')
+                    ->FindAll();
+                
+                $sx .= bsc('Total '.count($dt).' registros');
+                if (count($dt) == 0)
+                    {
+                        $sx = $this->welcome_create_th();
+                        return $sx;
+                    }
+                for ($r=0;$r < count($dt);$r++)
+                    {
+                        $line = $dt[$r];
+                        $sx .= $this->card($line,$vtp);
+                    }
+            } else {
+               $sx .= metarefresh(PATH.MODULE);
+            }
+            $sx = bs($sx);
+            return $sx;
+        }
+
+    function about()
+        {
+            $sx = '';
+            $sx .= h(lang('thesa.welcome_create_th'),1);
+            $sx .= bsc(lang('thesa.welcome_create_th_info'),12);
+            $sx .= bsc($this->btn_create_th());
+
+            $sx .= bsc(help('about'),9);
+
+            $sx = bs($sx);
+            return $sx;
+        }
+
+   function btn_create_th()
+        {
+            $sx = '<a href="#" class="btn btn-outline-primary mt-5 mb-5">';
+            $sx .= lang('thesa.create_th');
+            $sx .= '</a>';
+            return $sx;
+        }
+   function index($id='',$ltr='A')
+        {            
+            $ThConcept = new \App\Models\Thesaurus\ThConcept();
+            $sx = '';
+
+            /*************************************** mostra todos os thesauros ********/
+            if ($id=='')
+            {
+                $vtp = 'icone';
+
+                $dt = $this->where('pa_status',2)
+                    ->OrderBy('pa_name')
+                    ->FindAll();
+                $sx .= bsc('Total '.count($dt).' registros',12);
+                for ($r=0;$r < count($dt);$r++)
+                    {
+                        $line = $dt[$r];                        
+                        $sx .= $this->card($line,$vtp);
+                    }
+            } else {
+                /*************************************** mostra um thesauros ************/
+                $dt = $this->Find($id);
+                $sx = $this->header($dt);                  	              
+
+                $sx .= $this->show_resume($dt);
+                /********************************** Sumários das letras */
+                $sx .= $ThConcept->paginations($id,$ltr);
+                /********************************** Lista de Termos *****/
+                $q = get("q");
+                if (strlen($q) > 0)
+                    {
+                        $sm1 = $this->terms_query($id,$q);
+                        $sm2 = '';
+                    } else {
+                        $sm1 = $this->terms($id,$ltr);
+                        $sm2 = '';
+                    }   
+
+                $this->Socials = new \App\Models\Socials();
+	    	    if ($this->Socials->getAccess('#ADM'))
+			    {
+    				$ThFunctions = new \App\Models\Thesaurus\ThFunctions();
+				    $sb = $ThFunctions->menu($id);
+				    $sx .= $sb;
+			    }
+
+                
+                $sx .=  bsc($sm1,4,'p-3 mb-1').
+                        bsc($sm2,8,'shadow p-3 mb-1 bg-white rounded');                
+            }            
+            $sx = bs($sx);
+
+            return $sx;
+        }  
+
+    function card($line,$tp='')
+        {
+            $sx = '';
+            $link = '<a href="'.(PATH.MODULE.'th/'.$line['id_pa']).'">';
+            $linka = '</a>';
+
+            $card = '';
+            switch ($tp)
+            {
+                case 'line':
+                    $card = $line['pa_name'];
+                    $sx .= bsc($card,12,'p-3 mb-3');  
+                    break;
+
+                default:            
+                    $card .= $link;
+                    $card .= '<div class="card">';
+                    $card .= '<div class="card_image">';
+                    $card .= '<img src="'.$this->show_icone($line).'" class="img-fluid">';
+                    $card .= '</div>';
+                    $card .= '<div class="card_title text-center p-1">';
+                    $card .= $line['pa_name'];
+                    $card .= '</div>';
+                    $card .= '</div>';
+                    $card .= $linka;                                    
+                    $sx .= bsc($card,2,'text-center p-3 mb-3');  
+                break;
+            }
+            return $sx;          
+        }  
+
     function rdf($id)
         {
             $ThConcept = new \App\Models\Thesaurus\ThConcept();
@@ -83,8 +223,6 @@ class ThThesaurus extends Model
             $sx = $ThConcept->TermQuery($id,$lt);
             return $sx;
         }
-
-
 
     function th_header($th,$ltr='')
         {
@@ -143,24 +281,29 @@ class ThThesaurus extends Model
             $ThConcept = new \App\Models\Thesaurus\ThConcept();
             //$ThConceptTerms = new \App\Models\Thesaurus\ThConceptTerms();
             $ThConceptData = new \App\Models\Thesaurus\ThConceptData();
+            $VIZ = new \App\Models\Graph\Viz();
+
             $dt = $ThConcept->le($id);
 
             $th = $dt['c_th'];
             $sx .= $this->th_header($th,$ltr);
 
             $sx .=   $ThConcept->show($id);
+            $dt = $ThConcept->getConcept($id);
+            
+            $sa = $VIZ->net($dt);
             //$sx .= '<style> div { border: 1px solid #ccc; padding: 10px; } </style>';
 
             /****************************************************** DADOS */
-            $sx .= bs($ThConceptData->data($id));
+            $sb = '';
+            $sb .= '<hr>'.$ThConceptData->data_TG($id);
+            $sb .= '<hr>'.$ThConceptData->data_TE($id);
 
-            $sx .= '<hr>'.$ThConceptData->data_TG($id);
-            $sx .= '<hr>'.$ThConceptData->data_TE($id);
-
-            //$sx .= '</div>';
+            $sx .= bs(bsc($sa,8).bsc($sb,4));
 
             return $sx;
         }  
+
     function header($dt)
         {
             $ThUsers = new \App\Models\Thesaurus\ThUsers();
@@ -180,64 +323,7 @@ class ThThesaurus extends Model
             return $sx;
         } 
 
-    function index($id='',$ltr='A')
-        {            
-            $ThConcept = new \App\Models\Thesaurus\ThConcept();
-            $sx = '';
-
-            /*************************************** mostra todos os thesauros ********/
-            if ($id=='')
-            {
-                $dt = $this->where('pa_status',2)
-                    ->OrderBy('pa_name')
-                    ->FindAll();
-                for ($r=0;$r < count($dt);$r++)
-                    {
-                        $line = $dt[$r];
-                        $img = '<img src="'.$this->show_icone($line).'" class="img-fluid">';
-                        $card = $img;
-                        $desc = '<a href="'.(PATH.MODULE.'th/'.$line['id_pa']).'" class="h4 text-bold">'.$line['pa_name'].'</a>';
-                        $desc .= '<br>';
-                        $ds = bsc($img,4);
-                        $ds .= bsc($desc,8);
-                        $ds = '<div class="row" style="min-height: 200px;">'.$ds.'</div>';
-                        $sx .= bsc($ds,4);
-                    }
-            } else {
-                /*************************************** mostra um thesauros ************/
-                $dt = $this->Find($id);
-                $sx = $this->header($dt);                
-
-                $sx .= $this->show_resume($dt);
-                /********************************** Sumários das letras */
-                $sx .= $ThConcept->paginations($id,$ltr);
-                /********************************** Lista de Termos *****/
-                $q = get("q");
-                if (strlen($q) > 0)
-                    {
-                        $sm1 = $this->terms_query($id,$q);
-                        $sm2 = '';
-                    } else {
-                        $sm1 = $this->terms($id,$ltr);
-                        $sm2 = '';
-                    }   
-
-                $this->Socials = new \App\Models\Socials();
-	    	    if ($this->Socials->getAccess('#ADM'))
-			    {
-    				$ThFunctions = new \App\Models\Thesaurus\ThFunctions();
-				    $sb = $ThFunctions->menu($id);
-				    $sx .= $sb;
-			    }
-
-                
-                $sx .=  bsc($sm1,4,'p-3 mb-1').
-                        bsc($sm2,8,'shadow p-3 mb-1 bg-white rounded');                
-            }            
-            $sx = bs($sx);
-
-            return $sx;
-        }
+ 
     function setTh($id)
         {
             $_SESSION['th'] = $id;

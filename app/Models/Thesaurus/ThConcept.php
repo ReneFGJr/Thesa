@@ -79,6 +79,14 @@ class ThConcept extends Model
             return($dt);
         }
 
+    function getConcept($id)
+        {
+            $ThConceptData = new \App\Models\Thesaurus\ThConceptData();
+            $dt['concept'] = $this->le($id);
+            $dt['data'] = $ThConceptData->getData($id);
+            return $dt;
+        }
+
     function boarder($id)
         {
             
@@ -429,7 +437,7 @@ class ThConcept extends Model
             for ($r=0;$r < count($dt);$r++)
                 {
                     $line = $dt[$r];
-                    $sx .= '<li class="page-item"><a class="page-link" href="'.(PATH.MODULE.'th/'.$id.'/'.$line['ltr']).'">'.$line['ltr'].'</a></li>'.cr();
+                    $sx .= '<li class="page-item me-1"><a class="page-link" href="'.(PATH.MODULE.'th/'.$id.'/'.$line['ltr']).'">'.$line['ltr'].'</a></li>'.cr();
                 }
             $sx .= '</ul>';
             //$sx .= '</div>';

@@ -40,33 +40,22 @@ class ThConceptData extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-function data($id)
+function getData($id)
         {
             $sx = '';    
-            //$this->where('ct_concept',$id); 
-            $this->join('rdf_literal','ct_term = id_rl','left');
-            $this->join('rdf_resource','ct_propriety = id_rs','left');            
-            $this->where('ct_concept',$id); 
-            $this->orderBy('rs_propriety desc, rl_value');
+            $this
+                ->select('id_c,c_concept,rdf_literal.rl_value,rdf_literal.rl_lang,
+                            ct_propriety,c_th,ct_concept,rs_propriety,rs_prefix,')
+                ->join('rdf_literal','ct_term = id_rl','left')
+                ->join('rdf_resource','ct_propriety = id_rs','left')
+                ->join('th_concept_term as r2','rdf_concept.ct_concept_2 = r2.id_ct','left')
+                ->join('rdf_literal as l2','r2.ct_term = l2.id_rl','left','left')
+                ->where('ct_concept',$id)
+                ->orderBy('rs_propriety, rl_value');
+
             $dt =  $this->findAll();
-
-            /***************************** Termos */
-            //$sx = '<style> div { border: 1px solid #000000; </style>';
-            for($r=0;$r < count($dt);$r++)
-                {
-                    $line = $dt[$r];
-
-                    if (strlen(trim($line['rl_value'])) > 0)
-                    {
-                        $label = lang('thesa.'.$line['rs_propriety']).':';
-                        $sx .= bsc($label,4,'text-end mb-2');
-                        $term = $line['rl_value'];
-                        $term .= ' <sup>('.$line['rl_lang'].')</sup>';
-                        $sx .= bsc($term,8);
-                    }
-                } 
-            //$sx = bs($sx);    
-            return $sx;
+            pre($dt);
+            return $dt;
         } 
 
 function TG($id)
@@ -146,24 +135,32 @@ function TE($id)
 function data_TG($id)
         {
             $sx = '';    
-            $dt = $this->TG($id);    
+            $dt = $this->TG($id);   
+            if (count($dt) > 0)
+                {
+                    $label = lang('thesa.'.$dt[0]['propriety']).':';
+                    $sx .= $label;
+                    $sx .= '<ul>';
+                }             
             for($r=0;$r < count($dt);$r++)
                 {
                     $line = $dt[$r];                    
 
                     if (strlen(trim($line['rl_value'])) > 0)
                     {
-                        $label = lang('thesa.'.$line['propriety']).':';
-                        $sx .= bsc($label,4,'text-end mb-2');
                         $link = '<a href="'.PATH.MODULE.'c/'.$line['ct_concept'].'" class="text-primary">';
                         $linka = '</a>';
                         $term = $link.$line['rl_value'].$linka;
                         $term .= ' <sup>('.$line['rl_lang'].')</sup>';
-                        $sx .= bsc($term,8);
+                        $sx .= '<li class="ms-4 h6">'.$term.'</li>';
                     } else {
                         //print_r($line);
                     }
                 } 
+            if (count($dt) > 0)
+                {
+                    $sx .= '</ul>';
+                }                
             $sx = bs($sx);    
             return $sx;
         }            
@@ -172,23 +169,31 @@ function data_TE($id)
         {
             $sx = '';    
             $dt = $this->TE($id);    
+            if (count($dt) > 0)
+                {
+                    $label = lang('thesa.'.$dt[0]['propriety']).':';
+                    $sx .= $label;
+                    $sx .= '<ul>';
+                }
             for($r=0;$r < count($dt);$r++)
                 {
-                    $line = $dt[$r];                    
-
+                    $line = $dt[$r];            
                     if (strlen(trim($line['rl_value'])) > 0)
-                    {
-                        $label = lang('thesa.'.$line['propriety']).':';
-                        $sx .= bsc($label,4,'text-end mb-2');
-                        $link = '<a href="'.PATH.MODULE.'c/'.$line['ct_concept'].'" class="text-primary">';
+                    {                        
+                        $link = '<a href="'.PATH.MODULE.'c/'.$line['id_ct2'].'" class="text-primary">';
                         $linka = '</a>';
                         $term = $link.$line['rl_value'].$linka;
                         $term .= ' <sup>('.$line['rl_lang'].')</sup>';
-                        $sx .= bsc($term,8);
+                        $sx .= '<li class="ms-4 h6">'.$term.'</li>';
                     } else {
                         print_r($line);
                     }
                 } 
+            if (count($dt) > 0)
+                {
+                    $sx .= '</ul>';
+                }
+
             $sx = bs($sx);    
             return $sx;
         }            

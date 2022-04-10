@@ -56,3 +56,42 @@ a:hover
     color: white;
     font-size: 200%;
 }
+.card
+    {
+         border: 2px solid #ddd; 
+         height:200px;
+         border-radius: 10px;
+         box-shadow: 4px 4px 5px #888;
+    }
+.card_image
+    {
+        height: 120px;
+    }
+
+.card:hover
+    {
+         border: 2px solid #444; 
+         height:200px;
+    }  
+.page-item
+    {
+        margin: 0px 5px;
+        width: 20px;
+        text-align: center;
+    }
+.page-item:hover
+    {
+        background-color: #000;
+        border-color: black;
+    }
+.card_title
+    {
+        background: #EFEFFF; 
+        height: 70px;
+        margin-top: 10px;
+        line-height: 95%;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }

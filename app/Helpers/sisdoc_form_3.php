@@ -45,12 +45,22 @@ function menu($menu)
         return $sx;
     }
 
-function pre($dt)
+function check_email($email)
+    {
+            $emailArray = explode("@", $email);
+            if (checkdnsrr(array_pop($emailArray), "MX")) {
+                return true;
+            } else {
+                return false;
+            }        
+    }
+
+function pre($dt,$force=true)
 {
     echo '<pre>';
     print_r($dt);
     echo '</pre>';
-    exit;
+    if ($force) { exit; }
 }
 
 if (!function_exists("current_url")) {

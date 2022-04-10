@@ -35,7 +35,7 @@ class Thesa extends BaseController
 		$sx .= $this->cab();		
 		$sx .= $this->navbar();
 		$sx .= $view->render('paralax');
-		$sx .= $ThOpen->index();
+		$sx .= $ThOpen->about();
 		$sx .= $this->footer();
 
 		return $sx;
@@ -101,13 +101,17 @@ class Thesa extends BaseController
 	{
 		$ThOpen = new \App\Models\Thesaurus\ThThesaurus();
 		$title = 'Thesa';
+		$url = PATH . MODULE;
+		if (isset($_SESSION['th'])) {
+			$url = PATH . MODULE .'th/'.$_SESSION['th'];
+		}
 		if (isset($dt['title'])) {
 			$title = $dt['title'];
 		}
 		$title = '<img src="' . URL.('img/logo/logo_thesa.jpg') . '" style="height: 28px;">';
 		$sx = '<nav class="navbar navbar-expand-lg navbar-light ">' . cr();
 		$sx .= '  <div class="container-fluid">' . cr();
-		$sx .= '    <a class="navbar-brand" href="' . PATH . MODULE . '">' . $title . '</a>' . cr();
+		$sx .= '    <a class="navbar-brand" href="' . $url . '">' . $title . '</a>' . cr();
 		$sx .= '    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">' . cr();
 		$sx .= '      <span class="navbar-toggler-icon"></span>' . cr();
 		$sx .= '    </button>' . cr();
@@ -483,7 +487,7 @@ class Thesa extends BaseController
 					break;
 			}
 		/****************************** Screen */
-		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
+		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();		
 		$sx = '';
 		$sx .= $this->cab();
 		$sx .= $this->navbar();
@@ -517,12 +521,27 @@ class Thesa extends BaseController
 		$sx .= $this->cab();
 		//$sx .= $this->view('paralax');			
 		$sx .= $this->navbar();
-		$sx .= $view->render('paralax');
+		$sx .= $view->render('paralax');		
 		$sx .= $ThOpen->index();
 		$sx .= $this->footer();
 
 		return $sx;
 	}
+
+	function th_my()
+	{
+		$view = \Config\Services::renderer();
+		$ThOpen = new \App\Models\Thesaurus\ThThesaurus();
+		$sx = '';
+		$sx .= $this->cab();
+		//$sx .= $this->view('paralax');			
+		$sx .= $this->navbar();
+		$sx .= $view->render('paralax');
+		$sx .= $ThOpen->myth();
+		$sx .= $this->footer();
+
+		return $sx;
+	}	
 
 	function help($d1='',$d2='')
 		{
@@ -542,7 +561,6 @@ class Thesa extends BaseController
 	{
 		$Socials = new \App\Models\Socials();
 		$view = \Config\Services::renderer();
-		$Socials->table='users';
 		$sx = '';
 		if ($d1=='login')
 		{
