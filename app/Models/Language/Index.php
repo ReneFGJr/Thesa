@@ -51,12 +51,17 @@ class Index extends Model
                 ->findAll();
             $sx = '';
             $vlr = get($name);
-            echo '===>'.$vlr;
+            
             for ($r=0;$r < count($dt);$r++)
                 {
                     $line = $dt[$r];
                     if ($line['lg_cod_marc'] == $vlr) { $sel = ' checked '; } else { $sel = ''; }
-                    $sx .= '<input name="'.$name.'" type="radio" value="'.$line['lg_cod_marc'].'" '.$sel.'>';
+                    if (count($dt) == 1)
+                        {
+                            $sel = ' checked';
+                        }
+                                            
+                    $sx .= '<input name="'.$name.'" type="radio" value="'.$line['lg_cod_marc'].'" '.$sel.'> ';
                     $sx .= $line['lg_language']; 
                     $sx .= '<br>';
               }

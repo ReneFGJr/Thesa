@@ -141,7 +141,7 @@ class ThConfigColaboration extends Model
                             }
                             
                         } else {
-                            $sx .= $ThUser->radiobox($dt,'user');
+                            $sx .= $ThUser->radiobox($dt,'users');
                             $sx .= bsmessage(lang('thesa.email_not_found'),3);
                         }                    
                 }
@@ -184,9 +184,10 @@ class ThConfigColaboration extends Model
 
     function show($th)
         {
+            $Socials = new \App\Models\Socials();
             $sx = '';
             $this->join('th_users_perfil','ust_user_role = id_up','left');
-            $this->join('users','ust_user_id = id_us','left');
+            $this->join($Socials->table,'ust_user_id = id_us','left');
             $this->join('th_thesaurus','ust_th = id_pa','left');
             $this->where('ust_th',$th);
             $this->orderBy('up_order,id_ust','asc');

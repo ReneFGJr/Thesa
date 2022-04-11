@@ -7,19 +7,19 @@ use CodeIgniter\Model;
 class ThLiteral extends Model
 {
     protected $DBGroup              = 'default';
-    protected $table                = 'rdf_literal';
-    protected $primaryKey           = 'id_rl';
+    protected $table                = 'th_literal';
+    protected $primaryKey           = 'id_n';
     protected $useAutoIncrement     = true;
     protected $insertID             = 0;
     protected $returnType           = 'array';
     protected $useSoftDeletes       = false;
     protected $protectFields        = true;
     protected $allowedFields        = [
-        'id_rl','rl_value','rl_lang','rl_type'
+        'id_n','n_name','n_lang'
     ];
 
     protected $typeFields        = [
-        'hidden','string:100','string:10','string:100'
+        'hidden','string:100','string:10'
     ];    
 
     // Dates
@@ -50,55 +50,56 @@ class ThLiteral extends Model
 
     function resume($id)
         {
-            $this->select("count(*) as total, rl_lang");
-            $this->join('th_concept_term','ct_term = id_rl');
-            $this->groupBy('rl_lang');
+            $this->select("count(*) as total, n_lang");
+            $this->join('th_concept_term','ct_term = id_n');
+            $this->groupBy('n_lang');
             $dt = $this->where('ct_th',$id)->findAll();
             $rst = count($dt);
             return $rst;
         }
 
-    function term_insert($term,$lang,$th)
+    function add_term($term,$lang,$th)
         {
             $term = mb_strtolower($term);
             $term = ucfirst($term);
             $dt = $this
-                    ->where('rl_value',$term)
-                    ->where('rl_lang',$lang)
+                    ->where('n_name',$term)
+                    ->where('n_lang',$lang)
                     ->findAll();                
 
             if (count($dt) == 0)
                 {
-                    $data['rl_value'] = $term;
-                    $data['rl_lang'] = $lang;
+                    $data['n_name'] = $term;
+                    $data['n_lang'] = $lang;
                     $data['rl_type'] = 24;
                     $this->set($data)->insert();
                     $idt = $this->insertID();
                     $this->new = 1;
                 } else {
-                    $idt = $dt[0]['id_rl'];
+                    $idt = $dt[0]['id_n'];
                     $this->new = 0;
                 }
 
             /***************************** Related */
-            $sql = "select * from rdf_literal_th where lt_term = $idt and lt_thesauros = $th";
+            $sql = "select * from th_literal where lt_term = $idt and lt_thesauros = $th";
             $dt = $this->db->query($sql)->getResult();
             if (count($dt) == 0)
                 {
-                    $sql = "insert into rdf_literal_th
+                    $sql = "insert into th_literal
                                 (lt_term, lt_thesauros, lt_status)
                                 values
                                 ($idt, $th, 1)";
                     $this->db->query($sql);
                 }
             return($idt);
-        }
+        }        
 
     function term_concept($id,$id2)
         {
-            $dt = $this->select('*')
-                ->join('rdf_literal_th','lt_term = id_rl')
-                ->where('lt_term',$id)
+            $dt = $this
+                ->join('th_literal_th','lt_term = id_n')
+                ->join('th_concept_term','ct_term = id_n and ct_th = lt_th','left')
+                ->where('id_n',$id)
                 ->findAll();
 
             switch($id2)
@@ -110,6 +111,7 @@ class ThLiteral extends Model
                         return $sx;
                         break;
                     break;
+
                     case 'edit':
                         $this->id = $id;
                         $this->path = PATH.MODULE.'popup/associate/'.$id;
@@ -118,10 +120,13 @@ class ThLiteral extends Model
                         $sx = bs(bsc($sx,12));
                         return $sx;
                         break;
+
                     case 'concept':
                         $dt = $dt[0];
-                        $th = $dt['lt_thesauros'];
+                        
+                        $th = $dt['lt_th'];
                         $idc = $dt['lt_term'];
+
                         $ThConcept = new \App\Models\Thesaurus\ThConcept();
                         $ThConcept->create_conecpt($idc,$th);
                         $sx = wclose();
@@ -137,10 +142,10 @@ class ThLiteral extends Model
             {
                 $dt = $dt[0];
 
-                $idr = $dt['id_rl'];
+                $idr = $dt['id_n'];
 
-                $sa = h($dt['rl_value'],2);
-                $sa .= h($dt['rl_lang'],8);
+                $sa = h($dt['n_name'],2);
+                $sa .= h($dt['n_lang'],8);
 
                 $sb = '';
                 $sb .= '<a href="'.PATH.MODULE.'popup/associate/'.$idr.'/concept" class="btn btn-primary mt-4" style="width: 100%;">';
@@ -165,35 +170,57 @@ class ThLiteral extends Model
 
     function associate($th)
         {
-            $sql = "SELECT * FROM `rdf_literal_th`
-                    left join th_concept_term ON ct_term = lt_term
-                    inner join rdf_literal ON lt_term = id_rl
-                    where id_ct is null
-                    and lt_thesauros = $th
-                    order by rl_lang, rl_value";
-            $dt = $this->db->query($sql)->getResult();
-
+            $ThLiteralTh = new \App\Models\Thesaurus\ThLiteralTh();
+            $dt = $ThLiteralTh->term_list($th);            
+            
             $sx = '<ul>';
             $xlang = '';
             for ($r=0;$r < count($dt);$r++)
                 {
                     $line = (array)$dt[$r];
-                    $lang = $line['rl_lang'];
+                    $lang = $line['n_lang'];
                     if ($xlang != $lang)
                         {
                             $sx .= h($lang,4);
                             $xlang = $lang;
                         }
                     $sx .= '<li>';
-                    $sx .= onclick(PATH.MODULE.'popup/associate/'.$line['id_rl'],800,400).$line['rl_value'].'</span>';
+                    $sx .= onclick(PATH.MODULE.'popup/associate/'.$line['id_n'],800,400).$line['n_name'].'</span>';
                     $sx .= '</li>';
                 }
             $sx .= '</ul>';
             return $sx;
         }
+
+    function term_insert($term,$language,$th)
+        {
+            $dt = $this->where('n_name',$term)->where('n_lang',$language)->findAll();
+            if (count($dt) > 0)
+                {
+                    /******* OLD */
+                    $dt = $dt[0];
+                    $id = $dt['id_n'];
+                    $dt['new'] = false;
+                    $idt = $dt['id_n'];
+                } else {
+                    /******* NOVO */
+                    $dt['n_name'] = $term;
+                    $dt['n_lang'] = $language;
+                    $dt['n_type'] = 0;
+                    $id = $this->insert($dt);
+                    $dt['id_n'] = $id;
+                    $dt['new'] = true;
+                    $idt = $id;
+                }    
+
+            $ThLiteralTh = new \App\Models\Thesaurus\ThLiteralTh();
+            return $ThLiteralTh->term_insert($idt,$th);
+        }
     function form($th)
         {
             $Language = new \App\Models\Language\Index();
+            $ThLiteral = new \App\Models\Thesaurus\ThLiteral();
+            
             $sa = '';
             $sb = '';
             $sx = '';
@@ -223,9 +250,9 @@ class ThLiteral extends Model
                                             $term = ucfirst($term);
                                             if (strlen($term) > 0)
                                             {
-                                            $this->term_insert($term,$language,$th);
 
-                                            if ($this->new == 1)
+                                            $new = $this->term_insert($term,$language,$th);
+                                            if ($new == 1)
                                                 {
                                                     $sx .= '<li><b>'.$term.'</b> <span class="text-primary">'.lang('thesa.inserted').'</span></li>';
                                                 } else {
@@ -241,7 +268,8 @@ class ThLiteral extends Model
                         }
                 }
 
-            $form .= form_open();
+            $url = PATH.MODULE;
+            $form .= form_open($url.'term/'.$th.'/add');
             $form .= '<table width="100%">';
 
             /* Header */

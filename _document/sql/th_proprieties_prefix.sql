@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 10-Abr-2022 às 13:46
+-- Tempo de geração: 11-Abr-2022 às 01:29
 -- Versão do servidor: 5.7.31
 -- versão do PHP: 7.3.21
 
@@ -24,24 +24,24 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `th_concept_term`
+-- Estrutura da tabela `th_proprieties_prefix`
 --
 
-DROP TABLE IF EXISTS `th_concept_term`;
-CREATE TABLE IF NOT EXISTS `th_concept_term` (
-  `id_ct` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `ct_concept` int(11) NOT NULL,
-  `ct_th` int(11) NOT NULL,
-  `ct_term` int(11) NOT NULL,
-  `ct_use` int(11) NOT NULL DEFAULT '0',
-  `ct_propriety` int(11) NOT NULL,
-  `ct_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE KEY `id_ct` (`id_ct`),
-  KEY `ct_term` (`ct_term`),
-  KEY `ct_th` (`ct_th`),
-  KEY `ct_th_term` (`ct_term`,`ct_th`),
-  KEY `ct_concept` (`ct_concept`,`ct_use`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `th_proprieties_prefix`;
+CREATE TABLE IF NOT EXISTS `th_proprieties_prefix` (
+  `id_prefix` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `prefix_name` char(50) COLLATE utf8_bin NOT NULL,
+  `prefix_url` char(100) COLLATE utf8_bin NOT NULL,
+  UNIQUE KEY `id_prefix` (`id_prefix`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Extraindo dados da tabela `h_proprieties_prefix`
+--
+
+INSERT INTO `th_proprieties_prefix` (`id_prefix`, `prefix_name`, `prefix_url`) VALUES
+(1, 'skos', ''),
+(2, 'skosxl', '');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

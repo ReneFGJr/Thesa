@@ -41,6 +41,23 @@ class Thesa extends BaseController
 		return $sx;
 	}
 
+	function edit_th($id)
+		{
+		$view = \Config\Services::renderer();
+		$ThOpen = new \App\Models\Thesaurus\ThThesaurus();
+		$sx = '';
+		$sx .= $this->cab();		
+		$sx .= $this->navbar();
+		$sx .= $view->render('paralax');
+
+		$hd = h(lang('thesa.edit'));
+		$sx .= bs($hd.bsc($ThOpen->edit($id),12));
+
+		$sx .= $this->footer();
+
+		return $sx;
+		}
+
 
 	/************************************** Thesauros Abertos */
 	function tho($id)
@@ -351,9 +368,7 @@ class Thesa extends BaseController
 			$sx .= $this->cab();
 			$sx .= $this->navbar();
 			$dt = $ThThesaurus->find($id);
-			$sa = $ThThesaurus->header($dt);
-			$sa .= $ThThesaurus->show_resume($dt);
-			$sa .= $ThConcept->paginations($id,$ltr);
+			$sa .= $ThThesaurus->show($dt['id_pa'], '');
 			$sx .= bs($sa);
 
 			switch($act)
@@ -375,12 +390,17 @@ class Thesa extends BaseController
 
 	function th($id = '', $ltr = '')
 	{
-		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
-		$sa = $ThThesaurus->index($id, $ltr);
+		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();		
 		$sx = '';
 		$sx .= $this->cab();
 		$sx .= $this->navbar();
-		$sx .= $sa;
+		$sx .= $ThThesaurus->show($id, $ltr);
+
+		if ($ltr != '')
+			{
+				$sx .= bs(bsc($ThThesaurus->terms($id,$ltr),12));
+			}
+
 		$sx .= $this->footer();
 
 		return $sx;
@@ -421,6 +441,11 @@ class Thesa extends BaseController
 
 			switch($d1)
 				{
+					case 'broader':
+						$ThAssociate = new \App\Models\Thesaurus\ThAssociate();
+						$sx .= $cab;
+						$sx .= $ThAssociate->associate($d2,$d3,$d4,$d5,'TG');
+					break;
 					case 'associate':
 						$ThLiteral = new \App\Models\Thesaurus\ThLiteral();
 						$sx = $cab;
@@ -488,10 +513,18 @@ class Thesa extends BaseController
 			}
 		/****************************** Screen */
 		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();		
+		$ThConcept = new \App\Models\Thesaurus\ThConcept();
 		$sx = '';
 		$sx .= $this->cab();
 		$sx .= $this->navbar();
+
+		$dt = $ThConcept->find($id);
+		$th = $dt['c_th'];
+		$ltr = '';
+
+		$sx .= $ThThesaurus->show($th, $ltr);
 		$sx .= $ThThesaurus->v($id);
+
 		$sx .= $this->footer();
 		return $sx;
 	}
@@ -499,17 +532,20 @@ class Thesa extends BaseController
 	function a($id = '',$act='')
 	{
 		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
+		$ThConcept = new \App\Models\Thesaurus\ThConcept();
+		
 		$sx = '';
 		$sx .= $this->cab();
-		if (strlen($act) == 0)
-			{				
-				$sx .= $this->navbar();
-			}
+		$sx .= $this->navbar();
+
+		$dt = $ThConcept->find($id);
+		$th = $dt['c_th'];
+		$ltr = '';		
+		$sx .= $ThThesaurus->show($th, $ltr);
+
 		$sx .= $ThThesaurus->a($id,$act);
-		if (strlen($act) == 0)
-			{
-				$sx .= $this->footer();
-			}
+
+		$sx .= $this->footer();
 		return $sx;
 	}
 

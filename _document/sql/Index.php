@@ -54,9 +54,8 @@ class Index extends Model
                 select * from th_concept_term 
                     inner join rdf_class ON ct_propriety = id_c
                     left join rdf_prefix ON rdf_class.c_prefix = id_prefix
-                    left join rdf_literal ON ct_term = id_rl
-                    where ct_concept = '$id' 
-                        OR ct_use = '$id'";
+                    left join th_literal ON ct_term = id_rl
+                    where ct_concept = '$id'";
             $dt = $this->query($sql)->getResult();
             $pref = array();
             $alter = array();
@@ -65,20 +64,19 @@ class Index extends Model
                 {
                     $line = (array)$dt[$r];
                     $lang = $line[''];
-                    echo '===>'.$line['id_ct'].'==';
                     switch($line['ct_propriety'])
                         {
                             case 25:
-                            echo 'Term=>'.$line['rl_value'].'<br>';
+                            echo 'Term=>'.$line['n_name'].'<br>';
                             array_pref[$lang] = '<skos:Concept rdf:about="http://vocabularies.unesco.org/thesaurus/concept6676">';
                             break;
 
                             case 34:
-                                echo 'Alias=>'.$line['rl_value'].'<br>';
+                                echo 'Alias=>'.$line['n_name'].'<br>';
                                 break;                            
         
                             default:
-                            echo '==>'.$line['rl_value'].'=='.$line['ct_use'].'<br>';
+                            echo '==>'.$line['n_name'].'=='.$line['ct_use'].'<br>';
                             pre($line);
                         }
                 }

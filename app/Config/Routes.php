@@ -7,11 +7,12 @@ $routes = Services::routes();
 
 // Load the system's routing file first, so that the app and ENVIRONMENT
 // can override as needed.
-if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
-    require SYSTEMPATH . 'Config/Routes.php';
+if (file_exists(SYSTEMPATH . 'Config/Routes.php'))
+{
+	require SYSTEMPATH . 'Config/Routes.php';
 }
 
-/*
+/**
  * --------------------------------------------------------------------
  * Router Setup
  * --------------------------------------------------------------------
@@ -23,6 +24,7 @@ $routes->setTranslateURIDashes(false);
 $routes->set404Override();
 $routes->setAutoRoute(true);
 
+
 /*
  * --------------------------------------------------------------------
  * Route Definitions
@@ -32,20 +34,14 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Thesa::index');
-$routes->get('/rest/v1/search/(:any)/', 'Thesa::search/$1');
-$routes->get('/rest/v1/search/', 'Thesa::help/api/search');
-$routes->get('/rest/v1/data', 'Thesa::help/api/data');
-$routes->get('/rest/v1/', 'Thesa::help/api/');
-$routes->get('/rest/', 'Thesa::help/api/');
-$routes->get('/rest/v1/data/(:any)', 'Thesa::data/$1');
-$routes->get('/api/', 'Thesa::api');
+$routes->add('v/(:num)', 'Res::v/$1');
+$routes->add('res/v/(:num)', 'Res::v/$1');
+//$routes->get('/social/ajax/', 'Main::social/');
+//$routes->add('/main/social/', 'Main::social/');
+//$routes->add('/v/(:num)', 'Res::v/$1');
+//$routes->add('/download/(:num)', 'Res::download/$1');
+//$routes->add('/res/v/', 'Main::v');
 
-$multipleRoutes = [
-    'api/(:any)/(:any)'      => 'Thesa::api/$1/$2',
-    'api/(:alphanum)' => 'Thesa::api',
-];
-
-$routes->map($multipleRoutes);
 
 /*
  * --------------------------------------------------------------------
@@ -60,6 +56,7 @@ $routes->map($multipleRoutes);
  * You will have access to the $routes object within that file without
  * needing to reload it.
  */
-if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
-    require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
+if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php'))
+{
+	require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }

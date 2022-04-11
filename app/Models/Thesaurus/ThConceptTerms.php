@@ -15,7 +15,7 @@ class ThConceptTerms extends Model
     protected $useSoftDeletes       = false;
     protected $protectFields        = true;
     protected $allowedFields        = [
-        'id_ct','ct_concept','ct_th','ct_term','ct_concept_2','ct_propriety'
+        'id_ct','ct_concept','ct_th','ct_term','ct_use','ct_propriety'
     ];
 
     // Dates
@@ -44,6 +44,7 @@ class ThConceptTerms extends Model
 
     function resume($id)
         {
+            $ThLiteralTh = new \App\Models\Thesaurus\ThLiteralTh();
             $dt = $this
                     ->select('count(*) as total, ct_term')
                     ->where('ct_th',$id)
@@ -51,12 +52,8 @@ class ThConceptTerms extends Model
                     ->findAll();
             $sx = count($dt);
 
-            $sql = "select count(*) as total 
-                        from rdf_literal_th 
-                        where lt_thesauros = $id";
-            $rlt = $this->db->query($sql)->getResult();
-            $line = (array)$rlt[0];
-            $sx .= ' / '.$line['total'];
+            $tot1 = $ThLiteralTh->total($id);
+            $sx .= ' / '.$tot1;
             return $sx;
         }
     function create_concept_term($term,$concept,$th)
@@ -65,7 +62,7 @@ class ThConceptTerms extends Model
             if (count($dt) == 0)
                 {
                     $dd['ct_propriety'] = '25';
-                    $dd['ct_concept_2'] = '0';
+                    $dd['ct_use'] = '0';
                     $dd['ct_term'] = $term;
                     $dd['ct_th'] = $th;
                     $dd['ct_concept'] = $concept;
@@ -75,11 +72,11 @@ class ThConceptTerms extends Model
 
     function prefLabel($id,$class="prefLabel")
         {
-            $sql = "select * from th_concept_term 
-                    INNER JOIN rdf_literal ON id_rl = ct_term
-                    INNER JOIN rdf_resource ON ct_propriety = id_rs
-                    where ct_concept = ".$id." and rs_propriety = 'prefLabel'";
-            $dt = $this->query($sql)->getResult();
+            $dt = $this
+                ->join('th_literal','id_n = ct_term','inner')
+                ->where('id_ct',$id)
+                ->FindAll();
+            
             return $dt;
         }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Thesaurus;
+namespace App\Models\Api;
 
 use CodeIgniter\Model;
 
@@ -40,14 +40,54 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function edit($th,$ac)
+    ///http://api.finto.fi/rest/v1/search?query=category:kunta&lang=fi&max=100&offset=0&sort=name
+
+    function index($d1='',$d2='',$d3='',$d4='',$d5='')
         {
-            switch($ac)
+            
+        }
+
+    function rdf($id,$tp='')
+        {
+            return("RDF");
+            $sql = "
+                select * from th_concept_term 
+                    inner join rdf_class ON ct_propriety = id_c
+                    left join rdf_prefix ON rdf_class.c_prefix = id_prefix
+                    left join th_literal ON ct_term = id_rl
+                    where ct_concept = '$id' 
+                        OR ct_use = '$id'";
+            $dt = $this->query($sql)->getResult();
+            $pref = array();
+            $alter = array();
+            $hidden = array();
+            for ($r=0;$r < count($dt);$r++)
                 {
-                    default:
-                        $sx = $ac;
-                        break;
+                    $line = (array)$dt[$r];
+                    $lang = $line[''];
+                    switch($line['ct_propriety'])
+                        {
+                            case 25:
+                            echo 'Term=>'.$line['rl_value'].'<br>';
+                            array_pref[$lang] = '<skos:Concept rdf:about="http://vocabularies.unesco.org/thesaurus/concept6676">';
+                            break;
+
+                            case 34:
+                                echo 'Alias=>'.$line['rl_value'].'<br>';
+                                break;                            
+        
+                            default:
+                            echo '==>'.$line['rl_value'].'=='.$line['ct_use'].'<br>';
+                            pre($line);
+                        }
                 }
-            return $sx;
+                exit;
+
+            
+
+            $rdf = '<rdf>';
+            $rdf .= $Skos->skos_concept($id);
+            $rdf .= '</rdf>';
+            pre($rdf);
         }
 }

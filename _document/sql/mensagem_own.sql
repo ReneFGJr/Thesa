@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 10-Abr-2022 às 13:46
+-- Tempo de geração: 10-Abr-2022 às 16:14
 -- Versão do servidor: 5.7.31
 -- versão do PHP: 7.3.21
 
@@ -18,30 +18,32 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Banco de dados: `thesa_skos`
+-- Banco de dados: `thesa`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `th_concept_term`
+-- Estrutura da tabela `mensagem_own`
 --
 
-DROP TABLE IF EXISTS `th_concept_term`;
-CREATE TABLE IF NOT EXISTS `th_concept_term` (
-  `id_ct` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `ct_concept` int(11) NOT NULL,
-  `ct_th` int(11) NOT NULL,
-  `ct_term` int(11) NOT NULL,
-  `ct_use` int(11) NOT NULL DEFAULT '0',
-  `ct_propriety` int(11) NOT NULL,
-  `ct_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE KEY `id_ct` (`id_ct`),
-  KEY `ct_term` (`ct_term`),
-  KEY `ct_th` (`ct_th`),
-  KEY `ct_th_term` (`ct_term`,`ct_th`),
-  KEY `ct_concept` (`ct_concept`,`ct_use`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `mensagem_own`;
+CREATE TABLE IF NOT EXISTS `mensagem_own` (
+  `id_m` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `m_descricao` char(150) NOT NULL,
+  `m_header` char(150) NOT NULL,
+  `m_foot` char(150) NOT NULL,
+  `m_ativo` tinyint(4) NOT NULL,
+  `m_email` char(100) NOT NULL,
+  `m_own_cod` char(10) NOT NULL,
+  `smtp_host` char(80) NOT NULL,
+  `smtp_user` char(80) NOT NULL,
+  `smtp_pass` char(80) NOT NULL,
+  `smtp_protocol` char(5) NOT NULL,
+  `smtp_port` char(3) NOT NULL,
+  `mailtype` char(5) NOT NULL,
+  UNIQUE KEY `id_m` (`id_m`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

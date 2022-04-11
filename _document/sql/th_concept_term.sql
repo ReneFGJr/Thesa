@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 10-Abr-2022 às 13:46
+-- Tempo de geração: 10-Abr-2022 às 13:45
 -- Versão do servidor: 5.7.31
 -- versão do PHP: 7.3.21
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Banco de dados: `thesa_skos`
+-- Banco de dados: `thesa`
 --
 
 -- --------------------------------------------------------
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `th_concept_term` (
   `ct_concept` int(11) NOT NULL,
   `ct_th` int(11) NOT NULL,
   `ct_term` int(11) NOT NULL,
-  `ct_use` int(11) NOT NULL DEFAULT '0',
+  `ct_use` int(11) NOT NULL,
   `ct_propriety` int(11) NOT NULL,
   `ct_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY `id_ct` (`id_ct`),

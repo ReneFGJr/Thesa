@@ -14,7 +14,12 @@ class ThUsers extends Model
     protected $returnType           = 'array';
     protected $useSoftDeletes       = false;
     protected $protectFields        = true;
-    protected $allowedFields        = [];
+    protected $allowedFields        = [
+        'id_ust','ust_user_id','ust_user_role','ust_th','ust_status'
+    ];
+    protected $typeFields        = [
+        'hidden','hidden','hidden','hidden','hidden'
+    ];    
 
     // Dates
     protected $useTimestamps        = false;
@@ -40,24 +45,43 @@ class ThUsers extends Model
     protected $beforeDelete         = [];
     protected $afterDelete          = [];
 
+    function add_user($th,$user,$perfil)
+        {
+            $this->where('ust_th',$th);
+            $this->where('ust_user_id',$user);
+            $dt = $this->findAll();
+            if (count($dt) == 0)
+            {
+                $dt['ust_user_id'] = $user;
+                $dt['ust_user_role'] = $perfil;
+                $dt['ust_th'] = $th;
+                $dt['ust_status'] = 1;
+                $id = $this->save($dt);
+                return $id;
+            } else {
+                return false;
+            }
+        }
+
+    function autorized($id)
+        {            
+            return true;
+        }        
+
     function authors($id)
         {
             $sx = '';
-            $this->select('us_nome, up_tipo, up_order');
-            $this->join('users2','ust_user_id = users.id_us');
-            $this->join('th_users_perfil','id_up = ust_user_role');
+            $this->join('users2','id_us = ust_user_id','inner');
             $this->where('ust_th',$id);
-            $this->where('ust_status',1);
-            $this->orderBy('ust_status, up_order, id_ust',1);
             $dt = $this->FindAll();
             $tpx = '';
             foreach($dt as $id=>$line)
                 {
-                    $tp = $line['up_tipo'];
+                    $tp = $line['ust_user_role'];
                     if ($tp != $tpx)
                         {
                             $tpx = $tp;
-                            $sx .= '<b>'.lang('thesa.'.$line['up_tipo']).'</b>: ';
+                            $sx .= '<b>'.lang('thesa.'.$line['ust_user_role']).'</b>: ';
                         }
                     $sx .= '<a href="#"><i>'.$line['us_nome'].'</i></a>. ';
                 }

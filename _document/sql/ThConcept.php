@@ -67,16 +67,6 @@ class ThConcept extends Model
             return($ID);
         }
 
-    function concepts($th=0)
-        {
-            $dt = $this
-                    ->join('th_concept_term','ct_concept = id_c','inner')
-                    ->join('th_literal','ct_term = id_n','inner')
-                    ->where('c_th',$th)
-                    ->findAll();
-            return($dt);
-        }
-
     function le($id)
         {
             $this->select("id_c, c_concept, n_name, n_lang, ct_propriety, ct_concept, c_th");
@@ -97,6 +87,11 @@ class ThConcept extends Model
             return $dt;
         }
 
+    function boarder($id)
+        {
+            
+        }
+
     function show($id)
         {
             return $this->header($id);
@@ -105,15 +100,35 @@ class ThConcept extends Model
 
     function list($id,$prop='')
         {
-
+        /*****************************************************************/
+        $th = 64;
+        /*****************************************************************/
+        $th = round(sonumero($th));
+        $sql = "select * from th_concept_term as t1
+        INNER JOIN th_literal ON id_rl = t1.ct_term
+        INNER JOIN rdf_resource ON id_rs = t1.ct_propriety
+        INNER JOIN rdf_prefix on id_prefix = rs_prefix
+        WHERE t1.ct_concept = $id and t1.ct_th = $th and rs_group = '$prop'
+        order by rs_group ";
+        
+        $rlt = (array)$this ->query($sql)->getResult();
+        if (count($rlt) > 0) {
+            /* Read BT */
+            return "OK";
+            exit;
+            return ($rlt);
+        } else {
+            return "NONE";
+            exit;
+            return ( array());
         }
+    }          
 
     function edit($id)
         {
             $sa = '';
             $sb = '';
             $sx = $this->header_edit($id);
-            $sx .= '<hr>';
 
             $sa .= $this->prefLabel_Add($id);
             $sa .= $this->broader_Add($id);
@@ -133,9 +148,10 @@ class ThConcept extends Model
             $txt = lang('thesa.notes');
             $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
             $sx .= onclick(PATH.MODULE.'edit/'.$id.'/notes',800,600);
-            $sx .= h($txt,4);        
+            $sx .= h($txt,4);
+
             $sx .= $this->list($id,'notes');
-            $sx .= '</span>';            
+            
             return $sx;
         }         
 
@@ -146,7 +162,6 @@ class ThConcept extends Model
             $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
             $sx .= onclick(PATH.MODULE.'edit/'.$id.'/altLabel',800,600);
             $sx .= h($txt,4);
-            $sx .= '</span>';
             
             return $sx;
         }        
@@ -158,7 +173,6 @@ class ThConcept extends Model
             $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
             $sx .= onclick(PATH.MODULE.'edit/'.$id.'/hiddenLabel',800,600);
             $sx .= h($txt,4);
-            $sx .= '</span>';
             
             return $sx;
         }        
@@ -168,10 +182,8 @@ class ThConcept extends Model
             $sx = '';
             $txt = lang('thesa.prefLabel');
             $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
-            $url = PATH.MODULE.'popup/prefLabel/'.$id;
-            $sx .= onclick($url,800,600);
+            $sx .= onclick(PATH.MODULE.'edit/'.$id.'/prefLabel',800,600);
             $sx .= h($txt,4);
-            $sx .= '</span>';
             
             return $sx;
         }
@@ -181,10 +193,8 @@ class ThConcept extends Model
             $sx = '';
             $txt = lang('thesa.broader');
             $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
-            $url = PATH.MODULE.'popup/broader/'.$id;            
-            $sx .= onclick($url,800,600);
+            $sx .= onclick(PATH.MODULE.'edit/'.$id.'/broader',800,600);
             $sx .= h($txt,4);
-            $sx .= '</span>';
             
             return $sx;
         }
@@ -194,10 +204,8 @@ class ThConcept extends Model
             $sx = '';
             $txt = lang('thesa.narrower');
             $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
-            $url = PATH.MODULE.'popup/narrower/'.$id;            
-            $sx .= onclick($url,800,600);            
+            $sx .= onclick(PATH.MODULE.'edit/'.$id.'/narrower',800,600);
             $sx .= h($txt,4);
-            $sx .= '</span>';
             
             return $sx;
         }                
@@ -231,19 +239,23 @@ class ThConcept extends Model
             return $sx;
         }
 
-    function header($dt)
+    function header($id)
         {
-            $id = $dt['concept']['id_c'];           
+            $ThConceptTerms = new \App\Models\Thesaurus\ThConceptTerms();
             $sx = '';
-
-            /**********************************************************************************/
-            $link = '<a href="'.PATH.MODULE.'v/'.$id.'" class="text-primary">';
-            $linka = '</a>';
-            $lang = $dt['concept']['n_lang'];
-            if ($lang != '') { $lang = ' <sup>('.$dt['concept']['n_lang'].')</sup>'; }
-            $prefs = '<span class="supersmall">'.lang('thesa.prefLabel').'</span>';
-            $prefs .= '<br><span class="h3">'.$link.$dt['concept']['n_name'].$lang.$linka.'</span>';
-
+            $dt = $ThConceptTerms->prefLabel($id);
+            $lab = '<span class="supermall">'.lang('thesa.prefLabel').'</span>';
+            $prefs = $lab;
+            for ($r=0;$r < count($dt);$r++)
+                {
+                    $dtt = (array)$dt[$r];
+                    $link = '<a href="'.PATH.MODULE.'v/'.$id.'" class="text-primary">';
+                    $linka = '</a>';
+                    $lang = '';
+                    if (count($dt) > 1) 
+                        { $lang = ' <sup>('.$dtt['n_lang'].')</sup>'; }
+                    $prefs .= '<h3>'.$link.$dtt['n_name'].$lang.$linka.'</h3>';
+                }
             /********* Copy to ClipBoard */
             $prefs .= '<input type="text" id="cpc" 
                         value="'.PATH.MODULE.'c/'.$id.'" class="small" style="width: 100%; border: 0px;" readonly="">';
@@ -256,15 +268,14 @@ class ThConcept extends Model
                     $this->bt_concept($id).' '.
                     $this->bt_copy($id) .' '.
                     $this->bt_rdf($id)
-            ,4,'text-end mb-4');
-            $sx .= bsc('<hr>',12,'mb-4');
+            ,4,'text-end');
             $sx = bs($sx);
             return $sx;
         }
 
     function bt_prefLabel($id)
         {
-            $url = PATH.MODULE.'popup/change_preflabel/'.$id.'/';
+            $url = PATH.MODULE.'a/'.$id.'/change_preflabel';
             $sx = onclick($url,800,500);
             $sx .= lang('thesa.PrefLabelChange');
             $sx .= '</a>';
@@ -280,7 +291,7 @@ class ThConcept extends Model
     function bt_concept($id)
         {
             $sx = '<a href="'.PATH.MODULE.'v/'.$id.'"
-                        class="btn btn-outline-secondary">thesa:c'.$id.'</a>';
+                        class="btn btn-outline-secondary">thesa:c20679</a>';
             return($sx);
         }
     function bt_copy($id)
@@ -319,9 +330,9 @@ class ThConcept extends Model
         {
             $this->select("id_c as id_c, c_concept as c_concept, rl1.n_name, rl2.n_name as name2, rl1.n_lang as n_lang, rl2.n_lang as n_lang2, lt1.ct_propriety, lt1.ct_concept, lt1.ct_use ");
             $this->join('th_concept_term as lt1','id_c = ct_concept');
-            $this->join('th_literal as rl1','lt1.ct_term = rl1.id_n');
+            $this->join('th_literal as rl1','lt1.ct_term = rl1.id_rl');
             $this->join('th_concept_term as lt2','(lt1.ct_concept = lt2.ct_concept) and (lt2.ct_propriety = 25)');
-            $this->join('th_literal as rl2','lt2.ct_term = rl2.id_n');
+            $this->join('th_literal as rl2','lt2.ct_term = rl2.id_rl');
             $this->where('c_th',$id);
             $this->where('c_ativo',1);
             $this->like('rl1.n_name',$lt, 'after');
@@ -349,9 +360,9 @@ class ThConcept extends Model
         {
             $this->select("id_c as id_c, c_concept as c_concept, rl1.n_name, rl2.n_name as name2, rl1.n_lang as n_lang, rl2.n_lang as n_lang2, lt1.ct_propriety, lt1.ct_concept, lt1.ct_use ");
             $this->join('th_concept_term as lt1','id_c = ct_concept');
-            $this->join('th_literal as rl1','lt1.ct_term = rl1.id_n');
+            $this->join('th_literal as rl1','lt1.ct_term = rl1.id_rl');
             $this->join('th_concept_term as lt2','(lt1.ct_concept = lt2.ct_concept) and (lt2.ct_propriety = 25)');
-            $this->join('th_literal as rl2','lt2.ct_term = rl2.id_n');
+            $this->join('th_literal as rl2','lt2.ct_term = rl2.id_rl');
             $this->where('c_th',$id);
             $this->where('c_ativo',1);
             $this->like('rl1.n_name',$lt, 'after');
@@ -383,7 +394,6 @@ class ThConcept extends Model
                         <div><button class="btn-buscar-top" type="submit"></button></div>
                     </form>
                    ';
-
             $sx .= "<style>
                     .btn-text-top {
                     background-color: #f5f6fa;
@@ -415,7 +425,7 @@ class ThConcept extends Model
         {
             $this->select("substr(n_name,1,1) as ltr");
             $this->join('th_concept_term','id_c = ct_concept');
-            $this->join('th_literal','ct_term = id_n');            
+            $this->join('th_literal','ct_term = id_rl');            
             $this->where('c_th',$id);
             $this->where('c_ativo',1);
             $this->groupBy('ltr');
@@ -424,13 +434,15 @@ class ThConcept extends Model
             $sx = '';
             //$sx .= '<div aria-label="Page navigation example2">';
             $sx .= '<ul class="pagination">';
-            $sx .= '<li>'.lang('thesa.pagination').'</li>';
             for ($r=0;$r < count($dt);$r++)
                 {
                     $line = $dt[$r];
                     $sx .= '<li class="page-item me-1"><a class="page-link" href="'.(PATH.MODULE.'th/'.$id.'/'.$line['ltr']).'">'.$line['ltr'].'</a></li>'.cr();
                 }
             $sx .= '</ul>';
+            //$sx .= '</div>';
+            $sx = bsc($sx,10);
+            $sx .= bsc($this->search($id),2);
             return $sx;
         }
 }

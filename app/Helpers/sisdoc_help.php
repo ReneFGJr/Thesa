@@ -10,7 +10,7 @@ function help($pag='',$lang='pt')
             $file = $pag.'.md';
             $filename = $dir.$file;
         }
-        
+
         if (!file_exists($filename))
             {
                 $txt = h($pag,2);
@@ -19,5 +19,6 @@ function help($pag='',$lang='pt')
             } else {
                 $txt = file_get_contents($dir.$file);
             }
+        $txt = troca($txt,chr(13),'<br>');
         return $txt;
     }

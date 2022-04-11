@@ -102,10 +102,12 @@ function form($th)
         $th->saved = 0;
         if ((count($dt) > 0) and ($ok==1))
             {
-                $th->saved = 1;
+                $th->saved = 1;                
                 if ($table != '*') 
-                    { 
-                        $th->save($dt);                     
+                    {                         
+                        $id = $th->save($dt);
+                        $idx = $th->insertID;
+                        $th->id = $idx;
                     } 
                 $sx .= bsmessage('SALVO');
                 if (isset($th->path_back)) {

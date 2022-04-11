@@ -40,99 +40,22 @@ class Viz extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function net($dt)
+    function net($graph)
         {
-            $pref = $dt['concept'];
-            $data = (array)$dt['data'];
-            
-            $idn = $pref['id_c'];
-            $viz = array();
-            $tot = count($data);
-            for($r=0;$r < $tot;$r++)
-                {                    
-                    $line = (array)$data[$r];                    
-                    $prop = trim((string)$line['rs_propriety']);
-                    $gr = $line['rs_group'];
-
-                    switch($prop)
-                        {
-                            case 'prefLabel':
-                                $viz['pref'][$line['rl_lang']] = array($line['rl_value'],$line['rl_lang'],$line['ct_th'],$line['id_ct']);
-                                break;
-                        }
-                }
-            /************************ NODES */
-            $nodes = '';
-
-            /************************ Pref Languages */
-            $lg = array('por','eng','esp','fra');
-
-            /***************************************** PrefTerm */
-            $idm = 0;
-            $title = 'uri:'.$idn.cr();
-            for ($r=0;$r < count($lg);$r++)
-                {
-                    if (isset($viz['pref'][$lg[$r]]))
-                        {
-                            if ($idm == 0)
-                            {
-                                $idm = $viz['pref'][$lg[$r]][3];
-                                $nodes = '{id: '.$idm.', label: "'. $viz['pref']['por'][0].'", $title },';
-                            } else {
-                                $title .= $viz['pref'][$lg[$r]][0].'-'.$lg[$r].cr();
-                            }
-                        } else {
-                            
-                        }
-                }
-            if ($title != '')
-                {
-                    $title = 'title: "'.trim($title).'"';                    
-                }
-            $nodes = troca($nodes,'$title',$title);
-
-            if ($idm==0)
-                {
-                    echo "OPENING: ";
-                    pre($viz);
-                }   
-
             /************************ EDGES */
             $edges = '';
+            $nodes = '';
+            $data = array();
 
-            /********************************************** Relations */
-            for ($r=0;$r < count($data);$r++)
-                {
-                    $line = (array)$data[$r];
-                    $title = '';
-                    if ($line['ct_concept_2'] > 0)
-                        {
-                            $title = ', title:"URI:'.$line['ct_concept_2'].'"';
-                        }
-                    
-                    $gr = $line['rs_group'];
-                    switch($gr)
-                        {
-                            case 'FE':
-                                $nodes .= '{id: '.$line['id_ct'].', label: "'.trim($line['rl_value']).'" '.$title.'},';
-                                $edges .= '{from: '.$idm.', to: '.$line['id_ct'].', label: "'.$line['rs_propriety'].'"},';
-                                break;
-                            case 'TG':
-                                $nodes .= '{id: '.$line['id_ct'].', label: "'.trim($line['rl_value']).'" '.$title.'},';
-                                $edges .= '{from: '.$idm.', to: '.$line['id_ct'].', label: "'.$line['rs_propriety'].'"},';
-                                break;   
-                            case 'TE':
-                                $nodes .= '{id: '.$line['id_ct'].', label: "'.trim($line['rl_value']).'" '.$title.'},';
-                                $edges .= '{from: '.$idm.', to: '.$line['id_ct'].', label: "'.$line['rs_propriety'].'"},';
-                                break;                                                             
-                            case 'LABEL':
-                                break;
-                            default:
-                            pre($data);
-                                echo '==>'.$gr;
-                        }
-                }
-            
+            for ($r=0;$r < count($graph['nodes']);$r++) {
+                $line = $graph['nodes'][$r];
+                $nodes .= '{id: '.$line['id_ct'].', label: "'.trim($line['n_name']).'"},';                
+            }
+
+            for ($r=0;$r < count($graph['edges']);$r++) {
+                $line = $graph['edges'][$r];
+                $edges .= '{from: '.$line['source'].', to: '.$line['target'].', label: "'.$line['propriety'].'"},';
+            }
 
             $sx = '<div id="mynetwork" style="border: 1px solid #aaa; height: 400px;"></div>';
 
