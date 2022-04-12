@@ -110,20 +110,65 @@ class ThConcept extends Model
 
     function edit($id)
         {
+            $ThAssociate = new \App\Models\Thesaurus\ThAssociate();
             $sa = '';
             $sb = '';
             $sx = $this->header_edit($id);
             $sx .= '<hr>';
+            $dt = $this->le($id);
+            $dr = $ThAssociate->le($id);
 
             $sa .= $this->prefLabel_Add($id);
-            $sa .= $this->broader_Add($id);
-            $sa .= $this->narrower_Add($id);
+            $sa .= $this->altLabel_Add($id,$dr);
+            $sa .= $this->hiddenLabel_Add($id,$dr);
 
-            $sb .= $this->notes_Add($id);
-            $sb .= $this->altLabel_Add($id);
-            $sb .= $this->hiddenLabel_Add($id);
-            $sx = $sx . bs($sa,6).bs($sb,6);
+            $sb .= $this->broader_Add($id,$dr);
+            $sb .= $this->narrower_Add($id,$dr);
+            $sb .= $this->related_Add($id,$dr);
+            $sb .= $this->notes_Add($id,$dr);
+            
+            $img = 'image';
+
+            $sx = $sx . bsc($sa,5).bsc($sb,5);
+            $sx .= bsc($img,2);
             $sx = bs($sx);
+            return $sx;
+        }
+
+    function show_propriety($prop,$dt)
+        {
+            $sx = '<ul>';
+            $t = 0;
+            for($r=0;$r<count($dt);$r++)
+                {
+                    $line = $dt[$r];
+                    if ($line['p_group'] == $prop)
+                        {
+                            $sty = '';
+                            $stya = '';
+                            $url = PATH.MODULE.'popup/propriety_del/'.$line['id_tg'];
+                            $btn = btn_trash_popup($url);
+
+                            if ($line['tg_active'] == 0) 
+                                { 
+                                    $sty = '<del>'; 
+                                    $stya = '</del>'; 
+                                    $url = PATH.MODULE.'popup/propriety_undel/'.$line['id_tg'];
+                                    $btn = btn_recicle_popup($url);
+                                }
+                            $link = '<a href="'.PATH.MODULE.'a/'.$line['id_ct'].'" class="thesa '.$sty.'">';
+                            $linka = '</a>';
+                            $sx .= '<li>';
+                            $sx .= $sty.$link.$dt[$r]['n_name'].$linka.$stya;
+                            $sx .= ' ';                          
+                            $sx .= $btn;
+                            
+                            //$sx .= '<a href="#" class="text-danger" onclick="if (confirm(\'Excluir\'")) { alert(1); }" >'.bsicone('trash').'</a>';
+                            $sx .= '</li>';
+                            $t++;
+                        }
+                }
+            $sx .= '</ul>';
             return $sx;
         }
 
@@ -171,12 +216,12 @@ class ThConcept extends Model
             $url = PATH.MODULE.'popup/prefLabel/'.$id;
             $sx .= onclick($url,800,600);
             $sx .= h($txt,4);
-            $sx .= '</span>';
+            $sx .= 'xx</span>';
             
             return $sx;
         }
 
-    function broader_Add($id)
+    function broader_Add($id,$dt)
         {
             $sx = '';
             $txt = lang('thesa.broader');
@@ -185,11 +230,12 @@ class ThConcept extends Model
             $sx .= onclick($url,800,600);
             $sx .= h($txt,4);
             $sx .= '</span>';
+            $sx .= $this->show_propriety('TG',$dt);
             
             return $sx;
         }
 
-    function narrower_Add($id)
+    function narrower_Add($id,$dt)
         {
             $sx = '';
             $txt = lang('thesa.narrower');
@@ -198,9 +244,24 @@ class ThConcept extends Model
             $sx .= onclick($url,800,600);            
             $sx .= h($txt,4);
             $sx .= '</span>';
+            $sx .= $this->show_propriety('TE',$dt);
             
             return $sx;
-        }                
+        } 
+
+    function related_Add($id,$dt)
+        {
+            $sx = '';
+            $txt = lang('thesa.related');
+            $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
+            $url = PATH.MODULE.'popup/related/'.$id;            
+            $sx .= onclick($url,800,600);            
+            $sx .= h($txt,4);
+            $sx .= '</span>';
+            $sx .= $this->show_propriety('TR',$dt);
+            
+            return $sx;
+        } 
 
     function header_edit($id)
         {

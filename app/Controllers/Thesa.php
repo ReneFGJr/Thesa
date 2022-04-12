@@ -388,6 +388,38 @@ class Thesa extends BaseController
 			return $sx;
 		}
 
+	function tree($id = '', $ltr = '')
+	{
+		$Tree = new \App\Models\Graph\Tree();
+		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();		
+		$sx = '';
+		$sx .= $this->cab();
+		$sx .= $this->navbar();
+		$sx .= $ThThesaurus->show($id, $ltr);
+
+		$sx .= bs(bsc($Tree->Graph(1),12));
+		$sx .= $this->footer();
+
+		return $sx;
+	}	
+
+	function sistematic($id = '', $ltr = '')
+	{
+		$Sistematic = new \App\Models\Graph\Sistematic();
+		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();		
+		$sx = '';
+		$sx .= $this->cab();
+		$sx .= $this->navbar();
+		$sx .= $ThThesaurus->show($id, $ltr);
+
+		$sx .= bs(bsc($Sistematic->Graph(1),12));
+		$sx .= $this->footer();
+
+		return $sx;
+	}	
+
+		
+
 	function th($id = '', $ltr = '')
 	{
 		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();		
@@ -441,11 +473,43 @@ class Thesa extends BaseController
 
 			switch($d1)
 				{
+					case 'prefLabel':
+						$ThLiteral = new \App\Models\Thesaurus\ThLiteral();
+						$ThLiteral->label_update($d2,$d1);
+						$sx .= wclose();
+						break;
+
+						break;
+					case 'propriety_del':
+						$ThAssociate = new \App\Models\Thesaurus\ThAssociate();
+						$ThAssociate->propriety_update($d2,0);
+						$sx .= wclose();
+						break;
+					case 'propriety_undel':
+						$ThAssociate = new \App\Models\Thesaurus\ThAssociate();
+						$ThAssociate->propriety_update($d2,1);
+						$sx .= wclose();
+						break;
+
+
 					case 'broader':
 						$ThAssociate = new \App\Models\Thesaurus\ThAssociate();
 						$sx .= $cab;
 						$sx .= $ThAssociate->associate($d2,$d3,$d4,$d5,'TG');
 					break;
+
+					case 'narrower':
+						$ThAssociate = new \App\Models\Thesaurus\ThAssociate();
+						$sx .= $cab;
+						$sx .= $ThAssociate->associate($d2,$d3,$d4,$d5,'TE');
+					break;
+
+					case 'related':
+						$ThAssociate = new \App\Models\Thesaurus\ThAssociate();
+						$sx .= $cab;
+						$sx .= $ThAssociate->associate($d2,$d3,$d4,$d5,'TR');
+					break;					
+
 					case 'associate':
 						$ThLiteral = new \App\Models\Thesaurus\ThLiteral();
 						$sx = $cab;

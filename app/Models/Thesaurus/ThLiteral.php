@@ -58,6 +58,14 @@ class ThLiteral extends Model
             return $rst;
         }
 
+    function label_update($id,$tp)
+        {
+            pre($_SESSION);
+            $ThLiteralTh = new \App\Models\Thesaurus\ThLiteralTh();
+            $ThLiteralTh->terms($th);
+        }
+
+
     function add_term($term,$lang,$th)
         {
             $term = mb_strtolower($term);

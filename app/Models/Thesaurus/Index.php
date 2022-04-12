@@ -69,7 +69,7 @@ class Index extends Model
                         {
                             case 25:
                             echo 'Term=>'.$line['rl_value'].'<br>';
-                            array_pref[$lang] = '<skos:Concept rdf:about="http://vocabularies.unesco.org/thesaurus/concept6676">';
+                            //array_pref[$lang] = '<skos:Concept rdf:about="http://vocabularies.unesco.org/thesaurus/concept6676">';
                             break;
 
                             case 34:

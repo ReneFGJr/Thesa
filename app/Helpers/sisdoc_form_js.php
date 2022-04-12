@@ -23,6 +23,12 @@ function btn_trash_popup($url,$class='text-secondary',$txt='')
         return $sx;
     }
 
+function btn_recicle_popup($url,$class='text-secondary',$txt='')
+    {
+        $sx = '<a href="#" class="a '.$class.' text-success" onclick="if (confirm(\''.lang('brapci.recicle?').'\')) { NewWindow=window.open(\''.$url.'\',\'newwin\',\'scrollbars=no,resizable=no,width=800,height=400,top=10,left=10\'); NewWindow.focus(); void(0); }" style="cursor: pointer;">'.bsicone('recycle').'</a>';
+        return $sx;
+    }    
+
 function btn_trash($url,$class='text-secondary',$txt='')
     {
         $sx = '<a href="'.$url.'" class="a text-danger '.$class.'" onclick="return confirm(\''.lang('sisdoc.exclusion?').'\');">'.bsicone('trash').'</a>';

@@ -15,7 +15,7 @@ class ThAssociate extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_tg','tg_concept_1','tg_concept_2','tg_propriety','tg_th'
+        'id_tg','tg_concept_1','tg_concept_2','tg_propriety','tg_th','tg_active'
     ];
 
     // Dates
@@ -41,6 +41,14 @@ class ThAssociate extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    function propriety_update($id_tg,$vlr)
+        {
+            $dt['tg_active'] = $vlr;
+            $this->set($dt)->where('id_tg',$id_tg)->update();
+            //$this->where('id_tg', $id_tg)->delete();
+            return true;
+        }
 
     function le($id)
         {

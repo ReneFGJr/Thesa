@@ -189,6 +189,7 @@ class ThThesaurus extends Model
 
     function card($line,$tp='')
         {
+            $ThHeader = new \App\Models\Thesaurus\ThHeader();
             $sx = '';
             $link = '<a href="'.(PATH.MODULE.'th/'.$line['id_pa']).'">';
             $linka = '</a>';
@@ -205,7 +206,7 @@ class ThThesaurus extends Model
                     $card .= $link;
                     $card .= '<div class="card">';
                     $card .= '<div class="card_image">';
-                    $card .= '<img src="'.$this->show_icone($line).'" class="img-fluid">';
+                    $card .= '<img src="'.$ThHeader->show_icone($line).'" class="img-fluid">';
                     $card .= '</div>';
                     $card .= '<div class="card_title text-center p-1">';
                     $card .= $line['pa_name'];
@@ -296,13 +297,28 @@ class ThThesaurus extends Model
 
             $c = $dt['concept'];
             $nodes[0] = array('n_name'=>$c['n_name'],'id_ct'=>$c['id_c']);
+            $da = array();
+
             for ($r=0;$r < count($dt['data']);$r++)
                 {
                     $c = $dt['data'][$r];
-                    if ($c['id_ct'] != $id)
+                    if (($c['id_ct'] != $id) and ($c['tg_active'] == 1))
                         {
                             array_push($nodes,array('n_name'=>$c['n_name'],'id_ct'=>$c['id_ct']));
-                            array_push($edges,array('source'=>$id,'target'=>$c['id_ct'],'propriety'=>'x'));
+                            array_push($edges,array(
+                                        'source'=>$id,
+                                        'target'=>$c['id_ct'],
+                                        'propriety'=>$c['p_propriey'
+                                        ]));  
+                            if (!isset($da[$c['p_propriey']]))
+                                {
+                                    $da[$c['p_propriey']] = array();
+                                }
+                            $name = $c['n_name'];
+                            $link = '<a href="'.PATH.MODULE.'v/'.$c['id_ct'].'">';
+                            $link_a = '</a>';
+                            $name = $link.$name.$link_a;
+                            array_push($da[$c['p_propriey']],$name);
                         }                    
                 }
 
@@ -312,12 +328,20 @@ class ThThesaurus extends Model
             $sa = $VIZ->net($graph);
 
             /****************************************************** DADOS */
-            $sb = '';
+            $sb = '<ul>';
+            foreach ($da as $key => $value)
+                {
+                    $sb .= h(lang('thesa.'.$key),4);
+                    foreach ($value as $k => $v)
+                        {
+                            $sb .= '<li>'.$v.'</li>';
+                        }
+                }
+            $sb .= '</ul>';
 //            $sb .= '<hr>'.$ThConceptData->data_TG($id);
 //            $sb .= '<hr>'.$ThConceptData->data_TE($id);
             $sx = bs($sx);
             $sx .= bs(bsc($sa,8).bsc($sb,4));
-
             return $sx;
         }  
 
