@@ -94,9 +94,10 @@ class ThThesaurus extends Model
 
             /* Right Screen */
             $txr = lang(h(lang('thesa.th_my'),2));
+            $txr.= $this->btn_open_th();            
+            $txr.= $this->btn_my_th();
             $txr .= $this->btn_create_th();
-
-            $txr.= $this->btn_open_th();
+            
             $sx .= bsc($txr,3);
             $sx = bs($sx);
             return $sx;
@@ -104,19 +105,39 @@ class ThThesaurus extends Model
 
    function btn_create_th()
         {
-            $sx = '<a href="'.PATH.MODULE.'edit_th/0'.'" class="btn btn-outline-primary mt-2 mb-2" style="width: 100%;">';
-            $sx .= lang('thesa.create_th');
-            $sx .= '</a>';
+            $sx = '';
+            $Socials = new \App\Models\Socials();
+            $ID = $Socials->getID();
+            if ($ID > 0)
+            {            
+                $sx = '<a href="'.PATH.MODULE.'edit_th/0'.'" class="btn btn-outline-danger mt-2 mb-2" style="width: 100%;">';
+                $sx .= lang('thesa.create_th');
+                $sx .= '</a>';
+            }
             return $sx;
         }
 
    function btn_open_th()
         {
-            $sx = '<a href="'.PATH.MODULE.'thopen'.'" class="btn btn-outline-primary mt-2 mb-2" style="width: 100%;">';
+            $sx = '<a href="'.PATH.MODULE.'thopen'.'" class="btn btn-outline-success mt-2 mb-2" style="width: 100%;">';
             $sx .= lang('thesa.thopen');
             $sx .= '</a>';
             return $sx;
         }
+
+    function btn_my_th()
+        {
+            $sx = '';
+            $Socials = new \App\Models\Socials();
+            $ID = $Socials->getID();
+            if ($ID > 0)
+            {
+                $sx .= '<a href="'.PATH.MODULE.'th_my'.'" class="btn btn-outline-primary mt-2 mb-2" style="width: 100%;">';
+                $sx .= lang('thesa.th_my');
+                $sx .= '</a>';
+            }
+            return $sx;
+        }        
 
     function show($th,$lt='')
         {

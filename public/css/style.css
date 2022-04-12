@@ -116,7 +116,7 @@ a:hover
         height: 70px;
         margin-top: 10px;
         line-height: 95%;
-        font-weight: bold;
+        /* font-weight: bold; */
         display: flex;
         justify-content: center;
         align-items: center;

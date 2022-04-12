@@ -88,7 +88,7 @@ class Thesa extends BaseController
 		$sx .= '  <link rel="icon" type="image/png" sizes="16x16" href="' . URL.('img/icone/favicon.png') . '" />' . cr();
 		$sx .= '  <!-- CSS -->' . cr();
 		$sx .= '  <link rel="stylesheet" href="' . URL.('/css/bootstrap.css') . '" />' . cr();
-		$sx .= '  <link rel="stylesheet" href="' . URL.('/css/style.css?v=0.0.9') . '" />' . cr();
+		$sx .= '  <link rel="stylesheet" href="' . URL.('/css/style.css?v=0.0.10') . '" />' . cr();
 		/* GOogle Fonts */
 		$sx .= ' <style>
 						@import url(\'https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap\');
