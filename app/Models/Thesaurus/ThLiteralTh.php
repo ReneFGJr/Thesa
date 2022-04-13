@@ -47,10 +47,12 @@ class ThLiteralTh extends Model
             $dt = 
             $this
                 ->select('ct_concept,n_name')
-                ->join('th_literal','id_lt = lt_term')
+                ->join('th_literal','id_n = lt_term')
                 ->join('th_concept_term','ct_term = id_lt')
-                ->like('n_name','%'.$t.'%')
+                ->where('ct_th',$th)
+                ->like('n_name',''.$t.'')
                 ->findAll();
+                echo $this->getlastquery();
             pre($dt);
             $this
                  ->select('id_n, n_name, n_lang, id_lt, lt_term, lt_status, ct_concept')
