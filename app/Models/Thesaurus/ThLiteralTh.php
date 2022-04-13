@@ -42,6 +42,28 @@ class ThLiteralTh extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function search($t,$th=1)
+        {
+            $dt = 
+            $this
+                ->select('ct_concept,n_name')
+                ->join('th_literal','id_lt = lt_term')
+                ->join('th_concept_term','ct_term = id_lt')
+                ->like('n_name','%'.$t.'%')
+                ->findAll();
+            pre($dt);
+            $this
+                 ->select('id_n, n_name, n_lang, id_lt, lt_term, lt_status, ct_concept')
+                 ->join('th_literal','id_n = lt_term')
+                 ->join('th_concept_term','(ct_term = id_n) and (ct_th = lt_th)','left')
+                 ->where('lt_th',$th)
+                 ->where('lt_status',1)
+                 ->where('ct_concept IS NULL', null, false)
+                 ->orderBy('n_name','ASC')
+                 ->findAll();
+            return $dt;
+        }
+
     function term_list($th)
         {
             $dt = 

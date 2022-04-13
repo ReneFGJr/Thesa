@@ -82,7 +82,7 @@ class Index extends Model
     function md($act)
         {
             $sx = '';
-            $dir = '../_document/help/';
+            $dir = '../_documentation/help/';
             $file = $dir.$act.'.md';
             if (file_exists($file)) {
                 $sx = file_get_contents($file);

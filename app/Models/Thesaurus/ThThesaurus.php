@@ -447,6 +447,17 @@ class ThThesaurus extends Model
             return $this->th(0);
         }
 
+    function getAchronic($n='')
+        {
+            $dt = $this->where('pa_achronic',$n)->findAll();
+            if (count($dt) > 0)
+                {
+                    return $dt[0]['id_pa'];
+                } else {
+                    return 0;
+                }
+        }
+
     function th($id)
         {
             if ($id==0)
@@ -468,12 +479,13 @@ class ThThesaurus extends Model
             $sx = '';    
             $ThConfig = new \App\Models\Thesaurus\ThConfig();
             $ThUsers = new \App\Models\Thesaurus\ThUsers();
+            $ThHeader = new \App\Models\Thesaurus\ThHeader();
             $id = $this->th($id);
             $dtt = $this->find($id);      
             /********************************** Authors *************/
             $authors = $ThUsers->authors($id);
             /********************************** Titulo do Thesaurus */
-            $sx .= bs($this->title($dtt,$authors));  
+            $sx .= bs($ThHeader->title($dtt,$authors));  
 
 			$t1 = bsc(bsicone('gear',64).h(lang('thesa.config')),12);
 

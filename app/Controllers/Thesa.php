@@ -187,20 +187,21 @@ class Thesa extends BaseController
 		$sx .= '</nav>' . cr();
 		return $sx;
 	}
-	
-	
-	function api($d1='',$d2='',$d3='')
+
+	/******************************************************************************************************** */
+	function rest($th='')
 		{
-			$sx = $this->cab();
-			$sx .= $this->navbar();
-			$sa = bsc(h('API'),12);
-			$sa .= bsc(URL.'/rest/v1/search?query=',12);
-			$sa .= bsc(URL.'/rest/v1/data?uri=',12);
-			$sx .= bs($sa);
-			$sx .= $this->footer();
-			return $sx;
+			echo $th;
+			$API = new \App\Models\Api\Query();
+			$API->rest($th);
 		}
 
+	function data($q='')
+		{
+			echo $q;
+		}		
+	
+	
 	function footer()
 	{
 		$sx = '<!-- Footer -->
