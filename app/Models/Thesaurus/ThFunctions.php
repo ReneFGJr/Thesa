@@ -59,10 +59,10 @@ class ThFunctions extends Model
                         </li>
                         <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarSubDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Dropdown
+                            '.lang('thesa.tools').'
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarSubDropdown">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="'.PATH.MODULE.'tools/inport">'.msg('thesa.inport_vc').'</a></li>
                             <li><a class="dropdown-item" href="#">Another action</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">Something else here</a></li>

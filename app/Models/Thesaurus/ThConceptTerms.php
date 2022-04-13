@@ -42,6 +42,16 @@ class ThConceptTerms extends Model
     protected $beforeDelete         = [];
     protected $afterDelete          = [];
 
+    function le($id)
+        {
+            $dt = $this
+                ->join('th_literal','ct_term = id_n','inner')
+                ->join('th_proprieties','ct_propriety = id_p','inner')
+                ->join('th_proprieties_prefix','p_prefix = id_prefix','inner')
+                ->where('ct_concept', $id)
+                ->findAll();
+            return $dt;
+        }
     function resume($id)
         {
             $ThLiteralTh = new \App\Models\Thesaurus\ThLiteralTh();
@@ -58,10 +68,12 @@ class ThConceptTerms extends Model
         }
     function create_concept_term($term,$concept,$th)
         {
+            $Proprieties = new \App\Models\RDF\Proprieties();
             $dt = $this->where('ct_term',$term)->where('ct_th',$th)->findAll();
             if (count($dt) == 0)
                 {
-                    $dd['ct_propriety'] = '25';
+                    $prop = $Proprieties->getPropriety('Concept');
+                    $dd['ct_propriety'] = $prop;
                     $dd['ct_use'] = '0';
                     $dd['ct_term'] = $term;
                     $dd['ct_th'] = $th;

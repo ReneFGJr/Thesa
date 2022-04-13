@@ -68,7 +68,7 @@ return [
     'term_concept'=>'Candidatos a termos',
     'narrower'=>'Conceito Específico (TE)',
     'broader'=>'Conceito Geral (TE)',
-    ''=>'',
+    'notation'=>'Notação',
 
     ''=>'',
     ''=>'',

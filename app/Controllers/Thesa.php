@@ -427,6 +427,7 @@ class Thesa extends BaseController
 		$sx .= $this->cab();
 		$sx .= $this->navbar();
 		$sx .= $ThThesaurus->show($id, $ltr);
+		$ThThesaurus->setTh($id);
 
 		if ($ltr != '')
 			{
@@ -437,6 +438,19 @@ class Thesa extends BaseController
 
 		return $sx;
 	}
+
+	function tools($act='',$d1='',$d2='',$d3='',$d4='')
+		{
+			$view = \Config\Services::renderer();
+			$Tools = new \App\Models\Tools\Index();
+
+			$sx = $this->cab();
+			$sx .= $this->navbar();				
+			$sx .= $view->render('paralax');
+			$sx .= $Tools->index($act,$d1,$d2,$d3,$d4);
+			$sx .= $this->footer();
+			return $sx;			
+		}
 
 	function edit($id=0,$ac='')
 		{

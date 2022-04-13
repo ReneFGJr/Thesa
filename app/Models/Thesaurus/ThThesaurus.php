@@ -303,16 +303,19 @@ class ThThesaurus extends Model
             $sx = '';
             
             $ThConcept = new \App\Models\Thesaurus\ThConcept();            
-            //$ThConceptTerms = new \App\Models\Thesaurus\ThConceptTerms();
+            $ThLiteral = new \App\Models\Thesaurus\ThLiteral();
             $ThAssociate = new \App\Models\Thesaurus\ThAssociate();
+            $Proprities = new \App\Models\RDF\Proprieties();
             $VIZ = new \App\Models\Graph\Viz();
 
             $dt['concept'] = $ThConcept->le($id);
             $dt['data'] = $ThAssociate->le($id);
+            $dt['literal'] = $ThLiteral->le($id);
+
+            $Class = $Proprities->getPropriety('Concept');
 
             $nodes = array();
             $edges = array();
-
 
             $sx .= $ThConcept->header($dt);
 
@@ -323,7 +326,7 @@ class ThThesaurus extends Model
             for ($r=0;$r < count($dt['data']);$r++)
                 {
                     $c = $dt['data'][$r];
-                    if (($c['id_ct'] != $id) and ($c['tg_active'] == 1))
+                    if (($c['id_ct'] != $id) and ($c['tg_active'] == 1) and ($c['ct_propriety'] == $Class))
                         {
                             array_push($nodes,array('n_name'=>$c['n_name'],'id_ct'=>$c['id_ct']));
                             array_push($edges,array(
@@ -341,6 +344,38 @@ class ThThesaurus extends Model
                             $name = $link.$name.$link_a;
                             array_push($da[$c['p_propriey']],$name);
                         }                    
+                }
+
+            /***************************************************** Literal */
+            $lit = $dt['literal'];
+            for ($r=0;$r < count($lit);$r++)
+                {
+                    $line = $lit[$r];
+                    $prop = $line['p_propriey'];
+                    switch($prop)
+                        {
+                            case 'Concept':
+                                // none;
+                            break;
+
+                            case 'notation':
+                                if (!isset($da[$line['p_propriey']]))
+                                    {
+                                        $da[$line['p_propriey']] = array();
+                                    }                            
+                                array_push($da[$line['p_propriey']],$line['n_name']);
+                                array_push($nodes,array(
+                                                'n_name'=>$line['n_name'],
+                                                'id_ct'=>$line['id_ct']));
+                                array_push($edges,array(
+                                                'source'=>$id,
+                                                'target'=>$line['id_ct'],
+                                                'propriety'=>$line['p_propriey']));                                 
+                            break;
+
+                            default:
+                            pre($line);
+                        }
                 }
 
             $graph = array();
@@ -405,6 +440,11 @@ class ThThesaurus extends Model
             );
             $sx = bs($sx);
             return $sx;
+        }
+
+    function getTh()
+        {
+            return $this->th(0);
         }
 
     function th($id)

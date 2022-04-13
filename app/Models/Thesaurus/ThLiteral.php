@@ -48,6 +48,13 @@ class ThLiteral extends Model
 
     var $new = 0;
 
+    function le($id)
+        {
+            $ThConceptTerms = new \App\Models\Thesaurus\ThConceptTerms();
+            $dt = $ThConceptTerms->le($id);
+            return $dt;
+        }
+
     function resume($id)
         {
             $this->select("count(*) as total, n_lang");
@@ -82,22 +89,16 @@ class ThLiteral extends Model
                     $data['rl_type'] = 24;
                     $this->set($data)->insert();
                     $idt = $this->insertID();
+
+                    if ($th > 0)
+                        {
+                            $ThLiteralTh = new \App\Models\Thesaurus\ThLiteralTh();
+                            $ThLiteralTh->term_insert($idt,$th);
+                        }
                     $this->new = 1;
                 } else {
                     $idt = $dt[0]['id_n'];
                     $this->new = 0;
-                }
-
-            /***************************** Related */
-            $sql = "select * from th_literal where lt_term = $idt and lt_thesauros = $th";
-            $dt = $this->db->query($sql)->getResult();
-            if (count($dt) == 0)
-                {
-                    $sql = "insert into th_literal
-                                (lt_term, lt_thesauros, lt_status)
-                                values
-                                ($idt, $th, 1)";
-                    $this->db->query($sql);
                 }
             return($idt);
         }        

@@ -358,10 +358,13 @@ class ThConcept extends Model
 
     function TermQuery($id,$lt)
         {
+            $Proprieties = new \App\Models\RDF\Proprieties();
+            $prop = $Proprieties->getPropriety('prefLabel');
+
             $this->select("id_c as id_c, c_concept as c_concept, rl1.n_name, rl2.n_name as name2, rl1.n_lang as n_lang, rl2.n_lang as n_lang2, lt1.ct_propriety, lt1.ct_concept, lt1.ct_use ");
             $this->join('th_concept_term as lt1','id_c = ct_concept');
             $this->join('th_literal as rl1','lt1.ct_term = rl1.id_rl');
-            $this->join('th_concept_term as lt2','(lt1.ct_concept = lt2.ct_concept) and (lt2.ct_propriety = 25)');
+            $this->join('th_concept_term as lt2','(lt1.ct_concept = lt2.ct_concept)'); //and (lt2.ct_propriety = '.$prop.')');
             $this->join('th_literal as rl2','lt2.ct_term = rl2.id_rl');
             $this->where('c_th',$id);
             $this->where('c_ativo',1);

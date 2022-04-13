@@ -52,7 +52,7 @@ class ThAssociate extends Model
 
     function le($id)
         {
-
+            $s = '';
             $dt1 = $this
                 ->join('th_proprieties','tg_propriety = id_p','inner')
                 ->join('th_proprieties_prefix','p_prefix = id_prefix','inner')
@@ -67,6 +67,8 @@ class ThAssociate extends Model
                 ->join('th_literal','ct_term = id_n','inner')
                 ->where('tg_concept_2',$id)
                 ->findAll();
+            $s = "id_c, c_concept, n_name, n_lang, ct_propriety, ct_concept, c_th";
+
             $dt = array_merge($dt1,$dt2);
             return($dt);
         }    

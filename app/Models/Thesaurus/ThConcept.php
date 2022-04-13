@@ -49,21 +49,45 @@ class ThConcept extends Model
             return $rst;
         }
 
+    function create_conecpt_literal($term='',$lang='por',$th=0)
+        {
+            $ThLiteral = new \App\Models\Thesaurus\ThLiteral();
+            $sx = '';
+            if ($th > 0)
+                {
+                    $IDL = $ThLiteral->add_term($term,$lang,$th);
+                    $IDC = $this->create_conecpt($IDL,$th);
+                } else {
+                    $sx = bsmessage('Thesaurus não informado');
+                    erro($sx);
+                    exit;
+                }
+            return $IDC;
+        }
+
     function create_conecpt($term=0,$th=0)
         {
             $ThConceptTerms = new \App\Models\Thesaurus\ThConceptTerms();
-            $dt = $this  
-                ->select('max(id_c) as id')
-                ->findAll();            
+            $ThLiteralTh = new \App\Models\Thesaurus\ThLiteralTh();
+            $dt = $ThConceptTerms->where('ct_th',$th)->where('ct_term',$term)->findAll();
+            
+            if (count($dt) == 0)
+            {
+                $dt = $this  
+                    ->select('max(id_c) as id')
+                    ->findAll();            
 
-            $dd['c_concept'] = 'c'.($dt[0]['id']+1);
-            $dd['c_th'] = $th;
-            $dd['c_ativo'] = 1;
-            $dd['c_agency'] = 1;
+                $dd['c_concept'] = 'c'.($dt[0]['id']+1);
+                $dd['c_th'] = $th;
+                $dd['c_ativo'] = 1;
+                $dd['c_agency'] = 1;
 
-            $ID = $this->set($dd)->insert();
-
-            $ThConceptTerms->create_concept_term($term,$ID,$th);
+                $ID = $this->set($dd)->insert();
+                $ThConceptTerms->create_concept_term($term,$ID,$th);
+                $ThLiteralTh->term_insert($term,$th);
+            } else {
+                $ID = $dt[0]['ct_concept'];
+            }
             return($ID);
         }
 
@@ -79,8 +103,11 @@ class ThConcept extends Model
 
     function le($id)
         {
+            $Proprieties = new \App\Models\RDF\Proprieties();
+            $prop = $Proprieties->getPropriety('Concept');
+
             $this->select("id_c, c_concept, n_name, n_lang, ct_propriety, ct_concept, c_th");
-            $this->join('th_concept_term','id_c = ct_concept');
+            $this->join('th_concept_term','id_c = ct_concept and ct_propriety = '.$prop,'inner');
             $this->join('th_literal','ct_term = id_n');
             $this->where('id_c',$id);
             $this->orderBy('n_name');
@@ -378,17 +405,19 @@ class ThConcept extends Model
 
     function TermLetter($id,$lt)
         {
+            $Proprieties = new \App\Models\RDF\Proprieties();
+            $prop = $Proprieties->getPropriety('Concept');
             $this->select("id_c as id_c, c_concept as c_concept, rl1.n_name, rl2.n_name as name2, rl1.n_lang as n_lang, rl2.n_lang as n_lang2, lt1.ct_propriety, lt1.ct_concept, lt1.ct_use ");
             $this->join('th_concept_term as lt1','id_c = ct_concept');
             $this->join('th_literal as rl1','lt1.ct_term = rl1.id_n');
-            $this->join('th_concept_term as lt2','(lt1.ct_concept = lt2.ct_concept) and (lt2.ct_propriety = 25)');
+            $this->join('th_concept_term as lt2','(lt1.ct_concept = lt2.ct_concept) and (lt2.ct_propriety = '.$prop.')');
             $this->join('th_literal as rl2','lt2.ct_term = rl2.id_n');
             $this->where('c_th',$id);
             $this->where('c_ativo',1);
             $this->like('rl1.n_name',$lt, 'after');
             $this->orderBy('rl1.n_name');
             $dt = $this->findAll();
-            //echo $this->db->getLastQuery();
+            
             $sx = '<ul>';
             foreach($dt as $id=>$line)
                 {
@@ -418,7 +447,7 @@ class ThConcept extends Model
             $this->like('rl1.n_name',$lt, 'after');
             $this->orderBy('rl1.n_name');
             $dt = $this->findAll();
-            //echo $this->db->getLastQuery();
+            
             $sx = '<ul>';
             foreach($dt as $id=>$line)
                 {
@@ -489,7 +518,8 @@ class ThConcept extends Model
             for ($r=0;$r < count($dt);$r++)
                 {
                     $line = $dt[$r];
-                    $sx .= '<li class="page-item me-1"><a class="page-link" href="'.(PATH.MODULE.'th/'.$id.'/'.$line['ltr']).'">'.$line['ltr'].'</a></li>'.cr();
+                    $ltd = mb_strtoupper(ascii($line['ltr']));
+                    $sx .= '<li class="page-item me-1"><a class="page-link" href="'.(PATH.MODULE.'th/'.$id.'/'.$line['ltr']).'">'.$ltd.'</a></li>'.cr();
                 }
             $sx .= '</ul>';
             return $sx;
