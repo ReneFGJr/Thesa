@@ -45,24 +45,23 @@ class Index extends Model
             $sa = $this->help_menu($d1,$d2);
             $sb = $this->help_itens($d1,$d2);
 
-            $sx = h('thesa.Help');
+            $sx = h(lang('thesa.Help'));
             $sx = bs($sx.bsc($sa,3).bsc($sb,9));
             return $sx;
         }
 
-    function help_menu($id, $ac = '')
+    function help_menu($ac = '')
     {
         $sx = '';
-
         $sx .= '<ul class="nav flex-column">';
-        $it = array('about','api');
+        $it = array('help_about','help_api');
         if ($ac == '') {
             $ac = $it[0];
         }
 
         for ($r = 0; $r < count($it); $r++) {
             if ($it[$r] == $ac) {
-                $cl = 'disabled';
+                $cl = 'disabled fw-bolder';
             } else {
                 $cl = '';
             }
@@ -97,14 +96,11 @@ class Index extends Model
     function help_itens($ac = '')
     {
         if ($ac == '') {
-            $ac = 'description';
+            $ac = 'help_about';
         }
+        $sx = h('thesa.'.$ac,4);
         switch ($ac) {
             default:
-                $sx = $this->about();
-                break;
-            case 'api':
-                $sx = h('thesa.Api',4);
                 $sx .= $this->md($ac);
                 break;
         }

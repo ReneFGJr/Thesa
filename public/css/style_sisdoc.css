@@ -1,6 +1,3 @@
-<?php
-$css_sisdoc = '
-<style>
     .supersmall
         {
             font-size: 65%;
@@ -46,6 +43,3 @@ $css_sisdoc = '
             text-decoration: none;
             color: blue;
         }
-
-</style>
-';

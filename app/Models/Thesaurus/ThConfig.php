@@ -45,7 +45,7 @@ class ThConfig extends Model
         $sx = '';
 
         $sx .= '<ul class="nav flex-column">';
-        $it = array('description', 'language', 'colaboration', 'relations','relations_custom');
+        $it = array('description', 'language', 'colaboration', 'icons','relations','relations_custom');
         if ($ac == '') {
             $ac = $it[0];
         }

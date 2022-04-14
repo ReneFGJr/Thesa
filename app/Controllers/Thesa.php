@@ -89,6 +89,7 @@ class Thesa extends BaseController
 		$sx .= '  <!-- CSS -->' . cr();
 		$sx .= '  <link rel="stylesheet" href="' . URL.('/css/bootstrap.css') . '" />' . cr();
 		$sx .= '  <link rel="stylesheet" href="' . URL.('/css/style.css?v=0.0.10') . '" />' . cr();
+		$sx .= '  <link rel="stylesheet" href="' . URL.('/css/style_sisdoc.css?v=0.0.1') . '" />' . cr();
 		/* GOogle Fonts */
 		$sx .= ' <style>
 						@import url(\'https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap\');
@@ -191,7 +192,6 @@ class Thesa extends BaseController
 	/******************************************************************************************************** */
 	function rest($th='')
 		{
-			echo $th;
 			$API = new \App\Models\Api\Query();
 			$API->rest($th);
 		}
@@ -204,6 +204,8 @@ class Thesa extends BaseController
 	
 	function footer()
 	{
+		global $sisdoc_css;
+		echo $sisdoc_css;
 		$sx = '<!-- Footer -->
 					<footer class="page-footer font-small blue-grey lighten-5" style="margin-top: 50px;">
 

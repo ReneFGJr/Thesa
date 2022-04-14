@@ -44,7 +44,7 @@ class Index extends Model
 
     function index($d1='',$d2='',$d3='',$d4='',$d5='')
         {
-            
+            pre($d2);
         }
 
     function rdf($id,$tp='')

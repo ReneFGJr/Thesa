@@ -34,8 +34,12 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Thesa::index');
+/* FULLREST Search */
 $routes->add('/rest/v1/search/(:any)', 'Thesa::rest/$1');
+$routes->add('/public/rest/v1/search/(:any)', 'Thesa::rest/$1');
+/* FULLREST Data */
 $routes->add('/rest/v1/data', 'Thesa::data/$1');
+$routes->add('/public/rest/v1/data', 'Thesa::data/$1');
 //$routes->get('/social/ajax/', 'Main::social/');
 //$routes->add('/main/social/', 'Main::social/');
 //$routes->add('/v/(:num)', 'Res::v/$1');

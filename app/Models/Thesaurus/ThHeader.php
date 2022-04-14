@@ -91,7 +91,10 @@ class ThHeader extends Model
         {
             $sx = '';
             $sx .= bsc(
-                '<h1>'.$dt['pa_name'].'</h1>'    
+                '<a href="'.PATH.MODULE.'/th/'.$dt['id_pa'].'">'.
+                '<h1>'.$dt['pa_name'].'</h1>' 
+                . '</a>'
+                . '<h5>'.lang('thesa.achronic').': '.$dt['pa_achronic'].'</h5>'   
                 . $authors            
                 , 10
                 );

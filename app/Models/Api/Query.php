@@ -44,13 +44,25 @@ class Query extends Model
         {
             $ThLiteralTh = new \App\Models\Thesaurus\ThLiteralTh();
             $ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
-
+            $API = new \App\Models\Api\Json();
             $th = $ThThesaurus->getAchronic($thName);
-            $q = get("query");
-            if (($q != '') and ($th > 0))
+            
+            if ($th == 0)
                 {
-                   $dt = $ThLiteralTh->search($q,$th); 
-                   pre($dt);
+                    $dt['status'] = 'error';
+                    $dt['erro'] = '500';
+                    $dt['message'] = lang('thesa.error500');
+                    $dt['stamp'] = date('Y-m-d H:i:s');
+                    echo json_encode($dt);
+                    exit;
+                } else {                
+                    $q = get("query");
+                    if (($q != '') and ($th > 0))
+                        {
+                        $dt = $ThLiteralTh->search($q,$th); 
+
+                        $API->index('search',$dt,$th,$thName,$q);
+                        }
                 }
 
         }

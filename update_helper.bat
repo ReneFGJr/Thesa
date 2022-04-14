@@ -17,6 +17,9 @@ copy ..\Brapci3.0\app\Models\Social*.* app\Models\*.*
 echo "Images"
 copy ..\Brapci3.0\app\Models\Images.php app\Models\*.* 
 
+echo "CSS"
+copy ..\Brapci3.0\public\css\style_sisdoc.css public\css\*.*
+
 echo "IO"
 mkdir app\Models\Io
 copy ..\Brapci3.0\app\Models\Io\*.php app\Models\Io\*.* 
