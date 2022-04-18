@@ -46,4 +46,13 @@ class Sistematic extends Model
 
             return $sx;
         }
+
+        /*
+        data
+        ├─── Semente
+        │    ├─── data
+        │    └─── data2
+        ├─── Casa
+        └─── Sala
+        */
 }
