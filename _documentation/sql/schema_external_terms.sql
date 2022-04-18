@@ -24,11 +24,11 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `th_concept_term`
+-- Estrutura da tabela `schema_external_terms`
 --
 
-DROP TABLE IF EXISTS `th_concept_term`;
-CREATE TABLE IF NOT EXISTS `th_concept_term` (
+DROP TABLE IF EXISTS `schema_external_terms`;
+CREATE TABLE IF NOT EXISTS `schema_external_terms` (
   `id_ct` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ct_concept` int(11) NOT NULL,
   `ct_th` int(11) NOT NULL,

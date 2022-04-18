@@ -91,8 +91,8 @@ class ThConfig extends Model
     }
     function relations_custom($id,$ac)
         {
-            $Th = new \App\Models\Thesaurus\ThRelations();
-            $sx = $Th->index($id,$ac);
+            $Th = new \App\Models\Thesaurus\ThRelationsCustom();
+            $sx = $Th->list_relations($id,$ac);
             return $sx;    
         }
     function description($id)

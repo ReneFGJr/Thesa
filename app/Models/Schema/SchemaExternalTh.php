@@ -51,8 +51,10 @@ class SchemaExternalTh extends Model
 
             $sx = '<table class="table table-sm table-striped">';
             $sx .= '<tr><th width="5%" class="text-center">'.msg('thesa.set_th').'</th>
-                        <th width="90%">'.msg('thesa.set_se').'</th>
-                        <th width="1%">'.msg('thesa.set_tr').'</th>
+                        <th width="50%">'.msg('thesa.set_se').'</th>
+                        <th width="25%">'.msg('thesa.se_format').'</th>
+                        <th width="15%">'.msg('thesa.se_terms').'</th>
+                        <th width="5%" class="text-center">'.msg('thesa.set_tr').'</th>
                         </tr>';
             for($r=0;$r < count($dt);$r++)
                 {
@@ -71,13 +73,30 @@ class SchemaExternalTh extends Model
                     $sx .= $line['pa_name'];
                     $sx .= '</td>';
 
-                    /*********************** POPUP EXCLUDE */
-                    $url_del = PATH.MODULE.'popup/relations/'.$line['id_pa'].'/'.$th.'/del/yes';
-                    $link = '<a href="'.PATH.MODULE.'th_config/'.$th.'/relations" onclick="if (confirm(\''.lang('thesa.confirm_exclusion?').'\')) { '.newwin($url_del,800,400).' }">';
-                    $link .= bsicone('trash');
-                    $link .= '</a>';  
+                    $sx .= '<td class="'.$class.'">';
+                    $sx .= 'SKOS/THESA';
+                    $sx .= '</td>';                    
 
-                    if ($class != '') { $link = ''; }                  
+                    $sx .= '<td class="'.$class.' text-center">';
+                    $sx .= number_format($line['pa_terms'],0,',','.');
+                    $sx .= '</td>';
+
+
+                    /*********************** POPUP EXCLUDE */
+                    if ($line['set_active'] == 1)
+                    {
+                        $url_del = PATH.MODULE.'popup/relation_thesa/'.$line['id_pa'].'/'.$th.'/del/yes';
+                        $link = '<a href="'.PATH.MODULE.'th_config/'.$th.'/relations" onclick="if (confirm(\''.lang('thesa.confirm_exclusion?').'\')) { '.newwin($url_del,800,400).' }">';
+                        $link .= bsicone('trash');
+                        $link .= '</a>';  
+                    } else {
+                        $url_del = PATH.MODULE.'popup/relation_thesa/'.$line['id_pa'].'/'.$th.'/udel/yes';
+                        $link = '<a href="'.PATH.MODULE.'th_config/'.$th.'/relations" onclick="if (confirm(\''.lang('thesa.confirm_recicle?').'\')) { '.newwin($url_del,800,400).' }">';
+                        $link .= bsicone('recycle');
+                        $link .= '</a>';  
+                    }
+
+                    //if ($class != '') { $link = ''; }                  
 
                     $linka = '</a>';
                     $sx .= '<td class="text-center">';

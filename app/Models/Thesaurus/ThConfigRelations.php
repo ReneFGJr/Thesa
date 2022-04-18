@@ -43,18 +43,33 @@ class ThConfigRelations extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function add_skos_relations($d1,$d2,$d3,$d4)
+    function edit_skos_relations($d1,$d2,$d3,$d4)
         {
             $SchemaExternal = new \App\Models\Schema\SchemaExternal();
-            $sx = $SchemaExternal->form_add_skos($d1,$d2,$d3,$d4);
+            $sx = $SchemaExternal->form_edit_skos($d1,$d2,$d3,$d4);
 
             $sx = bs(bsc($sx,12));
             return $sx;
         }
 
-    function add_thesa_relations($d1,$d2,$d3,$d4)
+    function edit_thesa_relations($d1,$d2,$d3,$d4)
         {
             $SchemaExternalTh = new \App\Models\Schema\SchemaExternalTh();
+            
+            if ($d3=='del')
+                {
+                    $dd['set_active'] = 0;
+                    $SchemaExternalTh->set($dd)->where('id_set',$d1)->update();
+                    return wclose();
+                }
+
+            if ($d3=='udel')
+                {
+                    $dd['set_active'] = 1;
+                    $SchemaExternalTh->set($dd)->where('id_set',$d1)->update();
+                    return wclose();
+                }                
+            
             $sx = $SchemaExternalTh->list_thesa($d1);
 
             $sx = bs(bsc($sx,12));

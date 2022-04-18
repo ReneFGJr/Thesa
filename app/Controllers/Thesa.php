@@ -50,8 +50,7 @@ class Thesa extends BaseController
 		$sx .= $this->navbar();
 		$sx .= $view->render('paralax');
 
-		$hd = h(lang('thesa.edit'));
-		$sx .= bs($hd.bsc($ThOpen->edit($id),12));
+		$sx .= bs(bsc($ThOpen->edit($id),12));
 
 		$sx .= $this->footer();
 
@@ -525,7 +524,13 @@ class Thesa extends BaseController
 						$ThAssociate = new \App\Models\Thesaurus\ThAssociate();
 						$sx .= $cab;
 						$sx .= $ThAssociate->associate($d2,$d3,$d4,$d5,'TR');
-					break;					
+					break;	
+
+					case 'relation_custom':				
+						$ThRelationsCustom = new \App\Models\Thesaurus\ThRelationsCustom();
+						$sx .= $cab;
+						$sx .= $ThRelationsCustom->edit($d2,$d3,$d4,$d5,'TR');
+					break;	
 
 					case 'associate':
 						$ThLiteral = new \App\Models\Thesaurus\ThLiteral();
@@ -533,14 +538,11 @@ class Thesa extends BaseController
 						$sx .= $ThLiteral->term_concept($d2,$d3);
 					break;
 
-					case 'relations':
-					$ThConfigRelations = new \App\Models\Thesaurus\ThConfigRelations();
-					if ($d4 == 'del')
-						{
-							$sx .= $ThConfigRelations->excluding($d2,$d3,$d4,$d5,$d6);
-							return $sx;
-						}					
-					break;
+					case 'harvesting':
+						$SchemaExternal = new \App\Models\Schema\SchemaExternal();
+						$dt = $SchemaExternal->where('id_se',$d2)->findAll();
+						$sx = $SchemaExternal->updateURL($dt[0]);
+						break;
 
 					case 'colaboration':
 					$ThConfigColaboration = new \App\Models\Thesaurus\ThConfigColaboration();
@@ -556,13 +558,13 @@ class Thesa extends BaseController
 					case 'relation_thesa':
 					$ThConfigRelations = new \App\Models\Thesaurus\ThConfigRelations();
 					$sx = $cab;
-					$sx .= $ThConfigRelations->add_thesa_relations($d2,$d3,$d4,$d5,$d6);
+					$sx .= $ThConfigRelations->edit_thesa_relations($d2,$d3,$d4,$d5,$d6);
 					break;
 
 					case 'relation_skos':
 					$ThConfigRelations = new \App\Models\Thesaurus\ThConfigRelations();
 					$sx = $cab;
-					$sx .= $ThConfigRelations->add_skos_relations($d2,$d3,$d4,$d5,$d6);
+					$sx .= $ThConfigRelations->edit_skos_relations($d2,$d3,$d4,$d5,$d6);
 					break;					
 					
 					default:
@@ -695,6 +697,7 @@ class Thesa extends BaseController
 	function th_config($id=0,$d1='',$d2='',$d3='')
 		{
 			$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
+			$ThFunctions = new \App\Models\Thesaurus\ThFunctions();
 			$sx = '';
 			$sx .= $this->cab();
 			$sx .= $this->navbar();
@@ -713,6 +716,7 @@ class Thesa extends BaseController
 				}
 				
 			}
+			$sx .= $this->footer();
 			return $sx;
 		}
 }

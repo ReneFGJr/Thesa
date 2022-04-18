@@ -54,7 +54,7 @@ class Index extends Model
     {
         $sx = '';
         $sx .= '<ul class="nav flex-column">';
-        $it = array('help_about','help_api');
+        $it = array('help_about','help_perfil','help_api');
         if ($ac == '') {
             $ac = $it[0];
         }

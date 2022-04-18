@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 24-Mar-2022 às 14:00
--- Versão do servidor: 10.4.13-MariaDB
+-- Tempo de geração: 16-Abr-2022 às 13:36
+-- Versão do servidor: 5.7.31
 -- versão do PHP: 7.3.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Banco de dados: `thesa`
+-- Banco de dados: `thesa_skos`
 --
 
 -- --------------------------------------------------------
@@ -34,7 +34,8 @@ CREATE TABLE IF NOT EXISTS `schema_external` (
   `se_url` char(200) NOT NULL,
   `se_update` date NOT NULL,
   `se_format` char(10) NOT NULL,
-  `se_ative` int(11) NOT NULL,
+  `se_active` int(11) NOT NULL,
+  `se_th` int(11) NOT NULL,
   UNIQUE KEY `id_se` (`id_se`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 COMMIT;

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Thesa - Tesauro Semântico Ciência da Informação</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Roboto|Titillium+Web" rel="stylesheet">
+  <link rel="stylesheet" href="https://www.ufrgs.br/tesauros/css/bootstrap.css">
+  <link rel="stylesheet" href="https://www.ufrgs.br/tesauros/css/style.css">
+  <link rel="stylesheet" href="https://www.ufrgs.br/tesauros/css/style_thesa.css">  
+  <link rel="stylesheet" href="https://www.ufrgs.br/tesauros/css/style_form_sisdoc.css">
+  <link href="https://www.ufrgs.br/tesauros/css/jquery-ui.css" rel="stylesheet">  
+  <script type="text/javascript" src="https://www.ufrgs.br/tesauros/js/jquery-3.1.1.js"></script>
+  <script type="text/javascript" src="https://www.ufrgs.br/tesauros/js/utils.js"></script>
+  <script type="text/javascript" src="https://www.ufrgs.br/tesauros/js/tether.js"></script>
+  <script type="text/javascript" src="https://www.ufrgs.br/tesauros/js/bootstrap.js"></script>
+  <script type="text/javascript" src="https://www.ufrgs.br/tesauros/js/jquery-ui.js"></script>
+  <script type="text/javascript" src="https://www.ufrgs.br/tesauros/js/clipboard.js"></script>  
+  <script type="text/javascript" src="https://www.ufrgs.br/tesauros/js/form_sisdoc.js"></script>
+  
+  
+</head>
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded ">
+	<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<a class="navbar-brand" href="https://www.ufrgs.br/tesauros/index.php/thesa"><img src="https://www.ufrgs.br/tesauros/img/logo_thesa.jpg" style="height: 30px;"></a>
+
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item active">
+				<a class="nav-link" href="https://www.ufrgs.br/tesauros/index.php/thesa/thesaurus_open">TH abertos <span class="sr-only">(current)</span></a>
+			</li>
+			
+            			<li class="nav-item">
+				<a class="nav-link" href="https://www.ufrgs.br/tesauros/index.php/thesa/contact">Contato</a>
+			</li>
+			
+			<!------ ADMIN CONFIG ---->
+             
+			</ul>
+
+			<ul class="navbar-nav">	
+			<!-- language -->
+			<li class="nav-item dropdown ml-auto">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Português
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/?lang=pt_br">Português</a>
+                  <a class="dropdown-item" href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/?lang=en">English</a>
+                  <a class="dropdown-item" href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/?lang=es">Español</a>
+                </div>
+              </li>
+			<!-- user -->						
+			<A href="#" class="nav-link" data-toggle="modal" data-target="#exampleModalLong">ACESSAR</a>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Acessar o Thesa</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+        <form method="post" action="https://www.ufrgs.br/tesauros/index.php/thesa/social/login_local">
+        <span>E-mail do usuário</span><br>
+        <input type="text" name="user_login" value="" class="form-control">
+        <br>
+        <span>Senha de acesso</span><br>
+        <input type="password" name="user_password" value="" class="form-control">
+        
+        <br>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">cancelar</button>
+        &nbsp;|&nbsp;
+        <input type="submit" name="action" value="Acessar o Thesa" class="btn btn-primary">
+        </form>
+        </div>
+        </div>
+        </div>
+        </div>			</ul>
+		</ul>
+	</div>
+</nav>
+
+<style>
+.parallax_background_5 {
+				/* The image used */
+				background-image: url("https://www.ufrgs.br/tesauros/img/background_custumer/biulings.jpg");
+				background-size: 100%;
+				background-position: 0px 0px;
+				background-attachment: fixed;
+				border: 1px solid #333;
+            }
+.bg_cor {
+    color: #333333;
+	opacity: 1;
+}
+.backtext
+{
+	background-color: #fff;
+	opacity: 0.6;
+	padding: 0px 10px;
+}
+</style>
+<div class="container-fluid parallax_background_5 parallax bg_color" style="padding: 30px;">
+	<div class="row">
+	    <div class="col-xs-2 col-md-2 small text-right">
+	        thesauro	    </div>
+		<div class="col-xs-8 col-md-8 big ">
+			<span class="thesa thesa_under backtext" style="font-size: 120%;"><b><span class="bg_cor">Ciência da Informação</span></b></span>
+		</div>
+        <div class="col-xs-2 col-md-2 big text-right nopr">
+            &nbsp;
+        </div>
+	</div>
+	
+	<!-------------------------------------------------------- parte II------>
+	<div class="row">
+        <div class="col-xs-2 col-md-2">
+            &nbsp;
+        </div>	    
+		<div class="col-xs-4 col-md-4 bg_color">
+		<a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64#Ciência da Informação" class="bg_cor">
+		    <span class="small">thesa:th/64#Ciência da Informação</span></a>
+		</div>
+		<div class="col-xs-4 col-md-4">
+			<span style="font-size: 70%">author:</span>
+		</div>
+        <div class="col-xs-2 col-md-2 text-right nopr">
+        	        </div>		
+	</div>
+	
+	<!-------------------------------------------------------- parte III ------>
+	<div class="row  bg_cor" style="margin-top: 30px;">
+        <div class="col-xs-2 col-md-2 big">
+            &nbsp;
+        </div>  	    
+		<div class="col-md-2"><span class="small">linguage</span>
+		    <br><font class="bg_cor backtext">Portuguese (Brazil)</font></div>
+		<div class="col-md-1"><span class="small">created</span>
+		    <br><font class="bg_cor backtext">07/02/2018</font></div>
+		<div class="col-md-1"><span class="small">updated</span>
+		    <br><font class="bg_cor backtext">10/04/2022</font></div>
+		<div class="col-md-4"><span class="small">URI</span>
+		    <br><font class="bg_cor backtext">
+		    https://www.ufrgs.br/tesauros/index.php/thesa/terms/64</font></div>
+	</div>
+</div>
+<br>
+<!--- div start --->
+<div class="container" class="">
+<style>
+    .menu_tool {
+        border-bottom: 1px solid #000000;
+        background-color: #fff;
+        padding: 0px;
+    }
+</style>
+<div class="container-fluid menu_tool">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <ul class="nav">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64">Home</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Configurações</a>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="https://www.ufrgs.br/tesauros/index.php/thesa/th_edit/64/33c14dcf155bd9d0b966e007a592e750">Configurações do tesauro</a>
+                      <a class="dropdown-item" href="https://www.ufrgs.br/tesauros/index.php/thesa/collaborators">Colaboradores</a>
+                      <a class="dropdown-item" href="https://www.ufrgs.br/tesauros/index.php/thesa/languages">Configuração de idiomas</a>
+                      <a class="dropdown-item" href="https://www.ufrgs.br/tesauros/index.php/thesa/apis">api</a>                                                          
+                    </div>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Ferramentas</a>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="https://www.ufrgs.br/tesauros/index.php/thesa/reports/64">Relatórios Gerenciais</a>
+                      <a class="dropdown-item" href="https://www.ufrgs.br/tesauros/index.php/thesa/check_all">Validar tudo</a>
+                      <a class="dropdown-item" href="https://www.ufrgs.br/tesauros/index.php/thesa/file_import">file_import</a>
+                      <a class="dropdown-item" href="https://www.ufrgs.br/tesauros/index.php/thesa/term_grapho/64">grapho</a>
+                      <a class="dropdown-item" href="https://www.ufrgs.br/tesauros/index.php/thesa/terms_list">Termos do tesauro</a>
+                      <a class="dropdown-item" href="https://www.ufrgs.br/tesauros/index.php/thesa/terms_from_to">Trocas "de" "para"</a>
+                    
+                    <a class="dropdown-item" href="https://www.ufrgs.br/tesauros/index.php/thesa/tools">Processamento de texto</a>
+                                                          
+                    </div>
+                  </li>
+                                  </ul>                
+            </div>
+            <div class="col-md-4 text-right">    
+                <form class="navbar-form navbar-left" menthod="get" action="https://www.ufrgs.br/tesauros/index.php/thesa/search">
+                    <div class="input-group mb-3">
+                        <input type="text" name="form_search" class="form-control" placeholder="buscar termos" aria-label="buscar termos" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <input type="submit" class="btn btn-outline-secondary" type="button" value="pesquisar">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav aria-label="Page navigation text-center"><ul class="pagination"><li class="page-item"><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64" class="page-link">todas</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/A" class="page-link">A</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/B" class="page-link">B</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/C" class="page-link">C</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/D" class="page-link">D</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/E" class="page-link">E</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/F" class="page-link">F</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/G" class="page-link">G</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/H" class="page-link">H</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/I" class="page-link">I</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/J" class="page-link">J</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/K" class="page-link">K</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/L" class="page-link">L</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/M" class="page-link">M</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/N" class="page-link">N</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/O" class="page-link">O</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/P" class="page-link">P</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/R" class="page-link">R</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/S" class="page-link">S</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/T" class="page-link">T</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/U" class="page-link">U</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/V" class="page-link">V</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/W" class="page-link">W</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/X" class="page-link">X</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/Y" class="page-link">Y</a></li><li><a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms/64/Z" class="page-link">Z</a></li></ul></nav>	Export_to: <a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms_from_to/64/xml" style="margin-right: 10px;">.xml</a> <a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms_from_to/64/csv" style="margin-right: 10px;">.csv</a> <a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms_from_to/64/txt" style="margin-right: 10px;">.txt</a> <a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms_from_to/64/rdf" style="margin-right: 10px;">.rdf</a> <a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms_from_to/64/json" style="margin-right: 10px;">.json</a> <a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms_from_to/64/skos" style="margin-right: 10px;">.skos</a> <a href="https://www.ufrgs.br/tesauros/index.php/thesa/terms_from_to/64/pdf" style="margin-right: 10px;">.pdf</a> <div class="row">  <div class="col-md-9"><hr><h3><b>Ciência da Informação</b></h3><span class="authors"><i>Rene F. Gabriel Junior</i></span>; <span class="authors"><i>Bianka Maduell</i></span>; <span class="authors"><i>Rita Laipelt</i></span>.<br/><br/><br/><h5>Introdução</h5>Introdução ao tesauro<br/><br/><h5>Metodologia</h5>metodologia<br/><br/><h5>Público alvo</h5>Publico alvo<br/><br/><h5>Licença de uso</h5><a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+                <img alt="Licença Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a>
+                <br/>Este trabalho está licenciado com uma Licença:
+                <br/>
+                <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+                Creative Commons - Atribuição  4.0 Internacional</a>.  </div>  <div class="col-md-3"><table class="table" width="100%"><tr><td align="right">termos</td><td>1705</td><tr><td align="right">conceitos</td><td>1509</td></table>  </div></div></div>
+<!--- div stop --->
+
+
+<!--- div start --->
+<div class="container" class="">
+<br/><br/><br/><br/></div>
+<!--- div stop --->
+
+<style>
+    .parallax_background_3 {
+        /* The image used */
+        background-image: url("https://www.ufrgs.br/tesauros/img/background/background_3.jpg");
+    }    	
+</style>
+<div class="parallax parallax_background_3"  style="height: 300px;">
+	<div class="container" style="padding-top: 50px;">
+		<div class="row">
+			<div class="col-md-3 text-left white">
+				<span class="big" style="family: RobotoThin;">THESA</span>
+				<br/>
+				<span class="">Tesauro Semântico Aplicado</span>
+				<br/>
+				Versão 0.20.05.18               
+			</div>
+			<div class="col-md-3 text-center white"></div>
+			<div class="col-md-6 text-center white">
+			    <span class="white">
+				Universidade Federal do Rio Grande do Sul - UFRGS
+				</span>
+                <br/>
+                <span class="small">contact:</span> 
+                <a href="mailto:rene.gabriel@ufrgs.br" >rene.gabriel@ufrgs.br</a>
+                <br/>
+                <br/>
+                <span class="small">Copyright &copy; 2016-2022</span>				
+			</div>
+		</div>
+	</div>
+</div>
+<br><br>
+<table align="center">
+	<tr><td>Projeto e desenvolvimento:</td></tr>
+	<tr><td>
+		<img src="https://www.ufrgs.br/tesauros/img/logo/orcalab.jpeg" style="height:100px;">
+	</td>
+	<td>
+		<img src="https://www.ufrgs.br/tesauros/img/logo/ppgcin.png" style="height:100px;">
+	</td></tr>		
+</table>
+<br><br>
+<br><br>

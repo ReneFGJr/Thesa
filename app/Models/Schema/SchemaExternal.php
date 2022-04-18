@@ -15,9 +15,14 @@ class SchemaExternal extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_se','se_name','se_url','se_th',
-        'se_update','se_format','se_active',
+        'id_se','se_th','se_name','se_url_xml',
+        'se_update','se_format','se_active','se_terms'
     ];
+
+    var $typeFields    = [
+        'hidden','hidden','string:100*','string:100*',
+        'update','sql:id_sef:sef_name: schema_external_format*','sn','hidden'
+    ];    
 
     // Dates
     protected $useTimestamps = false;
@@ -118,15 +123,20 @@ class SchemaExternal extends Model
             $dt = $this->findAll();
             */
 
-            $dt = $this->where('se_th',$th)->findAll();
+            $dt = $this
+                    ->join('schema_external_format','se_format = id_sef','left')
+                    ->where('se_th',$th)
+                    ->findAll();
 
             $sx = '<table class="table table-sm table-striped">';
             $sx .= '<tr><th width="5%" class="text-center">'.msg('thesa.set_th').'</th>
-                        <th width="70%">'.msg('thesa.set_se').'</th>
-                        <th width="10%">'.msg('thesa.se_update').'</th>
+                        <th width="50%">'.msg('thesa.set_se').'</th>
                         <th width="10%">'.msg('thesa.se_format').'</th>
-                        <th width="1%" colspan=2 class="text-center">'.msg('thesa.set_tr').'</th>
-                        </tr>';                    
+                        <th width="10%">'.msg('thesa.se_terms').'</th>                        
+                        <th width="10%">'.msg('thesa.se_update').'</th>
+                        <th width="5%" colspan=3 class="text-center">'.msg('thesa.set_tr').'</th>
+                        </tr>';  
+
             for($r=0;$r < count($dt);$r++)
                 {
                     $line = $dt[$r];
@@ -146,35 +156,43 @@ class SchemaExternal extends Model
                     $sx .= '</a>';
                     $sx .= '</td>';
 
+                    /********************************* TERMS */
+                    $sx .= '<td class="text-center '.$class.'">'.$line['sef_name'].'</td>';
+
+                    /********************************* TERMS */
+                    $sx .= '<td class="text-center '.$class.'">'.number_format($line['se_terms'],0,',','.').'</td>';
+                    
                     /********************************* UPDATE LAST */
                     $sx .= '<td class="text-center">';
                     $sx .= stodbr(sonumero($line['se_update']));
                     $sx .= '</td>';
 
                     /*********************** POPUP EXCLUDE */
-                    $url_del = PATH.MODULE.'popup/relations/'.$line['id_se'].'/'.$th.'/del/yes';
-                    $link = '<a href="'.PATH.MODULE.'th_config/'.$th.'/relations" onclick="if (confirm(\''.lang('thesa.confirm_exclusion?').'\')) { '.newwin($url_del,800,400).' }">';
+                    $url_del = PATH.MODULE.'popup/relation_skos/'.$line['se_th'].'/'.$line['id_se'].'/del/yes';
+                    $link = '<a href="#" onclick="if (confirm(\''.lang('thesa.confirm_exclusion?').'\')) { '.newwin($url_del,800,400).' }">';
                     $link .= bsicone('trash');
-                    $link .= '</a>';  
+                    $link .= ' </a>';  
                     if ($class != '') { $link = ''; }                  
 
-                    $sx .= '<td class="text-center">';
-                    $sx .= $line['se_format'];
-                    $sx .= '</td>';
-
                     /*********************** POPUP UPDATE */
-                    $url_del = PATH.MODULE.'popup/relations/'.$line['id_se'];
-                    $link2 = '<a href="'.PATH.MODULE.'th_config/'.$th.'/relations" onclick="if (confirm(\''.lang('thesa.confirm_exclusion?').'\')) { '.newwin($url_del,800,400).' }">';
+                    $url_harvesting = PATH.MODULE.'popup/harvesting/'.$line['id_se'];
+                    $link2 = '<a href="#" onclick="if (confirm(\''.lang('thesa.confirm_harvesting?').'\')) { '.newwin($url_harvesting,800,400).' }">';
                     $link2 .= bsicone('reload');
-                    $link2 .= '</a>';  
+                    $link2 .= ' </a>';  
+
+                    $url_edit = PATH.MODULE.'popup/relation_skos/'.$line['se_th'].'/'.$line['id_se'];
+                    $link3 = onclick($url_edit,'800','600');
+                    $link3 .= bsicone('edit');
+                    $link3 .= ' </span>';  
+
                     if ($class != '') { $link2 = ''; }
 
-                    $sx .= '<td class="text-center">';
+                    $sx .= '<td class="text-center"><nobr>';
                     $sx .= $link;
-                    $sx .= '</td>';
-                    $sx .= '<td class="text-center">';
                     $sx .= $link2;
-                    $sx .= '</td>';
+                    $sx .= $link3;
+                    $sx .= '</nobr></td>';
+
 
                     $sx .= '</tr>';
                 }
@@ -186,43 +204,28 @@ class SchemaExternal extends Model
             return $sx;
         }
         
-    function form_add_skos($th)
+    function form_edit_skos($th,$id=0,$act='',$conf='')
         {
+            if ($act == 'del')
+                {
+                    $dd['se_active'] = 0;
+                    $this   ->set($dd)
+                            ->where('id_se',$id)
+                            ->update($id);
+                    $sx = wclose();
+                    return $sx;
+                    exit;
+                }
             $sx = h(lang('thesa.relations_skos'),4);
-            $sx .= form_open();
-
-            $sx .= '<div class="small">'.lang('thesa.relations_skos_info').'</div>';
-
-            $sx .= '<div class="small mt-5">'.lang('thesa.se_name').'</div>';
-            $sx .= form_input(array('name' => 'se_name', 'type' => 'text', 'class'=>'form-control', 'value' => get("se_name")));
-
-            $sx .= '<div class="small mt-5">'.lang('thesa.se_url_xml').'</div>';
-            $sx .= form_input(array('name' => 'se_url_xml', 'type' => 'text', 'class'=>'form-control', 'value' => get("se_url")));
-
-            $sx .= '<div class="small mt-5">'.lang('thesa.se_format').'</div>';
-            $sx .= '<select name="se_format" class="form-control">';
-            $sx .= '<option value="SKOS">SKOSMOS</option>';
-            $sx .= '</select>';
-
-            $sx .= form_input(array('name' => 'action', 'type' => 'submit', 'class'=>'mt-5 btn btn-outline-primary', 'value' => lang('thesa.add')));
-
-            $se_name = get("se_name");
-            $se_url_xml = get("se_url_xml");
-            $sx .= '<select name="se_format" class="form-control">';
-            $se_format = get("se_format");
-
-            if (($se_name != '') and ($se_url_xml != '') and ($se_format != ''))
-            {
-                $dd['se_url_xml'] = $se_url_xml;
-                $dd['se_name'] = $se_name;
-                $dd['se_th'] = $th;
-                $dd['se_active'] =1;
-                $dd['se_format'] = $se_format;
-
-                $this->set($dd)->insert();
-                $sx = wclose();
-            }
-            $sx .= form_close();
+            $this->id = $id;
+            if ($id == 0)
+                {
+                   $this->typeFields[1] = 'set:'.$th;
+                }
+            
+            $this->path = PATH.MODULE.'popup/relation_skos';
+            $this->path_back = 'wclose';
+            $sx .= form($this);
             return($sx);
         }
 
@@ -237,12 +240,14 @@ class SchemaExternal extends Model
 
          $xml = simplexml_load_string($txt);
          $xml = (array)$xml;
-         $this->xml_skosmos($xml);
-         pre($xml);
+         $this->xml_skosmos($xml,$id);
+         return wclose();
+         
         }
 
-    function xml_skosmos($xml)
+    function xml_skosmos($xml,$id)
         {
+            $idd = $id;
             $SchemaExternalTerms = new \App\Models\Schema\SchemaExternalTerms();
             $data = (array)$xml['skos_ConceptScheme'];
             $att = (array)$data['@attributes'];
@@ -250,24 +255,27 @@ class SchemaExternal extends Model
             echo h($tit[0],1);
             $url = $att['about'];
             echo h($url,4);
+
+
             $dd['se_name'] = $tit[0];
             $dd['se_url'] = $url;
-            $dd['se_format'] = 'skos_mos';
-            $dd['se_active'] = 1;
             $dd['se_update'] = date("Y-m-d");
+            
+            $this->set($dd)->where('id_se',$id)->update();
 
-            $dt = $this->where('se_url',$url)->findAll();
-            if (count($dt) == 0)
+            $dr = $this->where('se_name',$tit[0])->orderBy('id_se')->findAll();     
+            $idr = $dr[0]['id_se'];
+
+            if ($idr != $id)
                 {
-                    $this->insert($dd);
-                    $dt = $this->where('se_url',$url)->findAll();
+                    $dd['se_use'] = $idr;
+                    $this->set($dd)->where('id_se',$id)->update();
+                    $id = $idr;
                 }
 
-            $id_skos = $dt[0]['id_se'];
-
+            $id_skos = $idr;
             $cpt = $xml['skos_Concept'];
-
-            //pre($xml->skos_Concept);
+            $tot = 0;
 
             foreach($cpt as $id=>$cpt)
                 {
@@ -280,6 +288,7 @@ class SchemaExternal extends Model
 
                     $term = $cpt->skos_prefLabel;
                     $terms = array();
+                    
                     foreach($term as $id=>$pref)
                         {
                             $te = (array)$pref;                            
@@ -291,6 +300,7 @@ class SchemaExternal extends Model
                             $da['see_lang'] = $lang;
                             $da['see_resource'] = $urli;
                             $da['see_se'] = $id_skos;
+                            $tot++;
 
                             if (($lang == 'pt') or ($lang == 'en') or ($lang == 'fr') or ($lang == 'es'))
                             {
@@ -317,6 +327,12 @@ class SchemaExternal extends Model
                                 $terms_alt[$lang] = $ter;
                             }   
                 }
+
+                /* Update */
+                $dd['se_terms'] = $tot;
+                $dd['se_update'] = date("Y-m-d");
+                $this->set($dd)->where('id_se',$idd)->update();
+                $this->set($dd)->where('id_se',$idr)->update();
                 
         }
     

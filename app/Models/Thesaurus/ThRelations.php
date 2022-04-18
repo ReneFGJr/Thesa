@@ -46,8 +46,10 @@ class ThRelations extends Model
         {
             $sx = h('thesa.relations',3);
 
+
             return $sx;
         }
+
     function relations($concept1=0,$concept2=0,$literal=0,$prop='',$th='')
         {
             $sx = '';

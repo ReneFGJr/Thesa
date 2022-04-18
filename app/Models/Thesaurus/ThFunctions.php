@@ -57,6 +57,10 @@ class ThFunctions extends Model
                         <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="'.PATH.MODULE.'tree/'.$id.'">'.lang('thesa.tree').'</a>
                         </li>
+                        <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="'.PATH.MODULE.'th_config/'.$id.'">'.lang('thesa.th_config').'</a>
+                        </li>
+
                         <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarSubDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             '.lang('thesa.tools').'

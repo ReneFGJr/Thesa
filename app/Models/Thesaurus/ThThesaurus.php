@@ -78,8 +78,9 @@ class ThThesaurus extends Model
                     }
             } else {
                $sx .= metarefresh(PATH.MODULE);
-            }
+            }            
             $sx = bs($sx);
+            $sx .= bs(bsc($this->btn_create_th(),3));
             return $sx;
         }
 
@@ -103,16 +104,38 @@ class ThThesaurus extends Model
             return $sx;
         }
 
+    function th_limit($id)
+        {
+            $Socials = new \App\Models\Socials();
+            $a1 = $Socials->getAccess('#ADM#TRU');
+            if ($a1 == true)
+                {
+                    return false;
+                }
+
+            /************************************** TOTAL */
+            return true;
+        }
+
    function btn_create_th()
         {
             $sx = '';
             $Socials = new \App\Models\Socials();
-            $ID = $Socials->getID();
+            $ID = $Socials->getID();            
+
             if ($ID > 0)
             {            
-                $sx = '<a href="'.PATH.MODULE.'edit_th/0'.'" class="btn btn-outline-danger mt-2 mb-2" style="width: 100%;">';
-                $sx .= lang('thesa.create_th');
-                $sx .= '</a>';
+                /**************************************** CHECHA Limite */
+                if ($this->th_limit($ID) == false)
+                {
+                    $sx = '<a href="'.PATH.MODULE.'edit_th/0'.'" class="btn btn-outline-danger mt-2 mb-2" style="width: 100%;">';
+                    $sx .= lang('thesa.create_th');
+                    $sx .= '</a>';
+                } else {
+                    $sx = '<span class="btn btn-danger mt-2 mb-2 disable" style="width: 100%;">';
+                    $sx .= lang('thesa.create_th_limite');
+                    $sx .= '</span>';
+                }
             }
             return $sx;
         }
@@ -135,7 +158,7 @@ class ThThesaurus extends Model
                 $sx .= '<a href="'.PATH.MODULE.'th_my'.'" class="btn btn-outline-primary mt-2 mb-2" style="width: 100%;">';
                 $sx .= lang('thesa.th_my');
                 $sx .= '</a>';
-            }
+            }            
             return $sx;
         }        
 
@@ -274,17 +297,30 @@ class ThThesaurus extends Model
 
     function edit($id='')
         {
+            $submenu = new \App\Models\Thesaurus\ThFunctions();
+            $sx = '';
             $this->id = $id;
             $this->path = PATH.MODULE.'edit_th/'.$id;
             $this->path_back = PATH.MODULE.'th_my/';
-            $this->pre = 'thesa';
+            $this->pre = 'thesa.';
+
+            $sx .= $submenu->menu(0);
+            /***************************************************************** margens */
+            $sx .= bsc('<div class="mt-5"></div>',12);
+
+            /***************************************************************** Header */
             if ($id == 0)
                 {
                     $Socials = new \App\Models\Socials();
                     $_POST['pa_created'] = $Socials->getID();
                 }
             
-            $sx = form($this);
+            if ($id == 0)
+                {
+                    $sx .= h('thesa.create_thesaurus',2);
+                }
+            
+            $sx .= form($this);
 
             if (($this->saved > 0) and ($id == 0))
                 {                    

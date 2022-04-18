@@ -167,13 +167,20 @@ function form($th)
 
     /***************************************** BOTAO SUBMIT */
     if (!$submit) {
-        $sx .= bt_submit() . ' | ' . bt_cancel($url) . cr();
+        $sx .= bsc(bt_submit() . ' &nbsp;|&nbsp; ' . bt_cancel($url),12,'text-end mt-5 mb-3') . cr();
     }
 
     /************************************** FIM DO FORMULARIO */
 
     $sx .= form_close() . cr();
-    $sx .= '<style> .bg-mandatory { background-color: #FFDDDD; } </style>';
+    $sx .= '<style>
+                 .bg-mandatory { background-color: #FFEEEE; } 
+                 .form-control.imput
+                    {
+                        background-color: #EEEEFF;
+                    }
+
+            </style>';
     $sx .= '</div>';
 
     return ($sx);
@@ -233,7 +240,10 @@ function form_fields($typ, $fld, $vlr, $th = array(),$obg=0, $pre='')
     }    
     if ($t == 'year') {
         $t = 'yr';
-    }    
+    }   
+    if ($t == 'update') {
+        $t = 'up';
+    }     
     if ($t == 'asc') {
         $t = 'st';
         $label_mandatory = ' - '.'<span class="text-warning">'.lang($pre.'no_use_especial_char').'</span>';
@@ -277,7 +287,7 @@ function form_fields($typ, $fld, $vlr, $th = array(),$obg=0, $pre='')
                 array_push($op, $r);
                 array_push($opc, $r);
             }
-            $sg = '<select id="' . $fld . '" name="' . $fld . '" class="form-control '.$class_mandatory.'" style="width: 200px;">' . cr();
+            $sg = '<select id="' . $fld . '" name="' . $fld . '" class="form-control mb-3 '.$class_mandatory.'" style="width: 200px;">' . cr();
             $sg .= '<option value="0">' . '- - -' . '</option>' . cr();
             for ($r = 0; $r < count($op); $r++) {
                 $sel = '';
@@ -304,7 +314,7 @@ function form_fields($typ, $fld, $vlr, $th = array(),$obg=0, $pre='')
                 array_push($op, $r);
                 array_push($opc, $r);
             }
-            $sg = '<select id="' . $fld . '" name="' . $fld . '" value="' . $vlr . '" class="form-control '.$class_mandatory.'" style="width: 200px;">' . cr();
+            $sg = '<select id="' . $fld . '" name="' . $fld . '" value="' . $vlr . '" class="form-control mb-3 '.$class_mandatory.'" style="width: 200px;">' . cr();
             for ($r = 0; $r < count($op); $r++) {
                 $sel = '';
                 $sg .= '<option value="' . $op[$r] . '" ' . $sel . '>' . $opc[$r] . '</option>' . cr();
@@ -328,7 +338,7 @@ function form_fields($typ, $fld, $vlr, $th = array(),$obg=0, $pre='')
             $op = array(1, 0);            
             $opt = substr($typ, strpos($typ, ':') + 1, strlen($typ));
             $opc = explode(':', $opt);
-            $sg = '<select id="' . $fld . '" name="' . $fld . '" value="' . $vlr . '" class="form-control '.$class_mandatory.'">' . cr();
+            $sg = '<select id="' . $fld . '" name="' . $fld . '" value="' . $vlr . '" class="form-control mb-3'.$class_mandatory.'">' . cr();
             for ($r = $opc[0]; $r <= $opc[1]; $r++) {
                 $sel = '';
                 $vll = strzero($r,2);
@@ -344,8 +354,8 @@ function form_fields($typ, $fld, $vlr, $th = array(),$obg=0, $pre='')
             $sx .= $td . lang($pre.$fld) . $label_mandatory .$tdc;
             $sx .= $td;
             $op = array(1, 0);
-            $opc = array(msg('YES'), msg('NO'));
-            $sg = '<select id="' . $fld . '" name="' . $fld . '" value="' . $vlr . '" class="form-control '.$class_mandatory.'">' . cr();
+            $opc = array(msg($pre.'YES'), msg($pre.'NO'));
+            $sg = '<select id="' . $fld . '" name="' . $fld . '" value="' . $vlr . '" class="form-control mb-3 '.$class_mandatory.'">' . cr();
             for ($r = 0; $r < count($op); $r++) {
                 $sel = '';
                 if ($op[$r] == $vlr) { $sel = 'selected'; }
@@ -362,7 +372,7 @@ function form_fields($typ, $fld, $vlr, $th = array(),$obg=0, $pre='')
             $op = array(1, 0);            
             $opt = substr($typ, strpos($typ, ':') + 1, strlen($typ));
             $opc = explode(':', $opt);
-            $sg = '<select id="' . $fld . '" name="' . $fld . '" value="' . $vlr . '" class="form-control '.$class_mandatory.'">' . cr();
+            $sg = '<select id="' . $fld . '" name="' . $fld . '" value="' . $vlr . '" class="form-control mb-3 '.$class_mandatory.'">' . cr();
             $sg .= '<option value="">:: options ::</option>'.cr();
             for ($r = 0; $r < count($opc); $r++) {
                 $sel = '';
@@ -391,7 +401,7 @@ function form_fields($typ, $fld, $vlr, $th = array(),$obg=0, $pre='')
             $query = $th->query($sql);
             $query = $query->getResult();            
 
-            $sg = '<select id="' . $fld . '" name="' . $fld . '" class="form-control '.$class_mandatory.'">' . cr();
+            $sg = '<select id="' . $fld . '" name="' . $fld . '" class="form-control mb-3 '.$class_mandatory.'">' . cr();
             $sg .= '<option value=""></option>'.cr();
             for ($r = 0; $r < count($query); $r++) {
                 $ql = (array)$query[$r];
@@ -442,23 +452,21 @@ function form_fields($typ, $fld, $vlr, $th = array(),$obg=0, $pre='')
                 } else {
                   $source .= '.';  
                 }
-            array_push($opt, lang($source.'status_0'));
-            array_push($opt, lang($source.'status_1'));
-            array_push($opt, lang($source.'status_2'));
-            array_push($opt, lang($source.'status_3'));
-            array_push($opt, lang($source.'status_4'));
-            array_push($opt, lang($source.'status_9'));
 
             $sx .= '<div class="form-group">' . cr();
             $sx .= '<small id="emailHelp" class="form-text text-muted">' . lang($pre . $fld) . '</small>';
-            $sx .= '<select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="' . $fld . '" name="' . $fld . '">';
+            $sx .= '<select class="form-select mb-3" aria-label=".form-select-lg example" id="' . $fld . '" name="' . $fld . '">';
             $sx .= '<option>Select...</option>' . cr();
-            for ($r = 0; $r < count($opt); $r++) {
+            for ($r = 0; $r <= 9; $r++) {
                 $chk = '';
-                if ($vlr == $r) {
-                    $chk = 'selected';
+                $txtv = $source.'status_'.$r;
+                if (lang($txtv) != $txtv)
+                    {
+                    if ($vlr == $r) {
+                        $chk = 'selected';
+                    }
+                    $sx .= '<option value="' . $r . '" ' . $chk . '>' . lang($source.$txtv) . '</option>' . cr();
                 }
-                $sx .= '<option value="' . $r . '" ' . $chk . '>' . lang($opt[$r]) . '</option>' . cr();
             }
             $sx .= '</select>';
             $sx .= '</div>';
@@ -516,6 +524,7 @@ function form_fields($typ, $fld, $vlr, $th = array(),$obg=0, $pre='')
             break;
 
         case 'st':
+            if (strlen($vlr) != 0) { $class_mandatory = ''; }
             $sx .= '<div class="form-group" style="margin-bottom: 20px;">' . cr();
             $sx .= '<label for="' . $fld . '">' . lang($pre . $fld) .$label_mandatory . '</label>
                                 <input type="string" class="form-control '.$class_mandatory.'" id="' . $fld . '" name="' . $fld . '" value="' . $vlr . '" placeholder="' . lang($pre . $fld) . '">                                
