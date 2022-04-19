@@ -85,9 +85,11 @@ class ThAssociate extends Model
 
     function associate($d1,$d2,$d3,$d4,$tp='')
         {
+            $Proprities = new \App\Models\RDF\Proprieties();
             $ThConcept = new \App\Models\Thesaurus\ThConcept();
             $dt = $ThConcept->le($d1);
             $th = $dt['c_th'];
+            $Class = $Proprities->getPropriety('Concept');
 
             /************************************************************************************* */
             $associate = get("associate");
@@ -100,6 +102,7 @@ class ThAssociate extends Model
             
 
             $terms = $ThConcept->concepts($th);
+            $terms_associates = $ThConcept->concepts_associates($th,$d1);
             $sx = '';
             $sx .= h('thesa.associated_concepts');
             $sx .= form_open();
@@ -107,7 +110,7 @@ class ThAssociate extends Model
             for($r=0;$r < count($terms);$r++)
                 {
                     $line = $terms[$r];
-                    if ($line['id_c'] != $d1)
+                    if (($line['id_c'] != $d1) and ($line['ct_propriety'] == $Class))
                     {
                         $sx .= '<option value="'.$line['id_c'].'" class="h5">'.$line['n_name'].'</option>';
                     }

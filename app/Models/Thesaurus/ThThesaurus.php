@@ -344,9 +344,10 @@ class ThThesaurus extends Model
             $Proprities = new \App\Models\RDF\Proprieties();
             $VIZ = new \App\Models\Graph\Viz();
 
+            $dt['literal'] = $ThLiteral->le($id);
             $dt['concept'] = $ThConcept->le($id);
             $dt['data'] = $ThAssociate->le($id);
-            $dt['literal'] = $ThLiteral->le($id);
+            
 
             $Class = $Proprities->getPropriety('Concept');
 
@@ -356,63 +357,94 @@ class ThThesaurus extends Model
             $sx .= $ThConcept->header($dt);
 
             $c = $dt['concept'];
-            $nodes[0] = array('n_name'=>$c['n_name'],'id_ct'=>$c['id_c']);
+            $nodes[0] = array('n_name'=>'Thesa:c'.$c['id_c'],'id_ct'=>$c['id_c']);
             $da = array();
+            $da['prefLabel'] = array();
+            $da['altLabel'] = array();
+            $da['hiddenLabel'] = array();
 
+           /***************************************************** Literal */
+           $lit = $dt['literal'];
+           for ($r=0;$r < count($lit);$r++)
+               {
+                   $line = $lit[$r];
+                   $prop = $line['p_propriey'];
+                   switch($prop)
+                       {
+                           case 'Concept':
+                               // none;
+                           break;
+
+                           case 'prefLabel':
+                               array_push($nodes,array(
+                                   'n_name'=>$line['n_name'].'@'.$line['n_lang'],
+                                   'id_ct'=>$line['id_ct']));
+                               array_push($edges,array(
+                                   'source'=>$id,
+                                   'target'=>$line['id_ct'],
+                                   'propriety'=>$line['prefix_name'].':'.$line['p_propriey']));
+                               $da['prefLabel'][] = $line['n_name'].' <sup>'.$line['n_lang'].'</sup>';
+                               break;
+                           case 'hiddenLabel':
+                               $da['hiddenLabel'][] = $line['n_name'].' <sup>'.$line['n_lang'].'</sup>';
+                               break;
+                               
+                           case 'altLabel':
+                               $da['altLabel'][] = $line['n_name'].' <sup>'.$line['n_lang'].'</sup>';
+                               break;
+           
+                           case 'notation':
+                               if (!isset($da[$line['p_propriey']]))
+                                   {
+                                       $da[$line['p_propriey']] = array();
+                                   }                            
+                               array_push($da[$line['p_propriey']],$line['n_name']);
+                               array_push($nodes,array(
+                                               'n_name'=>$line['n_name'],
+                                               'id_ct'=>$line['id_ct']));
+                               array_push($edges,array(
+                                               'source'=>$id,
+                                               'target'=>$line['id_ct'],
+                                               'propriety'=>$line['prefix_name'].':'.$line['p_propriey']));                                 
+                           break;
+
+                           default:
+                           echo h($prop.' not found');
+                               //pre($line);
+                       }
+               }            
+
+            /***************************************************** Associates */
             for ($r=0;$r < count($dt['data']);$r++)
                 {
                     $c = $dt['data'][$r];
                     if (($c['id_ct'] != $id) and ($c['tg_active'] == 1) and ($c['ct_propriety'] == $Class))
                         {
+                            //array_push($nodes,array('n_name'=>$c['n_name'],'id_ct'=>$c['id_ct']));
                             array_push($nodes,array('n_name'=>$c['n_name'],'id_ct'=>$c['id_ct']));
                             array_push($edges,array(
                                         'source'=>$id,
                                         'target'=>$c['id_ct'],
-                                        'propriety'=>$c['p_propriey'
-                                        ]));  
+                                        'propriety'=>$c['p_propriey']
+                                        ));  
                             if (!isset($da[$c['p_propriey']]))
                                 {
                                     $da[$c['p_propriey']] = array();
                                 }
                             $name = $c['n_name'];
-                            $link = '<a href="'.PATH.MODULE.'v/'.$c['id_ct'].'">';
+                            $iddc = $c['tg_concept_2'];
+                            if ($iddc == $id)
+                                {
+                                    $iddc = $c['tg_concept_1'];
+                                }
+                            $link = '<a href="'.PATH.MODULE.'v/'.$iddc.'">';
                             $link_a = '</a>';
                             $name = $link.$name.$link_a;
                             array_push($da[$c['p_propriey']],$name);
                         }                    
                 }
 
-            /***************************************************** Literal */
-            $lit = $dt['literal'];
-            for ($r=0;$r < count($lit);$r++)
-                {
-                    $line = $lit[$r];
-                    $prop = $line['p_propriey'];
-                    switch($prop)
-                        {
-                            case 'Concept':
-                                // none;
-                            break;
-
-                            case 'notation':
-                                if (!isset($da[$line['p_propriey']]))
-                                    {
-                                        $da[$line['p_propriey']] = array();
-                                    }                            
-                                array_push($da[$line['p_propriey']],$line['n_name']);
-                                array_push($nodes,array(
-                                                'n_name'=>$line['n_name'],
-                                                'id_ct'=>$line['id_ct']));
-                                array_push($edges,array(
-                                                'source'=>$id,
-                                                'target'=>$line['id_ct'],
-                                                'propriety'=>$line['p_propriey']));                                 
-                            break;
-
-                            default:
-                            pre($line);
-                        }
-                }
+ 
 
             $graph = array();
             $graph['nodes'] = $nodes;
@@ -423,11 +455,14 @@ class ThThesaurus extends Model
             $sb = '<ul>';
             foreach ($da as $key => $value)
                 {
-                    $sb .= h(lang('thesa.'.$key),4);
-                    foreach ($value as $k => $v)
-                        {
-                            $sb .= '<li>'.$v.'</li>';
-                        }
+                    if (count($value) > 0)
+                    {
+                        $sb .= h(lang('thesa.'.$key),5);                    
+                        foreach ($value as $k => $v)
+                            {
+                                $sb .= '<li class="ms-5">'.$v.'</li>';
+                            }
+                    }
                 }
             $sb .= '</ul>';
 //            $sb .= '<hr>'.$ThConceptData->data_TG($id);

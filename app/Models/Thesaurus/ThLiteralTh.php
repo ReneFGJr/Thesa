@@ -55,6 +55,14 @@ class ThLiteralTh extends Model
             return $dt;
         }
 
+    function term_lang($th)
+        {
+            $lang = array();
+            array_push($lang,'por');
+            return $lang;
+        }
+                
+
     function term_list($th)
         {
             $dt = 
@@ -67,8 +75,7 @@ class ThLiteralTh extends Model
                  ->where('ct_concept IS NULL', null, false)
                  ->orderBy('n_name','ASC')
                  ->findAll();
-            return $dt;
-            
+            return $dt;            
         }
 
     function term_insert($term,$th)

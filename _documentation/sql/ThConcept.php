@@ -87,6 +87,14 @@ class ThConcept extends Model
             return $dt;
         }
 
+    function concepts_associates($th,$id)
+        {
+            $ThRelations = new \App\Models\Thesaurus\ThRelations();
+            $cp = array($id);
+            
+            
+        }
+
     function boarder($id)
         {
             

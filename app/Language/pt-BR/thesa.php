@@ -70,7 +70,7 @@ return [
     'term_exclude'=>'Excluir termo candidato',
     'term_concept'=>'Candidatos a termos',
     'narrower'=>'Conceito Específico (TE)',
-    'broader'=>'Conceito Geral (TE)',
+    'broader'=>'Conceito Geral (TG)',
     'notation'=>'Notação',    
     'achronic'=>'Acrônico',    
     'YES'=>'SIM',

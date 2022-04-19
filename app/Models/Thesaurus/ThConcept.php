@@ -42,6 +42,13 @@ class ThConcept extends Model
     protected $beforeDelete         = [];
     protected $afterDelete          = [];
 
+    function unlink($id)
+        {
+            $ThConceptTerms = new \App\Models\Thesaurus\ThConceptTerms();
+            $ThConceptTerms->where('id_ct',$id)->delete();
+            return true;
+        }
+
     function resume($id)
         {
             $dt = $this->where('c_th',$id)->get();
@@ -85,6 +92,8 @@ class ThConcept extends Model
                 $ID = $this->set($dd)->insert();
                 $ThConceptTerms->create_concept_term($term,$ID,$th);
                 $ThLiteralTh->term_insert($term,$th);
+
+                $this->checkPreflabel($ID);
             } else {
                 $ID = $dt[0]['ct_concept'];
             }
@@ -106,7 +115,7 @@ class ThConcept extends Model
             $Proprieties = new \App\Models\RDF\Proprieties();
             $prop = $Proprieties->getPropriety('Concept');
 
-            $this->select("id_c, c_concept, n_name, n_lang, ct_propriety, ct_concept, c_th");
+            $this->select("id_c, c_concept, n_name, n_lang, ct_propriety, ct_concept, c_th, id_n");
             $this->join('th_concept_term','id_c = ct_concept and ct_propriety = '.$prop,'inner');
             $this->join('th_literal','ct_term = id_n');
             $this->where('id_c',$id);
@@ -118,9 +127,9 @@ class ThConcept extends Model
 
     function getConcept($id)
         {
-            $ThConceptData = new \App\Models\Thesaurus\ThConceptData();
+            $ThConceptTerms = new \App\Models\Thesaurus\ThConceptTerms();
             $dt['concept'] = $this->le($id);
-            $dt['data'] = $ThConceptData->getData($id);
+            $dt['data'] = $ThConceptTerms->le($id);
             return $dt;
         }
 
@@ -138,16 +147,19 @@ class ThConcept extends Model
     function edit($id)
         {
             $ThAssociate = new \App\Models\Thesaurus\ThAssociate();
+            $this->checkPreflabel($id);
+            
             $sa = '';
             $sb = '';
             $sx = $this->header_edit($id);
             $sx .= '<hr>';
-            $dt = $this->le($id);
+            $dt = $this->getConcept($id);
+            
             $dr = $ThAssociate->le($id);
 
-            $sa .= $this->prefLabel_Add($id);
-            $sa .= $this->altLabel_Add($id,$dr);
-            $sa .= $this->hiddenLabel_Add($id,$dr);
+            $sa .= $this->prefLabel_Add($id,$dt['data']);
+            $sa .= $this->altLabel_Add($id,$dt['data']);
+            $sa .= $this->hiddenLabel_Add($id,$dt['data']);
 
             $sb .= $this->broader_Add($id,$dr);
             $sb .= $this->narrower_Add($id,$dr);
@@ -164,13 +176,21 @@ class ThConcept extends Model
 
     function show_propriety($prop,$dt)
         {
+            $Proprieties = new \App\Models\RDF\Proprieties();
             $sx = '<ul>';
             $t = 0;
+
+            $cpto = $Proprieties->getPropriety('Concept');
+
             for($r=0;$r<count($dt);$r++)
                 {
                     $line = $dt[$r];
-                    if ($line['p_group'] == $prop)
-                        {
+                    //print_r($line);
+                    //echo '<hr>';
+                    if (($line['p_group'] == $prop) and ($line['ct_propriety'] == $cpto))
+                        {                           
+                            $iddc = $line['ct_concept'];
+
                             $sty = '';
                             $stya = '';
                             $url = PATH.MODULE.'popup/propriety_del/'.$line['id_tg'];
@@ -183,7 +203,7 @@ class ThConcept extends Model
                                     $url = PATH.MODULE.'popup/propriety_undel/'.$line['id_tg'];
                                     $btn = btn_recicle_popup($url);
                                 }
-                            $link = '<a href="'.PATH.MODULE.'a/'.$line['id_ct'].'" class="thesa '.$sty.'">';
+                            $link = '<a href="'.PATH.MODULE.'a/'.$iddc.'" class="thesa '.$sty.'">';
                             $linka = '</a>';
                             $sx .= '<li>';
                             $sx .= $sty.$link.$dt[$r]['n_name'].$linka.$stya;
@@ -194,6 +214,7 @@ class ThConcept extends Model
                             $sx .= '</li>';
                             $t++;
                         }
+
                 }
             $sx .= '</ul>';
             return $sx;
@@ -205,45 +226,100 @@ class ThConcept extends Model
             $txt = lang('thesa.notes');
             $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
             $sx .= onclick(PATH.MODULE.'edit/'.$id.'/notes',800,600);
-            $sx .= h($txt,4);        
+            $sx .= h($txt,5);        
             $sx .= $this->list($id,'notes');
             $sx .= '</span>';            
             return $sx;
-        }         
+        }  
+        
+    function show_labels($dt,$propn)
+        {
+            $sx = '';
+            for($r=0;$r < count($dt);$r++)
+                {
+                    $ln = $dt[$r];
+                    $prop = $ln['p_propriey'];
+                    if ($prop == $propn)
+                        {
+                            $link = btn_trash_popup(PATH.MODULE.'popup/label/'.$ln['id_ct']);
 
-    function altLabel_Add($id)
+                            $sx .= '<li>'.$ln['n_name'].' '.$link.'</li>';
+                        }
+                }
+            if ($sx != '') { $sx = '<ul>'.$sx.'</ul>'; }
+            return $sx;            
+        }
+
+    function altLabel_Add($id,$dt)
         {
             $sx = '';
             $txt = lang('thesa.altLabel');
             $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
-            $sx .= onclick(PATH.MODULE.'edit/'.$id.'/altLabel',800,600);
-            $sx .= h($txt,4);
+            $sx .= onclick(PATH.MODULE.'popup/altLabel/'.$id,800,600);
+            $sx .= h($txt,5);
             $sx .= '</span>';
+
+            $propn = 'altLabel';
+            $sx .= $this->show_labels($dt,$propn);
             
             return $sx;
         }        
 
-    function hiddenLabel_Add($id)
+    function hiddenLabel_Add($id,$dt)
         {
             $sx = '';
             $txt = lang('thesa.hiddenLabel');
             $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
-            $sx .= onclick(PATH.MODULE.'edit/'.$id.'/hiddenLabel',800,600);
-            $sx .= h($txt,4);
+            $sx .= onclick(PATH.MODULE.'popup/hiddenLabel/'.$id,800,600);
+            $sx .= h($txt,5);
             $sx .= '</span>';
+
+            $propn = 'hiddenLabel';
+            $sx .= $this->show_labels($dt,$propn);            
             
             return $sx;
-        }        
+        } 
+        
+    function checkPreflabel($id)
+        {
+            $ThConceptTerms = new \App\Models\Thesaurus\ThConceptTerms();
+            $Proprieties = new \App\Models\RDF\Proprieties();
+            $prop = $Proprieties->getPropriety('prefLabel');
 
-    function prefLabel_Add($id)
+            $sx = 'check preflabel';
+            $dt = $this->getConcept($id);
+            
+            $idn = $dt['concept']['id_n'];
+            $idc = $dt['concept']['id_c'];
+            $th = $dt['concept']['c_th'];
+
+
+            $dr = $ThConceptTerms
+                ->where('ct_concept',$idc)
+                ->where('ct_term',$idn)
+                ->where('ct_propriety',$prop)
+                ->findAll();
+
+            if (count($dr) == 0)
+                {
+                    $ThConceptTerms->link($idc,$th,$idn,$prop);
+                }
+            return '';
+            
+        }
+
+    function prefLabel_Add($id,$dt)
         {
             $sx = '';
             $txt = lang('thesa.prefLabel');
             $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
             $url = PATH.MODULE.'popup/prefLabel/'.$id;
             $sx .= onclick($url,800,600);
-            $sx .= h($txt,4);
-            $sx .= 'xx</span>';
+            $sx .= h($txt,5);
+            $sx .= '</span>';
+
+            $propn = 'prefLabel';
+            $sx .= $this->show_labels($dt,$propn); 
             
             return $sx;
         }
@@ -255,7 +331,7 @@ class ThConcept extends Model
             $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
             $url = PATH.MODULE.'popup/broader/'.$id;            
             $sx .= onclick($url,800,600);
-            $sx .= h($txt,4);
+            $sx .= h($txt,5);
             $sx .= '</span>';
             $sx .= $this->show_propriety('TG',$dt);
             
@@ -269,7 +345,7 @@ class ThConcept extends Model
             $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
             $url = PATH.MODULE.'popup/narrower/'.$id;            
             $sx .= onclick($url,800,600);            
-            $sx .= h($txt,4);
+            $sx .= h($txt,5);
             $sx .= '</span>';
             $sx .= $this->show_propriety('TE',$dt);
             
@@ -283,7 +359,7 @@ class ThConcept extends Model
             $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
             $url = PATH.MODULE.'popup/related/'.$id;            
             $sx .= onclick($url,800,600);            
-            $sx .= h($txt,4);
+            $sx .= h($txt,5);
             $sx .= '</span>';
             $sx .= $this->show_propriety('TR',$dt);
             
@@ -292,24 +368,17 @@ class ThConcept extends Model
 
     function header_edit($id)
         {
-            $ThConceptTerms = new \App\Models\Thesaurus\ThConceptTerms();
+            $dt = $this->getConcept($id);
             $sx = '';
-            $dt = $ThConceptTerms->prefLabel($id);
+
+            /********* Screen ************/      
+            $link = '<a href="'.PATH.MODULE.'v/'.$id.'" class="text-primary">';
+            $linka = '</a>';
+
             $lab = '<span class="supermall">'.lang('thesa.prefLabel').'</span>';
-            $prefs = $lab;
-            for ($r=0;$r < count($dt);$r++)
-                {
-                    $dtt = (array)$dt[$r];
-                    $link = '<a href="'.PATH.MODULE.'v/'.$id.'" class="text-primary">';
-                    $linka = '</a>';
-                    $lang = '';
-                    if (count($dt) > 1) 
-                        { $lang = ' <sup>('.$dtt['n_lang'].')</sup>'; }
-                    $prefs .= '<h3>'.$link.$dtt['n_name'].$lang.$linka.'</h3>';
-                }
-            /********* Change PrefLabel */
-            $prefs .= $this->bt_prefLabel($id);
-            /********* Screen ************/                  
+            $lang = '<sup>('.$dt['concept']['n_lang'].')</sup>';
+            $prefs = $lab . '<h3>'.$link.$dt['concept']['n_name'].' '.$lang.$linka.'</h3>';
+
             $sx .= bsc($prefs,8);
             $sx .= bsc(
                     $this->bt_remove($id) .' '.

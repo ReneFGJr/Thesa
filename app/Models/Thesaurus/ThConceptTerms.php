@@ -78,7 +78,10 @@ class ThConceptTerms extends Model
                     $dd['ct_term'] = $term;
                     $dd['ct_th'] = $th;
                     $dd['ct_concept'] = $concept;
-                    $this->set($dd)->insert();
+                    $cp = $this->set($dd)->insert();
+
+                    $prop = $Proprieties->getPropriety('prefLabel');
+                    $this->link($cp,$th,$term,$prop);
                 }
         }
 
@@ -90,5 +93,29 @@ class ThConceptTerms extends Model
                 ->FindAll();
             
             return $dt;
+        }
+        function link($cp,$th,$term,$prop)
+        {
+            if ($prop == 0)
+                {
+                    echo "Propriety not defined";
+                    exit;
+                }
+            $dt = $this
+                -> where('ct_term',$term)
+                -> where('ct_th',$th)
+                -> where('ct_propriety',$prop)
+                -> findAll();
+
+            if (count($dt) == 0)
+                {
+                    $dt['ct_th'] = $th;
+                    $dt['ct_term'] = $term;
+                    $dt['ct_propriety'] = $prop;
+                    $dt['ct_concept'] = $cp;
+                    $this->set($dt)->insert();
+                }
+            
+            return true;
         }
 }

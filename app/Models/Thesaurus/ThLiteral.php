@@ -65,6 +65,96 @@ class ThLiteral extends Model
             return $rst;
         }
 
+    function labels($id,$nprop)
+        {
+            $ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
+            $ThLiteralTh = new \App\Models\Thesaurus\ThLiteralTh();
+            $ThConceptTerms = new \App\Models\Thesaurus\ThConceptTerms();
+            $Proprieties = new \App\Models\RDF\Proprieties();
+
+            $ID = $ThThesaurus->th(0);
+            $dt = $ThLiteralTh->term_list($ID);
+            $prop = $Proprieties->getPropriety($nprop);
+            
+            if ((isset($_POST['terms'])) and (count($_POST['terms']) > 0))
+                {
+                    $terms = $_POST['terms'];
+                    for ($r=0;$r < count($terms);$r++)
+                        {
+                            $term = $terms[$r];
+                            $ThConceptTerms->link($id,$ID,$term,$prop);
+                        }               
+                }
+
+            $sx = '';
+            $sx .= h('thesa.'.$nprop);
+            $sx .= form_open();
+            $sx .= '<select name="terms[]" id="term" class="form-control" size="10" multiple="multiple">';
+            for ($r=0;$r < count($dt);$r++)
+                {
+                    $line = $dt[$r];
+                    $sx .= '<option value="'.$line['id_n'].'">'.$line['n_name'].'</option>';
+                }
+                $sx .= '<input type="submit" name="action" value="'.msg('add').'" class="btn btn-primary mt-5">';
+            $sx .= '</form>';
+            
+            $sx .= form_close();
+            $sx = bs(bsc($sx,12));
+
+            return $sx;
+        }
+
+    function editPrefLabel($id)
+        {
+            $nprop = 'prefLabel';
+            $ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
+            $ThLiteralTh = new \App\Models\Thesaurus\ThLiteralTh();
+            $ThConceptTerms = new \App\Models\Thesaurus\ThConceptTerms();
+            $Proprieties = new \App\Models\RDF\Proprieties();
+
+            $ID = $ThThesaurus->th(0);            
+            $dt = $ThLiteralTh->term_list($ID);
+
+            $langs = $ThLiteralTh->term_lang($id);
+
+            $terms = get('terms');
+            if ($terms != '')
+                {
+                    $prop = $Proprieties->getPropriety($nprop);
+                    $ThConceptTerms->link($id,$ID,$terms,$prop);
+                    return wclose();
+                }
+
+            $sx = '';
+            $sx .= h('thesa.'.$nprop);
+            $sx .= form_open();
+
+
+            $sx .= '<select name="terms" id="term" class="form-control" size="10">';
+            for ($r=0;$r < count($dt);$r++)
+                {
+                    $line = $dt[$r];
+                    $xlang = trim($line['n_lang']);
+                    if (!in_array($xlang,$langs))
+                    {
+                        $sx .= '<option value="'.$line['id_n'].'">'.$line['n_name'].' ('.$line['n_lang'].')</option>';
+                    }        
+                    
+                }
+            $sx .= '<input type="submit" name="action" value="'.msg('add').'" class="btn btn-primary mt-5">';
+            $sx .= '</form>';
+            
+            $sx .= form_close();
+            $sx = bs(bsc($sx,12));  
+            return $sx;              
+        }
+
+    function editLabel($id,$tp)
+        {
+            $sx = $this->Labels($id,$tp);
+            return $sx;
+        }
+
     function label_update($id,$tp)
         {
             pre($_SESSION);

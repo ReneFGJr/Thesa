@@ -50,6 +50,11 @@ class ThRelations extends Model
             return $sx;
         }
 
+    function relations_concepts($th,$id)
+        {
+            
+        }
+
     function relations($concept1=0,$concept2=0,$literal=0,$prop='',$th='')
         {
             $sx = '';

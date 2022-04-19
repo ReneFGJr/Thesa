@@ -105,7 +105,6 @@ class Thesa extends BaseController
 					@import url(\'https://fonts.googleapis.com/css2?family=Nunito:wght@200&family=Roboto:wght@100&display=swap\');
 					</style>
 					';
-
 		$sx .= '</head>' . cr();
 
 		if (get("debug") != '') {
@@ -489,13 +488,32 @@ class Thesa extends BaseController
 
 			switch($d1)
 				{
+					case 'label':
+						$ThConcept = new \App\Models\Thesaurus\ThConcept();
+						$ThConcept->unlink($d2);
+						$sx = wclose();
+						break;
 					case 'prefLabel':
 						$ThLiteral = new \App\Models\Thesaurus\ThLiteral();
-						$ThLiteral->label_update($d2,$d1);
-						$sx .= wclose();
+						$sx .= $this->cab();
+						$sx .= $ThLiteral->editPrefLabel($d2,$d1);
 						break;
+					case 'altLabel':
+						$ThLiteral = new \App\Models\Thesaurus\ThLiteral();
+						$sx .= $this->cab();
+						$sx .= $ThLiteral->editLabel($d2,$d1);						
+						break;
+					break;	
 
+					case 'hiddenLabel':
+						$ThLiteral = new \App\Models\Thesaurus\ThLiteral();
+						$sx .= $this->cab();
+						$sx .= $ThLiteral->editLabel($d2,$d1);						
 						break;
+					break;					
+					
+					
+
 					case 'propriety_del':
 						$ThAssociate = new \App\Models\Thesaurus\ThAssociate();
 						$ThAssociate->propriety_update($d2,0);
