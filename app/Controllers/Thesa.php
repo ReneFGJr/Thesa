@@ -424,6 +424,12 @@ class Thesa extends BaseController
 	function th($id = '', $ltr = '')
 	{
 		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();		
+		$dtt = $ThThesaurus->where('id_pa', $id)->findAll();
+		if (count($dtt) == 0)
+               {
+                   $sx = metarefresh(PATH.MODULE);
+                   return $sx;
+               }
 		$sx = '';
 		$sx .= $this->cab();
 		$sx .= $this->navbar();
@@ -486,6 +492,17 @@ class Thesa extends BaseController
 			$sec = true;
 			$cab = $this->cab();
 
+			$Socials = new \App\Models\Socials();
+			$ID = $Socials->getID();
+			
+            $ThUsers = new \App\Models\Thesaurus\ThUsers();
+            if (!$ThUsers->autorized($ID))
+            {
+				$sx = metarefresh(PATH.MODULE);
+				return $sx;
+				exit;
+			}
+
 			switch($d1)
 				{
 					case 'label':
@@ -510,9 +527,7 @@ class Thesa extends BaseController
 						$sx .= $this->cab();
 						$sx .= $ThLiteral->editLabel($d2,$d1);						
 						break;
-					break;					
-					
-					
+					break;							
 
 					case 'propriety_del':
 						$ThAssociate = new \App\Models\Thesaurus\ThAssociate();
@@ -624,7 +639,7 @@ class Thesa extends BaseController
 		$ltr = '';
 
 		$sx .= $ThThesaurus->show($th, $ltr);
-		$sx .= $ThThesaurus->v($id);
+		$sx .= $ThThesaurus->v($id,$th);
 
 		$sx .= $this->footer();
 		return $sx;
@@ -632,6 +647,16 @@ class Thesa extends BaseController
 
 	function a($id = '',$act='')
 	{
+			$Socials = new \App\Models\Socials();
+			$ID = $Socials->getID();					
+            $ThUsers = new \App\Models\Thesaurus\ThUsers();
+            if (!$ThUsers->autorized($ID))
+            {
+				$sx = metarefresh(PATH.MODULE.'v/'.$id.'/'.$act);
+				return $sx;
+				exit;
+			}
+
 		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
 		$ThConcept = new \App\Models\Thesaurus\ThConcept();
 		

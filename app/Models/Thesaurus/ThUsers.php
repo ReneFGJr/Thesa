@@ -63,9 +63,25 @@ class ThUsers extends Model
             }
         }
 
-    function autorized($id)
-        {            
-            return true;
+    function autorized($th)
+        {          
+            $Socials = new \App\Models\Socials();
+            $ID = $Socials->getID();
+            if ($ID > 0)
+                {
+                    $this->where('ust_th',$th);
+                    $this->where('ust_user_id',$ID);
+                    $this->where('ust_status',1);
+                    $dt = $this->findAll();
+                    if (count($dt) > 0)
+                    {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                    return true;
+                }
+            return false;            
         }        
 
     function authors($id)

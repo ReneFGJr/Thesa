@@ -42,6 +42,19 @@ class ThAssociate extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function concepts_associates($th,$d1)
+        {
+            $d2 = $this->select('tg_concept_1 as id')->where('tg_concept_2',$d1)->findAll();
+            $d1 = $this->select('tg_concept_2 as id')->where('tg_concept_1',$d1)->findAll();
+            $dd = array_merge($d1,$d2);
+            $dt = array();
+            for ($r=0; $r < count($dd); $r++) { 
+                $di = $dd[$r]['id'];
+                $dt[$di] = 1;
+            }
+            return $dt;
+        }    
+
     function propriety_update($id_tg,$vlr)
         {
             $dt['tg_active'] = $vlr;
@@ -103,16 +116,21 @@ class ThAssociate extends Model
 
             $terms = $ThConcept->concepts($th);
             $terms_associates = $ThConcept->concepts_associates($th,$d1);
+
             $sx = '';
             $sx .= h('thesa.associated_concepts');
             $sx .= form_open();
             $sx .= '<select name="associate" size="10" class="form-control">';
+
             for($r=0;$r < count($terms);$r++)
                 {
                     $line = $terms[$r];
                     if (($line['id_c'] != $d1) and ($line['ct_propriety'] == $Class))
                     {
-                        $sx .= '<option value="'.$line['id_c'].'" class="h5">'.$line['n_name'].'</option>';
+                        if (!isset($terms_associates[$line['id_c']]))
+                        {
+                            $sx .= '<option value="'.$line['id_c'].'" class="h5">'.$line['n_name'].'</option>';
+                        }                        
                     }
                 }
             $sx .= '</select>';

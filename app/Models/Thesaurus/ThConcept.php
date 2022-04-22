@@ -42,6 +42,12 @@ class ThConcept extends Model
     protected $beforeDelete         = [];
     protected $afterDelete          = [];
 
+    function concepts_associates($th,$d1)
+        {
+            $ThAssociate = new \App\Models\Thesaurus\ThAssociate();
+            return $ThAssociate->concepts_associates($th,$d1);
+        }
+
     function unlink($id)
         {
             $ThConceptTerms = new \App\Models\Thesaurus\ThConceptTerms();
@@ -174,7 +180,7 @@ class ThConcept extends Model
             return $sx;
         }
 
-    function show_propriety($prop,$dt)
+    function show_propriety($prop,$dt,$id)
         {
             $Proprieties = new \App\Models\RDF\Proprieties();
             $sx = '<ul>';
@@ -185,9 +191,17 @@ class ThConcept extends Model
             for($r=0;$r<count($dt);$r++)
                 {
                     $line = $dt[$r];
-                    //print_r($line);
-                    //echo '<hr>';
-                    if (($line['p_group'] == $prop) and ($line['ct_propriety'] == $cpto))
+                    $xprop = $prop;
+                    /* TE e TG */
+                    if (($line['tg_concept_2'] == $id) and (($xprop == 'TE') or ($xprop == 'TG')))
+                    {
+                        if ($xprop == 'TE') { $xprop = 'TG'; } else { $xprop = 'TE'; }
+                    }
+
+                    $ok = true;
+                    if ($line['p_group'] != $xprop) { $ok = false; }
+                    if ($line['ct_propriety'] != $cpto) { $ok = false; }
+                    if ($ok)
                         {                           
                             $iddc = $line['ct_concept'];
 
@@ -333,7 +347,7 @@ class ThConcept extends Model
             $sx .= onclick($url,800,600);
             $sx .= h($txt,5);
             $sx .= '</span>';
-            $sx .= $this->show_propriety('TG',$dt);
+            $sx .= $this->show_propriety('TG',$dt,$id);
             
             return $sx;
         }
@@ -347,7 +361,7 @@ class ThConcept extends Model
             $sx .= onclick($url,800,600);            
             $sx .= h($txt,5);
             $sx .= '</span>';
-            $sx .= $this->show_propriety('TE',$dt);
+            $sx .= $this->show_propriety('TE',$dt,$id);
             
             return $sx;
         } 
@@ -361,7 +375,7 @@ class ThConcept extends Model
             $sx .= onclick($url,800,600);            
             $sx .= h($txt,5);
             $sx .= '</span>';
-            $sx .= $this->show_propriety('TR',$dt);
+            $sx .= $this->show_propriety('TR',$dt,$id);
             
             return $sx;
         } 
@@ -390,7 +404,8 @@ class ThConcept extends Model
 
     function header($dt)
         {
-            $id = $dt['concept']['id_c'];           
+            $id = $dt['concept']['id_c'];
+            $th = $dt['concept']['c_th'];
             $sx = '';
 
             /**********************************************************************************/
@@ -409,7 +424,7 @@ class ThConcept extends Model
             /********* Screen ************/                  
             $sx .= bsc($prefs,8);
             $sx .= bsc(
-                    $this->bt_editar($id) .' '.
+                    $this->bt_editar($id,$th) .' '.
                     $this->bt_concept($id).' '.
                     $this->bt_copy($id) .' '.
                     $this->bt_rdf($id)
@@ -428,10 +443,15 @@ class ThConcept extends Model
             return $sx;
         }
 
-    function bt_editar($id)
+    function bt_editar($id,$th=0)
         {
-            $sx = '<a href="'.PATH.MODULE.'a/'.$id.'" 
-                class="btn btn-outline-secondary">editar</a>';
+            $sx = '';
+            $ThUsers = new \App\Models\Thesaurus\ThUsers();
+            if ($ThUsers->autorized($th))
+            {
+                $sx = '<a href="'.PATH.MODULE.'a/'.$id.'" 
+                    class="btn btn-outline-secondary">editar</a>';
+            }
             return($sx);
         }
     function bt_concept($id)

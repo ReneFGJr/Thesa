@@ -301,14 +301,35 @@ class ThThesaurus extends Model
             $sx = '';
             $this->id = $id;
             $this->path = PATH.MODULE.'edit_th/'.$id;
-            $this->path_back = PATH.MODULE.'th_my/';
+            $this->path_back = 'none';
             $this->pre = 'thesa.';
 
-            $sx .= $submenu->menu(0);
+            /***************************** SubMenu */
+            if ($id > 0)
+                {
+                    $sx .= $submenu->menu($id);
+                }
+            
             /***************************************************************** margens */
             $sx .= bsc('<div class="mt-5"></div>',12);
 
             /***************************************************************** Header */
+            if ($id == 0)
+                {
+                    $pa_achronic = get("pa_achronic");
+                    if ($pa_achronic != '')
+                    {
+
+                        $dt = $this->where('pa_achronic',$pa_achronic)->findAll();
+                        if (count($dt) > 0)
+                        {
+                            $sx .= bsmessage(lang('thesa.error.achronic').' <b>'.$pa_achronic.'</b>'.lang('thesa.error.achronic2'),3);
+                            $_POST['pa_achronic'] = '';
+                        }
+                    }                    
+                }
+            
+
             if ($id == 0)
                 {
                     $Socials = new \App\Models\Socials();
@@ -330,6 +351,15 @@ class ThThesaurus extends Model
                     $idu = $Socials->getID();
                     $ThUsers->add_user($idth,$idu,1);
 
+                    /************************** Define um idioma */
+                    $ThConfigLanguage = new \App\Models\Thesaurus\ThConfigLanguage();
+                    $ThConfigLanguage->language_add($idth,364);
+
+                    /************************** Redireciona */
+                    $url = PATH.MODULE.'th_config/'.$idth;
+                    $sx = metarefresh($url);
+
+                    return $sx;
                 }           
             return $sx;
         }       
@@ -552,7 +582,12 @@ class ThThesaurus extends Model
             $ThUsers = new \App\Models\Thesaurus\ThUsers();
             $ThHeader = new \App\Models\Thesaurus\ThHeader();
             $id = $this->th($id);
-            $dtt = $this->find($id);      
+            $dtt = $this->find($id);    
+            if ($dtt=='')
+                {
+                    $sx = metarefresh(PATH.MODULE);
+                    return $sx;
+                }              
             /********************************** Authors *************/
             $authors = $ThUsers->authors($id);
             /********************************** Titulo do Thesaurus */

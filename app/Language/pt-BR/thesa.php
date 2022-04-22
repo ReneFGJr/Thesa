@@ -78,6 +78,10 @@ return [
     'no_use_especial_char'=>'Não utilize caracteres especiais',
     'error500'=>'Acrônico do vocabulário não foi localizado ou está em branco',
     'create_th_limite'=>'Atingido limite de tesauros',
+    'pagination'=>'Paginação',
+    'create_thesaurus'=>'Criação de Tesauros',
+    'error.achronic'=>'Acrônico já existe no banco de dados: ',
+    'error.achronic2'=>', informe outro acrônico',
 
     /********************* AJUDA */
     'Help'=>'Ajuda',
