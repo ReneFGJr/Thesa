@@ -169,8 +169,7 @@ class ThAssociate extends Model
                 $this->link($th,$d1,$associate,$prop);
                 $sx = wclose();
                 return $sx;
-            }
-            
+            }            
 
             $terms = $ThConcept->concepts($th);
             $terms_associates = $ThConcept->concepts_associates($th,$d1);
@@ -178,8 +177,13 @@ class ThAssociate extends Model
             $sx = '';
             $sx .= h('thesa.associated_concepts');
             $sx .= form_open();
+            $sx .= '<div class="input-group mb-3">
+                    <input type="text" name="q" value="'.get("q").'" style="width: 70%;">
+                    <span class="input-group-text">=></span>
+                    <input type="submit" class="form-control btn btn-outline-primary" aria-label="Filter" value="'.lang('thesa.filter').'">
+                    </div>';
             $sx .= '<select name="associate" size="10" class="form-control">';
-
+            $q = mb_strtolower(ascii(get("q")));
             for($r=0;$r < count($terms);$r++)
                 {
                     $line = $terms[$r];
@@ -187,7 +191,18 @@ class ThAssociate extends Model
                     {
                         if (!isset($terms_associates[$line['id_c']]))
                         {
-                            $sx .= '<option value="'.$line['id_c'].'" class="h5">'.$line['n_name'].'</option>';
+                            $lb = mb_strtolower(ascii($line['n_name']));
+                            if ($q != '')
+                                {
+                                    $pos = strpos($lb,$q);
+                                    if ($pos != '')
+                                    {
+                                        $sx .= '<option value="'.$line['id_c'].'">'.$line['n_name'].'</option>';
+                                    }
+                                } else {
+                                    $sx .= '<option value="'.$line['id_c'].'" class="h5">'.$line['n_name'].'</option>';
+                                }
+                            
                         }                        
                     }
                 }

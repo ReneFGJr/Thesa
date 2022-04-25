@@ -50,6 +50,7 @@ Vagrantfile
 #-------------------------
 writable/cache/*
 !writable/cache/index.html
+public/.uploads/images/*
 
 writable/logs/*
 !writable/logs/index.html

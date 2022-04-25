@@ -372,6 +372,7 @@ class ThThesaurus extends Model
             $ThLiteral = new \App\Models\Thesaurus\ThLiteral();
             $ThAssociate = new \App\Models\Thesaurus\ThAssociate();
             $Proprities = new \App\Models\RDF\Proprieties();
+            $ThImages = new \App\Models\Thesaurus\ThImages();
             $VIZ = new \App\Models\Graph\Viz();
 
             $dt['literal'] = $ThLiteral->le($id);
@@ -450,6 +451,15 @@ class ThThesaurus extends Model
                     $c = $dt['data'][$r];
                     if (($c['id_ct'] != $id) and ($c['tg_active'] == 1) and ($c['ct_propriety'] == $Class))
                         {
+                            $prop = $c['p_propriey'];
+                            $iddc = $c['tg_concept_2'];
+                            
+                            if ($iddc == $id)
+                                {
+                                    $iddc = $c['tg_concept_1'];
+                                    if ($prop == 'broader') { $prop = 'narrower'; }
+                                }
+
                             //array_push($nodes,array('n_name'=>$c['n_name'],'id_ct'=>$c['id_ct']));
                             array_push($nodes,array('n_name'=>$c['n_name'],'id_ct'=>$c['id_ct']));
                             array_push($edges,array(
@@ -457,20 +467,16 @@ class ThThesaurus extends Model
                                         'target'=>$c['id_ct'],
                                         'propriety'=>$c['p_propriey']
                                         ));  
-                            if (!isset($da[$c['p_propriey']]))
+                            if (!isset($da[$prop]))
                                 {
-                                    $da[$c['p_propriey']] = array();
+                                    $da[$prop] = array();
                                 }
                             $name = $c['n_name'];
-                            $iddc = $c['tg_concept_2'];
-                            if ($iddc == $id)
-                                {
-                                    $iddc = $c['tg_concept_1'];
-                                }
+
                             $link = '<a href="'.PATH.MODULE.'v/'.$iddc.'">';
                             $link_a = '</a>';
                             $name = $link.$name.$link_a;
-                            array_push($da[$c['p_propriey']],$name);
+                            array_push($da[$prop],$name);
                         }                    
                 }
 
@@ -482,7 +488,9 @@ class ThThesaurus extends Model
             $sa = $VIZ->net($graph);
 
             /****************************************************** DADOS */
-            $sb = '<ul>';
+            $sb = '';
+            $sb .= '<ul>';
+            $sb .= '<div>'.$ThImages->show($id).'</div>';
             foreach ($da as $key => $value)
                 {
                     if (count($value) > 0)

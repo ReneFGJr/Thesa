@@ -86,7 +86,7 @@ class Thesa extends BaseController
 		$sx .= '  <link rel="icon" type="image/png" sizes="32x32" href="' . URL.('img/icone/favicon.png') . '" />' . cr();
 		$sx .= '  <link rel="icon" type="image/png" sizes="16x16" href="' . URL.('img/icone/favicon.png') . '" />' . cr();
 		$sx .= '  <!-- CSS -->' . cr();
-		$sx .= '  <link rel="stylesheet" href="' . URL.('/css/bootstrap.css') . '" />' . cr();
+		$sx .= '  <link rel="stylesheet" href="' . URL.('/css/bootstrap.css?v=5.1.3') . '" />' . cr();
 		$sx .= '  <link rel="stylesheet" href="' . URL.('/css/style.css?v=0.0.10') . '" />' . cr();
 		$sx .= '  <link rel="stylesheet" href="' . URL.('/css/style_sisdoc.css?v=0.0.1') . '" />' . cr();
 		/* GOogle Fonts */
@@ -95,7 +95,7 @@ class Thesa extends BaseController
 					</style>';
 		$sx .= ' ' . cr();
 		$sx .= '  <!-- CSS -->' . cr();
-		$sx .= '  <script src="' . URL.('/js/bootstrap.js?v=5.0.2') . '"></script>' . cr();
+		$sx .= '  <script src="' . URL.('/js/bootstrap.js?v=5.1.3') . '"></script>' . cr();
 		$sx .= '<style>
 					@font-face {font-family: "Handel Gothic";
 					src: url("' . URL.('css/fonts/HandelGothic/handel_gothic.eot') . '"); /* IE9*/
@@ -430,7 +430,8 @@ class Thesa extends BaseController
 
 	function th($id = '', $ltr = '')
 	{
-		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();		
+		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
+		$ThConcept = new \App\Models\Thesaurus\ThConcept();
 		$dtt = $ThThesaurus->where('id_pa', $id)->findAll();
 		if (count($dtt) == 0)
                {
@@ -447,6 +448,13 @@ class Thesa extends BaseController
 			{
 				$sx .= bs(bsc($ThThesaurus->terms($id,$ltr),12));
 			}
+
+		$q = get("q");
+		if ($q != '')
+			{
+				$sx .= bs(bsc($ThConcept->TermQuery($id,$q),12));
+			}
+
 
 		$sx .= $this->footer();
 
@@ -512,6 +520,14 @@ class Thesa extends BaseController
 
 			switch($d1)
 				{
+					/****************** IMAGES */
+					case 'image':
+						$ThImages = new \App\Models\Thesaurus\ThImages();
+						$sx .= $this->cab();
+						$sx .= $ThImages->index($d2,$d3,$d4,$d5,$d6);
+						break;
+						
+					/****************** LABEL */
 					case 'label':
 						$ThConcept = new \App\Models\Thesaurus\ThConcept();
 						$ThConcept->unlink($d2);
@@ -527,7 +543,12 @@ class Thesa extends BaseController
 						$sx .= $this->cab();
 						$sx .= $ThLiteral->editLabel($d2,$d1);						
 						break;
-					break;	
+					case 'notation':
+						$ThLiteral = new \App\Models\Thesaurus\ThLiteral();
+						$sx .= $this->cab();
+						$sx .= $ThLiteral->editLabel($d2,$d1);						
+						break;
+	
 
 					case 'hiddenLabel':
 						$ThLiteral = new \App\Models\Thesaurus\ThLiteral();

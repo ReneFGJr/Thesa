@@ -112,6 +112,7 @@ class ThConcept extends Model
                     ->join('th_concept_term','ct_concept = id_c','inner')
                     ->join('th_literal','ct_term = id_n','inner')
                     ->where('c_th',$th)
+                    ->orderBy('n_name','asc')
                     ->findAll();
             return($dt);
         }
@@ -153,6 +154,7 @@ class ThConcept extends Model
     function edit($id)
         {
             $ThAssociate = new \App\Models\Thesaurus\ThAssociate();
+            $ThImages = new \App\Models\Thesaurus\ThImages();
             $this->checkPreflabel($id);
             
             $sa = '';
@@ -170,9 +172,12 @@ class ThConcept extends Model
             $sb .= $this->broader_Add($id,$dr);
             $sb .= $this->narrower_Add($id,$dr);
             $sb .= $this->related_Add($id,$dr);
+            $sb .= $this->notation_Add($id,$dt);
             $sb .= $this->notes_Add($id,$dr);
             
-            $img = 'image';
+            
+            $img = $ThImages->show($id);
+            $img .= $ThImages->btn_upload($id);
 
             $sx = $sx . bsc($sa,5).bsc($sb,5);
             $sx .= bsc($img,2);
@@ -234,21 +239,41 @@ class ThConcept extends Model
             return $sx;
         }
 
-    function notes_Add($id)
+    function notes_Add($id,$dt)
         {
             $sx = '';
             $txt = lang('thesa.notes');
             $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
-            $sx .= onclick(PATH.MODULE.'edit/'.$id.'/notes',800,600);
-            $sx .= h($txt,5);        
-            $sx .= $this->list($id,'notes');
-            $sx .= '</span>';            
+            $url = PATH.MODULE.'popup/note/'.$id;            
+            $sx .= onclick($url,800,600);
+            $sx .= h($txt,5);
+            $sx .= '</span>';
+            $sx .= $this->show_propriety('NT',$dt,$id);
+            
             return $sx;
         }  
+
+        function notation_Add($id,$dt)
+        {
+            $sx = '';
+            $txt = lang('thesa.notation');
+            $txt .= '<img src="'.URL.'img/icone/plus.png" width="32">';
+            $url = PATH.MODULE.'popup/notation/'.$id;
+            $sx .= onclick($url,800,600);
+            $sx .= h($txt,5);
+            $sx .= '</span>';
+
+            $propn = 'notation';
+            //pre($dt);
+            $sx .= $this->show_labels($dt['data'],$propn); 
+            
+            return $sx;
+        }         
         
     function show_labels($dt,$propn)
         {
             $sx = '';
+            
             for($r=0;$r < count($dt);$r++)
                 {
                     $ln = $dt[$r];
@@ -526,29 +551,39 @@ class ThConcept extends Model
 
     function TermQuery($id,$lt)
         {
-            $this->select("id_c as id_c, c_concept as c_concept, rl1.n_name, rl2.n_name as name2, rl1.n_lang as n_lang, rl2.n_lang as n_lang2, lt1.ct_propriety, lt1.ct_concept, lt1.ct_use ");
+            $Proprieties = new \App\Models\RDF\Proprieties();
+            $prop = $Proprieties->getPropriety('Concept');
+            $cp = "id_c as id_c, c_concept as c_concept, rl1.n_name, rl2.n_name as name2, rl1.n_lang as n_lang, rl2.n_lang as n_lang2, lt1.ct_propriety, lt1.ct_concept, lt1.ct_use";
+            $this->select($cp);
             $this->join('th_concept_term as lt1','id_c = ct_concept');
             $this->join('th_literal as rl1','lt1.ct_term = rl1.id_n');
-            $this->join('th_concept_term as lt2','(lt1.ct_concept = lt2.ct_concept) and (lt2.ct_propriety = 25)');
+            $this->join('th_concept_term as lt2','(lt1.ct_concept = lt2.ct_concept) and (lt2.ct_propriety = '.$prop.')');
             $this->join('th_literal as rl2','lt2.ct_term = rl2.id_n');
             $this->where('c_th',$id);
             $this->where('c_ativo',1);
-            $this->like('rl1.n_name',$lt, 'after');
+            //$this->like('rl1.n_name',$lt, 'after');
+            $this->like('rl1.n_name',$lt);
             $this->orderBy('rl1.n_name');
+
             $dt = $this->findAll();
-            
+
             $sx = '<ul>';
+            $xid = 0;
             foreach($dt as $id=>$line)
                 {
                     $link = '<a href="'.(PATH.MODULE.'v/'.$line['ct_concept']).'">';
                     $linka = '</a>';
-                    $sx .= '<li>'.
+                    if ($xid != $line['ct_concept'])
+                    {
+                        $sx .= '<li>'.
                                 $link.$line['n_name'].'<sup> ('.$line['n_lang'].')</sup>';
                                 if (trim($line['n_name']) != trim($line['name2']))
                                     {
                                         $sx .= ' <i><b>USE</b></i> '.$line['name2'].'<sup> ('.$line['n_lang2'].')</sup>';
                                     }                                
                                 $sx .= $linka.'</li>';
+                    }
+                    $xid = $line['ct_concept'];
                 }
             $sx .= '</ul>';
             return $sx;
@@ -614,3 +649,4 @@ class ThConcept extends Model
             return $sx;
         }
 }
+
