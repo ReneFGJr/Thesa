@@ -42,6 +42,22 @@ class ThConceptTerms extends Model
     protected $beforeDelete         = [];
     protected $afterDelete          = [];
 
+    function concepts_all($th)
+        {
+            $dd = array();
+            $dt = $this
+                ->join('th_literal','id_n = ct_term','inner')
+                    ->where('ct_th',$th)
+                    ->where('ct_propriety',3)
+                    ->findAll();
+            for($r=0;$r < count($dt);$r++)
+                {
+                    $line = $dt[$r];
+                    $dd[$line['ct_concept']] = $line['n_name'].'@'.$line['n_lang'];
+                }
+            return($dd);
+        }
+
     function le($id)
         {
             $dt = $this

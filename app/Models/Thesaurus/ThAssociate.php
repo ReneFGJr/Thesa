@@ -42,10 +42,68 @@ class ThAssociate extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function relations_concepts_all($th)
+        {
+            $c_all = array();
+            $te = array();
+            $dt =
+                $this
+                ->join('th_proprieties','id_p = tg_propriety','left')
+                ->where('tg_th',$th)
+                ->where('tg_active',1)
+                ->where("(p_group = 'TE' or p_group = 'TG')")
+                ->findAll();
+
+            for ($r=0;$r < count($dt);$r++)
+                {
+                    $line = $dt[$r];
+                    $c1 = $line['tg_concept_1'];
+                    $c2 = $line['tg_concept_2'];
+                    if ($line['p_group'] == 'TG')
+                        {
+                            $c1 = $line['tg_concept_2'];
+                            $c2 = $line['tg_concept_1'];
+                        }
+                    $c_all[$c1][$c2] = 1;
+                    /************************************* Primary */
+                    if (!isset($te[$c1]))
+                        {
+                            $te[$c1] = 'P';
+                        }
+                    $te[$c2] = 'S';
+                }
+            $tree = array();
+            foreach($te as $id=>$tp)
+                {
+                    if ($tp == 'P')
+                        {
+                            $tree[$id] = array();
+                        }
+                }
+
+            foreach($tree as $id=>$c)
+                {
+                    $tree[$id] = $this->concepts_all_map($id,$c_all);
+                }                
+            return $tree;
+        }
+
+    function concepts_all_map($c,$dt)
+        {
+            if(isset($dt[$c]))
+                {
+                    foreach($dt[$c] as $id=>$tp)
+                        {
+                            $dt[$c][$id] = $this->concepts_all_map($id,$dt);
+                        }
+                    return $dt[$c];
+                }
+        }
+
     function concepts_associates($th,$d1)
         {
-            $d2 = $this->select('tg_concept_1 as id')->where('tg_concept_2',$d1)->findAll();
-            $d1 = $this->select('tg_concept_2 as id')->where('tg_concept_1',$d1)->findAll();
+            $d2 = $this->select('tg_concept_1 as id')->where('tg_concept_2',$d1)->where('tg_active',1)->findAll();
+            $d1 = $this->select('tg_concept_2 as id')->where('tg_concept_1',$d1)->where('tg_active',1)->findAll();
             $dd = array_merge($d1,$d2);
             $dt = array();
             for ($r=0; $r < count($dd); $r++) { 

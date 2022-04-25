@@ -405,15 +405,22 @@ class Thesa extends BaseController
 	}	
 
 	function sistematic($id = '', $ltr = '')
-	{
+	{		
 		$Sistematic = new \App\Models\Graph\Sistematic();
-		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();		
+		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
+		$ThAssociate = new \App\Models\Thesaurus\ThAssociate();
+		$ThConceptTerms = new \App\Models\Thesaurus\ThConceptTerms();
+		
 		$sx = '';
 		$sx .= $this->cab();
 		$sx .= $this->navbar();
 		$sx .= $ThThesaurus->show($id, $ltr);
 
-		$sx .= bs(bsc($Sistematic->Graph(1),12));
+		/******************************* Dados */
+		$rlt = $ThAssociate->relations_concepts_all($id);
+		$cpt = $ThConceptTerms->concepts_all($id);
+
+		$sx .= bs(bsc($Sistematic->Graph($rlt,$cpt),12));
 		$sx .= $this->footer();
 
 		return $sx;
@@ -494,7 +501,7 @@ class Thesa extends BaseController
 
 			$Socials = new \App\Models\Socials();
 			$ID = $Socials->getID();
-			
+
             $ThUsers = new \App\Models\Thesaurus\ThUsers();
             if (!$ThUsers->autorized($ID))
             {
