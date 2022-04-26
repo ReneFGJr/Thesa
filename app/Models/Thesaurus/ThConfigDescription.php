@@ -66,7 +66,8 @@ class ThConfigDescription extends Model
             $this->path = PATH.MODULE.'th_config/'.$id.'/description';
             $this->path_back = PATH.MODULE.'th_config';
             $this->pre = 'thesa.';
-            $sx = form($this);
+            $sx = h(lang('thesa.config_description'),3);
+            $sx .= form($this);
             return $sx;
         }
 }

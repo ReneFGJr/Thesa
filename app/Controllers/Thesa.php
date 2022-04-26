@@ -526,6 +526,17 @@ class Thesa extends BaseController
 						$sx .= $this->cab();
 						$sx .= $ThImages->index($d2,$d3,$d4,$d5,$d6);
 						break;
+					case 'icone':
+						$ThIcone = new \App\Models\Thesaurus\ThIcone();
+						$sx .= $this->cab();
+						$sx .= $ThIcone->icones_options($d2,$d3,$d4,$d5,$d6);
+						break;	
+					case 'icone_custom':
+						$ThIcone = new \App\Models\Thesaurus\ThIcone();
+						$sx .= $this->cab();
+						$sx .= $ThIcone->icones_upload($d2,$d3,$d4,$d5,$d6);
+						break;	
+											
 						
 					/****************** LABEL */
 					case 'label':

@@ -583,6 +583,12 @@ class ThThesaurus extends Model
             return $id;
         }
 
+    function le($id)
+        {
+            $dtt = $this->find($id);
+            return $dtt;
+        }
+
     function config($id,$d1,$d2,$d3)
         {   
             $sx = '';    
@@ -590,7 +596,7 @@ class ThThesaurus extends Model
             $ThUsers = new \App\Models\Thesaurus\ThUsers();
             $ThHeader = new \App\Models\Thesaurus\ThHeader();
             $id = $this->th($id);
-            $dtt = $this->find($id);    
+            $dtt = $this->le($id);    
             if ($dtt=='')
                 {
                     $sx = metarefresh(PATH.MODULE);

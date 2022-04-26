@@ -89,6 +89,7 @@ class ThHeader extends Model
 
     function title($dt,$authors='')
         {
+            $ThIcone = new \App\Models\Thesaurus\ThIcone();
             $sx = '';
             $sx .= bsc(
                 '<a href="'.PATH.MODULE.'/th/'.$dt['id_pa'].'">'.
@@ -98,29 +99,9 @@ class ThHeader extends Model
                 . $authors            
                 , 10
                 );
-            $sx .= bsc(
-                $img = '<img src="'.$this->show_icone($dt).'" class="img-fluid">', 2
-            );
+            $sx .= bsc($ThIcone->show_icone($dt),2);
             return $sx;
         }
 
-    function show_icone($line) {  
-        $id = $line['id_pa'];
-        $idc = $line['pa_icone'];        
-        if ($idc >= 0)
-            {
-                $idc = str_pad($idc, 3,STR_PAD_LEFT,'0');
-                $img = 'img/icone/thema/' .$idc. '.png';
-            } else {
-                $img = 'img/icone/custon/background_icone_' . $id . '.png';
-            }
-
-        $filename = $img;
-        if (!file_exists($filename))
-            {
-                $img = 'img/icone/custon/background_icone_000.png';
-            }
-        $sa = (URL.$img);
-        return $sa;
-    }
+    
 }

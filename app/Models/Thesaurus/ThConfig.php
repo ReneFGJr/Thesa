@@ -71,6 +71,9 @@ class ThConfig extends Model
             default:
                 $sx = 'ERROR';
                 break;
+            case 'icons':
+                $sx = $this->icons($id, $ac);
+                break;
             case 'relations':
                 $sx = $this->relations($id, $ac);
                 break;
@@ -89,6 +92,12 @@ class ThConfig extends Model
         }
         return ($sx);
     }
+    function icons($id,$ac)
+        {
+            $Th = new \App\Models\Thesaurus\ThConfigIcone();
+            $sx = $Th->edit($id,$ac);
+            return $sx;    
+        }    
     function relations_custom($id,$ac)
         {
             $Th = new \App\Models\Thesaurus\ThRelationsCustom();

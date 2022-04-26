@@ -47,7 +47,8 @@ class ThConfigColaboration extends Model
 
     function edit($id)
         {
-            $sx = $this->show($id);
+            $sx = h(lang('thesa.collaborations'),3);
+            $sx .= $this->show($id);
             $sx .= $this->btn_ass($id);
             return $sx;
         }
