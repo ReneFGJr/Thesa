@@ -191,6 +191,8 @@ class Thesa extends BaseController
 	function rest($th='')
 		{
 			$API = new \App\Models\Api\Query();
+			$voc = get("vocab");
+			if ($voc != '') { $th = $voc; }
 			$API->rest($th);
 		}
 

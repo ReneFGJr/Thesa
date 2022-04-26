@@ -49,8 +49,45 @@ class ThIcone extends Model
 
     function icones_upload($id)
         {
-            echo '==>'.$id;
-            $sx = form_open_multipart();
+            $sx = '';
+            if (isset($_FILES['icone']['tmp_name']))
+                {
+                    $tmp = trim($_FILES['icone']['tmp_name']);
+                    $type = mime_content_type($tmp);
+                    $ok = 1;
+                    switch($type)
+                        {
+                            default:
+                                $sx .= bsmessage(lang('thesa.file_error_type - '.$type ),3);
+                                $ok = 0;
+                                break;
+                            case 'image/jpeg':
+                                break;
+                            case 'image/jpg':
+                                break;
+                            case 'image/png':
+                                break;
+                            case 'image/gif':
+                                break;
+                        }
+                    if ($ok == 1)
+                        {
+                            $dir = 'img';
+                            dircheck($dir);
+                            $dir = 'img/icone/';
+                            dircheck($dir);
+                            $dir = 'img/icone/custom/';
+                            $idc = round($id)*(-1);
+                            $filename = $dir.str_pad($id, 3,STR_PAD_LEFT,'0').'.png';
+                            move_uploaded_file($tmp, $filename);
+                            $sx .= $this->set_icone($id,$idc);
+                            $sx .= wclose();
+                            return $sx;
+                        }
+                }
+
+
+            $sx .= form_open_multipart();
             $sx .= form_upload('icone');
             $sx .= form_submit(array('name' => 'submit', 'value' => lang('thesa.Upload_icone'), 'class' => 'btn btn-primary'));
             $sx .= form_close();

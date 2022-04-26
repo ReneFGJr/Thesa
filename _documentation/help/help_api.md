@@ -20,6 +20,10 @@ Troque o <b>sample</b> pelo nome do acronico do vocabulário consultado e <b>sea
 <code><a href="$URLrest/v1/data?id=c1" target="_blank"">$URLrest/v1/data?id=<a></code>
 </p>
 
+<h2>Sample 1</h2>
+<p>
+<code><a href="$URLrest/v1/search?unique=true&vocab=areas_cnpq&parent=&lang=en&&query=inf*" target="_blank">$URLrest/v1/search?unique=true&vocab=areas_cnpq&parent=&lang=en&&query=inf*</a></code></p>
+
 https://skosmos.dev.finto.fi
 
 http://skos.um.es/unescothes/

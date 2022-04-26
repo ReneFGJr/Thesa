@@ -72,9 +72,10 @@ class Json extends Model
                     $prefLabel = $line['n_name'];
                     $lang = $line['n_lang'];
                     $vocab =$thName;
-                    $type = array('skos:Concept','https://www.w3.org/2009/08/skos-reference/skos.html#Concept');
+                    $type = array('skos:Concept');
+                    //,'https://www.w3.org/2009/08/skos-reference/skos.html#Concept');
                     
-                    array_push($p['results'],array('uri'=>$uri,'type'=>$type,'prefLabel'=>$prefLabel,'lang'=>$lang,'vocab'=>$vocab));
+                    array_push($p['results'],array('uri'=>$uri,'type'=>$type,'localname'=>$line['ct_concept'],'prefLabel'=>$prefLabel,'lang'=>$lang,'vocab'=>$vocab));
                     
                 }
             $js = json_encode($p);

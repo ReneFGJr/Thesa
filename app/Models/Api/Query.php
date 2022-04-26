@@ -57,6 +57,7 @@ class Query extends Model
                     exit;
                 } else {                
                     $q = get("query");
+                    $q = troca($q,'*','');
                     if (($q != '') and ($th > 0))
                         {
                         $dt = $ThLiteralTh->search($q,$th); 

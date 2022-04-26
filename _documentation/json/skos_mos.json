@@ -1,0 +1,665 @@
+{
+    "@context": {
+        "skos": "http:\/\/www.w3.org\/2004\/02\/skos\/core#",
+        "isothes": "http:\/\/purl.org\/iso25964\/skos-thes#",
+        "onki": "http:\/\/schema.onki.fi\/onki#",
+        "uri": "@id",
+        "type": "@type",
+        "results": {
+            "@id": "onki:results",
+            "@container": "@list"
+        },
+        "prefLabel": "skos:prefLabel",
+        "altLabel": "skos:altLabel",
+        "hiddenLabel": "skos:hiddenLabel",
+        "@language": "en"
+    },
+    "uri": "",
+    "results": [
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01128",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01128",
+            "prefLabel": "Early childhood",
+            "lang": "en",
+            "altLabel": "Infancy",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C00574",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C00574",
+            "prefLabel": "Child mortality",
+            "lang": "en",
+            "altLabel": "Infant mortality",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01973",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01973",
+            "prefLabel": "Infectious diseases",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01460",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01460",
+            "prefLabel": "Excision",
+            "lang": "en",
+            "altLabel": "Infibulation",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01974",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01974",
+            "prefLabel": "Inflation",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01975",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01975",
+            "prefLabel": "Informal education",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01976",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01976",
+            "prefLabel": "Informal sector",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C00750",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C00750",
+            "prefLabel": "Computer science",
+            "lang": "en",
+            "altLabel": "Informatics",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C00758",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C00758",
+            "prefLabel": "Computers and development",
+            "lang": "en",
+            "altLabel": "Informatics and development",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01977",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01977",
+            "prefLabel": "Information",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01085",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01085",
+            "prefLabel": "Documentary analysis",
+            "lang": "en",
+            "altLabel": "Information analysis",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/COL005",
+            "type": [
+                "http:\/\/purl.org\/iso25964\/skos-thes#ConceptGroup"
+            ],
+            "localname": "COL005",
+            "prefLabel": "Information and communication",
+            "lang": "en",
+            "notation": "5",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01978",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01978",
+            "prefLabel": "Information and development",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C00020",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C00020",
+            "prefLabel": "Access to information",
+            "lang": "en",
+            "altLabel": "Information barriers",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01089",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01089",
+            "prefLabel": "Documents",
+            "lang": "en",
+            "altLabel": "Information bearing materials",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01979",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01979",
+            "prefLabel": "Information dissemination",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01980",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01980",
+            "prefLabel": "Information exchange",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/COL520",
+            "type": [
+                "http:\/\/purl.org\/iso25964\/skos-thes#ConceptGroup"
+            ],
+            "localname": "COL520",
+            "prefLabel": "Information industry",
+            "lang": "en",
+            "notation": "5.20",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01981",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01981",
+            "prefLabel": "Information industry",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01982",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01982",
+            "prefLabel": "Information literacy",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/COL515",
+            "type": [
+                "http:\/\/purl.org\/iso25964\/skos-thes#ConceptGroup"
+            ],
+            "localname": "COL515",
+            "prefLabel": "Information management",
+            "lang": "en",
+            "notation": "5.15",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01983",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01983",
+            "prefLabel": "Information media",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01984",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01984",
+            "prefLabel": "Information needs",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01985",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01985",
+            "prefLabel": "Information processing",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01986",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01986",
+            "prefLabel": "Information retrieval",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01987",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01987",
+            "prefLabel": "Information science education",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/COL505",
+            "type": [
+                "http:\/\/purl.org\/iso25964\/skos-thes#ConceptGroup"
+            ],
+            "localname": "COL505",
+            "prefLabel": "Information sciences",
+            "lang": "en",
+            "notation": "5.05",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01988",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01988",
+            "prefLabel": "Information sciences",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01989",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01989",
+            "prefLabel": "Information scientists",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01990",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01990",
+            "prefLabel": "Information services",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01991",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01991",
+            "prefLabel": "Information society",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/COL530",
+            "type": [
+                "http:\/\/purl.org\/iso25964\/skos-thes#ConceptGroup"
+            ],
+            "localname": "COL530",
+            "prefLabel": "Information sources",
+            "lang": "en",
+            "notation": "5.30",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01992",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01992",
+            "prefLabel": "Information sources",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01993",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01993",
+            "prefLabel": "Information systems",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01994",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01994",
+            "prefLabel": "Information systems evaluation",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01995",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01995",
+            "prefLabel": "Information technology",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/COL545",
+            "type": [
+                "http:\/\/purl.org\/iso25964\/skos-thes#ConceptGroup"
+            ],
+            "localname": "COL545",
+            "prefLabel": "Information technology (hardware)",
+            "lang": "en",
+            "notation": "5.45",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/COL540",
+            "type": [
+                "http:\/\/purl.org\/iso25964\/skos-thes#ConceptGroup"
+            ],
+            "localname": "COL540",
+            "prefLabel": "Information technology (software)",
+            "lang": "en",
+            "notation": "5.40",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01996",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01996",
+            "prefLabel": "Information theory",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01997",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01997",
+            "prefLabel": "Information transfer",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01998",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01998",
+            "prefLabel": "Information user instruction",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C01999",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C01999",
+            "prefLabel": "Information user studies",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C02000",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C02000",
+            "prefLabel": "Information users",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C02001",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C02001",
+            "prefLabel": "Information\/library administration",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C02002",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C02002",
+            "prefLabel": "Information\/library budgets",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C02003",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C02003",
+            "prefLabel": "Information\/library cooperation",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C02004",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C02004",
+            "prefLabel": "Information\/library development",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C02005",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C02005",
+            "prefLabel": "Information\/library economics",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C02006",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C02006",
+            "prefLabel": "Information\/library equipment",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C02007",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C02007",
+            "prefLabel": "Information\/library facilities",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C02008",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C02008",
+            "prefLabel": "Information\/library finance",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C02009",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C02009",
+            "prefLabel": "Information\/library legislation",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C02010",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C02010",
+            "prefLabel": "Information\/library management",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C02011",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C02011",
+            "prefLabel": "Information\/library networks",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C02012",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C02012",
+            "prefLabel": "Information\/library personnel",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C02013",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C02013",
+            "prefLabel": "Information\/library planning",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C02014",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C02014",
+            "prefLabel": "Information\/library policy",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C02015",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C02015",
+            "prefLabel": "Information\/library profession",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C02016",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C02016",
+            "prefLabel": "Information\/library research",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C02017",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C02017",
+            "prefLabel": "Information\/library resources",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C02018",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C02018",
+            "prefLabel": "Information\/library schools",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C02019",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C02019",
+            "prefLabel": "Information\/library standards",
+            "lang": "en",
+            "vocab": "unesco"
+        },
+        {
+            "uri": "http:\/\/skos.um.es\/unescothes\/C02020",
+            "type": [
+                "skos:Concept"
+            ],
+            "localname": "C02020",
+            "prefLabel": "Information\/library statistics",
+            "lang": "en",
+            "vocab": "unesco"
+        }
+    ]
+}

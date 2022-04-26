@@ -234,6 +234,7 @@ class ThThesaurus extends Model
     function card($line,$tp='')
         {
             $ThHeader = new \App\Models\Thesaurus\ThHeader();
+            $ThIcone = new \App\Models\Thesaurus\ThIcone();
             $sx = '';
             $link = '<a href="'.(PATH.MODULE.'th/'.$line['id_pa']).'">';
             $linka = '</a>';
@@ -250,7 +251,7 @@ class ThThesaurus extends Model
                     $card .= $link;
                     $card .= '<div class="card">';
                     $card .= '<div class="card_image">';
-                    $card .= '<img src="'.$ThHeader->show_icone($line).'" class="img-fluid">';
+                    $card .= $ThIcone->show_icone($line);
                     $card .= '</div>';
                     $card .= '<div class="card_title text-center p-1">';
                     $card .= $line['pa_name'];
