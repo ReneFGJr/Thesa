@@ -113,7 +113,7 @@ class ThConfig extends Model
 
     function language($id)
     {
-        $Th = new \App\Models\Thesaurus\ThConfiglanguage();
+        $Th = new \App\Models\Thesaurus\ThConfigLanguage();
         $sx = $Th->edit($id);
         return $sx;
     }
