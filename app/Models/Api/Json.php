@@ -55,6 +55,7 @@ class Json extends Model
         {
             $p = $this->json_prefix();
             header('Content-Type: application/json; charset=utf-8');
+            header('Access-Control-Allow-Origin: *');
 
             $p['@context']['uri'] = '@id';
             $p['@context']['type'] = '@type';
