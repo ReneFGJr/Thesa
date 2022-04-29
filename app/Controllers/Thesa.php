@@ -192,8 +192,15 @@ class Thesa extends BaseController
 		{
 			$API = new \App\Models\Api\Query();
 			$voc = get("vocab");
+			$uri = get("uri");
 			if ($voc != '') { $th = $voc; }
-			$API->rest($th,$ver,$act);
+			if ($url != '')
+				{
+					$API->uri($th,$ver,$act);
+				} else {
+					$API->rest($th,$ver,$act);
+				}
+			
 		}
 
 	function data($q='')

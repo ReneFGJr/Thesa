@@ -40,6 +40,14 @@ class Query extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function uri($d1,$d2,$d3)
+        {
+            echo '==d1==>'.$d1.'<br>';
+            echo '==d2==>'.$d2.'<br>';
+            echo '==d3==>'.$d3.'<br>';
+            exit;
+        }
+
     function rest($thName='',$act,$ver)
         {
             $ThLiteralTh = new \App\Models\Thesaurus\ThLiteralTh();
@@ -65,7 +73,6 @@ class Query extends Model
                     if (($q != '') and ($th > 0))
                         {
                         $dt = $ThLiteralTh->search($q,$th); 
-
                         $API->index('search',$dt,$th,$thName,$q);
                         }
                 }
