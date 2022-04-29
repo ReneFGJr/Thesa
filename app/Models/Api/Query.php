@@ -55,6 +55,8 @@ class Query extends Model
                     $dt['stamp'] = date('Y-m-d H:i:s');
                     $dt['act'] = $act;
                     $dt['ver'] = $ver;
+                    $dt['thName'] = $thName;
+                    $dt['th'] = $th;
                     echo json_encode($dt);
                     exit;
                 } else {                
