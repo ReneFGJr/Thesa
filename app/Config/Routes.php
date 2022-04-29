@@ -36,16 +36,8 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Thesa::index');
 
 $routes->add('/v/(:any)', 'Thesa::v/$1');
-
-$routes->get('/v/(:any)/(:any)/(:any)', 'Thesa::v/$1/$2/$3');
-/* FULLREST Search */
-$routes->add('/public/rest/v1/data', 'Thesa::data/$1');
-//$routes->get('/social/ajax/', 'Main::social/');
-//$routes->add('/main/social/', 'Main::social/');
-//$routes->add('/v/(:num)', 'Res::v/$1');
-//$routes->add('/download/(:num)', 'Res::download/$1');
-//$routes->add('/res/v/', 'Main::v');
-
+$routes->get('/rest/(:any)/(:any)/(:any)/(:any)', 'Thesa::rest/$1');
+$routes->get('/rest/(:any)/(:any)/(:any)', 'Thesa::rest/$1/$2/$3');
 
 /*
  * --------------------------------------------------------------------
@@ -64,3 +56,4 @@ if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php'))
 {
 	require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }
+

@@ -40,7 +40,7 @@ class Query extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function rest($thName='')
+    function rest($thName='',$act,$ver)
         {
             $ThLiteralTh = new \App\Models\Thesaurus\ThLiteralTh();
             $ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
@@ -53,6 +53,8 @@ class Query extends Model
                     $dt['erro'] = '500';
                     $dt['message'] = lang('thesa.error500');
                     $dt['stamp'] = date('Y-m-d H:i:s');
+                    $dt['act'] = $act;
+                    $dt['ver'] = $ver;
                     echo json_encode($dt);
                     exit;
                 } else {                

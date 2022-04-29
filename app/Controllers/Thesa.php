@@ -188,12 +188,12 @@ class Thesa extends BaseController
 	}
 
 	/******************************************************************************************************** */
-	function rest($th='')
+	function rest($ver='',$act='',$th='')
 		{
 			$API = new \App\Models\Api\Query();
 			$voc = get("vocab");
 			if ($voc != '') { $th = $voc; }
-			$API->rest($th);
+			$API->rest($th,$ver,$act);
 		}
 
 	function data($q='')
