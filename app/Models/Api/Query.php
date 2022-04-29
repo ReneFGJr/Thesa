@@ -42,7 +42,12 @@ class Query extends Model
 
     function uri($d1,$d2,$d3,$uri)
         {
-            echo '==d1==>'.$d1.'<br>';
+            $ThConcept = new \App\Models\Thesaurus\ThConcept();
+
+            $id = '';
+            $id = substr($uri, strpos($uri, 'v/') + 2,strlen($uri));
+            $dt = $ThConcept->le($id);
+            echo '==id==>'.$id.'<br>';
             echo '==d2==>'.$d2.'<br>';
             echo '==d3==>'.$d3.'<br>';
             echo '==uri==>'.$uri.'<br>';
