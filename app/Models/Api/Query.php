@@ -59,7 +59,7 @@ class Query extends Model
                      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
             
               <skos:ConceptScheme rdf:about="'.PATH.MODULE.'th/'.$th.'">
-                <skos:prefLabel xml:lang="br"> $prefLabel</skos:prefLabel>
+                <skos:prefLabel xml:lang="br">'.$prefLabel.'</skos:prefLabel>
                 <ns0:hasMicroThesaurus rdf:resource="'.PATH.MODULE.'v/'.$id.'"/>
               </skos:ConceptScheme>
             </rdf:RDF>';
