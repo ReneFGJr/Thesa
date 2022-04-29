@@ -47,7 +47,23 @@ class Query extends Model
             $id = '';
             $id = substr($uri, strpos($uri, 'v/') + 2,strlen($uri));
             $dt = $ThConcept->le($id);
-            pre($dt);
+            $prefLabel = $dt['n_name'];
+            $th = $dt['c_th'];
+            header("Content-type: text/xml");            
+            $sx = '<'.'?xml version="1.0" encoding="utf-8" ?'.'>';
+            $sx .= '
+            <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                     xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+                     xmlns:ns0="http://purl.org/umu/uneskos#"
+                     xmlns:isothes="http://purl.org/iso25964/skos-thes#"
+                     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+            
+              <skos:ConceptScheme rdf:about="'.PATH.MODULE.'th/'.$th.'">
+                <skos:prefLabel xml:lang="br"> $prefLabel</skos:prefLabel>
+                <ns0:hasMicroThesaurus rdf:resource="'.PATH.MODULE.'v/'.$id.'"/>
+              </skos:ConceptScheme>
+            </rdf:RDF>';
+            echo $sx;
             exit;
         }
 
