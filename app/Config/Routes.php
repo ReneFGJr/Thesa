@@ -36,13 +36,9 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Thesa::index');
 
 $routes->add('/v/(:any)', 'Thesa::v/$1');
+
+$routes->get('/v/(:any)/(:any)/(:any)', 'Thesa::v/$1/$2/$3');
 /* FULLREST Search */
-$routes->add('/rest/v1/search/(:any)', 'Thesa::rest/$1');
-$routes->add('/rest/v1/search/', 'Thesa::rest');
-$routes->add('index.php/thesa/rest/v1/search/', 'Thesa::rest');
-$routes->add('/public/rest/v1/search/(:any)', 'Thesa::rest/$1');
-/* FULLREST Data */
-$routes->add('/rest/v1/data', 'Thesa::data/$1');
 $routes->add('/public/rest/v1/data', 'Thesa::data/$1');
 //$routes->get('/social/ajax/', 'Main::social/');
 //$routes->add('/main/social/', 'Main::social/');
