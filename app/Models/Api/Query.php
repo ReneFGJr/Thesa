@@ -49,7 +49,8 @@ class Query extends Model
             $dt = $ThConcept->le($id);
             $prefLabel = $dt['n_name'];
             $th = $dt['c_th'];
-            header("Content-type: text/xml");            
+            header("Content-type: text/xml");     
+            header('Access-Control-Allow-Origin: *');       
             $sx = '<'.'?xml version="1.0" encoding="utf-8" ?'.'>';
             $sx .= '
             <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
