@@ -40,11 +40,12 @@ class Query extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function uri($d1,$d2,$d3)
+    function uri($d1,$d2,$d3,$uri)
         {
             echo '==d1==>'.$d1.'<br>';
             echo '==d2==>'.$d2.'<br>';
             echo '==d3==>'.$d3.'<br>';
+            echo '==uri==>'.$uri.'<br>';
             exit;
         }
 

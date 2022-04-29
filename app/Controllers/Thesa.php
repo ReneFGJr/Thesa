@@ -196,7 +196,7 @@ class Thesa extends BaseController
 			if ($voc != '') { $th = $voc; }
 			if ($uri != '')
 				{
-					$API->uri($th,$ver,$act);
+					$API->uri($th,$ver,$act,$uri);
 				} else {
 					$API->rest($th,$ver,$act);
 				}
