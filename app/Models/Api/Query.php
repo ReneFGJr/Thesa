@@ -61,6 +61,9 @@ class Query extends Model
             
               <skos:ConceptScheme rdf:about="'.PATH.MODULE.'th/'.$th.'">
                 <skos:prefLabel xml:lang="br">'.$prefLabel.'</skos:prefLabel>
+                <skos:prefLabel xml:lang="en">'.$prefLabel.'</skos:prefLabel>
+                <skos:prefLabel xml:lang="us">'.$prefLabel.'</skos:prefLabel>
+                <skos:prefLabel xml:lang="pt">'.$prefLabel.'</skos:prefLabel>
                 <ns0:hasMicroThesaurus rdf:resource="'.PATH.MODULE.'v/'.$id.'"/>
               </skos:ConceptScheme>
             </rdf:RDF>';
