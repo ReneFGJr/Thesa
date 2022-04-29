@@ -91,5 +91,5 @@ class Security extends BaseConfig
      *
      * @deprecated
      */
-    public $samesite = 'Lax';
+    public $samesite = 'None';
 }
