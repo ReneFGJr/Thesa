@@ -47,10 +47,7 @@ class Query extends Model
             $id = '';
             $id = substr($uri, strpos($uri, 'v/') + 2,strlen($uri));
             $dt = $ThConcept->le($id);
-            echo '==id==>'.$id.'<br>';
-            echo '==d2==>'.$d2.'<br>';
-            echo '==d3==>'.$d3.'<br>';
-            echo '==uri==>'.$uri.'<br>';
+            pre($dt);
             exit;
         }
 
