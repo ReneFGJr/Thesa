@@ -77,9 +77,7 @@ if (! function_exists('directory_mirror')) {
         if (! is_dir($targetDir = rtrim($targetDir, '\\/'))) {
             @mkdir($targetDir, 0755, true);
         }
-
         $dirLen = strlen($originDir);
-
         /**
          * @var SplFileInfo $file
          */
