@@ -15,7 +15,7 @@ class ThConfigDescription extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_pa','pa_name', 'pa_achronic', 
+        'id_pa','pa_name', /* 'pa_achronic', */
         'pa_description','pa_status',
         'pa_classe','pa_version',
         'pa_introdution','pa_methodology','pa_audience',
@@ -24,7 +24,7 @@ class ThConfigDescription extends Model
     ];
     protected $typeFields    = [    
         'hidden',
-        'string:150*',  'asc:30*' ,
+        'string:150*', /* 'asc:30*' */
         'text',
         'status*',
         'sql:id_pac:pac_name:th_thesaurus_class*',
