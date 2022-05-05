@@ -114,6 +114,7 @@ class Index extends Model
                 $pref = -1;
                 for ($r=0;$r < count($hd);$r++) {
                     if ($hd[$r] == 'preLabel') { $pref = $r; }
+                    if ($hd[$r] == 'prefLabel') { $pref = $r; }
                 }
                 $sx .= '<ul>';
                 for ($r=1;$r < count($txt);$r++)
