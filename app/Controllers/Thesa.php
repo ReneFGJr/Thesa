@@ -1,11 +1,10 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
 
-$this->session = \Config\Services::session();
 $language = \Config\Services::language();
+$this->session = \Config\Services::session();
 
 helper(['boostrap', 'graphs', 'sisdoc_forms', 'form', 'nbr']);
 helper("URL");
