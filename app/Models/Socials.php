@@ -110,6 +110,27 @@ class Socials extends Model
 		}
 
 		switch ($cmd) {
+			case 'session':
+				if ($_SERVER['CI_ENVIRONMENT'] == 'development') {
+				$id = 1;
+				echo '<pre>';
+				print_r($_SESSION);
+				echo '</pre>';
+				$newdata = [
+					'id'  => $id,
+					'email'     => 'Usuário Test (ADMIN)',
+					'access' => $this->putPerfil(array(0 => '#ADM'), $id),
+					'time' => time()
+				];
+				$session = session();
+				$session->set($newdata);
+
+				echo '<pre>';
+				print_r($_SESSION);
+				echo '</pre>';
+
+				}
+				break;
 			case 'test':
 				if ($_SERVER['CI_ENVIRONMENT'] == 'development') {
 					$id = 1;
