@@ -407,6 +407,10 @@ class ThThesaurus extends Model
                                // none;
                            break;
 
+                           case 'code':
+                               // none;
+                           break;                           
+
                            case 'prefLabel':
                                array_push($nodes,array(
                                    'n_name'=>$line['n_name'].'@'.$line['n_lang'],
