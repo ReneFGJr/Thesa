@@ -52,6 +52,11 @@ class Proprieties extends Model
                 {
                     return $dt[0]['id_p'];
                 }
+            if ($force == true)
+                {
+                    $id = $this->insert(['p_prefix'=>1,'p_propriey'=>$prop]);
+                    return $id;
+                }
             return 0;
         }
 }

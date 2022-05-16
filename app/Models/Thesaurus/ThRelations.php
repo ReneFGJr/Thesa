@@ -59,7 +59,7 @@ class ThRelations extends Model
         {
             $sx = '';
             $Propriety = new \App\Models\RDF\Proprieties();
-            $idP = $Propriety->getPropriety($prop);
+            $idP = $Propriety->getPropriety($prop,true);
             if ($idP == 0) {
                 $sx .= bsmessage('Erro #02 - Propriety ' . $prop . ' not found');
                 echo $sx;
