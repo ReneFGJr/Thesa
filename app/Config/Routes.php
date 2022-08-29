@@ -35,6 +35,11 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Thesa::index');
 
+$routes->get('/api', 'Api::index');
+$routes->get('/api/(:any)', 'Api::index/$1');
+$routes->post('/api/(:any)', 'Api::index/$1');
+$routes->post('/api/(:any)/(:any)', 'Api::index/$1/$2');
+
 $routes->add('/v/(:any)', 'Thesa::c/$1');
 $routes->get('/rest/(:any)/(:any)/(:any)/(:any)', 'Thesa::rest/$1');
 $routes->get('/rest/(:any)/(:any)/(:any)', 'Thesa::rest/$1/$2/$3');
@@ -56,4 +61,3 @@ if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php'))
 {
 	require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }
-
