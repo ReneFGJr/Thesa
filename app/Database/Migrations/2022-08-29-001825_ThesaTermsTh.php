@@ -23,6 +23,12 @@ class ThesaTermsTh extends Migration
                 'type' => 'INT',
                 'null' => true,
             ],
+            'term_th_concept' => [
+                'type' => 'INT',
+                'null' => true,
+                'default' => 0,
+            ],
+
         ]);
         $this->forge->addKey('term_th_id', true);
         $this->forge->addForeignKey('term_th_term', 'Thesa_Terms', 'term_id');

@@ -22,7 +22,7 @@ use Locale;
 /**
  * Class IncomingRequest
  *
- * Represents an incoming, getServer-side HTTP request.
+ * Represents an incoming, server-side HTTP request.
  *
  * Per the HTTP specification, this interface includes properties for
  * each of the following:
@@ -63,6 +63,8 @@ class IncomingRequest extends Request
      * everything this cares about (and the router, etc) is the portion
      * AFTER the script name. So, if hosted in a sub-folder this will
      * appear different than actual URL. If you need that use getPath().
+     *
+     * @TODO should be protected. Use getUri() instead.
      *
      * @var URI
      */
@@ -345,7 +347,7 @@ class IncomingRequest extends Request
      */
     public function isCLI(): bool
     {
-        return is_cli();
+        return false;
     }
 
     /**
@@ -389,7 +391,7 @@ class IncomingRequest extends Request
         $this->path = $path;
         $this->uri->setPath($path);
 
-        $config = $config ?? $this->config;
+        $config ??= $this->config;
 
         // It's possible the user forgot a trailing slash on their
         // baseURL, so let's help them out.
@@ -518,7 +520,7 @@ class IncomingRequest extends Request
      */
     public function getJSON(bool $assoc = false, int $depth = 512, int $options = 0)
     {
-        return json_decode($this->body, $assoc, $depth, $options);
+        return json_decode($this->body ?? '', $assoc, $depth, $options);
     }
 
     /**
@@ -535,15 +537,19 @@ class IncomingRequest extends Request
     {
         helper('array');
 
-        $data = dot_array_search($index, $this->getJSON(true));
+        $json = $this->getJSON(true);
+        if (! is_array($json)) {
+            return null;
+        }
+        $data = dot_array_search($index, $json);
 
         if ($data === null) {
             return null;
         }
 
         if (! is_array($data)) {
-            $filter = $filter ?? FILTER_DEFAULT;
-            $flags  = is_array($flags) ? $flags : (is_numeric($flags) ? (int) $flags : 0);
+            $filter ??= FILTER_DEFAULT;
+            $flags = is_array($flags) ? $flags : (is_numeric($flags) ? (int) $flags : 0);
 
             return filter_var($data, $filter, $flags);
         }
@@ -563,7 +569,7 @@ class IncomingRequest extends Request
      */
     public function getRawInput()
     {
-        parse_str($this->body, $output);
+        parse_str($this->body ?? '', $output);
 
         return $output;
     }

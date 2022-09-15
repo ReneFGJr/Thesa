@@ -137,14 +137,20 @@ class UploadedFile extends File implements UploadedFileInterface
             throw HTTPException::forInvalidFile();
         }
 
-        $name        = $name ?? $this->getName();
+        $name ??= $this->getName();
         $destination = $overwrite ? $targetPath . $name : $this->getDestination($targetPath . $name);
 
         try {
-            move_uploaded_file($this->path, $destination);
+            $this->hasMoved = move_uploaded_file($this->path, $destination);
         } catch (Exception $e) {
             $error   = error_get_last();
-            $message = isset($error['message']) ? strip_tags($error['message']) : '';
+            $message = strip_tags($error['message'] ?? '');
+
+            throw HTTPException::forMoveFailed(basename($this->path), $targetPath, $message);
+        }
+
+        if ($this->hasMoved === false) {
+            $message = 'move_uploaded_file() returned false';
 
             throw HTTPException::forMoveFailed(basename($this->path), $targetPath, $message);
         }
@@ -152,9 +158,8 @@ class UploadedFile extends File implements UploadedFileInterface
         @chmod($targetPath, 0777 & ~umask());
 
         // Success, so store our new information
-        $this->path     = $targetPath;
-        $this->name     = basename($destination);
-        $this->hasMoved = true;
+        $this->path = $targetPath;
+        $this->name = basename($destination);
 
         return true;
     }
@@ -278,7 +283,7 @@ class UploadedFile extends File implements UploadedFileInterface
      * type but will return the clientExtension if it fails to do so.
      *
      * This method will always return a more or less helpfull extension
-     * but might be insecure if the mime type is not machted. Consider
+     * but might be insecure if the mime type is not matched. Consider
      * using guessExtension for a more safe version.
      */
     public function getExtension(): string
@@ -330,7 +335,7 @@ class UploadedFile extends File implements UploadedFileInterface
     public function store(?string $folderName = null, ?string $fileName = null): string
     {
         $folderName = rtrim($folderName ?? date('Ymd'), '/') . '/';
-        $fileName   = $fileName ?? $this->getRandomName();
+        $fileName ??= $this->getRandomName();
 
         // Move the uploaded file to a new location.
         $this->move(WRITEPATH . 'uploads/' . $folderName, $fileName);

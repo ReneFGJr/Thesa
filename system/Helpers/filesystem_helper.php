@@ -77,7 +77,9 @@ if (! function_exists('directory_mirror')) {
         if (! is_dir($targetDir = rtrim($targetDir, '\\/'))) {
             @mkdir($targetDir, 0755, true);
         }
+
         $dirLen = strlen($originDir);
+
         /**
          * @var SplFileInfo $file
          */
@@ -89,7 +91,9 @@ if (! function_exists('directory_mirror')) {
             $target = $targetDir . substr($origin, $dirLen);
 
             if ($file->isDir()) {
-                mkdir($target, 0755);
+                if (! is_dir($target)) {
+                    mkdir($target, 0755);
+                }
             } elseif (! is_file($target) || ($overwrite && is_file($target))) {
                 copy($origin, $target);
             }
@@ -190,9 +194,14 @@ if (! function_exists('get_filenames')) {
      * @param string    $sourceDir   Path to source
      * @param bool|null $includePath Whether to include the path as part of the filename; false for no path, null for a relative path, true for full path
      * @param bool      $hidden      Whether to include hidden files (files beginning with a period)
+     * @param bool      $includeDir  Whether to include directories
      */
-    function get_filenames(string $sourceDir, ?bool $includePath = false, bool $hidden = false): array
-    {
+    function get_filenames(
+        string $sourceDir,
+        ?bool $includePath = false,
+        bool $hidden = false,
+        bool $includeDir = true
+    ): array {
         $files = [];
 
         $sourceDir = realpath($sourceDir) ?: $sourceDir;
@@ -208,12 +217,14 @@ if (! function_exists('get_filenames')) {
                     continue;
                 }
 
-                if ($includePath === false) {
-                    $files[] = $basename;
-                } elseif ($includePath === null) {
-                    $files[] = str_replace($sourceDir, '', $name);
-                } else {
-                    $files[] = $name;
+                if ($includeDir || ! $object->isDir()) {
+                    if ($includePath === false) {
+                        $files[] = $basename;
+                    } elseif ($includePath === null) {
+                        $files[] = str_replace($sourceDir, '', $name);
+                    } else {
+                        $files[] = $name;
+                    }
                 }
             }
         } catch (Throwable $e) {

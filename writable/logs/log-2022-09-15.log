@@ -1,0 +1,430 @@
+CRITICAL - 2022-09-15 12:55:52 --> Call to undefined method App\Models\Thesa\Index::le
+in SYSTEMPATH\Model.php on line 774.
+ 1 APPPATH\Controllers\Thesa.php(28): CodeIgniter\Model->__call('le', [...])
+ 2 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Thesa->index()
+ 3 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Thesa))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 12:56:02 --> Call to undefined method App\Models\Thesa\Thesa::header
+in SYSTEMPATH\Model.php on line 774.
+ 1 APPPATH\Controllers\Thesa.php(29): CodeIgniter\Model->__call('header', [...])
+ 2 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Thesa->index()
+ 3 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Thesa))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 12:56:26 --> Call to undefined function App\Models\Thesa\pre()
+in APPPATH\Models\Thesa\Thesa.php on line 51.
+ 1 APPPATH\Controllers\Thesa.php(29): App\Models\Thesa\Thesa->header([...])
+ 2 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Thesa->index()
+ 3 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Thesa))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 13:45:18 --> Undefined variable: css
+in APPPATH\Views\header\header.php on line 35.
+ 1 APPPATH\Views\header\header.php(35): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined variable: css', 'APPPATH\\Views\\header\\header.php', 35, [...])
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\header\\header.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1142): CodeIgniter\View\View->render('header/header', [], true)
+ 5 APPPATH\Controllers\Thesa.php(22): view('header/header', [...])
+ 6 APPPATH\Controllers\Thesa.php(29): App\Controllers\Thesa->cab()
+ 7 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Thesa->index()
+ 8 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Thesa))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 14:13:03 --> Object of class App\Models\RDF\ThTerm could not be converted to string
+in APPPATH\Controllers\Admin.php on line 35.
+ 1 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms')
+ 2 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 3 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 14:13:21 --> Object of class App\Models\RDF\ThTerm could not be converted to string
+in APPPATH\Controllers\Admin.php on line 35.
+ 1 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms')
+ 2 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 3 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 14:13:53 --> Call to undefined method App\Models\RDF\ThTerm::index
+in SYSTEMPATH\Model.php on line 774.
+ 1 APPPATH\Controllers\Admin.php(36): CodeIgniter\Model->__call('index', [...])
+ 2 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms')
+ 3 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 14:25:24 --> syntax error, unexpected 'bsc' (T_STRING), expecting ')'
+in APPPATH\Models\RDF\ThTerm.php on line 78.
+ 1 SYSTEMPATH\Autoloader\Autoloader.php(259): CodeIgniter\Autoloader\Autoloader->includeFile('APPPATH\\Models\\RDF\\ThTerm.php')
+ 2 SYSTEMPATH\Autoloader\Autoloader.php(237): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Models\\RDF\\ThTerm')
+ 3 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Models\\RDF\\ThTerm')
+ 4 APPPATH\Controllers\Admin.php(35): spl_autoload_call('App\\Models\\RDF\\ThTerm')
+ 5 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add')
+ 6 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 14:25:35 --> Undefined variable: sb
+in APPPATH\Models\RDF\ThTerm.php on line 72.
+ 1 APPPATH\Models\RDF\ThTerm.php(72): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined variable: sb', 'APPPATH\\Models\\RDF\\ThTerm.php', 72, [...])
+ 2 APPPATH\Models\RDF\ThTerm.php(52): App\Models\RDF\ThTerm->form()
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ERROR - 2022-09-15 14:32:36 --> mysqli_sql_exception: Unknown column 'lg_code' in 'field list' in D:\www\Thesa\system\Database\MySQLi\Connection.php:292
+Stack trace:
+#0 D:\www\Thesa\system\Database\MySQLi\Connection.php(292): mysqli->query('INSERT INTO `Us...', 0)
+#1 D:\www\Thesa\system\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `Us...')
+#2 D:\www\Thesa\system\Database\BaseConnection.php(620): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `Us...')
+#3 D:\www\Thesa\system\Database\BaseBuilder.php(1916): CodeIgniter\Database\BaseConnection->query('INSERT INTO `Us...', Array, false)
+#4 D:\www\Thesa\app\Database\Migrations\2022-09-15-093111_ThesaLinguage.php(49): CodeIgniter\Database\BaseBuilder->insert(Array)
+#5 D:\www\Thesa\system\Database\MigrationRunner.php(868): App\Database\Migrations\ThesaLinguage->up()
+#6 D:\www\Thesa\system\Database\MigrationRunner.php(187): CodeIgniter\Database\MigrationRunner->migrate('up', Object(stdClass))
+#7 D:\www\Thesa\system\Commands\Database\Migrate.php(84): CodeIgniter\Database\MigrationRunner->latest(NULL)
+#8 D:\www\Thesa\system\CLI\Commands.php(63): CodeIgniter\Commands\Database\Migrate->run(Array)
+#9 D:\www\Thesa\system\CLI\BaseCommand.php(112): CodeIgniter\CLI\Commands->run('migrate', Array)
+#10 D:\www\Thesa\system\Commands\Database\MigrateRefresh.php(85): CodeIgniter\CLI\BaseCommand->call('migrate', Array)
+#11 D:\www\Thesa\system\CLI\Commands.php(63): CodeIgniter\Commands\Database\MigrateRefresh->run(Array)
+#12 D:\www\Thesa\system\CLI\CommandRunner.php(65): CodeIgniter\CLI\Commands->run('migrate:refresh', Array)
+#13 D:\www\Thesa\system\CLI\CommandRunner.php(51): CodeIgniter\CLI\CommandRunner->index(Array)
+#14 D:\www\Thesa\system\CodeIgniter.php(900): CodeIgniter\CLI\CommandRunner->_remap('index', Array)
+#15 D:\www\Thesa\system\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(CodeIgniter\CLI\CommandRunner))
+#16 D:\www\Thesa\system\CodeIgniter.php(336): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#17 D:\www\Thesa\system\CLI\Console.php(48): CodeIgniter\CodeIgniter->run()
+#18 D:\www\Thesa\spark(98): CodeIgniter\CLI\Console->run()
+#19 {main}
+ERROR - 2022-09-15 14:33:01 --> mysqli_sql_exception: Table 'language' already exists in D:\www\Thesa\system\Database\MySQLi\Connection.php:292
+Stack trace:
+#0 D:\www\Thesa\system\Database\MySQLi\Connection.php(292): mysqli->query('CREATE TABLE `l...', 0)
+#1 D:\www\Thesa\system\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute('CREATE TABLE `l...')
+#2 D:\www\Thesa\system\Database\BaseConnection.php(620): CodeIgniter\Database\BaseConnection->simpleQuery('CREATE TABLE `l...')
+#3 D:\www\Thesa\system\Database\Forge.php(509): CodeIgniter\Database\BaseConnection->query('CREATE TABLE `l...')
+#4 D:\www\Thesa\app\Database\Migrations\2022-09-15-093111_ThesaLinguage.php(40): CodeIgniter\Database\Forge->createTable('language')
+#5 D:\www\Thesa\system\Database\MigrationRunner.php(868): App\Database\Migrations\ThesaLinguage->up()
+#6 D:\www\Thesa\system\Database\MigrationRunner.php(187): CodeIgniter\Database\MigrationRunner->migrate('up', Object(stdClass))
+#7 D:\www\Thesa\system\Commands\Database\Migrate.php(84): CodeIgniter\Database\MigrationRunner->latest(NULL)
+#8 D:\www\Thesa\system\CLI\Commands.php(63): CodeIgniter\Commands\Database\Migrate->run(Array)
+#9 D:\www\Thesa\system\CLI\BaseCommand.php(112): CodeIgniter\CLI\Commands->run('migrate', Array)
+#10 D:\www\Thesa\system\Commands\Database\MigrateRefresh.php(85): CodeIgniter\CLI\BaseCommand->call('migrate', Array)
+#11 D:\www\Thesa\system\CLI\Commands.php(63): CodeIgniter\Commands\Database\MigrateRefresh->run(Array)
+#12 D:\www\Thesa\system\CLI\CommandRunner.php(65): CodeIgniter\CLI\Commands->run('migrate:refresh', Array)
+#13 D:\www\Thesa\system\CLI\CommandRunner.php(51): CodeIgniter\CLI\CommandRunner->index(Array)
+#14 D:\www\Thesa\system\CodeIgniter.php(900): CodeIgniter\CLI\CommandRunner->_remap('index', Array)
+#15 D:\www\Thesa\system\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(CodeIgniter\CLI\CommandRunner))
+#16 D:\www\Thesa\system\CodeIgniter.php(336): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#17 D:\www\Thesa\system\CLI\Console.php(48): CodeIgniter\CodeIgniter->run()
+#18 D:\www\Thesa\spark(98): CodeIgniter\CLI\Console->run()
+#19 {main}
+CRITICAL - 2022-09-15 14:38:58 --> Undefined variable: t
+in APPPATH\Models\Language\Index.php on line 51.
+ 1 APPPATH\Models\Language\Index.php(51): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined variable: t', 'APPPATH\\Models\\Language\\Index.php', 51, [...])
+ 2 APPPATH\Models\RDF\ThTerm.php(75): App\Models\Language\Index->form(0)
+ 3 APPPATH\Models\RDF\ThTerm.php(52): App\Models\RDF\ThTerm->form()
+ 4 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 5 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add')
+ 6 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ERROR - 2022-09-15 14:42:45 --> mysqli_sql_exception: Unknown column 'lg_ordem' in 'order clause' in D:\www\Thesa\system\Database\MySQLi\Connection.php:292
+Stack trace:
+#0 D:\www\Thesa\system\Database\MySQLi\Connection.php(292): mysqli->query('SELECT *\nFROM `...', 0)
+#1 D:\www\Thesa\system\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
+#2 D:\www\Thesa\system\Database\BaseConnection.php(620): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
+#3 D:\www\Thesa\system\Database\BaseBuilder.php(1585): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 D:\www\Thesa\system\Model.php(223): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\www\Thesa\system\BaseModel.php(584): CodeIgniter\Model->doFindAll(0, 0)
+#6 D:\www\Thesa\app\Models\Language\Index.php(48): CodeIgniter\BaseModel->findAll()
+#7 D:\www\Thesa\app\Models\RDF\ThTerm.php(75): App\Models\Language\Index->form(0)
+#8 D:\www\Thesa\app\Models\RDF\ThTerm.php(52): App\Models\RDF\ThTerm->form()
+#9 D:\www\Thesa\app\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add', '', '', '')
+#10 D:\www\Thesa\system\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add')
+#11 D:\www\Thesa\system\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+#12 D:\www\Thesa\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#13 D:\www\Thesa\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#14 {main}
+CRITICAL - 2022-09-15 14:42:45 --> Unknown column 'lg_ordem' in 'order clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('SELECT *
+FROM `language`
+ORDER BY `lg_ordem`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `language`
+ORDER BY `lg_ordem`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(620): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `language`
+ORDER BY `lg_ordem`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1585): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `language`
+ORDER BY `lg_ordem`', [], false)
+ 5 SYSTEMPATH\Model.php(223): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(584): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Models\Language\Index.php(48): CodeIgniter\BaseModel->findAll()
+ 8 APPPATH\Models\RDF\ThTerm.php(75): App\Models\Language\Index->form(0)
+ 9 APPPATH\Models\RDF\ThTerm.php(52): App\Models\RDF\ThTerm->form()
+10 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+11 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add')
+12 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+13 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+14 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ERROR - 2022-09-15 14:42:58 --> mysqli_sql_exception: Unknown column 'lg_ordem' in 'order clause' in D:\www\Thesa\system\Database\MySQLi\Connection.php:292
+Stack trace:
+#0 D:\www\Thesa\system\Database\MySQLi\Connection.php(292): mysqli->query('SELECT *\nFROM `...', 0)
+#1 D:\www\Thesa\system\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
+#2 D:\www\Thesa\system\Database\BaseConnection.php(620): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
+#3 D:\www\Thesa\system\Database\BaseBuilder.php(1585): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 D:\www\Thesa\system\Model.php(223): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\www\Thesa\system\BaseModel.php(584): CodeIgniter\Model->doFindAll(0, 0)
+#6 D:\www\Thesa\app\Models\Language\Index.php(48): CodeIgniter\BaseModel->findAll()
+#7 D:\www\Thesa\app\Models\RDF\ThTerm.php(75): App\Models\Language\Index->form(0)
+#8 D:\www\Thesa\app\Models\RDF\ThTerm.php(52): App\Models\RDF\ThTerm->form()
+#9 D:\www\Thesa\app\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add', '', '', '')
+#10 D:\www\Thesa\system\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add')
+#11 D:\www\Thesa\system\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+#12 D:\www\Thesa\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#13 D:\www\Thesa\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#14 {main}
+CRITICAL - 2022-09-15 14:42:58 --> Unknown column 'lg_ordem' in 'order clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('SELECT *
+FROM `language`
+ORDER BY `lg_ordem`', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `language`
+ORDER BY `lg_ordem`')
+ 3 SYSTEMPATH\Database\BaseConnection.php(620): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `language`
+ORDER BY `lg_ordem`')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1585): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `language`
+ORDER BY `lg_ordem`', [], false)
+ 5 SYSTEMPATH\Model.php(223): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(584): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Models\Language\Index.php(48): CodeIgniter\BaseModel->findAll()
+ 8 APPPATH\Models\RDF\ThTerm.php(75): App\Models\Language\Index->form(0)
+ 9 APPPATH\Models\RDF\ThTerm.php(52): App\Models\RDF\ThTerm->form()
+10 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+11 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add')
+12 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+13 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+14 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 15:22:37 --> Undefined variable: sx
+in APPPATH\Models\RDF\ThTerm.php on line 71.
+ 1 APPPATH\Models\RDF\ThTerm.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined variable: sx', 'APPPATH\\Models\\RDF\\ThTerm.php', 71, [...])
+ 2 APPPATH\Models\RDF\ThTerm.php(51): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 15:23:24 --> Undefined variable: sx
+in APPPATH\Models\RDF\ThTerm.php on line 71.
+ 1 APPPATH\Models\RDF\ThTerm.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined variable: sx', 'APPPATH\\Models\\RDF\\ThTerm.php', 71, [...])
+ 2 APPPATH\Models\RDF\ThTerm.php(51): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 15:23:59 --> Undefined variable: sx
+in APPPATH\Models\RDF\ThTerm.php on line 71.
+ 1 APPPATH\Models\RDF\ThTerm.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined variable: sx', 'APPPATH\\Models\\RDF\\ThTerm.php', 71, [...])
+ 2 APPPATH\Models\RDF\ThTerm.php(51): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 15:24:11 --> Undefined variable: sx
+in APPPATH\Models\RDF\ThTerm.php on line 71.
+ 1 APPPATH\Models\RDF\ThTerm.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined variable: sx', 'APPPATH\\Models\\RDF\\ThTerm.php', 71, [...])
+ 2 APPPATH\Models\RDF\ThTerm.php(51): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 15:24:52 --> Undefined variable: sx
+in APPPATH\Models\RDF\ThTerm.php on line 71.
+ 1 APPPATH\Models\RDF\ThTerm.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined variable: sx', 'APPPATH\\Models\\RDF\\ThTerm.php', 71, [...])
+ 2 APPPATH\Models\RDF\ThTerm.php(51): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 15:24:57 --> Undefined variable: sx
+in APPPATH\Models\RDF\ThTerm.php on line 71.
+ 1 APPPATH\Models\RDF\ThTerm.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined variable: sx', 'APPPATH\\Models\\RDF\\ThTerm.php', 71, [...])
+ 2 APPPATH\Models\RDF\ThTerm.php(51): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 15:25:01 --> Undefined variable: sx
+in APPPATH\Models\RDF\ThTerm.php on line 71.
+ 1 APPPATH\Models\RDF\ThTerm.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined variable: sx', 'APPPATH\\Models\\RDF\\ThTerm.php', 71, [...])
+ 2 APPPATH\Models\RDF\ThTerm.php(51): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 15:33:08 --> Undefined variable: sx
+in APPPATH\Models\RDF\ThTerm.php on line 71.
+ 1 APPPATH\Models\RDF\ThTerm.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined variable: sx', 'APPPATH\\Models\\RDF\\ThTerm.php', 71, [...])
+ 2 APPPATH\Models\RDF\ThTerm.php(51): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 15:33:15 --> Undefined variable: sx
+in APPPATH\Models\RDF\ThTerm.php on line 71.
+ 1 APPPATH\Models\RDF\ThTerm.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined variable: sx', 'APPPATH\\Models\\RDF\\ThTerm.php', 71, [...])
+ 2 APPPATH\Models\RDF\ThTerm.php(51): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 15:33:37 --> Undefined variable: sx
+in APPPATH\Models\RDF\ThTerm.php on line 71.
+ 1 APPPATH\Models\RDF\ThTerm.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined variable: sx', 'APPPATH\\Models\\RDF\\ThTerm.php', 71, [...])
+ 2 APPPATH\Models\RDF\ThTerm.php(51): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 15:38:36 --> Undefined variable: sx
+in APPPATH\Models\RDF\ThTerm.php on line 71.
+ 1 APPPATH\Models\RDF\ThTerm.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined variable: sx', 'APPPATH\\Models\\RDF\\ThTerm.php', 71, [...])
+ 2 APPPATH\Models\RDF\ThTerm.php(51): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 15:38:41 --> Undefined variable: sx
+in APPPATH\Models\RDF\ThTerm.php on line 71.
+ 1 APPPATH\Models\RDF\ThTerm.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined variable: sx', 'APPPATH\\Models\\RDF\\ThTerm.php', 71, [...])
+ 2 APPPATH\Models\RDF\ThTerm.php(51): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 15:40:22 --> Undefined variable: sx
+in APPPATH\Models\RDF\ThTerm.php on line 71.
+ 1 APPPATH\Models\RDF\ThTerm.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined variable: sx', 'APPPATH\\Models\\RDF\\ThTerm.php', 71, [...])
+ 2 APPPATH\Models\RDF\ThTerm.php(51): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 15:41:02 --> Undefined variable: sx
+in APPPATH\Models\RDF\ThTerm.php on line 71.
+ 1 APPPATH\Models\RDF\ThTerm.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined variable: sx', 'APPPATH\\Models\\RDF\\ThTerm.php', 71, [...])
+ 2 APPPATH\Models\RDF\ThTerm.php(51): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 15:41:10 --> Undefined variable: sx
+in APPPATH\Models\RDF\ThTerm.php on line 71.
+ 1 APPPATH\Models\RDF\ThTerm.php(71): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined variable: sx', 'APPPATH\\Models\\RDF\\ThTerm.php', 71, [...])
+ 2 APPPATH\Models\RDF\ThTerm.php(51): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 15:53:08 --> Undefined offset: 4
+in APPPATH\Models\RDF\ThTerm.php on line 79.
+ 1 APPPATH\Models\RDF\ThTerm.php(79): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined offset: 4', 'APPPATH\\Models\\RDF\\ThTerm.php', 79, [...])
+ 2 APPPATH\Models\RDF\ThTerm.php(51): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 15:53:41 --> Undefined offset: 4
+in APPPATH\Models\RDF\ThTerm.php on line 79.
+ 1 APPPATH\Models\RDF\ThTerm.php(79): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined offset: 4', 'APPPATH\\Models\\RDF\\ThTerm.php', 79, [...])
+ 2 APPPATH\Models\RDF\ThTerm.php(51): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 15:55:31 --> Undefined offset: 1
+in APPPATH\Models\RDF\ThTerm.php on line 79.
+ 1 APPPATH\Models\RDF\ThTerm.php(79): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined offset: 1', 'APPPATH\\Models\\RDF\\ThTerm.php', 79, [...])
+ 2 APPPATH\Models\RDF\ThTerm.php(51): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 16:11:49 --> Object of class App\Models\RDF\ThTermTh could not be converted to string
+in APPPATH\Models\RDF\ThTerm.php on line 137.
+ 1 APPPATH\Models\RDF\ThTerm.php(111): App\Models\RDF\ThTerm->register('Alien', '3', 1)
+ 2 APPPATH\Models\RDF\ThTerm.php(51): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 16:12:09 --> Object of class App\Models\RDF\ThTermTh could not be converted to string
+in APPPATH\Models\RDF\ThTerm.php on line 137.
+ 1 APPPATH\Models\RDF\ThTerm.php(111): App\Models\RDF\ThTerm->register('Alien', '3', 1)
+ 2 APPPATH\Models\RDF\ThTerm.php(51): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ERROR - 2022-09-15 16:20:46 --> mysqli_sql_exception: Unknown column 'term_th_concept' in 'where clause' in D:\www\Thesa\system\Database\MySQLi\Connection.php:292
+Stack trace:
+#0 D:\www\Thesa\system\Database\MySQLi\Connection.php(292): mysqli->query('SELECT count(*)...', 0)
+#1 D:\www\Thesa\system\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute('SELECT count(*)...')
+#2 D:\www\Thesa\system\Database\BaseConnection.php(620): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT count(*)...')
+#3 D:\www\Thesa\system\Database\BaseBuilder.php(1585): CodeIgniter\Database\BaseConnection->query('SELECT count(*)...', Array, false)
+#4 D:\www\Thesa\system\Model.php(223): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\www\Thesa\system\BaseModel.php(584): CodeIgniter\Model->doFindAll(0, 0)
+#6 D:\www\Thesa\app\Models\RDF\ThTermTh.php(60): CodeIgniter\BaseModel->findAll()
+#7 D:\www\Thesa\app\Models\RDF\ThTerm.php(64): App\Models\RDF\ThTermTh->totalNoUse(1)
+#8 D:\www\Thesa\app\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('', '', '', '')
+#9 D:\www\Thesa\system\CodeIgniter.php(907): App\Controllers\Admin->index('terms')
+#10 D:\www\Thesa\system\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+#11 D:\www\Thesa\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 D:\www\Thesa\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#13 {main}
+CRITICAL - 2022-09-15 16:20:46 --> Unknown column 'term_th_concept' in 'where clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 292.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(292): mysqli->query('SELECT count(*) as total
+FROM `thesa_terms_th`
+WHERE `term_th_thesa` = 1
+AND `term_th_concept` = 0', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute('SELECT count(*) as total
+FROM `thesa_terms_th`
+WHERE `term_th_thesa` = 1
+AND `term_th_concept` = 0')
+ 3 SYSTEMPATH\Database\BaseConnection.php(620): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT count(*) as total
+FROM `thesa_terms_th`
+WHERE `term_th_thesa` = 1
+AND `term_th_concept` = 0')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1585): CodeIgniter\Database\BaseConnection->query('SELECT count(*) as total
+FROM `thesa_terms_th`
+WHERE `term_th_thesa` = :term_th_thesa:
+AND `term_th_concept` = :term_th_concept:', [...], false)
+ 5 SYSTEMPATH\Model.php(223): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\BaseModel.php(584): CodeIgniter\Model->doFindAll(0, 0)
+ 7 APPPATH\Models\RDF\ThTermTh.php(60): CodeIgniter\BaseModel->findAll()
+ 8 APPPATH\Models\RDF\ThTerm.php(64): App\Models\RDF\ThTermTh->totalNoUse(1)
+ 9 APPPATH\Controllers\Admin.php(36): App\Models\RDF\ThTerm->index('ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+10 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms')
+11 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+12 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()

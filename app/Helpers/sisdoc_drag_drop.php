@@ -6,28 +6,27 @@ function upload_form()
     $sx .= form_upload('file');
     $sx .= form_submit(array('name' => 'submit', 'class' => 'btn btn-primary', 'value' => 'Upload'));
     $sx .= form_close();
-    return($sx);
+    return ($sx);
 }
 
 function ajax($dir, $arr_file_types = ['image/png', 'image/gif', 'image/jpg', 'image/jpeg'])
-    {
-        if (!(in_array($_FILES['file']['type'], $arr_file_types))) {
-            return false;
-        }
-        $file = $dir. $_FILES['file']['name'];
-        $xfile = $file;
-        $id = 1;
-        while (file_exists($file))
-            {
-                $file = $xfile.'.'.$id;
-                $id++;
-            }
-        move_uploaded_file($_FILES['file']['tmp_name'], $file);
-
-        return true;         
+{
+    if (!(in_array($_FILES['file']['type'], $arr_file_types))) {
+        return false;
     }
+    $file = $dir . $_FILES['file']['name'];
+    $xfile = $file;
+    $id = 1;
+    while (file_exists($file)) {
+        $file = $xfile . '.' . $id;
+        $id++;
+    }
+    move_uploaded_file($_FILES['file']['tmp_name'], $file);
 
-function upload($url='')
+    return true;
+}
+
+function upload($url = '')
 {
     //$URL = 'http://localhost/sisdoc/';
     //https://stackoverflow.com/questions/53950415/how-to-upload-multiple-files-with-drag-drop-and-browse-with-ajax
@@ -40,7 +39,7 @@ function upload($url='')
             fileobj = e.dataTransfer.files[0];
             ajax_file_upload(fileobj);
         }
-        
+
         function file_explorer() {
             document.getElementById(\'selectfile\').click();
             document.getElementById(\'selectfile\').onchange = function() {
@@ -48,27 +47,26 @@ function upload($url='')
                 ajax_file_upload(fileobj);
             };
         }
-        
+
         function ajax_file_upload(file_obj) {
             if(file_obj != undefined) {
-                var form_data = new FormData();                  
+                var form_data = new FormData();
                 form_data.append(\'file\', file_obj);
                 var xhttp = new XMLHttpRequest();
-                xhttp.open("POST", "'.$url.'", true);
+                xhttp.open("POST", "' . $url . '", true);
                 xhttp.onload = function(event) {
                     oOutput = document.querySelector(\'.img-content\');
                     old = oOutput.innerHTML;
                     if (xhttp.status == 200) {
                         oOutput.innerHTML = "\'"+ this.responseText + old + "\'"
                     } else {
-                        oOutput.innerHTML = "Error " + xhttp.status + " '.lang('brapci.drag_drop_erro_1').'";
+                        oOutput.innerHTML = "Error " + xhttp.status + " ' . lang('brapci.drag_drop_erro_1') . '";
                     }
-                }        
+                }
                 xhttp.send(form_data);
             }
-        }               
-    </script>'
-    ;
+        }
+    </script>';
 
     $sx .= '
         <div id="drop_file_zone" ondrop="upload_file(event)" ondragover="return false">
@@ -106,6 +104,6 @@ function upload($url='')
         </style>
         ';
 
-    
+
     return $sx;
 }

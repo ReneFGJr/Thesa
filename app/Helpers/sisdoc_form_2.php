@@ -128,7 +128,10 @@ function tableview($th, $dt = array())
             if (strlen($vlr) == 0) {
                 $vlr = ' ';
             }
-            $sx .= '<td class="sisdoc_td">' . anchor(($url . '/viewid/' . $line[$fl[0]]), $vlr) . '</td>';
+            /********************************************** VIEWID */
+            $sx .= '<td class="sisdoc_td">';
+            $sx .= anchor(($url . '/viewid/' . $line[$fl[0]]), $vlr);
+            $sx .= '</td>';
         }
         /* Botoes */
         $sx .= '<td><nobr>';

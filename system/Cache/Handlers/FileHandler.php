@@ -102,7 +102,7 @@ class FileHandler extends BaseHandler
 
                 // @codeCoverageIgnoreStart
             } catch (Throwable $e) {
-                log_message('debug', 'Failed to set mode on cache file: ' . $e->getMessage());
+                log_message('debug', 'Failed to set mode on cache file: ' . $e);
                 // @codeCoverageIgnoreEnd
             }
 
@@ -241,7 +241,6 @@ class FileHandler extends BaseHandler
             return false;
         }
 
-        // @phpstan-ignore-next-line
         if ($data['ttl'] > 0 && time() > $data['time'] + $data['ttl']) {
             // If the file is still there then try to remove it
             if (is_file($this->path . $filename)) {

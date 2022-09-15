@@ -1,6 +1,0 @@
-<h2>Sobre o Thesa</h2>
-O Thesa foi desenvolvido inicialmente como um protótipo utilizando a linguagem php e banco de dados MySql, de forma a possibilitar o compartilhamento e desenvolvimento colaborativo da ferramenta.
-
-O software funciona em ambiente Web e pode ser baixado gratuitamente, podendo ser utilizado para fins didáticos em disciplinas dos cursos de graduação e pós-graduação ou para uso profissional. O Thesa foi desenvolvido com o princípio de multi-idioma, podendo ser traduzido para qualquer idioma, entretanto sua versão de teste está somente em português, as traduções vão depender de se estabelecerem convênios com instituições nativas de outros idiomas, que demonstrarem interesse pelo uso do software.
-
-O Thesa utiliza uma concepção de múltiplos tesauros, ou múltiplos esquemas, ou seja, o usuário pode criar um número ilimitado de tesauros em diferentes áreas do conhecimento, os usuários/elaboradores desses tesauros, podem deixá-los para uso público ou privado, possibilitando o acesso de outros usuários. No Thesa partiu-se da concepção de URI, empregada pelo SKOS e sistemas baseados na Web Semântica, ou seja, cada conceito é associado a um endereço permanente na Internet e a um identificador único do conceito, e esse representado por termos por meio de propriedades.

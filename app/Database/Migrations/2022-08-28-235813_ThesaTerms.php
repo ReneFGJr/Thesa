@@ -11,7 +11,7 @@ class ThesaTerms extends Migration
     public function up()
     {
         $this->forge->addField([
-            'term_id' => [
+            'id_term' => [
                 'type'           => 'INT',
                 'constraint'     => 5,
                 'unsigned'       => true,
@@ -26,7 +26,7 @@ class ThesaTerms extends Migration
                 'null' => true,
             ],
         ]);
-        $this->forge->addKey('term_id', true);
+        $this->forge->addKey('id_term', true);
         $this->forge->addForeignKey('term_lang', 'language', 'id_lg');
         $this->forge->createTable('Thesa_Terms');
     }

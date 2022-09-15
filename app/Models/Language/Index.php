@@ -15,7 +15,8 @@ class Index extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_lg','lg_code','lg_language','lg_order','lg_active','lg_cod_marc'
+        'id_lg', 'lg_code', 'lg_language',
+        'lg_order', 'lg_active', 'lg_cod_marc'
     ];
 
     // Dates
@@ -42,62 +43,18 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function radio($th,$name)
+    function form($th=0)
         {
-            $dt = $this
-                ->join('language_th','lgt_language = id_lg')
-                ->orderBy('lgt_order, lg_order, lg_language')
-                ->where('lgt_th',$th)
-                ->findAll();
+            $dt = $this->orderBy('lg_order')->findAll();
             $sx = '';
-            $vlr = get($name);
-
             for ($r=0;$r < count($dt);$r++)
                 {
-                    $line = $dt[$r];
-                    if ($line['lg_cod_marc'] == $vlr) { $sel = ' checked '; } else { $sel = ''; }
-                    if (count($dt) == 1)
-                        {
-                            $sel = ' checked';
-                        }
-
-                    $sx .= '<input name="'.$name.'" type="radio" value="'.$line['lg_cod_marc'].'" '.$sel.'> ';
-                    $sx .= $line['lg_language'];
                     $sx .= '<br>';
-              }
+                    $sx .= '<input class="form-check-input" type="radio" name="lg" id="lg" value="'.$dt[$r]['id_lg'].'">';
+                    $sx .= '&nbsp;';
+                    $sx .= $dt[$r]['lg_language'];
+                    $sx .= '</input>';
+                }
             return $sx;
         }
-
-    function select($id)
-        {
-            $dt = $this->orderBy('lg_order, lg_language')->findAll();
-            pre($dt);
-        }
-
-    function search($lang)
-    {
-        $lang = strtolower($lang);
-        switch ($lang) {
-            case 'en':
-                $lang = 'eng';
-                break;
-            case 'pt_br':
-                $lang = 'por';
-                break;
-            case 'pt-br':
-                $lang = 'por';
-                break;
-            case 'pt':
-                $lang = 'por';
-                break;
-        }
-
-        $dt = $this->where('lg_code', $lang)->findAll();
-        if (count($dt) > 0) {
-            return ($dt[0]['id_lg']);
-        } else {
-            echo "ERRO '- " . $lang;
-            exit;
-        }
-    }
 }

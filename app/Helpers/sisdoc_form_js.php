@@ -74,19 +74,25 @@ function clipboard()
     return $sx;
 }
 
+function reload()
+    {
+        $sx = '<script>reload();</script>';
+        return $sx;
+    }
+
 function wclose($tp = '')
 {
     if ($tp != '') {
         $a = '
                     <script>
-                        close(); 		
+                        close();
                     </script>
                     ';
     } else {
         $a = '
                     <script>
                         window.opener.location.reload();
-                        close(); 		
+                        close();
                     </script>
                     ';
     }

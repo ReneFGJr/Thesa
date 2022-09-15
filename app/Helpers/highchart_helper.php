@@ -1,101 +1,22 @@
 <?php
 
-function cloudetags($subject)
-    {
-        $sx = '';
-        $sx .= '<script type="text/javascript" src="'.URL.'js/jquery-3.6.0.min.js'.'"></script>';
-        $sx .= '<script type="text/javascript" src="'.URL.'js/jQWCloudv3.1.js'.'"></script>';     
-
-        $sx .= '
-            <style>
-                #wordCloud {
-                    height: 350px;
-                    width: 100%;
-                    background-color: #ffffff;
-                    border: 1px solid #0000FF;
-                }
-            </style>';
-        $sx .= bs(bsc('<div id="wordCloud"></div>'));
-
-        $sx .= '
-            <script>
-                $(document).ready(function() {
-                    $("#wordCloud").jQWCloud({
-                    words : [';
-
-        $r = 0;
-        foreach ($subject as $key => $value) 
-        {
-            if ($key != '(nc)') 
-            {
-                if ($r > 0) { $sx .= ',' . cr(); }
-            }
-            $r++;
-            $sx .= cr()."{ word : '$key', weight : '$value' }";
-        }
-                        
-            $sx .= '],
-                minFont : 12,
-                maxFont : 50,
-                //cloud_font_family: "Tahoma",
-                //verticalEnabled: false,
-                padding_left : 1,
-                //showSpaceDIV: true,
-                //spaceDIVColor: \'white\',
-                word_common_classes : \'WordClass\',
-                word_mouseEnter : function() {
-                    $(this).css("text-decoration", "underline");
-                }, word_mouseOut : function() {
-                    $(this).css("text-decoration", "none");
-                }, word_click : function() {
-                    $vlr = [1,2,3,4,5];
-                    window.location.replace("http://localhost/"+ $(this).text());
-                    alert("You have selected:" + $(this).text());
-                }, beforeCloudRender : function() {
-                    date1 = new Date();
-                }, afterCloudRender : function() {
-                    var date2 = new Date();
-                    console.log("Cloud Completed in " + (date2.getTime() - date1.getTime()) + " milliseconds");
-                }
-                });
-
-                });
-            </script>';        
-
-        return $sx;
-    }
-
-function load_grapho_script()
-{
-    global $load_grapho_script;
-
-    if (!isset($load_grapho_script)) {
-        $sx = '
-                    <script src="https://code.highcharts.com/highcharts.js"></script>
-                    <script src="https://code.highcharts.com/highcharts-3d.js"></script>
-                    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-                    <script src="https://code.highcharts.com/modules/export-data.js"></script>
-                    <script src="https://code.highcharts.com/modules/accessibility.js"></script>';
-        $load_grapho_script = 1;
-    }
-    return ($sx);
-}
-
 function highchart_column($data)
-    {
-        if (!isset($data['height'])) { $data['height'] = '500'; }
-			/************************************************************************* JAVA SCRIPTS */
-			$js = '
-					Highcharts.chart(\''.$data['id'].'\', {
-                    height: '.$data['height'].',
+{
+    if (!isset($data['height'])) {
+        $data['height'] = '500';
+    }
+    /************************************************************************* JAVA SCRIPTS */
+    $js = '
+					Highcharts.chart(\'' . $data['id'] . '\', {
+                    height: ' . $data['height'] . ',
   					chart: {
     					type: \'column\'
   					},
 			title: {
-				text: \''.$data['title'].'\'
+				text: \'' . $data['title'] . '\'
 			},
 			 xAxis: {
-				categories: ['.$data['categorias'].'] 
+				categories: [' . $data['categorias'] . ']
                     },
 			yAxis: {
 				min: 0,
@@ -128,7 +49,7 @@ function highchart_column($data)
 			tooltip: {
 				headerFormat: \'<b>{point.x}</b><br/>\',
 				pointFormat: \'{series.name}: {point.y}<br/>Total: {point.stackTotal}\'
-			},  
+			},
 			plotOptions: {
 				column: {
 				stacking: \'normal\',
@@ -137,23 +58,226 @@ function highchart_column($data)
 				}
 				}
 			},
-			'.$data['dados'].'
+			' . $data['dados'] . '
 			});';
 
-            $sx = load_grapho_script();			
-			$sx .= '
+    $sx = load_grapho_script();
+    $sx .= '
 				<figure class="highcharts-figure">
-				<div id="'.$data['id'].'"></div>
+				<div id="' . $data['id'] . '"></div>
 				</figure>';
-			$sx .= cr().'<script>'.$js.'</script>';
-            return $sx;        
+    $sx .= cr() . '<script>' . $js . '</script>';
+    return $sx;
+}
+
+
+function graph(
+    $data = array(),
+    $type = 'pie',
+    $title = 'title',
+    $div = 'containerPie',
+    $limit = 20,
+    $cut = true
+) {
+    $series = '';
+    $total = 0;
+    $nr = 0;
+    $others_nr = 0;
+    $others_vr = 0;
+
+    foreach ($data as $name => $value) {
+        $total = $total + $value;
+        if ($nr > $limit) {
+            $others_nr++;
+            $others_vr = $others_vr + $value;
+        }
+        $nr++;
     }
 
-function highchart_column_comparision($data=array())
-    {
-        $sx = load_grapho_script();
+    $nr = 0;
 
+    foreach ($data as $name => $value) {
+        $pvalue = $value;
+        if ($series != '') {
+            $series .= ', ' . cr();
+        }
+        $series .= '{ name: "' . $name . '(' . $value . ')", y: ' . $pvalue . ', }';
+        if ($nr > $limit) {
+            if (!$cut) {
+                $series .= ', { name: "' . lang('brapci.others') . '", y: ' . (($others_vr / $total) * 100) . ', }';
+            }
+            break;
+        }
+        $nr++;
     }
+    $js = '
+            Highcharts.chart("' . $div . '", {
+                chart: { type: "' . $type . '" },
+                title: { text: "' . $title . '" },
+                accessibility: { announceNewData: { enabled: true },
+                point: { valueSuffix: \'%\' }
+            },
+          tooltip: {
+                headerFormat: \'<span style="font-size:11px">{series.name}</span><br>\',
+                pointFormat: \'<span style="color:blank">{point.name}</span>: <b>{point.y:.0f}</b> of total<br/>\'
+            },
+            series: [
+            {
+                name: "' . $title . '",
+                colorByPoint: false,
+                color: "#336699",
+                data: [ ' . $series . ']}
+            ]}
+        );';
+    $sx = load_grapho_script() . cr();
+    $sx .= '<div id="' . $div . '"></div>';
+    return $sx . '<script>' . $js . '</script>';
+}
+
+function pie(
+    $data = array(),
+    $type = 'pie',
+    $title = 'title',
+    $div = 'containerPie',
+    $limit = 20,
+    $cut = true
+) {
+    $series = '';
+    $total = 0;
+    $nr = 0;
+    $others_nr = 0;
+    $others_vr = 0;
+
+    foreach ($data as $name => $value) {
+        $total = $total + $value;
+        if ($nr > $limit) {
+            $others_nr++;
+            $others_vr = $others_vr + $value;
+        }
+        $nr++;
+    }
+
+    $nr = 0;
+
+    foreach ($data as $name => $value) {
+        $pvalue = $value / $total * 100;
+        if ($series != '') {
+            $series .= ', ' . cr();
+        }
+        $series .= '{ name: "' . $name . '(' . $value . ')", y: ' . $pvalue . ', }';
+        if ($nr > $limit) {
+            if (!$cut) {
+                $series .= ', { name: "' . lang('brapci.others') . '", y: ' . (($others_vr / $total) * 100) . ', }';
+            }
+            break;
+        }
+        $nr++;
+    }
+    $js = '
+            Highcharts.chart("' . $div . '", {
+                chart: { type: "' . $type . '" },
+                title: { text: "' . $title . '" },
+                accessibility: { announceNewData: { enabled: true },
+                point: { valueSuffix: \'%\' }
+            },
+          tooltip: {
+                headerFormat: \'<span style="font-size:11px">{series.name}</span><br>\',
+                pointFormat: \'<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>\'
+            },
+            series: [
+            {
+                name: "' . $title . '",
+                colorByPoint: true,
+                data: [ ' . $series . ']}
+            ]}
+        );';
+    $sx = load_grapho_script().cr();
+    $sx .= '<div id="' . $div . '"></div>';
+    return $sx . '<script>' . $js . '</script>';
+}
+
+function cloudetags($subject)
+{
+    $sx = '';
+    $sx .= '<script type="text/javascript" src="' . URL . 'js/jquery-3.6.0.min.js' . '"></script>';
+    $sx .= '<script type="text/javascript" src="' . URL . 'js/jQWCloudv3.1.js' . '"></script>';
+    $sx .= '
+            <style>
+                #wordCloud {
+                    height: 350px;
+                    width: 100%;
+                    background-color: #ffffff;
+                    border: 1px solid #0000FF;
+                }
+            </style>';
+    $sx .= bs(bsc('<div id="wordCloud"></div>'));
+
+    $sx .= '
+            <script>
+                $(document).ready(function() {
+                    $("#wordCloud").jQWCloud({
+                    words : [';
+
+    $r = 0;
+    foreach ($subject as $key => $value) {
+        if ($key != '(nc)') {
+            if ($r > 0) {
+                $sx .= ',' . cr();
+            }
+        }
+        $r++;
+        $sx .= cr() . "{ word : '$key', weight : '$value' }";
+    }
+
+    $sx .= '],
+                minFont : 12,
+                maxFont : 50,
+                //cloud_font_family: "Tahoma",
+                //verticalEnabled: false,
+                padding_left : 1,
+                //showSpaceDIV: true,
+                //spaceDIVColor: \'white\',
+                word_common_classes : \'WordClass\',
+                word_mouseEnter : function() {
+                    $(this).css("text-decoration", "underline");
+                }, word_mouseOut : function() {
+                    $(this).css("text-decoration", "none");
+                }, word_click : function() {
+                    $vlr = [1,2,3,4,5];
+                    window.location.replace("http://localhost/"+ $(this).text());
+                    alert("You have selected:" + $(this).text());
+                }, beforeCloudRender : function() {
+                    date1 = new Date();
+                }, afterCloudRender : function() {
+                    var date2 = new Date();
+                    console.log("Cloud Completed in " + (date2.getTime() - date1.getTime()) + " milliseconds");
+                }
+                });
+
+                });
+            </script>';
+
+    return $sx;
+}
+
+function load_grapho_script()
+{
+    global $load_grapho_script;
+    $sx = '';
+    if (!isset($load_grapho_script)) {
+        $sx = '
+                    <script src="https://code.highcharts.com/highcharts.js"></script>
+                    <script src="https://code.highcharts.com/highcharts-3d.js"></script>
+                    <!--
+                    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+                    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+                    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+                    -->';
+        $load_grapho_script = 1;
+    }
+    return ($sx);
+}
+
 
 function highchart_grapho($data = array())
 {
@@ -226,15 +350,15 @@ function highchart_grapho($data = array())
                 viewDistance: 45
                 }
             },
-                
+
             title: { text: \'' . $title . '\' },
             subtitle: { text: \'' . $subtitle . '\' },
             plotOptions: {
                 column: {
                 depth: 125
                 }
-            },           
-            
+            },
+
             xAxis: {
                 categories: [' . $CATS . '],
                 labels: {
@@ -244,7 +368,7 @@ function highchart_grapho($data = array())
                     fontFamily: \'Tahoma, Verdana, sans-serif\'
                     }
                 },
-            },            
+            },
             series: [ { name: \'' . $LEG_HOR . '\', data: [ ' . $DATA . '] }]
             });
             </script>';

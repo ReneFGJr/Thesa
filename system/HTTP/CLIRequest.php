@@ -12,6 +12,7 @@
 namespace CodeIgniter\HTTP;
 
 use Config\App;
+use Locale;
 use RuntimeException;
 
 /**
@@ -40,6 +41,13 @@ class CLIRequest extends Request
      * @var array
      */
     protected $options = [];
+
+    /**
+     * Command line arguments (segments and options).
+     *
+     * @var array
+     */
+    protected $args = [];
 
     /**
      * Set the expected HTTP verb
@@ -95,6 +103,14 @@ class CLIRequest extends Request
     }
 
     /**
+     * Returns an array of all CLI arguments (segments and options).
+     */
+    public function getArgs(): array
+    {
+        return $this->args;
+    }
+
+    /**
      * Returns the path segments.
      */
     public function getSegments(): array
@@ -139,11 +155,13 @@ class CLIRequest extends Request
                 $out .= "-{$name} ";
             }
 
-            // If there's a space, we need to group
-            // so it will pass correctly.
+            if ($value === null) {
+                continue;
+            }
+
             if (mb_strpos($value, ' ') !== false) {
                 $out .= '"' . $value . '" ';
-            } elseif ($value !== null) {
+            } else {
                 $out .= "{$value} ";
             }
         }
@@ -170,21 +188,23 @@ class CLIRequest extends Request
                 if ($optionValue) {
                     $optionValue = false;
                 } else {
-                    $this->segments[] = esc(strip_tags($arg));
+                    $this->segments[] = $arg;
+                    $this->args[]     = $arg;
                 }
 
                 continue;
             }
 
-            $arg   = esc(strip_tags(ltrim($arg, '-')));
+            $arg   = ltrim($arg, '-');
             $value = null;
 
             if (isset($args[$i + 1]) && mb_strpos($args[$i + 1], '-') !== 0) {
-                $value       = esc(strip_tags($args[$i + 1]));
+                $value       = $args[$i + 1];
                 $optionValue = true;
             }
 
             $this->options[$arg] = $value;
+            $this->args[$arg]    = $value;
         }
     }
 
@@ -193,6 +213,81 @@ class CLIRequest extends Request
      */
     public function isCLI(): bool
     {
-        return is_cli();
+        return true;
+    }
+
+    /**
+     * Fetch an item from GET data.
+     *
+     * @param array|string|null $index  Index for item to fetch from $_GET.
+     * @param int|null          $filter A filter name to apply.
+     * @param mixed|null        $flags
+     *
+     * @return null
+     */
+    public function getGet($index = null, $filter = null, $flags = null)
+    {
+        return $this->returnNullOrEmptyArray($index);
+    }
+
+    /**
+     * Fetch an item from POST.
+     *
+     * @param array|string|null $index  Index for item to fetch from $_POST.
+     * @param int|null          $filter A filter name to apply
+     * @param mixed             $flags
+     *
+     * @return null
+     */
+    public function getPost($index = null, $filter = null, $flags = null)
+    {
+        return $this->returnNullOrEmptyArray($index);
+    }
+
+    /**
+     * Fetch an item from POST data with fallback to GET.
+     *
+     * @param array|string|null $index  Index for item to fetch from $_POST or $_GET
+     * @param int|null          $filter A filter name to apply
+     * @param mixed             $flags
+     *
+     * @return null
+     */
+    public function getPostGet($index = null, $filter = null, $flags = null)
+    {
+        return $this->returnNullOrEmptyArray($index);
+    }
+
+    /**
+     * Fetch an item from GET data with fallback to POST.
+     *
+     * @param array|string|null $index  Index for item to be fetched from $_GET or $_POST
+     * @param int|null          $filter A filter name to apply
+     * @param mixed             $flags
+     *
+     * @return null
+     */
+    public function getGetPost($index = null, $filter = null, $flags = null)
+    {
+        return $this->returnNullOrEmptyArray($index);
+    }
+
+    /**
+     * @param array|string|null $index
+     *
+     * @return array|null
+     */
+    private function returnNullOrEmptyArray($index)
+    {
+        return ($index === null || is_array($index)) ? [] : null;
+    }
+
+    /**
+     * Gets the current locale, with a fallback to the default
+     * locale if none is set.
+     */
+    public function getLocale(): string
+    {
+        return Locale::getDefault();
     }
 }
