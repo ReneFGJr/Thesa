@@ -4,29 +4,32 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class ThesaStatus extends Migration
+class UsersLog extends Migration
 {
     public function up()
     {
         $this->forge->addField([
-            'id_status' => [
+            'id_ul' => [
                 'type'           => 'INT',
                 'constraint'     => 5,
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'status_description' => [
+            'ul_user' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '100',
-                'null' => true,
+            ],
+            'ul_ip' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '40',
             ],
         ]);
-        $this->forge->addKey('id_status', true);
-        $this->forge->createTable('Thesa_Status');
+        $this->forge->addKey('id_ul', true);
+        $this->forge->createTable('Users_log');
     }
 
     public function down()
     {
-        $this->forge->dropTable('Thesa_Status');
+        $this->forge->dropTable('Users_log');
     }
 }

@@ -1,5 +1,14 @@
 <?php
 
+function upload_form()
+{
+    $sx = form_open_multipart();
+    $sx .= form_upload('file');
+    $sx .= form_submit(array('name' => 'submit', 'class' => 'btn btn-primary', 'value' => 'Upload'));
+    $sx .= form_close();
+    return($sx);
+}
+
 function ajax($dir, $arr_file_types = ['image/png', 'image/gif', 'image/jpg', 'image/jpeg'])
     {
         if (!(in_array($_FILES['file']['type'], $arr_file_types))) {

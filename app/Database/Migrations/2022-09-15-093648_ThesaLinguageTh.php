@@ -4,34 +4,36 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class ThesaTermsTh extends Migration
+class ThesaLinguageTh extends Migration
 {
     public function up()
     {
         $this->forge->addField([
-            'term_th_id' => [
+            'id_lgt' => [
                 'type'           => 'INT',
                 'constraint'     => 5,
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'term_th_thesa' => [
+            'lgt_th' => [
                 'type' => 'INT',
                 'null' => true,
             ],
-            'term_th_term' => [
+            'lgt_language' => [
+                'type' => 'INT',
+                'null' => true,
+            ],
+            'lgt_order' => [
                 'type' => 'INT',
                 'null' => true,
             ],
         ]);
-        $this->forge->addKey('term_th_id', true);
-        $this->forge->addForeignKey('term_th_term', 'Thesa_Terms', 'term_id');
-        $this->forge->addForeignKey('term_th_thesa', 'Thesa', 'id_th');
-        $this->forge->createTable('Thesa_Terms_Th');
+        $this->forge->addKey('id_lgt', true);
+        $this->forge->createTable('thesa_language');
     }
 
     public function down()
     {
-        $this->forge->dropTable('Thesa_Terms_Th');
+        $this->forge->dropTable('thesa_language');
     }
 }

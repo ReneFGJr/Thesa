@@ -62,6 +62,6 @@ class Thesa extends Migration
 
     public function down()
     {
-        //
+        $this->forge->dropTable('Thesa');
     }
 }

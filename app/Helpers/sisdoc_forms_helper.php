@@ -78,28 +78,22 @@ require('sisdoc_help.php');
     function ascii($d)
     {    //$d = strtoupper($d);
         
-        /* acentos agudos */
-        $d = (str_replace(array('á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú'), array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'), $d));
-        
-        /* acentos til */
-        $d = (str_replace(array('ã', 'õ', 'Ã', 'Õ'), array('a', 'o', 'A', 'O'), $d));
-        
-        /* acentos cedilha */
-        $d = (str_replace(array('ç', 'Ç', 'ñ', 'Ñ'), array('c', 'C', 'n', 'N'), $d));
-        
-        /* acentos agudo inverso */
-        $d = (str_replace(array('à', 'è', 'ì', 'ò', 'ù', 'À', 'È', 'Ì', 'Ò', 'Ù'), array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'), $d));
-        
-        /* acentos agudo cinconflexo */
-        $d = (str_replace(array('â', 'ê', 'î', 'ô', 'û', 'Â', 'Ê', 'Î', 'Ô', 'Û'), array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'), $d));
-        
-        /* trema */
-        $d = (str_replace(array('ä', 'ë', 'ï', 'ö', 'ü', 'Ä', 'Ë', 'Ï', 'Ö', 'Ü'), array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'), $d));
-        
-        
-        /* Especiais */
-        $d = (str_replace(array('Å'), array('A'), $d));
-        return $d;
+	$a = array
+	(
+		'/[ÂÀÁÄÃ]/'=>'A',
+		'/[âãàáä]/'=>'a',
+		'/[ÊÈÉË]/'=>'E',
+		'/[êèéë]/'=>'e',
+		'/[ÎÍÌÏ]/'=>'I',
+		'/[îíìï]/'=>'i',
+		'/[ÔÕÒÓÖ]/'=>'O',
+		'/[ôõòóö]/'=>'o',
+		'/[ÛÙÚÜ]/'=>'U',
+		'/[ûúùü]/'=>'u',
+		'/ç/'=>'c',
+		'/Ç/'=> 'C'
+	);	
+	return preg_replace(array_keys($a), array_values($a), $d);
     }
 
     function UpperCase($d) {
@@ -199,5 +193,3 @@ function stodbr($dt)
         $rst = substr($dt,6,2).'/'.substr($dt,4,2).'/'.substr($dt,0,4);
         return $rst;
     }
-       
-?>

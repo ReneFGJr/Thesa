@@ -31,7 +31,7 @@ class Thesa extends BaseController
 		$view = \Config\Services::renderer();
 		$ThOpen = new \App\Models\Thesaurus\ThThesaurus();
 		$sx = '';
-		$sx .= $this->cab();		
+		$sx .= $this->cab();
 		$sx .= $this->navbar();
 		$sx .= $view->render('paralax');
 		$sx .= $ThOpen->about();
@@ -43,13 +43,13 @@ class Thesa extends BaseController
 	function edit_th($id)
 		{
 		$view = \Config\Services::renderer();
-		$ThOpen = new \App\Models\Thesaurus\ThThesaurus();
+		$Thesa = new \App\Models\Thesa\Thesa();
 		$sx = '';
-		$sx .= $this->cab();		
+		$sx .= $this->cab();
 		$sx .= $this->navbar();
 		$sx .= $view->render('paralax');
 
-		$sx .= bs(bsc($ThOpen->edit($id),12));
+		$sx .= bs(bsc($Thesa->edit($id),12));
 
 		$sx .= $this->footer();
 
@@ -168,14 +168,14 @@ class Thesa extends BaseController
 		$sx .= '
 							<li class="nav-item">
 								<a class="nav-link" href="' . (PATH . MODULE .'language') . '">' . lang('thesa.language') . '</a>
-							</li>			
+							</li>
 			';
 
 		$sx .= '
 							<li class="nav-item">
 								<a class="nav-link" href="' . (PATH . MODULE .'help') . '">' . lang('thesa.Help') . '</a>
-							</li>			
-			';			
+							</li>
+			';
 
 		$sx .= '      </ul>' . cr();
 		$sx .= $this->Socials->nav_user();
@@ -199,15 +199,15 @@ class Thesa extends BaseController
 				} else {
 					$API->rest($th,$ver,$act);
 				}
-			
+
 		}
 
 	function data($q='')
 		{
 			echo $q;
-		}		
-	
-	
+		}
+
+
 	function footer()
 	{
 		global $sisdoc_css;
@@ -322,7 +322,7 @@ class Thesa extends BaseController
 
 							<!-- Links -->
 							<h6 class="text-uppercase font-weight-bold">' . lang('social.Develepoment') . '</h6>
-							
+
 							<img src="' . URL.('img/logo/logo_orcalab-70.png') . '" class="img-fluid">
 							<hr class="teal accent-3 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
 							<img src="' . URL.('img/logo/logo_ppgcin-70.png') . '" class="img-fluid">
@@ -389,9 +389,9 @@ class Thesa extends BaseController
 					case 'concept':
 					$sx .= bs($ThLiteral->associate($id));
 					$sx .= '';
-					break;					
+					break;
 				}
-			
+
 
 			$sx .= $this->footer();
 			return $sx;
@@ -400,7 +400,7 @@ class Thesa extends BaseController
 	function tree($id = '', $ltr = '')
 	{
 		$Tree = new \App\Models\Graph\Tree();
-		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();		
+		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
 		$sx = '';
 		$sx .= $this->cab();
 		$sx .= $this->navbar();
@@ -410,15 +410,15 @@ class Thesa extends BaseController
 		$sx .= $this->footer();
 
 		return $sx;
-	}	
+	}
 
 	function sistematic($id = '', $ltr = '')
-	{		
+	{
 		$Sistematic = new \App\Models\Graph\Sistematic();
 		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
 		$ThAssociate = new \App\Models\Thesaurus\ThAssociate();
 		$ThConceptTerms = new \App\Models\Thesaurus\ThConceptTerms();
-		
+
 		$sx = '';
 		$sx .= $this->cab();
 		$sx .= $this->navbar();
@@ -432,15 +432,15 @@ class Thesa extends BaseController
 		$sx .= $this->footer();
 
 		return $sx;
-	}	
+	}
 
-		
+
 
 	function th($id = '', $ltr = '')
 	{
-		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
+		$ThThesaurus = new \App\Models\Thesa\Thesa();
 		$ThConcept = new \App\Models\Thesaurus\ThConcept();
-		$dtt = $ThThesaurus->where('id_pa', $id)->findAll();
+		$dtt = $ThThesaurus->where('id_th', $id)->findAll();
 		if (count($dtt) == 0)
                {
                    $sx = metarefresh(PATH.MODULE);
@@ -475,17 +475,17 @@ class Thesa extends BaseController
 			$Tools = new \App\Models\Tools\Index();
 
 			$sx = $this->cab();
-			$sx .= $this->navbar();				
+			$sx .= $this->navbar();
 			$sx .= $view->render('paralax');
 			$sx .= $Tools->index($act,$d1,$d2,$d3,$d4);
 			$sx .= $this->footer();
-			return $sx;			
+			return $sx;
 		}
 
 	function edit($id=0,$ac='')
 		{
 			$sx = $this->cab();
-			$sx .= $this->navbar();		
+			$sx .= $this->navbar();
 
 			$Thesauros = new \App\Models\Thesaurus\Index();
 			$sx = $Thesauros->edit($id,$ac);
@@ -496,14 +496,14 @@ class Thesa extends BaseController
 	function schema($type,$id,$act='')
 		{
 			$sx = $this->cab();
-			$sx .= $this->navbar();		
+			$sx .= $this->navbar();
 
 			$SchemaExternal = new \App\Models\Schema\SchemaExternal();
-			
+
 			if ($type == 'skos')
 			{
 				$sx .= $SchemaExternal->showID($id,$act);
-			}	
+			}
 			$sx .= $this->footer();
 
 			return $sx;
@@ -538,14 +538,14 @@ class Thesa extends BaseController
 						$ThIcone = new \App\Models\Thesaurus\ThIcone();
 						$sx .= $this->cab();
 						$sx .= $ThIcone->icones_options($d2,$d3,$d4,$d5,$d6);
-						break;	
+						break;
 					case 'icone_custom':
 						$ThIcone = new \App\Models\Thesaurus\ThIcone();
 						$sx .= $this->cab();
 						$sx .= $ThIcone->icones_upload($d2,$d3,$d4,$d5,$d6);
-						break;	
-											
-						
+						break;
+
+
 					/****************** LABEL */
 					case 'label':
 						$ThConcept = new \App\Models\Thesaurus\ThConcept();
@@ -560,21 +560,21 @@ class Thesa extends BaseController
 					case 'altLabel':
 						$ThLiteral = new \App\Models\Thesaurus\ThLiteral();
 						$sx .= $this->cab();
-						$sx .= $ThLiteral->editLabel($d2,$d1);						
+						$sx .= $ThLiteral->editLabel($d2,$d1);
 						break;
 					case 'notation':
 						$ThLiteral = new \App\Models\Thesaurus\ThLiteral();
 						$sx .= $this->cab();
-						$sx .= $ThLiteral->editLabel($d2,$d1);						
+						$sx .= $ThLiteral->editLabel($d2,$d1);
 						break;
-	
+
 
 					case 'hiddenLabel':
 						$ThLiteral = new \App\Models\Thesaurus\ThLiteral();
 						$sx .= $this->cab();
-						$sx .= $ThLiteral->editLabel($d2,$d1);						
+						$sx .= $ThLiteral->editLabel($d2,$d1);
 						break;
-					break;							
+					break;
 
 					case 'propriety_del':
 						$ThAssociate = new \App\Models\Thesaurus\ThAssociate();
@@ -604,13 +604,13 @@ class Thesa extends BaseController
 						$ThAssociate = new \App\Models\Thesaurus\ThAssociate();
 						$sx .= $cab;
 						$sx .= $ThAssociate->associate($d2,$d3,$d4,$d5,'TR');
-					break;	
+					break;
 
-					case 'relation_custom':				
+					case 'relation_custom':
 						$ThRelationsCustom = new \App\Models\Thesaurus\ThRelationsCustom();
 						$sx .= $cab;
 						$sx .= $ThRelationsCustom->edit($d2,$d3,$d4,$d5,'TR');
-					break;	
+					break;
 
 					case 'associate':
 						$ThLiteral = new \App\Models\Thesaurus\ThLiteral();
@@ -630,7 +630,7 @@ class Thesa extends BaseController
 						{
 							$sx .= $ThConfigColaboration->excluding($d2,$d3,$d4,$d5,$d6);
 							return $sx;
-						}					
+						}
 					$sx = $cab;
 					$sx .= $ThConfigColaboration->add_colaboration($d2,$d3,$d4,$d5,$d6);
 					break;
@@ -645,8 +645,8 @@ class Thesa extends BaseController
 					$ThConfigRelations = new \App\Models\Thesaurus\ThConfigRelations();
 					$sx = $cab;
 					$sx .= $ThConfigRelations->edit_skos_relations($d2,$d3,$d4,$d5,$d6);
-					break;					
-					
+					break;
+
 					default:
 					$sx = $cab;
 					$sx .= bsmessage('Popup não encontrado - '.$d1);
@@ -662,7 +662,7 @@ class Thesa extends BaseController
     function c($id,$tp= '')
         {
             return $this->v($id,$tp);
-        }  	
+        }
 
 	function v($id = '', $tp = '')
 	{
@@ -675,7 +675,7 @@ class Thesa extends BaseController
 					break;
 			}
 		/****************************** Screen */
-		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();		
+		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
 		$ThConcept = new \App\Models\Thesaurus\ThConcept();
 		$sx = '';
 		$sx .= $this->cab();
@@ -695,7 +695,7 @@ class Thesa extends BaseController
 	function a($id = '',$act='')
 	{
 			$Socials = new \App\Models\Socials();
-			$ID = $Socials->getID();					
+			$ID = $Socials->getID();
             $ThUsers = new \App\Models\Thesaurus\ThUsers();
             if (!$ThUsers->autorized($ID))
             {
@@ -706,14 +706,14 @@ class Thesa extends BaseController
 
 		$ThThesaurus = new \App\Models\Thesaurus\ThThesaurus();
 		$ThConcept = new \App\Models\Thesaurus\ThConcept();
-		
+
 		$sx = '';
 		$sx .= $this->cab();
 		$sx .= $this->navbar();
 
 		$dt = $ThConcept->find($id);
 		$th = $dt['c_th'];
-		$ltr = '';		
+		$ltr = '';
 		$sx .= $ThThesaurus->show($th, $ltr);
 
 		$sx .= $ThThesaurus->a($id,$act);
@@ -728,9 +728,9 @@ class Thesa extends BaseController
 		$ThOpen = new \App\Models\Thesaurus\ThThesaurus();
 		$sx = '';
 		$sx .= $this->cab();
-		//$sx .= $this->view('paralax');			
+		//$sx .= $this->view('paralax');
 		$sx .= $this->navbar();
-		$sx .= $view->render('paralax');		
+		$sx .= $view->render('paralax');
 		$sx .= $ThOpen->index();
 		$sx .= $this->footer();
 
@@ -740,17 +740,17 @@ class Thesa extends BaseController
 	function th_my()
 	{
 		$view = \Config\Services::renderer();
-		$ThOpen = new \App\Models\Thesaurus\ThThesaurus();
+		$Thesa = new \App\Models\Thesa\Thesa();
 		$sx = '';
 		$sx .= $this->cab();
-		//$sx .= $this->view('paralax');			
+		//$sx .= $this->view('paralax');
 		$sx .= $this->navbar();
 		$sx .= $view->render('paralax');
-		$sx .= $ThOpen->myth();
+		$sx .= $Thesa->myThesa();
 		$sx .= $this->footer();
 
 		return $sx;
-	}	
+	}
 
 	function help($d1='',$d2='')
 		{
@@ -761,7 +761,7 @@ class Thesa extends BaseController
 			$sx .= $this->navbar();
 			$sx .= $view->render('paralax');
 			$sx .= $Help->index($d1,$d2);
-			$sx .= $this->footer();			
+			$sx .= $this->footer();
 
 			return $sx;
 		}
@@ -795,7 +795,7 @@ class Thesa extends BaseController
 			/********** Security */
 			if ($ThThesaurus->access($id))
 			{
-				/********** Config */			
+				/********** Config */
 				$sx .= $ThThesaurus->config($id,$d1,$d2,$d3);
 			} else {
 				if ($id > 0)
@@ -804,7 +804,7 @@ class Thesa extends BaseController
 				} else {
 					$sx .= metarefresh(PATH.MODULE);
 				}
-				
+
 			}
 			$sx .= $this->footer();
 			return $sx;

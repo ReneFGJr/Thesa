@@ -38,6 +38,6 @@ class ThesaUsers extends Migration
 
     public function down()
     {
-        //
+        $this->forge->dropTable('Thesa_Users');
     }
 }

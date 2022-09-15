@@ -51,7 +51,7 @@ class Index extends Model
                 ->findAll();
             $sx = '';
             $vlr = get($name);
-            
+
             for ($r=0;$r < count($dt);$r++)
                 {
                     $line = $dt[$r];
@@ -60,9 +60,9 @@ class Index extends Model
                         {
                             $sel = ' checked';
                         }
-                                            
+
                     $sx .= '<input name="'.$name.'" type="radio" value="'.$line['lg_cod_marc'].'" '.$sel.'> ';
-                    $sx .= $line['lg_language']; 
+                    $sx .= $line['lg_language'];
                     $sx .= '<br>';
               }
             return $sx;
@@ -73,4 +73,31 @@ class Index extends Model
             $dt = $this->orderBy('lg_order, lg_language')->findAll();
             pre($dt);
         }
+
+    function search($lang)
+    {
+        $lang = strtolower($lang);
+        switch ($lang) {
+            case 'en':
+                $lang = 'eng';
+                break;
+            case 'pt_br':
+                $lang = 'por';
+                break;
+            case 'pt-br':
+                $lang = 'por';
+                break;
+            case 'pt':
+                $lang = 'por';
+                break;
+        }
+
+        $dt = $this->where('lg_code', $lang)->findAll();
+        if (count($dt) > 0) {
+            return ($dt[0]['id_lg']);
+        } else {
+            echo "ERRO '- " . $lang;
+            exit;
+        }
+    }
 }

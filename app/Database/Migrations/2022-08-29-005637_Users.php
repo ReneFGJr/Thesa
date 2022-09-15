@@ -41,13 +41,13 @@ class Users extends Migration
             ],
             'us_password' => [
                 'type'       => 'VARCHAR',
-                'constraint' => '100',
+                'constraint' => '50',
             ],
-            '	us_password_method' => [
+            'us_password_method' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '5',
             ],
-            '	us_lastaccess' => [
+            'us_lastaccess' => [
                 'type'       => 'DATETIME',
             ],
             'us_apikey' => [
@@ -64,10 +64,26 @@ class Users extends Migration
         ]);
         $this->forge->addKey('id_us', true);
         $this->forge->createTable('Users');
+
+        $data = array(
+                'us_nome' => 'Administrador',
+                'us_email' => 'administrador',
+                'us_image'=>'',
+                'us_genero' => 'N',
+                'us_verificado' => 1,
+                'us_login' => 'admin',
+                'us_password' => md5('admin'),
+                'us_password_method' => 'MD5',
+                'us_lastaccess' => '1900-01-01',
+                'us_apikey' => '',
+                'us_apikey_active' => 0,
+                'us_apikey_date' => '1900-01-01',
+            );
+        $this->db->table('Users')->insert($data);
     }
 
     public function down()
     {
-        //
+        $this->forge->dropTable('Users');
     }
 }

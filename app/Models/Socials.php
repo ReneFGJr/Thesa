@@ -11,7 +11,7 @@ use function App\Models\AI\Authority\check;
 class Socials extends Model
 {
 	protected $DBGroup              = 'default';
-	var $table                		= 'users2';
+	var $table                		= 'users';
 	var $primaryKey          		 = 'id_us';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
@@ -22,16 +22,14 @@ class Socials extends Model
 	[
 		'id_us', 'us_nome', 'us_email',
 		'us_image', 'us_genero', 'us_verificado',
-		'us_login', 'us_password', 'us_password_method',
+		'us_login', 'us_password', 'us_autenticador',
 		'us_oauth2', 'us_lastaccess'
 	];
 
 	var $typeFields        = [
-		'hi',
-		'string:100*',
-		'string:100*',
+		'hi', 'string:100*', 'string:100*',
 		'hidden', 'hidden', 'hidden',
-		'string:50', 'string:50', 'hidden',
+		'hidden', 'hidden', 'hidden',
 		'hidden', 'up'
 	];
 
@@ -74,7 +72,7 @@ class Socials extends Model
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="' . PATH . MODULE . 'social/logout' . '">Logout</a>
 						</div>
-					</li>				
+					</li>
 				';
 		}
 		return ($sx);
@@ -105,6 +103,7 @@ class Socials extends Model
 	function index($cmd = '', $id = '', $dt = '', $cab = '')
 	{
 		$sx = '';
+
 		if (strlen($cmd) == 0) {
 			$cmd = get("cmd");
 		}
@@ -112,23 +111,22 @@ class Socials extends Model
 		switch ($cmd) {
 			case 'session':
 				if ($_SERVER['CI_ENVIRONMENT'] == 'development') {
-				$id = 1;
-				echo '<pre>';
-				print_r($_SESSION);
-				echo '</pre>';
-				$newdata = [
-					'id'  => $id,
-					'email'     => 'Usuário Test (ADMIN)',
-					'access' => $this->putPerfil(array(0 => '#ADM'), $id),
-					'time' => time()
-				];
-				$session = session();
-				$session->set($newdata);
+					$id = 1;
+					echo '<pre>';
+					print_r($_SESSION);
+					echo '</pre>';
+					$newdata = [
+						'id'  => $id,
+						'email'     => 'Usuário Test (ADMIN)',
+						'access' => $this->putPerfil(array(0 => '#ADM'), $id),
+						'time' => time()
+					];
+					$session = session();
+					$session->set($newdata);
 
-				echo '<pre>';
-				print_r($_SESSION);
-				echo '</pre>';
-
+					echo '<pre>';
+					print_r($_SESSION);
+					echo '</pre>';
 				}
 				break;
 			case 'test':
@@ -166,22 +164,57 @@ class Socials extends Model
 				$sx .= $this->perfil($id);
 				break;
 
-			/********************************************* USERS */
+				/********************************************* USERS */
 			case 'users':
 				$sx .= $cab;
-				$sx .= $this->users();
+				switch ($id) {
+					case 'viewid':
+						$sx .= $this->perfil($dt);
+						break;
+					case 'edit':
+						$sx .= bs(12);
+						$sx .= h("Users - Editar", 1);
+						$this->id = $dt;
+						$this->path = '/social/users/';
+						$this->path_back = '/social/users';
+						$sx .= form($this);
+						break;
+
+					case 'delete':
+						$sx .= h("Serviços - Excluir", 1);
+						$this->id = $dt;
+						form_del($this);
+						$sx = metarefresh('/social/users');
+						break;
+
+					default:
+						$sx .= h($id);
+						$sx .= h($dt);
+						$sx .= $this->users();
+						break;
+				}
 				break;
-			/********************************************* PERFIS */
+				/********************************************* GROUPS */
+			case 'groups':
+				$sx .= $cab;
+				$sx .= $this->groups();
+				break;
+			case 'group_useredit':
+				$sx .= $cab;
+				$sx .= $this->group_user_edit($id);
+				break;
+
+				/********************************************* PERFIS */
 			case 'perfis':
 				$sx .= $cab;
 				$sx .= breadcrumbs();
-				$sx .= $this->perfis($id,$dt);
+				$sx .= $this->perfis($id, $dt);
 				break;
 			case 'perfis_add':
 				$sx .= $cab;
 				$sx .= breadcrumbs();
-				$sx .= $this->perfis_add($id,$dt);
-				break;				
+				$sx .= $this->perfis_add($id, $dt);
+				break;
 			case 'profile':
 				$sx .= $cab;
 				$sx .= $this->perfil_list();
@@ -196,19 +229,7 @@ class Socials extends Model
 					];
 				$sx .= tableview($this, $dt);
 				break;
-			case 'edit':
-				$sx .= bs(12);
-				$sx .= h("Users - Editar", 1);
-				$this->id = $id;
-				$sx .= form($this);
-				$sx .= bsdivclose(3);
-				break;
 
-			case 'delete':
-				$sx .= h("Serviços - Excluir", 1);
-				$this->Social->id = $id;
-				$sx .= form_del($this);
-				break;
 			case 'logout':
 				$sx = $this->logout();
 				break;
@@ -230,28 +251,27 @@ class Socials extends Model
 				} else {
 					$st .= h('Service not found - [' . $cmd . ']', 5);
 				}
-				
-				if ($this->getAccess('#ADM#GER')) 
-					{
-						$st .= $this->menu(9);
-					}
-			
+
+				if ($this->getAccess('#ADM#GER')) {
+					$st .= $this->menu(9);
+				}
+
 				$sx .= bs(bsc($st, 12));
-				
+
 				break;
 		}
 		return $sx;
 	}
 
-	function menu($nivel=0)
-		{
-			$menu = array();
-			$menu['social/users'] = 'social.users_list';
-			$menu['social/perfis'] = 'social.users_perfis';
-			$menu['social/convert'] = 'social.users_convert';
-			$sx = bs(bsc(bsmenu($menu),12));
-			return $sx;
-		}
+	function menu($nivel = 0)
+	{
+		$menu = array();
+		$menu['social/users'] = 'social.users_list';
+		$menu['social/perfis'] = 'social.users_perfis';
+		$menu['social/convert'] = 'social.users_convert';
+		$sx = bs(bsc(bsmenu($menu), 12));
+		return $sx;
+	}
 
 	function access_denied()
 	{
@@ -272,9 +292,17 @@ class Socials extends Model
 	function getAccess($t = '')
 	{
 		if (isset($_SESSION['id'])) {
+			/************************************************************* Checa Admin */
+			$user = round($_SESSION['email']);
+			if ($user == 'admin') {
+				return 1;
+			}
+
+
+			/********************************************* Check */
 			$tp = explode('#', $t);
 			for ($i = 0; $i < count($tp); $i++) {
-				$ta = $this->calcMD5('#'.$tp[$i]);
+				$ta = $this->calcMD5('#' . $tp[$i]);
 				if (isset($_SESSION['access'])) {
 					$ac = $_SESSION['access'];
 					$ac = (array)json_decode($ac);
@@ -290,110 +318,96 @@ class Socials extends Model
 	}
 
 	function users()
-		{
-			$cmd = '';
-			$id = 0;
-			$url = geturl();
-			$url = explode('/', $url);
-			if (isset($url[5])) { $cmd = $url[5]; }
-			if (isset($url[6])) { $id = $url[6]; }
-			$this->path = PATH.MODULE.'social/users';
-			$this->path_back = PATH.MODULE.'social/users';
-			//pre($url);
-
-			switch($cmd)
-				{
-					case 'viewid':
-						$sx = $this->perfil($id);
-						break;
-					case 'edit':
-						$this->id = $id;
-						$sx = form($this);
-						break;
-					default:
-						$sx = tableview($this);					
-					break;
-				}
-			$sx = bs(bsc($sx,12));
-			return $sx;
+	{
+		$cmd = '';
+		$id = 0;
+		$url = geturl();
+		$url = explode('/', $url);
+		if (isset($url[5])) {
+			$cmd = $url[5];
 		}
+		if (isset($url[6])) {
+			$id = $url[6];
+		}
+		$this->path = PATH . MODULE . 'social/users';
+		$this->path_back = PATH . MODULE . 'social/users';
 
-	function perfis_add($d1,$d2)
-		{
-			$this->setPerfilDb();
-			$dt = $this->find($d1);
-			$sx = $this->header_perfil($dt);
+		$sx = tableview($this);
 
-			$sf = form_open();
-			$sf .= lang('social.user_name').' '.lang('social.search');
-			$sf .= '<div class="input-group mb-3">
-					<input type="text" name="user.name" class="form-control" placeholder="'.lang('social.user_name').'" aria-label="'.lang('social.user_name').'" aria-describedby="basic-addon2">
+		$sx = bs(bsc($sx, 12));
+		return $sx;
+	}
+
+	function perfis_add($d1, $d2)
+	{
+		$this->setPerfilDb();
+		$dt = $this->find($d1);
+		$sx = $this->header_perfil($dt);
+
+		$sf = form_open();
+		$sf .= lang('social.user_name') . ' ' . lang('social.search');
+		$sf .= '<div class="input-group mb-3">
+					<input type="text" name="user.name" class="form-control" placeholder="' . lang('social.user_name') . '" aria-label="' . lang('social.user_name') . '" aria-describedby="basic-addon2">
 					<div class="input-group-append">
-						<input type="submit" class="btn btn-outline-primary" type="button" value="'.lang('social.search').'">
+						<input type="submit" class="btn btn-outline-primary" type="button" value="' . lang('social.search') . '">
 					</div>
 					</div>	';
-			$sf .= form_close();
-			$sx .= $sf;
-			$sx = bs(bsc($sx),12);
+		$sf .= form_close();
+		$sx .= $sf;
+		$sx = bs(bsc($sx), 12);
 
-			
-			/**************************************************************************** ADD */
-			$assign = get("assign");
-			$user = get("user");
-			if ((strlen($assign) > 0) and (strlen($user) > 0))
-				{
-					$check = md5($d1.$user.date("Ymd"));
-					if (($check == $assign) and (round($user) > 0))
-						{
-							$check = md5($user.$d1);
-							$sql = "select * from users_perfil_attrib where pa_user = '$user' and pa_perfil = '$d1' ";
-							$dt = $this->db->query($sql)->getResult();
-							if (count($dt) == 0)
-								{
-									$sql = "insert into users_perfil_attrib (pa_user, pa_perfil, pa_check) values ('$user','$d1','$check')";
-									$dt = $this->db->query($sql);
-								}
-							return($sx);
-						} else {
-							$sx = bsmessage("ERRO de CHECK",3);
-							return $sx;
-						}
-					exit;
+
+		/**************************************************************************** ADD */
+		$assign = get("assign");
+		$user = get("user");
+		if ((strlen($assign) > 0) and (strlen($user) > 0)) {
+			$check = md5($d1 . $user . date("Ymd"));
+			if (($check == $assign) and (round($user) > 0)) {
+				$check = md5($user . $d1);
+				$sql = "select * from users_perfil_attrib where pa_user = '$user' and pa_perfil = '$d1' ";
+				$dt = $this->db->query($sql)->getResult();
+				if (count($dt) == 0) {
+					$sql = "insert into users_perfil_attrib (pa_user, pa_perfil, pa_check) values ('$user','$d1','$check')";
+					$dt = $this->db->query($sql);
 				}
-			/*************************************************************************** FIND */
-			$name = get("user_name");
-			if (strlen($name) > 0)
-				{
-					$this->setUserDb();
-					$sql = "select * from users2 
+				return ($sx);
+			} else {
+				$sx = bsmessage("ERRO de CHECK", 3);
+				return $sx;
+			}
+			exit;
+		}
+		/*************************************************************************** FIND */
+		$name = get("user_name");
+		if (strlen($name) > 0) {
+			$this->setUserDb();
+			$sql = "select * from users2
 								left join users_perfil_attrib ON pa_user = id_us
 								where (us_nome like '%$name%') or (us_email like '%$name%')";
-					$dt = $this->db->query($sql)->getResult();
+			$dt = $this->db->query($sql)->getResult();
 
-					for ($r=0;$r < count($dt);$r++)
-						{
-							$line = (array)$dt[$r];
-							if ($line['id_pa'] == '')
-							{
-								$link = '<a href="'.base_url(PATH.MODULE.'social/perfis_add/'.$d1.'/').'?user='.$line['id_us'].'&assign='.md5($d1.$line['id_us'].date("Ymd")).'">';
-								$link .= lang('social.add_perfil');
-								$link .= '</a>';
-								$sx .= bsc($line['id_us'],1);
-								$sx .= bsc($line['us_nome'],5);
-								$sx .= bsc($line['us_email'],5);
-								$sx .= bsc($link,1);
-							} else {
-								$sx .= bsc($line['id_us'],1);
-								$sx .= bsc($line['us_nome'],5);
-								$sx .= bsc($line['us_email'],5);
-								$sx .= bsc(lang('social.already_seted'),1);
-							}
-						}
+			for ($r = 0; $r < count($dt); $r++) {
+				$line = (array)$dt[$r];
+				if ($line['id_pa'] == '') {
+					$link = '<a href="' . base_url(PATH . MODULE . 'social/perfis_add/' . $d1 . '/') . '?user=' . $line['id_us'] . '&assign=' . md5($d1 . $line['id_us'] . date("Ymd")) . '">';
+					$link .= lang('social.add_perfil');
+					$link .= '</a>';
+					$sx .= bsc($line['id_us'], 1);
+					$sx .= bsc($line['us_nome'], 5);
+					$sx .= bsc($line['us_email'], 5);
+					$sx .= bsc($link, 1);
+				} else {
+					$sx .= bsc($line['id_us'], 1);
+					$sx .= bsc($line['us_nome'], 5);
+					$sx .= bsc($line['us_email'], 5);
+					$sx .= bsc(lang('social.already_seted'), 1);
 				}
-				$sx = bs($sx);
-
-			return $sx;
+			}
 		}
+		$sx = bs($sx);
+
+		return $sx;
+	}
 
 	function perfis($cmd = '')
 	{
@@ -415,11 +429,10 @@ class Socials extends Model
 
 		switch ($cmd) {
 			case 'viewid':
-				$sx = h('viewid ->'.$id, 1);
-				if ($id == 0)
-					{
-						return(metarefresh($this->path));
-					}
+				$sx = h('viewid ->' . $id, 1);
+				if ($id == 0) {
+					return (metarefresh($this->path));
+				}
 				$sx .= $this->view_perfil_id($id);
 				break;
 			case 'edit':
@@ -436,121 +449,117 @@ class Socials extends Model
 	}
 
 	function setPerfilAtribDb()
-		{
-				$this->table = "users_perfil_attrib";
-				$this->primaryKey = "id_pa";
-				$this->allowedFields = ['id_pa', 'pa_user', 'pa_perfil', 'pa_check'];
-		}
+	{
+		$this->table = "users_perfil_attrib";
+		$this->primaryKey = "id_pa";
+		$this->allowedFields = ['id_pa', 'pa_user', 'pa_perfil', 'pa_check'];
+	}
 
 	function setPerfilDb()
-		{
-				$this->table = "users_perfil";
-				$this->primaryKey = "id_pe";
-				$this->allowedFields = ['id_pe', 'pe_abrev', 'pe_descricao', 'pe_nivel'];
-				$this->typeFields = ['hidden', 'string:100', 'string:100', '[0-9]'];
-		}	
-		
+	{
+		$this->table = "users_perfil";
+		$this->primaryKey = "id_pe";
+		$this->allowedFields = ['id_pe', 'pe_abrev', 'pe_descricao', 'pe_nivel'];
+		$this->typeFields = ['hidden', 'string:100', 'string:100', '[0-9]'];
+	}
+
 	function change_password($id)
-		{
-			$pw1 = get("password_old");
-			$pw2 = get("password");
-			$pw3 = get("password_confirm");
+	{
+		$pw1 = get("password_old");
+		$pw2 = get("password");
+		$pw3 = get("password_confirm");
 
-			$sx = 'Change Password';
+		$sx = 'Change Password';
 
-			if (($pw1 != '') and ($pw2 != '') and ($pw3 != ''))
-				{
-					$sx = bsmessage(lang('social.password_change_ok'),1);
-				} else {
-					$this->table = '*';
-					$this->primaryKey = "id_pe";
-					$this->allowedFields = ['id_us', 'password_old', 'password', 'password_confirm'];
-					$this->typeFields = ['hidden', 'password', 'password', 'password'];
-					$this->path = PATH.MODULE.'social/perfil';
-					$this->path_back = '#';
-					$sx .= form($this);		
-				}
-
-		
-
-			return $sx;
-
+		if (($pw1 != '') and ($pw2 != '') and ($pw3 != '')) {
+			$sx = bsmessage(lang('social.password_change_ok'), 1);
+		} else {
+			$this->table = '*';
+			$this->primaryKey = "id_pe";
+			$this->allowedFields = ['id_us', 'password_old', 'password', 'password_confirm'];
+			$this->typeFields = ['hidden', 'password', 'password', 'password'];
+			$this->path = PATH . MODULE . 'social/perfil';
+			$this->path_back = '#';
+			$sx .= form($this);
 		}
+
+
+
+		return $sx;
+	}
 
 	function setUserDb()
-		{
-				$this->table = "users2";
-				$this->primaryKey = "id_us";
-				$this->allowedFields = 
-					[
-						'id_us', 'us_nome', 'us_email',
-						'us_image', 'us_genero', 'us_verificado',
-						'us_login', 'us_password', 'us_password_method',
-						'us_oauth2', 'us_lastaccess'
-					];
+	{
+		$this->table = "users2";
+		$this->primaryKey = "id_us";
+		$this->allowedFields =
+			[
+				'id_us', 'us_nome', 'us_email',
+				'us_image', 'us_genero', 'us_verificado',
+				'us_login', 'us_password', 'us_autenticador',
+				'us_oauth2', 'us_lastaccess'
+			];
 
-				$this->typeFields = 
-					[
-						'hi',
-						'st100*',
-						'st100*',
-						'hi', 'hi', 'hi',
-						'st50', 'st50', 'hi',
-						'hi', 'up'
-					];
-		}		
+		$this->typeFields =
+			[
+				'hi',
+				'st100*',
+				'st100*',
+				'hi', 'hi', 'hi',
+				'st50', 'hidden', 'hi',
+				'hi', 'up'
+			];
+	}
 
 	function header_perfil($dt)
-		{
-			$sx = '';
-			$sx .= bsc(lang('social.perfil'),10,'small');
-			$sx .= bsc(lang('social.abbrev'),1,'small');
-			$sx .= bsc(h($dt['pe_descricao'],1),10);
-			$sx .= bsc(h($dt['pe_abrev'],4),2);
-			$sx .= bsc('<hr>',12);
-			$sx = bs($sx);
-			return $sx;
-		}
+	{
+		$sx = '';
+		$sx .= bsc(lang('social.perfil'), 10, 'small');
+		$sx .= bsc(lang('social.abbrev'), 1, 'small');
+		$sx .= bsc(h($dt['pe_descricao'], 1), 10);
+		$sx .= bsc(h($dt['pe_abrev'], 4), 2);
+		$sx .= bsc('<hr>', 12);
+		$sx = bs($sx);
+		return $sx;
+	}
 
 	function view_perfil_id($id)
-		{
-			$this->setPerfilDb();
-			$dt = $this->find($id);
-			$sx = $this->header_perfil($dt);
-			$sx .= $this->view_perfil_members($id);
-			return $sx;
-		}
+	{
+		$this->setPerfilDb();
+		$dt = $this->find($id);
+		$sx = $this->header_perfil($dt);
+		$sx .= $this->view_perfil_members($id);
+		return $sx;
+	}
 
-	function view_perfil_members($id)	
-		{
-			$sx = '';
-			$sx .= '<a href="'.PATH.MODULE.'social/perfis_add/'.$id.'">'.lang('social.perfis.add.user').'</a>';
-			$this->setPerfilDb();
-			$dt = $this
-				->join('users_perfil_attrib', 'pa_perfil = id_pe')
-				->join('users', 'pa_user = id_us', 'left')
-				->where('id_pe', $id)
-				->findAll();
-			$sx .= '<table class="table">';
-			$sx .= '<tr><th>#</th><th>'.lang('social.id_us').'</th><th>'.lang('social.us_nome').'</th></tr>';
-			for ($r=0;$r < count($dt);$r++)
-				{
-					$line = $dt[$r];
-					$sx .= '<tr>';
-					$sx .= '<td>'.($r+1).'</td>';
-					$sx .= '<td>'.$line['us_nome'].'</td>';
-					$sx .= '<td>'.$line['us_nome'].'</td>';
-					$sx .= '<td>'.$line['us_nome'].'</td>';
-					$sx .= '<td>'.$line['us_nome'].'</td>';
-					$sx .= '</tr>';
-				}
-			if (count($dt) == 0)
-				{
-					$sx .= '<tr><td colspan=5>'.bsmessage(lang('social.no_members'),3).'</td></tr>';
-				}
-			$sx .= '</table>';			
-			return $sx;
-		}		
+	function view_perfil_members($id)
+	{
+		$sx = '';
+		$sx .= '<a href="' . PATH . MODULE . 'social/perfis_add/' . $id . '">' . lang('social.perfis.add.user') . '</a>';
+		$this->setPerfilDb();
+		$dt = $this
+			->join('users_perfil_attrib', 'pa_perfil = id_pe')
+			->join('users', 'pa_user = id_us', 'left')
+			->where('id_pe', $id)
+			->findAll();
+		$sx .= '<table class="table">';
+		$sx .= '<tr><th>#</th><th>' . lang('social.id_us') . '</th><th>' . lang('social.us_nome') . '</th></tr>';
+		for ($r = 0; $r < count($dt); $r++) {
+			$line = $dt[$r];
+			$sx .= '<tr>';
+			$sx .= '<td>' . ($r + 1) . '</td>';
+			$sx .= '<td>' . $line['us_nome'] . '</td>';
+			$sx .= '<td>' . $line['us_nome'] . '</td>';
+			$sx .= '<td>' . $line['us_nome'] . '</td>';
+			$sx .= '<td>' . $line['us_nome'] . '</td>';
+			$sx .= '</tr>';
+		}
+		if (count($dt) == 0) {
+			$sx .= '<tr><td colspan=5>' . bsmessage(lang('social.no_members'), 3) . '</td></tr>';
+		}
+		$sx .= '</table>';
+		return $sx;
+	}
 
 	function ajax($cmd)
 	{
@@ -581,15 +590,16 @@ class Socials extends Model
 		}
 	}
 
-	function perfil($id=0)
+	function perfil($id = 0)
 	{
 		$sx = '';
 		$id = round($id);
-		if ($id == 0) { $id = $this->getID();}
-		if ($id > 0)
-			{
-				$sx .= $this->perfil_show($id);
-			}
+		if ($id == 0) {
+			$id = $this->getID();
+		}
+		if ($id > 0) {
+			$sx .= $this->perfil_show($id);
+		}
 		return $sx;
 	}
 
@@ -598,168 +608,334 @@ class Socials extends Model
 		$sx = '';
 		if ($id > 0) {
 			$dt = $this->Find($id);
-			$sx .= breadcrumbs(array('social.home'=>PATH.MODULE,'social.perfil'=>PATH.MODULE.'social/perfil'));
+			$sx .= breadcrumbs(array('social.home' => PATH . MODULE, 'social.perfil' => PATH . MODULE . 'social/perfil'));
 			$sx .= $this->perfil_show_header($dt);
 			$sx .= $this->my_library($dt);
 			$logs = $this->logs($id);
 			$rese = $this->my_reasearchs($id);
 			$setings = $this->my_setings($id);
 			$sx .= bs(
-					bsc($setings,4).
-					bsc($rese,4).
-					bsc($logs,4)
-					);
-			$sx .= view('Pages/profile.php', $dt);
+				bsc($setings, 4) .
+					bsc($rese, 4) .
+					bsc($logs, 4)
+			);
+			//$sx .= view('Socials/Pages/profile.php', $dt);
 		} else {
-			echo "OK";
-			$sx = metarefresh(base_url());
+			$sx = metarefresh(getenv("app.baseURL"));
+			return $sx;
 		}
 		return bs($sx);
 	}
 
 	function image($id)
-		{
-			$dir = '_repository';
-			dircheck($dir);
-			$dir = '_repository/users/';
-			dircheck($dir);
-			$dir = '_repository/users/'.$id.'/';
-			dircheck($dir);
-			$filename = $dir.'user.png';
-			if (file_exists($filename))
-				{
-					$img = '_repository/users/'.$id.'/user.png';
-				} else {
-					$img = 'img/pics/no_image_she_he.jpg';
-				}
-			return URL.$img;			
+	{
+		$dir = '_repository';
+		dircheck($dir);
+		$dir = '_repository/users/';
+		dircheck($dir);
+		$dir = '_repository/users/' . $id . '/';
+		dircheck($dir);
+		$filename = $dir . 'user.png';
+		if (file_exists($filename)) {
+			$img = '_repository/users/' . $id . '/user.png';
+		} else {
+			$img = '/img/genre/no_image_she_he.jpg';
 		}
+		return URL . $img;
+	}
 
 	function my_library($id)
-		{
-			$sx = '
+	{
+		$sx = '
 				<div class="card-header pb-0 p-3">
-            		<h6 class="mb-1">'.lang('Social.Access').'</h6>
-            		<p class="text-sm">'.lang('Social.Access_info').'</p>
-          		</div>			
+            		<h6 class="mb-1">' . lang('Social.Access') . '</h6>
+            		<p class="text-sm">' . lang('Social.Access_info') . '</p>
+          		</div>
 			';
-			return $sx;
+		return $sx;
+	}
+
+	function group_user_add($gr = 0)
+	{
+		$id = get("id");
+		$act = get("act");
+		$chk = get("chk");
+
+		if (($id != '') and ($act == 'add')) {
+			$chk2 = md5($id . $_SESSION['id']);
+
+			$sql = "select * from users_group_members
+							where grm_library = " . LIBRARY . " and grm_group = $gr
+							and grm_user = $id";
+			$db = $this->db->query($sql);
+			$us = $db->getResult();
+
+			if (count($us) == 0) {
+				$sql = "insert users_group_members
+										(grm_group, grm_user, grm_library)
+										values
+										($gr, $id, " . LIBRARY . ")";
+				$db = $this->db->query($sql);
+				return '';
+			}
 		}
-		
+
+		$sx = '';
+		$sx .= '<hr>';
+		$sx .= h(lang('social.group_user_add'), 1);
+		$sx .= form_open();
+		$sx .= '<label for="exampleInputEmail1">' . lang('social.user_name') . '</label>';
+		$sx .= '<div class="input-group mb-3">';
+		$sx .= form_input(array('name' => 'search', 'class' => 'form-control', 'placeholder' => lang('social.group_user_add_name')));
+		$sx .= form_submit(array('name' => 'action', 'value' => lang('social.user_find'), 'class' => 'btn btn-primary'));
+		$sx .= '</div>';
+		$sx .= form_close();
+
+		$act = get("action");
+		$search = get("search");
+		if (($act != '') and ($search != '')) {
+			$sx .= h(lang('social.users_found'), 5);
+			$sql = "select * from users
+								left join users_group_members ON grm_group = $gr AND grm_user = id_us
+								where us_nome like '%$search%'
+								order by us_nome";
+			$db = $this->db->query($sql);
+			$us = $db->getResult();
+
+			$sx .= '<table class="table table-sm table-striped">';
+			$sx .= '<tr>';
+			$sx .= '<th width="45%">' . lang('social.user') . '</th>';
+			$sx .= '<th width="45%">' . lang('social.email') . '</th>';
+			$sx .= '<th width="10%">#</th>';
+			$sx .= '</tr>';
+
+			for ($r = 0; $r < count($us); $r++) {
+				$line = (array)$us[$r];
+
+				$pre = 'id=' . $line['id_us'] . '&act=add&chk=' . md5($line['id_us'] . $_SESSION['id']);
+				$remove = '<a href="' . PATH . MODULE . 'social/group_useredit/' . $gr . '/' . $line['id_us'] . '?' . $pre . '" class="btn-outline-primary ps-2 pe-2 rounded">';
+				$remove .= lang('social.user_add');
+				$remove .= '</a>';
+				$sx .= '<tr>';
+				$sx .= '<td>' . $line['us_nome'] . '</td>';
+				$sx .= '<td>' . $line['us_email'] . '</td>';
+				if ($line['grm_group'] == '') {
+					$sx .= '<td>' . $remove . '</td>';
+				} else {
+					$sx .= '<td><span class="text-primary">' . lang('social.already') . '</span></td>';
+				}
+
+				$sx .= '</tr>';
+			}
+			$sx .= '</table>';
+		}
+		return $sx;
+	}
+
+	function group_user_edit($gr = 0)
+	{
+		$user_add = $this->group_user_add($gr);
+
+		$sx = '';
+		$sx .= breadcrumbs();
+		$sql = "select * from users_group
+						where id_gr = $gr
+						and gr_library = " . LIBRARY;
+		$db = $this->db->query($sql);
+		$dt = $db->getResult();
+
+		$line = (array)$dt[0];
+
+		$sx .= h($line['gr_name'], 2);
+		$tp = $line['gr_hash'];
+
+		/************************ Usuarios */
+		$sql = "select * from users_group_members
+						INNER JOIN users ON grm_user = id_us
+						where grm_group = $gr
+						and grm_library = " . LIBRARY . "
+						order by us_nome";
+		$db = $this->db->query($sql);
+		$us = $db->getResult();
+
+		$sx .= '<table class="table table-sm table-striped">';
+		$sx .= '<tr>';
+		$sx .= '<th width="45%">' . lang('Social.user') . '</th>';
+		$sx .= '<th width="45%">' . lang('Social.email') . '</th>';
+		$sx .= '<th width="10%">' . $tp . '</th>';
+		$sx .= '</tr>';
+
+		for ($r = 0; $r < count($us); $r++) {
+			$line = (array)$us[$r];
+
+			$pre = 'id=' . $line['id_grm'] . 'act=delete&chk=' . md5($line['id_grm'] . $_SESSION['id']);
+			$remove = '<a href="' . PATH . MODULE . 'social/group_useredit/' . $gr . '/' . $line['id_us'] . '?' . $pre . '" class="btn-outline-danger ps-2 pe-2 rounded">';
+			$remove .= lang('social.remove');
+			$remove .= '</a>';
+			$sx .= '<tr>';
+			$sx .= '<td>' . $line['us_nome'] . '</td>';
+			$sx .= '<td>' . $line['us_email'] . '</td>';
+			$sx .= '<td>' . $remove . '</td>';
+			$sx .= '</tr>';
+		}
+		$sx .= '</table>';
+
+		$sx .= $user_add;
+
+		$sx .= '<div class="mt-5 mb-5" style="height: 100px;"></div>';
+
+		$sx = bs(bsc($sx, 12));
+		return $sx;
+	}
+
+	function groups($id = 0)
+	{
+		$sql = "select * from users_group
+						LEFT JOIN users_group_members ON id_gr = grm_group
+						LEFT JOIN users ON grm_user = id_us
+						where gr_library = " . LIBRARY . "
+						order by gr_name, us_nome";
+		$db = $this->db->query($sql);
+		$dt = $db->getResult();
+
+		$sx = '';
+		$xgr = '';
+		$ed = $this->getAccess("#ADM");
+		for ($r = 0; $r < count($dt); $r++) {
+			$line = (array)$dt[$r];
+			$gr = $line['gr_name'];
+			if ($gr != $xgr) {
+				$link = '<a href="' . PATH . MODULE . 'social/group_useredit/' . $line['id_gr'] . '" title="' . lang("social.group_user_edit") . '">';
+				$linka = '</a>';
+				$edi = ' ' . $link . bsicone('user+', 32) . $linka;
+				$sx .= h($gr . $edi, 3, 'mt-3');
+				$xgr = $gr;
+			}
+			$name = $line['us_nome'];
+			if (strlen($name) > 0) {
+				$link = '<a href="' . PATH . MODULE . 'social/perfil/' . $line['id_us'] . '">';
+				$linka = '</a>';
+				$sx .= $link . $name . $linka . '. ';
+			}
+		}
+		$sx = bs(bsc($sx, 12));
+		return $sx;
+	}
+
 	/*************************************************** SEYYINGS */
 	function my_setings($id)
-		{
+	{
 		$sx = '
 			<div class="card h-100">
 					<div class="card-header pb-0 p-3">
-						<h6 class="mb-0">'.lang('social.my_settings').'</h6>
+						<h6 class="mb-0">' . lang('social.my_settings') . '</h6>
 					</div>
 					<div class="card-body p-3">
-						<h6 class="text-uppercase text-body text-xs font-weight-bolder">'.lang('social.my_settings').'</h6>
+						<h6 class="text-uppercase text-body text-xs font-weight-bolder">' . lang('social.my_settings') . '</h6>
 						<ul class="list-group">';
-		$sx .= '<li class="list-group-item border-0 px-0">'.lang('social.my_settings_info').'</li>';
+		$sx .= '<li class="list-group-item border-0 px-0">' . lang('social.my_settings_info') . '</li>';
 		$sx .= $this->change_password($id);
-		$sx .= '
-						</ul>
-					</div>
-					</div>
-					';						
-			return $sx;
-		}		
-
-
-	/*************************************************** RESEARSH */
-	function my_reasearchs($id)
-		{
-		$sx = '
-			<div class="card h-100">
-					<div class="card-header pb-0 p-3">
-						<h6 class="mb-0">'.lang('social.researchs_register').'</h6>
-					</div>
-					<div class="card-body p-3">
-						<h6 class="text-uppercase text-body text-xs font-weight-bolder">'.lang('social.research').'</h6>
-						<ul class="list-group">';
-		$sx .= '<li class="list-group-item border-0 px-0">'.lang('social.research_info').'</li>';
-		$sx .= '
-						</ul>
-					</div>
-					</div>
-					';						
-			return $sx;
-		}
-
-	/*************************************************** LOGS */
-
-	function log_insert($id)
-		{
-			$ip = ip();
-			$sql = "insert into brapci_click.users_log 
-				(ul_user, ul_ip)
-				values
-				($id,'$ip')";
-			$dt = $this->db->query($sql);
-		}
-
-	function logs($id)
-		{
-		if (is_array($id)) { $id = $id['id_us']; }
-		$sx = '
-			<div class="card h-100">
-					<div class="card-header pb-0 p-3">
-						<h6 class="mb-0">'.lang('social.Logs_register').'</h6>
-					</div>
-					<div class="card-body p-3">
-						<h6 class="text-uppercase text-body text-xs font-weight-bolder">'.lang('social.logs').'</h6>
-						<ul class="list-group">';
-		
-		$sql = "select * from brapci_click.users_log 
-					where ul_user = $id 
-					order by id_ul desc limit 10";
-		$dt = $this->db->query($sql)->getResult();
-		
-		if (count($dt) == 0)
-			{
-				$sx .= '<li class="list-group-item border-0 px-0">
-							<div class="form-check form-switch ps-0">
-								<span class="text-warning">'.lang('social.no_logs').'</span>
-							</div>
-						</li>';
-			} else {
-				for($r=0;$r < count($dt);$r++)
-				{
-					$line = (array)$dt[$r];
-					$hora = $line['ul_access'];
-					$hora = substr($hora,strlen($hora)-8,10);
-					$sx .= '	
-						<li class="list-group-item border-0 px-0">
-							'.stodbr(sonumero($line['ul_access'])).'
-							'.$hora.'
-							('.$line['ul_ip'].')							
-						</li>';
-				}
-			}
 		$sx .= '
 						</ul>
 					</div>
 					</div>
 					';
 		return $sx;
-		}	
+	}
+
+
+	/*************************************************** RESEARSH */
+	function my_reasearchs($id)
+	{
+		$sx = '
+			<div class="card h-100">
+					<div class="card-header pb-0 p-3">
+						<h6 class="mb-0">' . lang('social.researchs_register') . '</h6>
+					</div>
+					<div class="card-body p-3">
+						<h6 class="text-uppercase text-body text-xs font-weight-bolder">' . lang('social.research') . '</h6>
+						<ul class="list-group">';
+		$sx .= '<li class="list-group-item border-0 px-0">' . lang('social.research_info') . '</li>';
+		$sx .= '
+						</ul>
+					</div>
+					</div>
+					';
+		return $sx;
+	}
+
+	/*************************************************** LOGS */
+
+	function log_insert($id)
+	{
+		$ip = ip();
+		$sql = "insert into users_log
+				(ul_user, ul_ip)
+				values
+				($id,'$ip')";
+		$dt = $this->db->query($sql);
+	}
+
+	function logs($id)
+	{
+		if (is_array($id)) {
+			$id = $id['id_us'];
+		}
+		$sx = '
+			<div class="card h-100">
+					<div class="card-header pb-0 p-3">
+						<h6 class="mb-0">' . lang('social.Logs_register') . '</h6>
+					</div>
+					<div class="card-body p-3">
+						<h6 class="text-uppercase text-body text-xs font-weight-bolder">' . lang('social.logs') . '</h6>
+						<ul>';
+
+		$sql = "select * from users_log
+					where ul_user = $id
+					order by id_ul desc limit 10";
+		$dt = $this->db->query($sql)->getResult();
+
+		if (count($dt) == 0) {
+			$sx .= '<li class="list-group-item border-0 px-0">
+							<div class="form-check form-switch ps-0">
+								<span class="text-warning">' . lang('social.no_logs') . '</span>
+							</div>
+						</li>';
+		} else {
+			for ($r = 0; $r < count($dt); $r++) {
+				$line = (array)$dt[$r];
+				$hora = $line['ul_access'];
+				$hora = substr($hora, strlen($hora) - 8, 10);
+				$sx .= '
+						<li class="list-group-item border-0 px-0">
+							' . stodbr(sonumero($line['ul_access'])) . '
+							' . $hora . '
+							(' . $line['ul_ip'] . ')
+						</li>';
+			}
+		}
+		$sx .= '
+						</ul>
+					</div>
+					</div>
+					';
+		return $sx;
+	}
 
 	function perfil_show_header($dt)
-		{
-			$sx = '
+	{
+		$sx = '
 			<div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
 			<div class="row gx-4">
 					<div class="col-auto">
 					<div class="avatar avatar-xl position-relative">
-						<img src="'.$this->image($dt['id_us']).'" alt="profile_image" style="height: 100px;" class="shadow-sm img-fluid img-thumbnail">
+						<img src="' . $this->image($dt['id_us']) . '" alt="profile_image" style="height: 100px;" class="shadow-sm img-fluid img-thumbnail">
 					</div>
 					</div>
 					<div class="col-auto my-auto">
 					<div class="h-100">
-						<h5 class="mb-1">'.$dt['us_nome'].'</h5>
-						<p class="mb-0 font-weight-bold text-sm">'.$dt['us_login'].'</p>
+						<h5 class="mb-1">' . $dt['us_nome'] . '</h5>
+						<p class="mb-0 font-weight-bold text-sm">' . $dt['us_login'] . '</p>
 					</div>
 					</div>
 					<div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
@@ -811,8 +987,8 @@ class Socials extends Model
 				</div>
 				</div>
 				';
-				return $sx;
-		}
+		return $sx;
+	}
 
 	function signin()
 	{
@@ -868,7 +1044,7 @@ class Socials extends Model
 		$sx = '';
 		$user = get("signup_email");
 		$name = get("signup_name");
-		$inst = get("signup_institution");	
+		$inst = get("signup_institution");
 
 		if (!check_email($user)) {
 			$sx .= '<h2>' . lang('social.email_invalid') . '<h2>';
@@ -899,7 +1075,7 @@ class Socials extends Model
 			'us_nome' => $name,
 			'us_affiliation' => $inst,
 			'us_password'  => md5($pw1),
-			'us_password_method' => 'MD5'
+			'us_autenticador' => 'MD5'
 		];
 		$this->insert($data);
 	}
@@ -919,8 +1095,9 @@ class Socials extends Model
 		$session = \Config\Services::session();
 		$url = \Config\Services::url();
 		$session->destroy();
-
-		return (redirect()->to('/'));
+		helper('url');
+		//redirect(PATH.MODULE, 'refresh');
+		return redirect()->to('/');
 	}
 
 	function nav_user()
@@ -981,13 +1158,13 @@ class Socials extends Model
 		* {
 		  box-sizing: border-box;
 		}
-		
+
 		body {
 		  font-family: Tahoma, Verdana, Segoe, sans-serif;
 		  font-size: 14px;
 		  text-align: center;
 		}
-		
+
 		.wrapper {
 		  width: 250px;
 		  height: 350px;
@@ -995,7 +1172,7 @@ class Socials extends Model
 		  perspective: 600px;
 		  text-align: left;
 		}
-		
+
 		.rec-prism {
 		  width: 100%;
 		  height: 100%;
@@ -1004,7 +1181,7 @@ class Socials extends Model
 		  transform: translateZ(-100px);
 		  transition: transform 0.5s ease-in;
 		}
-		
+
 		.face {
 		  position: absolute;
 		  width: 250px;
@@ -1138,7 +1315,7 @@ class Socials extends Model
 		  height: 250px;
 		  transform: rotateX(-90deg) translateZ(225px);
 		}
-		
+
 		.nav {
 		  padding: 0;
 		  text-align: center;
@@ -1165,7 +1342,7 @@ class Socials extends Model
 		.nav li:hover:after {
 		  width: 100%;
 		}
-		
+
 		.psw, .signup, .singin {
 		  display: block;
 		  margin: 10px 0;
@@ -1174,11 +1351,11 @@ class Socials extends Model
 		  color: #42509e;
 		  cursor: pointer;
 		}
-		
+
 		small {
 		  font-size: 0.7em;
 		}
-		
+
 		@-webkit-keyframes success {
 		  from {
 			-webkit-transform: translate(-50%, -50%) rotate(0) scale(0);
@@ -1188,13 +1365,13 @@ class Socials extends Model
 		  }
 		}
 		</style>
-		
+
 		<script>
 		  window.console = window.console || function(t) {};
 		  if (document.location.search.match(/type=embed/gi)) {
 			window.parent.postMessage("resize", "*");
 		  }
-		</script>		
+		</script>
 		<ul class="nav center" style="margin: 0% 20%; display: none;">
 		<li onclick="showLogin()">' . lang('social.social_login') . '</li>
 		<li onclick="showSignup()">' . lang('social.social_sign_up') . '</li>
@@ -1202,7 +1379,7 @@ class Socials extends Model
 		<li onclick="showSubscribe()">' . lang('social.social_subscrime') . '</li>
 		<li onclick="showContactUs()">' . lang('social.social_contact_us') . '</li>
 		</ul>
-		
+
 		<div class="wrapper">
 		  <div class="rec-prism">
 		    <!--- BOARD ----------------------------------------------->
@@ -1232,7 +1409,7 @@ class Socials extends Model
 				  </div>
 				  <span class="psw" onclick="showForgotPassword()">' . lang('social.social_forgot_password') . '</span>
 				  <span class="signup" onclick="showSignup()">' . lang('social.social_not_user') . '  ' . lang('social.social_sign_up') . '</span>
-				  <span class="signup" onclick="showContactUs()">' . lang('social.social_questions') . '</span>	
+				  <span class="signup" onclick="showContactUs()">' . lang('social.social_questions') . '</span>
 			  </div>
 			</div>
 			<!-- FORGOT --------------------------------------------->
@@ -1248,14 +1425,14 @@ class Socials extends Model
 				  <div class="field-wrapper">
 					<button class="btn btn-primary" style="width: 100%;" onclick="action_ajax(\'signup\');">' . lang('social.enter') . '</button>
 				  </div>
-				  <span class="singin" onclick="showLogin()">' . lang('social.social_alread_user') . '  ' . lang('social.social_sign_in') . '</span>				  
+				  <span class="singin" onclick="showLogin()">' . lang('social.social_alread_user') . '  ' . lang('social.social_sign_in') . '</span>
 				</form>
 			  </div>
 			</div>
 			<!-- SIGN UP -------------------------------------------->
 			<div class="face face-right">
 			  <div class="content">
-				<h2>' . lang('social.social_sign_up') . '</h2>				
+				<h2>' . lang('social.social_sign_up') . '</h2>
 				  <div class="field-wrapper">
 					<input type="text" id="signup_name" placeholder="name">
 					<label>' . lang('social.user_name') . '</label>
@@ -1309,7 +1486,7 @@ class Socials extends Model
 			</div>
 		  </div>
 		</div>
-		  
+
 		<script id="rendered-js" >
 		let prism = document.querySelector(".rec-prism");
 
@@ -1319,7 +1496,7 @@ class Socials extends Model
 			while(end < start + ms) {
 				end = new Date().getTime();
 			}
-		}	
+		}
 
 		function ajax(cmd)
 			{
@@ -1328,7 +1505,7 @@ class Socials extends Model
 			if (cmd == "signin")
 				{
 					data.append("user", document.getElementById("user_login").value);
-					data.append("pwd", document.getElementById("user_password").value);					
+					data.append("pwd", document.getElementById("user_password").value);
 				}
 			if (cmd == "signup")
 				{
@@ -1344,8 +1521,8 @@ class Socials extends Model
 
             	document.getElementById("board").innerHTML = xhttp.responseText;
 			 	console.log(this.responseText);
-			}	
-		
+			}
+
 		function showSignup() {
 		  prism.style.transform = "translateZ(-100px) rotateY( -90deg)";
 		}
@@ -1355,15 +1532,15 @@ class Socials extends Model
 		function showForgotPassword() {
 		  prism.style.transform = "translateZ(-100px) rotateY( -180deg)";
 		}
-		
+
 		function showSubscribe() {
 		  prism.style.transform = "translateZ(-100px) rotateX( -90deg)";
 		}
-		
+
 		function showContactUs() {
 		  prism.style.transform = "translateZ(-100px) rotateY( 90deg)";
 		}
-		
+
 		function showThankYou() {
 		  prism.style.transform = "translateZ(-100px) rotateX( 90deg)";
 		}
@@ -1373,7 +1550,7 @@ class Socials extends Model
 				prism.style.transform = "translateZ(-100px) rotateX( 90deg)";
 				ajax($cmd);
 			}
-		//# sourceURL=pen.js		
+		//# sourceURL=pen.js
 		';
 		if (strlen($err) > 0) {
 			$sx .= '
