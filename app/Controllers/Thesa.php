@@ -41,7 +41,8 @@ class Thesa extends BaseController
             case 'th':
                 $data = array();
                 //$sx .= view('header/menu_left');
-                $id = 1;
+                $id = $Thesa->setThesa($id);
+
                 $dt = $Thesa->le($id);
                 $sx .= $Thesa->header($dt);
 

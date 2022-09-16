@@ -529,3 +529,252 @@ in APPPATH\Views\Thesa\Forms\ThesaNew.php on line 22.
  9 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
 10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
 11 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 19:45:27 --> Object of class App\Models\Thesa\Thesa could not be converted to string
+in APPPATH\Models\Thesa\Thesa.php on line 132.
+ 1 APPPATH\Models\Thesa\Thesa.php(53): App\Models\Thesa\Thesa->new_thesa()
+ 2 APPPATH\Controllers\Admin.php(36): App\Models\Thesa\Thesa->index('new', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('thesaurus', 'new')
+ 4 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 5 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 19:45:35 --> Object of class App\Models\Thesa\Thesa could not be converted to string
+in APPPATH\Models\Thesa\Thesa.php on line 132.
+ 1 APPPATH\Models\Thesa\Thesa.php(53): App\Models\Thesa\Thesa->new_thesa()
+ 2 APPPATH\Controllers\Admin.php(36): App\Models\Thesa\Thesa->index('new', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('thesaurus', 'new')
+ 4 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 5 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 19:45:39 --> Object of class App\Models\Thesa\Thesa could not be converted to string
+in APPPATH\Models\Thesa\Thesa.php on line 132.
+ 1 APPPATH\Models\Thesa\Thesa.php(53): App\Models\Thesa\Thesa->new_thesa()
+ 2 APPPATH\Controllers\Admin.php(36): App\Models\Thesa\Thesa->index('new', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('thesaurus', 'new')
+ 4 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 5 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 19:50:02 --> Call to a member function getPost() on null
+in APPPATH\Models\Thesa\Thesa.php on line 72.
+ 1 APPPATH\Models\Thesa\Thesa.php(139): App\Models\Thesa\Thesa->store()
+ 2 APPPATH\Models\Thesa\Thesa.php(53): App\Models\Thesa\Thesa->new_thesa()
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\Thesa\Thesa->index('new', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('thesaurus', 'new')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 19:58:51 --> Undefined index: 
+in APPPATH\Helpers\sisdoc_form_2.php on line 127.
+ 1 APPPATH\Helpers\sisdoc_form_2.php(127): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index: ', 'APPPATH\\Helpers\\sisdoc_form_2.php', 127, [...])
+ 2 APPPATH\Models\Thesa\Thesa.php(150): tableview(Object(App\Models\Thesa\Thesa))
+ 3 APPPATH\Models\Thesa\Thesa.php(56): App\Models\Thesa\Thesa->list()
+ 4 APPPATH\Controllers\Admin.php(36): App\Models\Thesa\Thesa->index('admin', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 5 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('thesaurus', 'admin')
+ 6 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 19:59:37 --> Undefined index: 
+in APPPATH\Helpers\sisdoc_form_2.php on line 127.
+ 1 APPPATH\Helpers\sisdoc_form_2.php(127): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index: ', 'APPPATH\\Helpers\\sisdoc_form_2.php', 127, [...])
+ 2 APPPATH\Models\Thesa\Thesa.php(150): tableview(Object(App\Models\Thesa\Thesa))
+ 3 APPPATH\Models\Thesa\Thesa.php(56): App\Models\Thesa\Thesa->list()
+ 4 APPPATH\Controllers\Admin.php(36): App\Models\Thesa\Thesa->index('ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 5 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('thesaurus')
+ 6 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 19:59:57 --> Undefined index: 
+in APPPATH\Helpers\sisdoc_form_2.php on line 127.
+ 1 APPPATH\Helpers\sisdoc_form_2.php(127): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index: ', 'APPPATH\\Helpers\\sisdoc_form_2.php', 127, [...])
+ 2 APPPATH\Models\Thesa\Thesa.php(150): tableview(Object(App\Models\Thesa\Thesa))
+ 3 APPPATH\Models\Thesa\Thesa.php(56): App\Models\Thesa\Thesa->list()
+ 4 APPPATH\Controllers\Admin.php(36): App\Models\Thesa\Thesa->index('ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 5 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('thesaurus')
+ 6 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 20:00:04 --> Undefined index: 
+in APPPATH\Helpers\sisdoc_form_2.php on line 127.
+ 1 APPPATH\Helpers\sisdoc_form_2.php(127): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index: ', 'APPPATH\\Helpers\\sisdoc_form_2.php', 127, [...])
+ 2 APPPATH\Models\Thesa\Thesa.php(150): tableview(Object(App\Models\Thesa\Thesa))
+ 3 APPPATH\Models\Thesa\Thesa.php(56): App\Models\Thesa\Thesa->list()
+ 4 APPPATH\Controllers\Admin.php(36): App\Models\Thesa\Thesa->index('ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 5 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('thesaurus')
+ 6 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 20:00:12 --> Undefined index: 
+in APPPATH\Helpers\sisdoc_form_2.php on line 127.
+ 1 APPPATH\Helpers\sisdoc_form_2.php(127): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index: ', 'APPPATH\\Helpers\\sisdoc_form_2.php', 127, [...])
+ 2 APPPATH\Models\Thesa\Thesa.php(149): tableview(Object(App\Models\Thesa\Thesa))
+ 3 APPPATH\Models\Thesa\Thesa.php(56): App\Models\Thesa\Thesa->list()
+ 4 APPPATH\Controllers\Admin.php(36): App\Models\Thesa\Thesa->index('ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 5 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('thesaurus')
+ 6 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 20:00:19 --> Undefined index: 
+in APPPATH\Helpers\sisdoc_form_2.php on line 127.
+ 1 APPPATH\Helpers\sisdoc_form_2.php(127): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index: ', 'APPPATH\\Helpers\\sisdoc_form_2.php', 127, [...])
+ 2 APPPATH\Models\Thesa\Thesa.php(150): tableview(Object(App\Models\Thesa\Thesa))
+ 3 APPPATH\Models\Thesa\Thesa.php(56): App\Models\Thesa\Thesa->list()
+ 4 APPPATH\Controllers\Admin.php(36): App\Models\Thesa\Thesa->index('ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 5 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('thesaurus')
+ 6 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 20:00:23 --> Undefined index: 
+in APPPATH\Helpers\sisdoc_form_2.php on line 127.
+ 1 APPPATH\Helpers\sisdoc_form_2.php(127): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index: ', 'APPPATH\\Helpers\\sisdoc_form_2.php', 127, [...])
+ 2 APPPATH\Models\Thesa\Thesa.php(150): tableview(Object(App\Models\Thesa\Thesa))
+ 3 APPPATH\Models\Thesa\Thesa.php(56): App\Models\Thesa\Thesa->list()
+ 4 APPPATH\Controllers\Admin.php(36): App\Models\Thesa\Thesa->index('ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 5 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('thesaurus')
+ 6 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 20:30:53 --> Object of class App\Models\RDF\ThTermTh could not be converted to string
+in APPPATH\Models\RDF\ThTerm.php on line 138.
+ 1 APPPATH\Models\RDF\ThTerm.php(117): App\Models\RDF\ThTerm->register('Anais de evento', '3', 1)
+ 2 APPPATH\Models\RDF\ThTerm.php(52): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(40): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 20:32:30 --> Object of class App\Models\RDF\ThTermTh could not be converted to string
+in APPPATH\Models\RDF\ThTerm.php on line 138.
+ 1 APPPATH\Models\RDF\ThTerm.php(117): App\Models\RDF\ThTerm->register('Anais de evento', '3', 1)
+ 2 APPPATH\Models\RDF\ThTerm.php(52): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(40): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 20:33:02 --> Object of class App\Models\RDF\ThTermTh could not be converted to string
+in APPPATH\Models\RDF\ThTerm.php on line 138.
+ 1 APPPATH\Models\RDF\ThTerm.php(117): App\Models\RDF\ThTerm->register('Artigo de revisão', '3', 1)
+ 2 APPPATH\Models\RDF\ThTerm.php(52): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(40): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 20:33:10 --> Object of class App\Models\RDF\ThTermTh could not be converted to string
+in APPPATH\Models\RDF\ThTerm.php on line 138.
+ 1 APPPATH\Models\RDF\ThTerm.php(117): App\Models\RDF\ThTerm->register('Artigo original', '3', 1)
+ 2 APPPATH\Models\RDF\ThTerm.php(52): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(40): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 20:36:22 --> Object of class App\Models\RDF\ThTermTh could not be converted to string
+in APPPATH\Models\RDF\ThTerm.php on line 138.
+ 1 APPPATH\Models\RDF\ThTerm.php(117): App\Models\RDF\ThTerm->register('teste', '3', 1)
+ 2 APPPATH\Models\RDF\ThTerm.php(52): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(40): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 20:36:36 --> Object of class App\Models\RDF\ThTermTh could not be converted to string
+in APPPATH\Models\RDF\ThTerm.php on line 138.
+ 1 APPPATH\Models\RDF\ThTerm.php(117): App\Models\RDF\ThTerm->register('teste2', '3', 1)
+ 2 APPPATH\Models\RDF\ThTerm.php(52): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(40): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 20:37:18 --> Object of class App\Models\RDF\ThTermTh could not be converted to string
+in APPPATH\Models\RDF\ThTerm.php on line 140.
+ 1 APPPATH\Models\RDF\ThTerm.php(119): App\Models\RDF\ThTerm->register('test3', '3', 1)
+ 2 APPPATH\Models\RDF\ThTerm.php(52): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(40): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 20:37:46 --> Object of class App\Models\RDF\ThTermTh could not be converted to string
+in APPPATH\Models\RDF\ThTerm.php on line 141.
+ 1 APPPATH\Models\RDF\ThTerm.php(120): App\Models\RDF\ThTerm->register('twwef', '3', 1)
+ 2 APPPATH\Models\RDF\ThTerm.php(52): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(40): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 20:38:33 --> Call to undefined method App\Models\Thesa\Thesa::getTh
+in SYSTEMPATH\Model.php on line 774.
+ 1 APPPATH\Models\RDF\ThTerm.php(107): CodeIgniter\Model->__call('getTh', [])
+ 2 APPPATH\Models\RDF\ThTerm.php(52): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(40): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 20:38:37 --> Call to undefined method App\Models\Thesa\Thesa::getTh
+in SYSTEMPATH\Model.php on line 774.
+ 1 APPPATH\Models\RDF\ThTerm.php(107): CodeIgniter\Model->__call('getTh', [])
+ 2 APPPATH\Models\RDF\ThTerm.php(52): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(40): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 20:38:49 --> Call to undefined method App\Models\Thesa\Thesa::getTh
+in SYSTEMPATH\Model.php on line 774.
+ 1 APPPATH\Models\RDF\ThTerm.php(107): CodeIgniter\Model->__call('getTh', [])
+ 2 APPPATH\Models\RDF\ThTerm.php(52): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(40): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 20:39:19 --> Object of class App\Models\RDF\ThTermTh could not be converted to string
+in APPPATH\Models\RDF\ThTerm.php on line 140.
+ 1 APPPATH\Models\RDF\ThTerm.php(119): App\Models\RDF\ThTerm->register('teste 2', '3', '1')
+ 2 APPPATH\Models\RDF\ThTerm.php(52): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(40): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 20:40:04 --> Object of class App\Models\RDF\ThTermTh could not be converted to string
+in APPPATH\Models\RDF\ThTerm.php on line 140.
+ 1 APPPATH\Models\RDF\ThTerm.php(119): App\Models\RDF\ThTerm->register('ascasc', '3', '1')
+ 2 APPPATH\Models\RDF\ThTerm.php(52): App\Models\RDF\ThTerm->term_register('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(40): App\Models\RDF\ThTerm->index('add_ajax', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'add_ajax')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 20:53:08 --> syntax error, unexpected '}'
+in APPPATH\Models\RDF\ThTerm.php on line 112.
+ 1 SYSTEMPATH\Autoloader\Autoloader.php(259): CodeIgniter\Autoloader\Autoloader->includeFile('APPPATH\\Models\\RDF\\ThTerm.php')
+ 2 SYSTEMPATH\Autoloader\Autoloader.php(237): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Models\\RDF\\ThTerm')
+ 3 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Models\\RDF\\ThTerm')
+ 4 APPPATH\Controllers\Admin.php(39): spl_autoload_call('App\\Models\\RDF\\ThTerm')
+ 5 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'list')
+ 6 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 20:53:13 --> syntax error, unexpected '}'
+in APPPATH\Models\RDF\ThTerm.php on line 112.
+ 1 SYSTEMPATH\Autoloader\Autoloader.php(259): CodeIgniter\Autoloader\Autoloader->includeFile('APPPATH\\Models\\RDF\\ThTerm.php')
+ 2 SYSTEMPATH\Autoloader\Autoloader.php(237): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Models\\RDF\\ThTerm')
+ 3 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Models\\RDF\\ThTerm')
+ 4 APPPATH\Controllers\Admin.php(39): spl_autoload_call('App\\Models\\RDF\\ThTerm')
+ 5 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'list')
+ 6 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 7 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 20:53:22 --> Undefined variable: ThTermTh
+in APPPATH\Models\RDF\ThTerm.php on line 110.
+ 1 APPPATH\Models\RDF\ThTerm.php(110): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined variable: ThTermTh', 'APPPATH\\Models\\RDF\\ThTerm.php', 110, [...])
+ 2 APPPATH\Models\RDF\ThTerm.php(52): App\Models\RDF\ThTerm->term_list('list', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 3 APPPATH\Controllers\Admin.php(40): App\Models\RDF\ThTerm->index('list', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('terms', 'list')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()

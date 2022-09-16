@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg d-print-none" style="border-bottom: 2px solid <?=$bg_color;?>">
+<nav class="navbar navbar-expand-lg d-print-none" style="border-bottom: 2px solid <?= $bg_color; ?>">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
             <img src="<?= getenv("app.baseURL"); ?>/img/favicons/favicon-32x32.png" style="height: 32px;">
@@ -14,19 +14,16 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Link</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </li>
+                <?php
+                if (isset($_SESSION['th']))
+                    {
+                        echo '
+                        <li class="nav-item">
+                            <a class="nav-link" href="'.PATH.'/th/'.$_SESSION['th'].'">'.lang('thesa.th_atual').'</a>
+                        </li>';
+                    }
+                ?>
+
                 <li class="nav-item">
                     <a class="nav-link disabled">Disabled</a>
                 </li>

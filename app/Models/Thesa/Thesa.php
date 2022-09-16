@@ -62,9 +62,58 @@ class Thesa extends Model
         }
 
     function store()
-        {
+    {
+        $request = \Config\Services::request();
+        $validation =  \Config\Services::validation();
+        $data = array();
 
+        echo 'Hello';
+
+        if (isset($_POST)) {
+
+            $data = $request->getPost();
+
+            /********************************* RULES */
+            $rules = [
+                'th_name' => ['label' => 'Name', 'rules' => 'required|min_length[3]'],
+                'th_achronic' => ['label' => 'Silga', 'rules' => 'required|min_length[2]'],
+                'th_status' => ['label' => 'Silga', 'rules' => 'required|min_length[1]'],
+                'th_type' => ['label' => 'Silga', 'rules' => 'required|min_length[1]']
+            ];
+            //$validation->setRule('sc_name', 'Username', 'required|min_length[3]');
+            $validation->setRules($rules);
+
+            if ($validation->withRequest($request)->run()) {
+                $data = [
+                    'th_type' => $request->getVar('th_type'),
+                    'th_name'  => $request->getVar('th_name'),
+                    'th_status'  => $request->getVar('th_status'),
+                    'th_achronic'  => $request->getVar('th_achronic'),
+                    'th_description'  => $request->getVar('th_description')
+                ];
+
+                $id_th = $request->getVar('id_th');
+                if ($id_th == 0) {
+                    $this->save($data);
+                } else {
+                    $this->set($data)->where('id_th', $id_th)->update();
+                }
+
+                header("location: admin");
+                exit;
+            } else {
+
+                $data['ERROS'] = $validation->getErrors();
+                $data['validation'] = $this->validator;
+
+                echo '<pre>';
+                print_r($data);
+                echo '</pre>';
+
+                return view('Thesa/Forms/ThesaNew', $data);
+            }
         }
+    }
 
     function btn_new_thesa()
         {
@@ -91,18 +140,47 @@ class Thesa extends Model
 
     function new_thesa()
         {
-            $data = array();
-
             $sx = '';
-            $sx .= '<h1>'.msg('new_thesaurus').'</h1>';
-            $sx .= view('Thesa/Forms/ThesaNew',$data);
+            $sx .= $this->store();
             return $sx;
+        }
+
+    function setThesa($id='')
+        {
+            if ($id != '')
+                {
+                    $_SESSION['th'] = $id;
+                    return $id;
+                } else {
+                    if (isset($_SESSION['th']))
+                        {
+                            $id = $_SESSION['th'];
+                            return $id;
+                        } else {
+                            echo "OPS";
+                            exit;
+                        }
+                }
+            return $id;
         }
 
     function list()
         {
-            $sx = tableview($this);
-            $sx = bs(bsc($sx,12));
+            $ThIcone = new \App\Models\Thesa\ThIcone();
+            $dt = $this
+                ->orderBy('th_name', 'ASC')
+                ->findAll();
+            $sx = '';
+            for($r=0;$r < count($dt);$r++)
+                {
+                    $line = $dt[$r];
+                    $line['img'] = $ThIcone->icone($dt);
+                    $sx .= view('Theme/Standard/ViewThList',$line);
+                }
+            $sx .= '';
+
+            $sx = bs($sx);
             return $sx;
         }
+
 }

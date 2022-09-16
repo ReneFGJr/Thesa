@@ -48,6 +48,9 @@ class ThTerm extends Model
         $th = 1;
         $sx = '';
         switch ($d1) {
+            case 'list':
+                $sx = $this->term_list($d1, $d2, $d3);
+                break;
             case 'add_ajax':
                 $this->term_register($d1, $d2, $d3);
                 break;
@@ -61,7 +64,7 @@ class ThTerm extends Model
 
                 $ThTermTh = new \App\Models\RDF\ThTermTh();
                 $menu[PATH . '/admin/terms/'] = lang('thesa.total_terms').' '.$ThTermTh->total($th);
-                $menu[PATH . '/admin/terms/create'] = msg('thesa.total_not_attribuit') . ' ' . $ThTermTh->totalNoUse($th);
+                $menu[PATH . '/admin/terms/list'] = msg('thesa.total_not_attribuit') . ' ' . $ThTermTh->totalNoUse($th);
 
                 $sx .= menu($menu);
         }
@@ -100,10 +103,20 @@ class ThTerm extends Model
         return $sx;
     }
 
+    function term_list()
+        {
+            $Thesa = new \App\Models\Thesa\Thesa();
+            $ThTermTh = new \App\Models\RDF\ThTermTh();
+            $th = $Thesa->setThesa();
+            $sx = $ThTermTh->totalNoUse($th);
+            return $sx;
+        }
+
     /***************************************** AJAX ou API */
     function term_register($d1, $d2, $d3)
     {
-        $th = 1;
+        $Thesa = new \App\Models\Thesa\Thesa();
+        $th = $Thesa->setThesa();
         $term = get("terms");
         $term = troca($term,chr(13),';');
         $term = troca($term, chr(10), ';');
@@ -135,7 +148,7 @@ class ThTerm extends Model
                     $data['term_name'] = $term;
                     $data['term_lang'] = $lang;
                     $id = $this->insert($data);
-                    return $$ThTermTh->link_th($id, $th);
+                    return $ThTermTh->link_th($id, $th);
 
                 } else {
                     $id = $dt[0]['id_term'];

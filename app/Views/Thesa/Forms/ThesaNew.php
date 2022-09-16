@@ -1,16 +1,31 @@
+<?= form_open(); ?>
 <div class="container">
     <div class="row">
         <div class="col-12">
             <h1>Thesa - #ADMIN</h1>
+            <input type="hidden" name="id_th" id="id_th" value="<?= get("th_name"); ?>">
         </div>
 
         <div class="col-12">
-            <label><?= lang('thesa.th_name'); ?></label>
+            <label>
+                <?= lang('thesa.th_name'); ?>
+                <?php
+                if (isset($th_achronic)) {
+                    echo '<span class="text-red">' . $th_achronic . '</span>';
+                }
+                ?>
+            </label>
             <input type="text" name="th_name" id="th_name" class="form-control" value="<?= get("th_name"); ?>" />
         </div>
 
         <div class="col-6">
-            <label><?= lang('thesa.th_achronic'); ?></label>
+            <label><?= lang('thesa.th_achronic'); ?>
+                <?php
+                if (isset($th_achronic)) {
+                    echo '<span class="text-red">' . $th_achronic . '</span>';
+                }
+                ?>
+            </label>
             <input type="text" name="th_achronic" id="th_achronic" class="form-control" value="<?= get("th_achronic"); ?>" />
             <br />
 
@@ -55,7 +70,9 @@
 
         <div class="col-6">
             <input type="submit" value="<?= lang('thesa.btn_save'); ?>" class="btn btn-outline-primary" />
-            <a href="<?=getenv("app.baseURL");?>/admin/" class="btn btn-outline-danger"><?= lang('thesa.btn_return'); ?></a>
+            <a href="<?= getenv("app.baseURL"); ?>/admin/" class="btn btn-outline-danger"><?= lang('thesa.btn_return'); ?></a>
         </div>
     </div>
 </div>
+<?= form_close(); ?>
+<?= date("Y-m-d H:i:s"); ?>
