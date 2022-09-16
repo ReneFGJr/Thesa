@@ -4,42 +4,45 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class ThesaConecpt extends Migration
+class ThesaConecptPropity extends Migration
 {
     public function up()
-        {
-         $this->forge->addField([
-            'id_c' => [
+    {
+        $this->forge->addField([
+            'id_p' => [
                 'type'           => 'INT',
                 'constraint'     => 5,
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'c_concept' => [
-                'type' => 'INT',
-                'null' => true,
-            ],
-            'c_th' => [
-                'type' => 'INT',
-                'null' => true,
-            ],
-            'c_ativo' => [
-                'type' => 'INT',
-                'null' => true,
-            ],
-            'c_agency' => [
+            'p_name' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '30',
             ],
+            'p_description' => [
+                'type'       => 'TEXT',
+            ],
+            'p_part_1' => [
+                'type' => 'INT',
+                'null' => true,
+            ],
+            'p_part_2' => [
+                'type' => 'INT',
+                'null' => true,
+            ],
+            'p_part_3' => [
+                'type' => 'INT',
+                'null' => true,
+            ],
 
         ]);
-        $this->forge->addKey('id_c', true);
-        $this->forge->addForeignKey('c_th', 'Thesa', 'id_th');
-        $this->forge->createTable('Thesa_concept');
+        $this->forge->addKey('id_p', true);
+        $this->forge->createTable('Thesa_property');
     }
 
     public function down()
     {
-        $this->forge->dropTable('Thesa_concept');
+        $this->forge->dropTable('Thesa_property');
     }
+
 }

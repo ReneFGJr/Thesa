@@ -84,7 +84,7 @@
                             <a href="#!" class="text-white">Link 3</a>
                         </li>
                         <li>
-                            <a href="#!" class="text-white">Link 4</a>
+                            <a href="<?= getenv("app.baseURL"); ?>/admin" class="text-white">Admin</a>
                         </li>
                     </ul>
                 </div>
@@ -99,7 +99,7 @@
 
     <!-- Copyright -->
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
-        © 2017-<?=date("Y");?> Copyright:
+        © 2017-<?= date("Y"); ?> Copyright:
         <a class="text-white" href="https://ufrgs.br/">UFRGS.br</a>
     </div>
     <!-- Copyright -->

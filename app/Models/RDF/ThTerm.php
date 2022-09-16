@@ -154,9 +154,12 @@ class ThTerm extends Model
             $confirm = get("confirm");
             if ($confirm == 'yes')
                 {
+                    /*********************************** CREATE CONCEPT */
+                    $ThConcept = new \App\Models\RDF\ThConcept();
+                    $ThConcept->register($id, $dt[0]['term_th_thesa']);
+
                     echo bsmessage(lang('thesa.term_concept_creadted'), 1);
-                    echo
-            '
+                    echo '
                     <script>
                         var url = "' . PATH . 'admin/terms/ajax_term_update/' . $id.'";
                         $("#result").html("");
