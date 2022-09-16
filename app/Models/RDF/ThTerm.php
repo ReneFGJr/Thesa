@@ -48,11 +48,25 @@ class ThTerm extends Model
         $th = 1;
         $sx = '';
         switch ($d1) {
-            case 'list':
-                $sx = $this->term_list($d1, $d2, $d3);
+            case 'create_concept':
+                $sx = $this->create_concept($d1, $d2, $d3);
+                break;
+            case 'selected':
+                $this->ajax_selected($d1, $d2, $d3);
                 break;
             case 'add_ajax':
                 $this->term_register($d1, $d2, $d3);
+                break;
+            case 'ajax_term_concept':
+                $this->ajax_term_concept($d1, $d2, $d3);
+                break;
+            case 'ajax_term_update':
+                echo $this->term_list();
+                echo $this->term_list_script();
+                echo '<small style="font-size: 70%;">';
+                echo lang("thesa.updated_at").' '. date("Y-m-d H:i:s");
+                echo '</small>';
+                exit;
                 break;
 
             case 'add':
@@ -64,12 +78,24 @@ class ThTerm extends Model
 
                 $ThTermTh = new \App\Models\RDF\ThTermTh();
                 $menu[PATH . '/admin/terms/'] = lang('thesa.total_terms').' '.$ThTermTh->total($th);
-                $menu[PATH . '/admin/terms/list'] = msg('thesa.total_not_attribuit') . ' ' . $ThTermTh->totalNoUse($th);
+                $menu[PATH . '/admin/terms/create_concept'] = msg('thesa.total_not_attribuit') . ' ' . $ThTermTh->totalNoUse($th);
 
                 $sx .= menu($menu);
         }
         $sx = bs(bsc($sx, 12));
         return $sx;
+    }
+
+    function le($id)
+    {
+        $dt = $this
+            ->join('thesa_terms_th', 'term_th_term = id_term')
+            ->join('language', 'term_lang = id_lg')
+            ->where('id_term', $id)
+            ->where('term_th_concept', 0)
+            ->orderBy('term_name', 'ASC')
+            ->findAll();
+        return $dt;
     }
 
     function form($th = 0)
@@ -103,12 +129,162 @@ class ThTerm extends Model
         return $sx;
     }
 
+    function create_concept($d1,$d2,$d3)
+        {
+            $sa = h(lang('thesa.terms_add'),3);
+            $sa .= '<div id="term_list_div">';
+            $sa .= $this->term_list();
+            $sa .= '</div>';
+            $sb = $this->term_functions();
+            $sc = $this->term_drashboard();
+
+            $sx = bs(
+                bsc($sa, 4).
+                bsc($sb, 4).
+                bsc($sc, 4)
+            );
+            return $sx;
+        }
+
+    function ajax_term_concept($act, $id)
+        {
+            $dt = $this->le($id);
+            echo $this->term_header($dt);
+
+            $confirm = get("confirm");
+            if ($confirm == 'yes')
+                {
+                    echo bsmessage(lang('thesa.term_concept_creadted'), 1);
+                    echo
+            '
+                    <script>
+                        var url = "' . PATH . 'admin/terms/ajax_term_update/' . $id.'";
+                        $("#result").html("");
+                        $("#term_list_div").load(url);
+                    </script>
+                    ';
+                } else {
+                    /***** CONFIRM */
+                    echo '<a href="#" id="btn_confirm" class="btn btn-outline-primary ms-3 me-3 mb-3 btn-fluid">' . lang('thesa.term_confirm') . '</a>';
+                    echo '<a href="#" id="btn_cancel_drash" class="btn btn-outline-warning ms-3 me-3 mb-3 btn-fluid">' . lang('thesa.cancel') . '</a>';
+                    echo '
+                        <script>
+                            $("#btn_confirm").click(function() {
+                                var id = ' . $id . ';
+                                var url = "' . PATH . 'admin/terms/ajax_term_concept/' . $id . '?confirm=yes";
+                                $("#drashboard").load(url);
+                            });
+                            $("#btn_cancel_drash").click(function() {
+                                $("#drashboard").html("");
+                                $("#result").html("");
+                            });
+
+                        </script>';
+                }
+            exit;
+        }
+
+    function term_header($dt)
+        {
+        $sx = '';
+        $lang = '<sup>(' . $dt[0]['lg_code'] . ')</sup>';
+        $sx .= h($dt[0]['term_name'] . $lang, 3);
+        $sx .= '<small>' . lang('thesa.language') . ': ' . $dt[0]['lg_language'] . '</small>';
+        $sx .= '<hr class="mb-3">';
+        return $sx;
+        }
+
+    function ajax_selected()
+        {
+            $id = get('id');
+            if ($id > 0)
+                {
+                    $dt = $this->le($id);
+                    echo $this->term_header($dt);
+
+
+                    /***** CREATE */
+                    echo '<a href="#" id="btn_create_concept" class="btn btn-outline-primary ms-3 me-3 mb-3 btn-fluid" >' . lang('thesa.term_create_concept') . '</a>';
+
+                    /***** EDIT */
+                    echo '<a href="#" id="btn_edit_term" class="btn btn-outline-success ms-3 me-3 mb-3 btn-fluid">' . lang('thesa.term_edit') . '</a>';
+
+                    /***** REMOVE */
+                    echo '<a href="#" id="btn_remove" class="btn btn-outline-danger ms-3 me-3 mb-3 btn-fluid">'. lang('thesa.term_remove').'</a>';
+
+                    /***** CANCEL */
+                    echo '<a href="#" id="btn_cancel" class="btn btn-outline-warning ms-3 me-3 mb-3 btn-fluid">' . lang('thesa.cancel') . '</a>';
+
+                    echo '
+                    <script>
+                        $("#btn_create_concept").click(function() {
+                            var id = '.$id.';
+                            var url = "' . PATH . 'admin/terms/ajax_term_concept/' . $id . '";
+                            $("#drashboard").load(url);
+                        });
+                        $("#btn_cancel").click(function() {
+                            $("#drashboard").html("");
+                            $("#result").html("");
+                        });
+
+                    </script>';
+                    exit;
+                }
+            echo "OPS";
+            exit;
+        }
+
+    function term_drashboard()
+        {
+        $sx = '';
+        $sx .= '<div id="drashboard" style="width: 100%;"></div>';
+        return $sx;
+        }
+
+    function term_functions()
+        {
+            $sx = '';
+            $sx .= '<div id="result" style="width: 100%;">'.lang('thesa.select_a_term').'</div>';
+            $sx .= $this->term_list_script();
+            return $sx;
+        }
+
+    function term_list_script()
+        {
+            $sx = '
+            <script>
+                $("#term_list").change(function() {
+                    $("#drashboard").html("");
+                    var id = $(this).val();
+                    var url = "'.base_url(PATH.'admin/terms/selected').'";
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: { id: id },
+                        success: function(data)
+                        {
+                            $("#result").html(data);
+                        }
+                    });
+                });
+            </script>';
+            return $sx;
+        }
+
     function term_list()
         {
+            $sx = '';
             $Thesa = new \App\Models\Thesa\Thesa();
             $ThTermTh = new \App\Models\RDF\ThTermTh();
             $th = $Thesa->setThesa();
-            $sx = $ThTermTh->totalNoUse($th);
+            $rlt = $ThTermTh->termNoUse($th);
+
+            $sx .= '<select class="form-control" id="term_list" name="term_list" size="15">';
+            for ($r=0;$r < count($rlt);$r++)
+                {
+                    $sx .= '<option value="'.$rlt[$r]['id_term'].'">'.$rlt[$r]['term_name'].'</option>';
+                }
+            $sx .= '</select>';
             return $sx;
         }
 

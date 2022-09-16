@@ -61,6 +61,30 @@ class ThTermTh extends Model
         return $dt[0]['total'];
     }
 
+    function le($id)
+        {
+        $dt = $this
+            ->join('thesa_terms', 'term_th_term = id_term')
+            ->join('language', 'term_lang = id_lg')
+            ->where('id_term', $id)
+            ->where('term_th_concept', 0)
+            ->orderBy('term_name', 'ASC')
+            ->findAll();
+        return $dt;
+        }
+
+    function termNoUse($th)
+        {
+        $dt = $this
+            ->join('thesa_terms', 'term_th_term = id_term')
+            ->join('language', 'term_lang = id_lg')
+            ->where('term_th_thesa', $th)
+            ->where('term_th_concept', 0)
+            ->orderBy('term_name', 'ASC')
+            ->findAll();
+        return $dt;
+        }
+
 
     function link_th($id, $th)
     {
