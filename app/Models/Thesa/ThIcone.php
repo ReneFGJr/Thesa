@@ -42,11 +42,18 @@ class ThIcone extends Model
 
     function icone($dt=array())
         {
-            $img = strzero($dt['th_icone'],4).'.png';
-            $img = PATH.'img/icons/'.$img;
-            if ($dt['th_icone'] != 0)
+            if (!isset($dt['th_icone']))
                 {
-
+                    $img = strzero(0, 4) . '.png';
+                    $img = PATH . 'img/icons/' . $img;
+                } else {
+                    $img = strzero($dt['th_icone'],4).'.png';
+                    $img = PATH.'img/icons/'.$img;
+                    if ($dt['th_icone'] != 0)
+                        {
+                            $img = strzero($dt['th_icone'], 4) . '.png';
+                            $img = PATH . 'img/icons/' . $img;
+                        }
                 }
             return $img;
         }

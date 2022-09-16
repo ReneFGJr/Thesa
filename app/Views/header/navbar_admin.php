@@ -16,6 +16,10 @@
                 </li>
 
                 <li class="nav-item">
+                    <a class="nav-link" href="<?= getenv("app.baseURL"); ?>/admin/thesaurus">Thesaurus</a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link" href="<?= getenv("app.baseURL"); ?>/admin/terms">Terms</a>
                 </li>
 

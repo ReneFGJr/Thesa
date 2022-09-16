@@ -32,12 +32,13 @@ class Thesa extends BaseController
     public function index($act = '', $id = '')
     {
         $Thesa = new \App\Models\Thesa\Thesa();
+        $data = array();
 
         $sx = $this->cab();
         $sx .= view('header/navbar');
 
         switch ($act) {
-            default:
+            case 'th':
                 $data = array();
                 //$sx .= view('header/menu_left');
                 $id = 1;
@@ -47,6 +48,11 @@ class Thesa extends BaseController
                 $data['body'] = 'Corpo do texto';
 
                 $sx .= view('Theme/Standard/frame', $data);
+                break;
+
+            default:
+                $sx .= view('Thesa/Welcome');
+                break;
         }
         $sx .= $this->footer($data);
         return $sx;

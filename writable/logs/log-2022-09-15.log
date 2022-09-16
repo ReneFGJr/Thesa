@@ -428,3 +428,104 @@ AND `term_th_concept` = :term_th_concept:', [...], false)
 11 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
 12 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
 13 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+ERROR - 2022-09-15 18:20:33 --> Error connecting to the database: mysqli_sql_exception: Access denied for user 'root'@'localhost' (using password: NO) in D:\Projeto\www\Thesa\system\Database\MySQLi\Connection.php:171
+Stack trace:
+#0 D:\Projeto\www\Thesa\system\Database\MySQLi\Connection.php(171): mysqli->real_connect('localhost', 'root', '', 'thesa', 3306, '', 0)
+#1 D:\Projeto\www\Thesa\system\Database\BaseConnection.php(382): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 D:\Projeto\www\Thesa\system\Database\BaseConnection.php(588): CodeIgniter\Database\BaseConnection->initialize()
+#3 D:\Projeto\www\Thesa\system\Database\BaseBuilder.php(1585): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 D:\Projeto\www\Thesa\system\Model.php(182): CodeIgniter\Database\BaseBuilder->get()
+#5 D:\Projeto\www\Thesa\system\BaseModel.php(523): CodeIgniter\Model->doFind(true, 1)
+#6 D:\Projeto\www\Thesa\app\Models\Thesa\Thesa.php(46): CodeIgniter\BaseModel->find(1)
+#7 D:\Projeto\www\Thesa\app\Controllers\Thesa.php(44): App\Models\Thesa\Thesa->le(1)
+#8 D:\Projeto\www\Thesa\system\CodeIgniter.php(907): App\Controllers\Thesa->index()
+#9 D:\Projeto\www\Thesa\system\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Thesa))
+#10 D:\Projeto\www\Thesa\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 D:\Projeto\www\Thesa\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#12 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: Access denied for user '****'@'localhost' (using password: NO) in D:\Projeto\www\Thesa\system\Database\MySQLi\Connection.php:215
+Stack trace:
+#0 D:\Projeto\www\Thesa\system\Database\BaseConnection.php(382): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 D:\Projeto\www\Thesa\system\Database\BaseConnection.php(588): CodeIgniter\Database\BaseConnection->initialize()
+#2 D:\Projeto\www\Thesa\system\Database\BaseBuilder.php(1585): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 D:\Projeto\www\Thesa\system\Model.php(182): CodeIgniter\Database\BaseBuilder->get()
+#4 D:\Projeto\www\Thesa\system\BaseModel.php(523): CodeIgniter\Model->doFind(true, 1)
+#5 D:\Projeto\www\Thesa\app\Models\Thesa\Thesa.php(46): CodeIgniter\BaseModel->find(1)
+#6 D:\Projeto\www\Thesa\app\Controllers\Thesa.php(44): App\Models\Thesa\Thesa->le(1)
+#7 D:\Projeto\www\Thesa\system\CodeIgniter.php(907): App\Controllers\Thesa->index()
+#8 D:\Projeto\www\Thesa\system\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Thesa))
+#9 D:\Projeto\www\Thesa\system\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 D:\Projeto\www\Thesa\public\index.php(67): CodeIgniter\CodeIgniter->run()
+#11 {main}
+CRITICAL - 2022-09-15 18:20:33 --> Unable to connect to the database.
+Main connection [MySQLi]: Access denied for user '****'@'localhost' (using password: NO)
+in SYSTEMPATH\Database\BaseConnection.php on line 418.
+ 1 SYSTEMPATH\Database\BaseConnection.php(588): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1585): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `thesa`
+WHERE `thesa`.`id_th` = :thesa.id_th:', [...], false)
+ 3 SYSTEMPATH\Model.php(182): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\BaseModel.php(523): CodeIgniter\Model->doFind(true, 1)
+ 5 APPPATH\Models\Thesa\Thesa.php(46): CodeIgniter\BaseModel->find(1)
+ 6 APPPATH\Controllers\Thesa.php(44): App\Models\Thesa\Thesa->le(1)
+ 7 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Thesa->index()
+ 8 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Thesa))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 18:21:44 --> Trying to access array offset on value of type null
+in APPPATH\Models\Thesa\ThIcone.php on line 45.
+ 1 APPPATH\Models\Thesa\ThIcone.php(45): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Trying to access array offset on value of type null', 'APPPATH\\Models\\Thesa\\ThIcone.php', 45, [...])
+ 2 APPPATH\Models\Thesa\Thesa.php(47): App\Models\Thesa\ThIcone->icone(null)
+ 3 APPPATH\Controllers\Thesa.php(44): App\Models\Thesa\Thesa->le(1)
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Thesa->index()
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Thesa))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 18:22:58 --> Undefined variable: th_name
+in APPPATH\Views\Theme\Standard\headerTh.php on line 9.
+ 1 APPPATH\Views\Theme\Standard\headerTh.php(9): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined variable: th_name', 'APPPATH\\Views\\Theme\\Standard\\headerTh.php', 9, [...])
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\Theme\\Standard\\headerTh.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1142): CodeIgniter\View\View->render('Theme\\Standard\\headerTh', [], true)
+ 5 APPPATH\Models\Thesa\Thesa.php(54): view('Theme\\Standard\\headerTh', [...])
+ 6 APPPATH\Controllers\Thesa.php(45): App\Models\Thesa\Thesa->header([...])
+ 7 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Thesa->index()
+ 8 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Thesa))
+ 9 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 18:26:31 --> Undefined variable: data
+in APPPATH\Controllers\Thesa.php on line 56.
+ 1 APPPATH\Controllers\Thesa.php(56): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined variable: data', 'APPPATH\\Controllers\\Thesa.php', 56, [...])
+ 2 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Thesa->index()
+ 3 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Thesa))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 18:41:36 --> Class 'App\Model\Thesa\Thesa' not found
+in APPPATH\Controllers\Admin.php on line 35.
+ 1 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('thesaurus')
+ 2 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 3 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 18:54:55 --> Call to undefined method App\Models\Thesa\Thesa::form
+in SYSTEMPATH\Model.php on line 774.
+ 1 APPPATH\Models\Thesa\Thesa.php(91): CodeIgniter\Model->__call('form', [])
+ 2 APPPATH\Models\Thesa\Thesa.php(53): App\Models\Thesa\Thesa->new_thesa()
+ 3 APPPATH\Controllers\Admin.php(36): App\Models\Thesa\Thesa->index('new', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 4 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('thesaurus', 'new')
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-09-15 19:23:33 --> Undefined offset: 2
+in APPPATH\Views\Thesa\Forms\ThesaNew.php on line 22.
+ 1 APPPATH\Views\Thesa\Forms\ThesaNew.php(22): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined offset: 2', 'APPPATH\\Views\\Thesa\\Forms\\ThesaNew.php', 22, [...])
+ 2 SYSTEMPATH\View\View.php(213): include('APPPATH\\Views\\Thesa\\Forms\\ThesaNew.php')
+ 3 SYSTEMPATH\View\View.php(216): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1142): CodeIgniter\View\View->render('Thesa/Forms/ThesaNew', [], true)
+ 5 APPPATH\Models\Thesa\Thesa.php(93): view('Thesa/Forms/ThesaNew', [])
+ 6 APPPATH\Models\Thesa\Thesa.php(53): App\Models\Thesa\Thesa->new_thesa()
+ 7 APPPATH\Controllers\Admin.php(36): App\Models\Thesa\Thesa->index('new', 'ROOTPATH\\public', 'ROOTPATH\\public', 'ROOTPATH\\public')
+ 8 SYSTEMPATH\CodeIgniter.php(907): App\Controllers\Admin->index('thesaurus', 'new')
+ 9 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Admin))
+10 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+11 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()

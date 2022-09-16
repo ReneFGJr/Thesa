@@ -31,6 +31,10 @@ class Admin extends BaseController
         $sx .= view('header/navbar_admin');
 
         switch ($d1) {
+            case 'thesaurus':
+                $Thesa = new \App\Models\Thesa\Thesa();
+                $sx .= $Thesa->index($d2, $d3, $d4, $d5);
+                return $sx;
             case 'terms':
                 $ThTerm = new \App\Models\RDF\ThTerm();
                 $sx .= $ThTerm->index($d2,$d3,$d4,$d5);

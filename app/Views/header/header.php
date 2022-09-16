@@ -22,7 +22,8 @@
     <meta name="theme-color" content="#712cf9">
 
     <!-- CSS only -->
-    <link href="<?= getenv("app.baseURL"); ?>/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link href="<?= getenv("app.baseURL"); ?>/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?= getenv("app.baseURL"); ?>/css/thesa.css" rel="stylesheet">
 
     <!-- JavaScript Bundle with Popper -->
     <script src="<?= getenv("app.baseURL"); ?>/js/bootstrap.bundle.min.js"></script>

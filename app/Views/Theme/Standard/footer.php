@@ -2,10 +2,6 @@
 <footer class="bg-primary text-center text-lg-start text-white">
     <!-- Grid container -->
     <div class="container p-4">
-
-
-
-
         <!-- Section: Links -->
         <section class="">
             <!--Grid row-->
@@ -104,7 +100,7 @@
     <!-- Copyright -->
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
         © 2017-<?=date("Y");?> Copyright:
-        <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+        <a class="text-white" href="https://ufrgs.br/">UFRGS.br</a>
     </div>
     <!-- Copyright -->
 
