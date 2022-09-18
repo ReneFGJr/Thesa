@@ -87,11 +87,12 @@ class VocabularyVC extends Model
         $Resource = new \App\Models\RDF\Ontology\Resource();
         $Prefix = new \App\Models\RDF\Ontology\Prefix();
 
+
         /***************************************************** Class Propriety */
         /******************************* about */
         $data['vc_prefix'] = $id;
         $cp = (array)$dt['@attributes'];
-        $data['vc_label'] = (string)$cp['about'];
+        $data['vc_label'] = troca((string)$cp['about'],'#','');
 
         /**************************** resource */
         $cp = (array)$dt['isDefinedBy'];
