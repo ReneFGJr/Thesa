@@ -22,6 +22,14 @@ class ThesaConecptPropity extends Migration
             'p_description' => [
                 'type'       => 'TEXT',
             ],
+            'p_th' => [
+                'type' => 'INT',
+                'null' => true,
+            ],
+            'p_global' => [
+                'type' => 'INT',
+                'null' => true,
+            ],
             'p_part_1' => [
                 'type' => 'INT',
                 'null' => true,

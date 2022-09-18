@@ -38,6 +38,10 @@ class ThesaConecptPropityType extends Migration
                 'type' => 'INT',
                 'null' => true,
             ],
+            'pt_application' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '1',
+            ],
 
         ]);
         $this->forge->addKey('id_pt', true);
@@ -50,6 +54,7 @@ class ThesaConecptPropityType extends Migration
             'pt_part_1' => 1,
             'pt_part_2' => 0,
             'pt_part_3' => 0,
+            'pt_application' => 'T',
         );
         $this->db->table('thesa_property_type')->insert($data);
         /*************** IS */
@@ -58,12 +63,12 @@ class ThesaConecptPropityType extends Migration
         $this->db->table('thesa_property_type')->insert($data);
 
 
-
         /*************** INSTANCE */
         $data['pt_part_1'] = 0;
         $data['pt_part_2'] = 1;
         $data['pt_part_3'] = 0;
         $data['pt_name'] = 'instance';
+        $data['pt_application'] = 'C';
         $data['pt_name_reverse'] = 'instance';
         $this->db->table('thesa_property_type')->insert($data);
 
@@ -75,6 +80,30 @@ class ThesaConecptPropityType extends Migration
         $data['pt_name_reverse'] = 'image';
         $this->db->table('thesa_property_type')->insert($data);
 
+        $data['pt_name'] = 'singular';
+        $data['pt_name_reverse'] = 'plural';
+        $data['pt_application'] = 'T';
+        $this->db->table('thesa_property_type')->insert($data);
+
+        $data['pt_name'] = 'abbreviation';
+        $data['pt_name_reverse'] = 'contraction';
+        $this->db->table('thesa_property_type')->insert($data);
+
+        $data['pt_name'] = 'feminine';
+        $data['pt_name_reverse'] = 'masculine';
+        $this->db->table('thesa_property_type')->insert($data);
+
+        $data['pt_name'] = 'notation';
+        $data['pt_name_reverse'] = 'notation';
+        $this->db->table('thesa_property_type')->insert($data);
+
+        $data['pt_name'] = 'variation';
+        $data['pt_name_reverse'] = 'variation';
+        $this->db->table('thesa_property_type')->insert($data);
+
+        $data['pt_name'] = 'gerund';
+        $data['pt_name_reverse'] = 'gerund';
+        $this->db->table('thesa_property_type')->insert($data);
 
         /*************** INSTANCE */
         $data['pt_part_1'] = 0;

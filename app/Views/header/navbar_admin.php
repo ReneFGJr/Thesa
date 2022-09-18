@@ -24,7 +24,11 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link disabled">Disabled</a>
+                    <a class="nav-link" href="<?= getenv("app.baseURL"); ?>/admin/proprity">Proprity</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= getenv("app.baseURL"); ?>/admin/ontology">Ontology</a>
                 </li>
             </ul>
             <form class="d-flex" role="search">
