@@ -43,6 +43,12 @@ class RDFResource extends Migration
         ]);
         $this->forge->addKey('id_rs', true);
         $this->forge->createTable('OWL_resource');
+
+        $data = array();
+        $data['rs_prefix'] = 1;
+        $data['rs_url'] = '';
+        $data['rs_namespace'] = 'isInstanceOf';
+        $this->db->table('OWL_resource')->insert($data);
     }
 
     public function down()

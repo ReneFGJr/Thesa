@@ -58,6 +58,17 @@ class Thesa extends Migration
         $this->forge->addForeignKey('th_status', 'Thesa_Status', 'id_status');
         $this->forge->addForeignKey('th_own', 'Users', 'id_us');
         $this->forge->createTable('Thesa');
+
+        $data = array(
+            'th_name' => 'Thesauro Demo',
+            'th_achronic' => 'demo',
+            'th_status' => 1,
+            'th_type' => 1,
+            'th_description' => '',
+            'th_terms' => '0',
+            'th_version' => '1'
+        );
+        $this->db->table('Thesa')->insert($data);
     }
 
     public function down()

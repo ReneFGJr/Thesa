@@ -15,19 +15,12 @@ class ThesaConecptTerms extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'ct_concept' => [
-                'type' => 'INT',
-                'null' => true,
-            ],
+
             'ct_th' => [
                 'type' => 'INT',
                 'null' => true,
             ],
-            'ct_term' => [
-                'type' => 'INT',
-                'null' => true,
-            ],
-            'ct_use' => [
+            'ct_concept' => [
                 'type' => 'INT',
                 'null' => true,
             ],
@@ -35,7 +28,18 @@ class ThesaConecptTerms extends Migration
                 'type' => 'INT',
                 'null' => true,
             ],
-
+            'ct_resource' => [
+                'type' => 'INT',
+                'null' => true,
+            ],
+            'ct_literal' => [
+                'type' => 'INT',
+                'null' => true,
+            ],
+            'ct_use' => [
+                'type' => 'INT',
+                'null' => true,
+            ],
         ]);
         $this->forge->addKey('id_ct', true);
         $this->forge->addForeignKey('ct_th', 'Thesa', 'id_th');

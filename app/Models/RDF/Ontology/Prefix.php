@@ -62,7 +62,7 @@ class Prefix extends Model
                     return $id;
                 }
             /******** ERRO */
-            echo "ERRO LOCALE PREFIX";
+            echo "ERRO LOCALE PREFIX - $prefix";
             exit;
         }
 

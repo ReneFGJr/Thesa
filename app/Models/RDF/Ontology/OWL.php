@@ -49,9 +49,64 @@ class OWL extends Model
         return $txt;
     }
 
+    function ajax_import_triple($id, $txt)
+    {
+        $Prefix = new \App\Models\RDF\Ontology\Prefix();
+        $VocabularyVC = new \App\Models\RDF\Ontology\VocabularyVC();
+        $txt = troca($txt, '<', '[');
+        $txt = troca($txt, '>', ']');
+
+        $prefix = array();
+
+        $txt = troca($txt, chr(13), chr(10));
+        $ln = explode(' .' . chr(10), $txt);
+        for ($r = 0; $r < count($ln); $r++) {
+            $l = trim($ln[$r]);
+            if (substr($l, 0, 7) == '@prefix') {
+                $l = trim(troca($l, '@prefix', ''));
+                $xml = array();
+                $onto = substr($l, 0, strpos($l, ':'));
+                $url = substr($l, strpos($l, '[') + 1, strlen($l));
+                $url = substr($url, 0, strpos($url, ']'));
+
+                $xml['@attributes'][$onto] = $url;
+
+                $this->identify_prefix($xml);
+                $prefix[$onto] = $url;
+            } else {
+                $part = trim(substr($l, 0, 5));
+                if ($part == '[http') {
+                    echo "<hr>";
+                    pre($l, false);
+                    echo "<hr>";
+                } else {
+                    $name = substr($l,0,strpos($l,' '));
+                    $resouce = substr($name,0,strpos($name,':'));
+                    $nameSpace = substr($name,strpos($name,':')+1,strlen($name));
+
+                    /************* Instance */
+                    $data = array();
+                    $data['vc_prefix'] = $Prefix->identify($resouce);
+                    $data['vc_label'] = $nameSpace;
+                    $data['vc_resource'] = $id;
+
+                    /************* Check */
+                    $da = $VocabularyVC
+                        ->where('vc_prefix', $data['vc_prefix'])
+                        ->where('vc_label', $data['vc_label'])
+                        ->where('vc_resource', $data['vc_resource'])
+                        ->findAll();
+
+                    if (count($da) == 0) {
+                        $VocabularyVC->set($data)->insert();
+                    }
+                }
+            }
+        }
+    }
+
     function ajax_import($id)
     {
-        echo "OK $id";
         $Prefix = new \App\Models\RDF\Ontology\Prefix();
         $OWL = new \App\Models\RDF\Ontology\OWL();
         $Vocabulary = new \App\Models\RDF\Ontology\Vocabulary();
@@ -69,6 +124,11 @@ class OWL extends Model
         $txt = read_link($url);
 
         /*************************************** XML Prepare */
+        if (substr($txt, 0, 1) == '@') {
+            $this->ajax_import_triple($id, $txt);
+            exit;
+        }
+
         $txt = $this->xml_prepara($txt);
         $xml = (array)simplexml_load_string($txt);
 
@@ -85,14 +145,14 @@ class OWL extends Model
         exit;
     }
 
-    function indetify_class_proprities($xml,$id)
+    function indetify_class_proprities($xml, $id)
     {
 
         $VocabularyVC = new \App\Models\RDF\Ontology\VocabularyVC();
         $data = (array)$xml['Description'];
         for ($r = 0; $r < count($data); $r++) {
             $line = (array)$data[$r];
-            $VC = $VocabularyVC->import($line,$id);
+            $VC = $VocabularyVC->import($line, $id);
         }
     }
 

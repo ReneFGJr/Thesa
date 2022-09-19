@@ -54,11 +54,65 @@ class Thesa extends Model
                         break;
                     default:
                         $sx = $this->list();
-
                         $sx .= bs(bsc($this->btn_new_thesa()));
                         break;
                 }
             return $sx;
+        }
+
+    function t($id)
+        {
+            $sx = '';
+            $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
+            $dt = $ThConceptPropriety
+                ->join('thesa_terms', 'ct_literal = id_term', 'left')
+                ->join('owl_vocabulary_vc', 'id_vc = ct_propriety', 'left')
+                ->where('ct_concept', $id)
+                ->findAll();
+
+                $sx .= '<table class="table">';
+                for ($r=0;$r < count($dt);$r++)
+                    {
+                        $line = $dt[$r];
+                        $sx .= '<tr>';
+                        $sx .= '<td width="10%">'. $line['vc_label'].'</td>';
+                        $sx .= '<td>'. $line['term_name'].'</td>';
+                        $sx .= '</tr>';
+                    }
+                $sx .= '</table>';
+                $sx .= '<pre>'.print_r($line,true). '</pre>';
+            return $sx;
+        }
+
+    function terms($id)
+        {
+            $sx = '';
+            $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
+
+            $dt = $ThConceptPropriety
+                ->join('thesa_terms', 'ct_literal = id_term', 'left')
+                ->join('owl_vocabulary_vc', 'id_vc = ct_propriety', 'left')
+                ->where('ct_th', $id)
+                ->findAll();
+                $sx .= '<ul>';
+                //pre($dt);
+
+                for($r=0;$r < count($dt);$r++)
+                    {
+                        $line = $dt[$r];
+                        $link = '<a href="#" onclick="view('.$line['ct_concept'].');">';
+                        $linka = '</a>';
+                        $sx .= '<li>'.$link.$line['term_name'].$linka.'</li>';
+                    }
+                $sx .= '</ul>';
+                $sx .= '<script>';
+                $sx .= 'function view(id)
+                            {
+                                $("#desc").load("'.PATH.'/t/"+id);
+                            }';
+                $sx .= '</script>';
+            return($sx);
+
         }
 
     function store()

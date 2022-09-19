@@ -63,11 +63,20 @@ class RDFvocabulary extends Migration
         $this->forge->createTable('OWL_vocabulary');
 
         $data = array();
+        $data['owl_url'] = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
+        $data['owl_title'] = 'rdf';
+        $data['owl_prefix'] = 'rdf';
+        $data['spaceName'] = 'rdf';
+        $data['owl_description'] = '';
+        $data['owl_status'] = 1;
+        $data['updated_at'] = date("Y-m-d H:i:s");
+        $this->db->table('OWL_vocabulary')->insert($data);
+
         //$data['owl_url'] = 'http://www.w3.org/TR/skos-reference/skos.rdf';
         $data['owl_url'] = 'http://www.w3.org/2009/08/skos-reference/skos.rdf';
-
         $data['owl_title'] = 'SKOS';
         $data['owl_prefix'] = 'skos';
+        $data['spaceName'] = 'skos';
         $data['owl_description'] = 'Simple Knowledge Organization System';
         $data['owl_status'] = 1;
         $data['updated_at'] = date("Y-m-d H:i:s");

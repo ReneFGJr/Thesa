@@ -48,6 +48,12 @@ class RDFvocabularyVC extends Migration
         ]);
         $this->forge->addKey('id_vc', true);
         $this->forge->createTable('OWL_vocabulary_vc');
+
+        $data = array();
+        $data['vc_resource'] = 1;
+        $data['vc_prefix'] = 1;
+        $data['vc_label'] = 'isInstanceOf';
+        $this->db->table('OWL_vocabulary_vc')->insert($data);
     }
 
     public function down()

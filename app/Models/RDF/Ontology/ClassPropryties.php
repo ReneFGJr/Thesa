@@ -56,6 +56,50 @@ class ClassPropryties extends Model
         exit;
     }
 
+    function Class($class,$subclass='')
+        {
+            $Prefix = new \App\Models\RDF\Ontology\Prefix();
+
+            if ($pos = strpos($class,':'))
+                {
+                    $pre = substr($class,0,$pos);
+                    $Class = substr($class,$pos+1,strlen($class));
+                }
+            if ($pre != '')
+                {
+                    $id_pre = $Prefix->identify($pre);
+                } else {
+                    echo "OPS Prefix Class Not Found";
+                    exit;
+                }
+            $VocabularyVC = new \App\Models\RDF\Ontology\VocabularyVC();
+
+            if ($subclass == '')
+                {
+                    $da = $VocabularyVC
+                        ->where('vc_label', $Class)
+                        ->where('vc_prefix', $id_pre)
+                        ->findAll();
+                } else {
+                    $da = $VocabularyVC
+                        ->join('OWL_resource', 'OWL_resource.id_rs = OWL_vocabulary_vc.vc_resource')
+                        ->where('vc_label', $Class)
+                        ->where('vc_prefix', $id_pre)
+                        ->where('rs_namespace',$subclass)
+                        ->findAll();
+                }
+
+            if (count($da) == 1)
+                {
+                    return $da[0]['id_vc'];
+                } else {
+                    pre($da);
+                    echo "Multiples output";
+                    exit;
+                }
+
+        }
+
     function ClassPropryties($URL)
         {
             $Prefix = new \App\Models\RDF\Ontology\Prefix();

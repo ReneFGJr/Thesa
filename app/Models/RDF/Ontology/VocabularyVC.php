@@ -118,7 +118,6 @@ class VocabularyVC extends Model
                 ->where('vc_label', $data['vc_label'])
                 ->where('vc_resource', $data['vc_resource'])
                 ->findAll();
-            echo $this->getlastquery();
             echo '<hr>';
             if (count($da) == 0) {
                 $this->set($data)->insert();

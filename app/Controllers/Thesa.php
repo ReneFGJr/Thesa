@@ -38,6 +38,11 @@ class Thesa extends BaseController
         $sx .= view('header/navbar');
 
         switch ($act) {
+            case 't':
+                $Thesa = new \App\Models\Thesa\Thesa();
+                echo $Thesa->t($id);
+                exit;
+                break;
             case 'th':
                 $data = array();
                 //$sx .= view('header/menu_left');
@@ -46,7 +51,16 @@ class Thesa extends BaseController
                 $dt = $Thesa->le($id);
                 $sx .= $Thesa->header($dt);
 
+                $sa = '<div id="terms">'.$Thesa->terms($id). '</div>';
+                $sb = '<div id="desc">';
+                $sb .= '<h1>'.'Description'.'</h1>';
+                $sb .= '</div>';
+
+                $sx .= bs(bsc($sa,4).bsc($sb,8));
+
                 $data['body'] = 'Corpo do texto';
+
+                $sx .= bs(bsc('xx'));
 
                 $sx .= view('Theme/Standard/frame', $data);
                 break;

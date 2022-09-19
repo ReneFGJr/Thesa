@@ -15,7 +15,7 @@ class ThTerm extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_term', 'term_name', 'term_lang'
+        'id_term', 'term_name', 'term_lang', 'term_th_concept'
     ];
 
     // Dates
@@ -57,9 +57,11 @@ class ThTerm extends Model
             case 'add_ajax':
                 $this->term_register($d1, $d2, $d3);
                 break;
+
             case 'ajax_term_concept':
                 $this->ajax_term_concept($d1, $d2, $d3);
                 break;
+
             case 'ajax_term_update':
                 echo $this->term_list();
                 echo $this->term_list_script();
@@ -72,6 +74,7 @@ class ThTerm extends Model
             case 'add':
                 $sx .= $this->form();
                 break;
+
             default:
                 $menu['#TERM'] = 'Terms';
                 $menu[PATH . '/admin/terms/add'] = msg('add_term');
@@ -158,6 +161,8 @@ class ThTerm extends Model
                     $ThConcept = new \App\Models\RDF\ThConcept();
                     $ThConcept->register($id, $dt[0]['term_th_thesa']);
 
+                    /********************************** Messages *******/
+
                     echo bsmessage(lang('thesa.term_concept_creadted'), 1);
                     echo '
                     <script>
@@ -195,6 +200,17 @@ class ThTerm extends Model
         $sx .= '<small>' . lang('thesa.language') . ': ' . $dt[0]['lg_language'] . '</small>';
         $sx .= '<hr class="mb-3">';
         return $sx;
+        }
+
+    function term_block($id,$concept,$th)
+        {
+            $ThTermTh = new \App\Models\RDF\ThTermTh();
+            $data['term_th_concept'] = $concept;
+
+            $ThTermTh->set($data)
+                ->where('term_th_term',$id)
+                ->where('term_th_thesa',$th)
+                ->update();
         }
 
     function ajax_selected()
