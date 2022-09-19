@@ -65,23 +65,48 @@ class Thesa extends Model
             $sx = '';
             $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
             $dt = $ThConceptPropriety
+                ->select('term_name, vc1.vc_label as vc_label, vc2.vc_label as vc_resource, lg_code, lg_language')
                 ->join('thesa_terms', 'ct_literal = id_term', 'left')
-                ->join('owl_vocabulary_vc', 'id_vc = ct_propriety', 'left')
+                ->join('owl_vocabulary_vc as vc1', 'ct_propriety = vc1.id_vc', 'left')
+                ->join('owl_vocabulary_vc as vc2', 'ct_resource = vc2.id_vc', 'left')
+                ->join('language','term_lang = id_lg','left')
                 ->where('ct_concept', $id)
                 ->findAll();
+
+                //echo $this->getlastquery();
+                $prefLabel = '';
 
                 $sx .= '<table class="table">';
                 for ($r=0;$r < count($dt);$r++)
                     {
                         $line = $dt[$r];
-                        $sx .= '<tr>';
-                        $sx .= '<td width="10%">'. $line['vc_label'].'</td>';
-                        $sx .= '<td>'. $line['term_name'].'</td>';
-                        $sx .= '</tr>';
+                        if ($line['vc_label'] == 'prefLabel')
+                            {
+                                $prefLabel = $line['term_name'];
+                                $prefLabel .= ' <sup>('.$line['lg_code'].')</sup>';
+                            }
+                        if (strlen(trim($line['term_name'])) > 0)
+                        {
+                            $sx .= '<tr>';
+                            $sx .= '<td width="10%">'. $line['vc_label'].'</td>';
+                            $sx .= '<td>'. $line['term_name'];
+                            $sx .= ' <sup>(' . $line['lg_code'] . ')</sup>';
+                            $sx .= '</td>';
+                            $sx .= '</tr>';
+                        } else {
+                            $sx .= '<tr>';
+                            $sx .= '<td width="10%">' . $line['vc_label'] . '</td>';
+                            $sx .= '<td>' . $line['vc_resource'] . '</td>';
+                            $sx .= '</tr>';
+                        }
                     }
                 $sx .= '</table>';
-                $sx .= '<pre>'.print_r($line,true). '</pre>';
-            return $sx;
+
+                /******************************* PrefLabel */
+                $st = '<h1>'.$prefLabel.'</h1>';
+                $st .= '<h6>URI: '.anchor(PATH.'v/'.$id).'</h6>';
+
+            return $st.$sx;
         }
 
     function terms($id)
@@ -93,6 +118,7 @@ class Thesa extends Model
                 ->join('thesa_terms', 'ct_literal = id_term', 'left')
                 ->join('owl_vocabulary_vc', 'id_vc = ct_propriety', 'left')
                 ->where('ct_th', $id)
+                ->where('ct_literal > 0')
                 ->findAll();
                 $sx .= '<ul>';
                 //pre($dt);

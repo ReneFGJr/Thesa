@@ -38,6 +38,20 @@ class Thesa extends BaseController
         $sx .= view('header/navbar');
 
         switch ($act) {
+            case 'v':
+                $Thesa = new \App\Models\Thesa\Thesa();
+                $dt = $Thesa->le($id);
+                $sx .= $Thesa->header($dt);
+                break;
+            case 'a':
+                $Thesa = new \App\Models\Thesa\Thesa();
+                $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
+                $dt = $Thesa->le($id);
+                $sx .= $Thesa->header($dt);
+
+                $sx .= $ThConceptPropriety->edit($id);
+
+                break;
             case 't':
                 $Thesa = new \App\Models\Thesa\Thesa();
                 echo $Thesa->t($id);

@@ -45,6 +45,18 @@ class ThConceptPropriety extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function edit($id)
+        {
+            $Term = new \App\Models\RDF\ThTerm();
+
+            $sa = '<h3>S1</h3>';
+            $sb = '<h3>S1</h3>';
+            $sc = '<h3>S1</h3>';
+
+            $sx = bs(bsc($sa,4).bsc($sb,4).bsc($sc,4));
+            return $sx;
+        }
+
     function register($th, $concept, $prop, $resource, $literal)
         {
             $data['ct_concept'] = $concept;
