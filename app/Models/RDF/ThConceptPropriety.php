@@ -45,28 +45,7 @@ class ThConceptPropriety extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function edit($id)
-        {
-            $sx = '';
-            $Term = new \App\Models\RDF\ThTerm();
 
-            $sa = '<h3>S1</h3>';
-            $sb = '<h3>S2</h3>';
-            $sc = '<h3>S3</h3>';
-
-            $sa .= 'Termos';
-            $sa .= '<br/>';
-            $sa .= '<a href="#" id="prefLabel">PrefLabel</a>';
-
-            $sx .= '<script>';
-            $sx .= '$("#prefLabel").click(function() {';
-            $sx .= '    alert("PrefLabel");';
-            $sx .= '});';
-            $sx .= '</script>';
-
-            $sx .= bs(bsc($sa,4).bsc($sb,4).bsc($sc,4));
-            return $sx;
-        }
 
     function register($th, $concept, $prop, $resource, $literal)
         {

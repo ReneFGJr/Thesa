@@ -28,6 +28,7 @@
     <!-- JavaScript Bundle with Popper -->
     <script src="<?= getenv("app.baseURL"); ?>/js/bootstrap.bundle.min.js"></script>
     <script src="<?= getenv("app.baseURL"); ?>/js/jquery.js"></script>
+    <script src="<?= getenv("app.baseURL"); ?>/js/thesa.js"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

@@ -1,5 +1,36 @@
 <?php
 
+function textClipboard($id, $class = '')
+{
+    global $js;
+    $sx = '';
+    $sx .= '<a href="#"
+                onclick="copyToClipboard(\'' . $id . '\')"
+                title="Copy to Clipboard"
+                class="ms-1 align-top">';
+    $sx .= bsicone('copy');
+    $sx .= '</a>';
+
+    if (!isset($js)) {
+        $sx .= '<script>';
+        $sx .= 'function copyToClipboard($id)
+                    {
+                        var copyText = $("#"+$id).html();
+                        var textArea = document.createElement("textarea");
+                        textArea.value = copyText;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand("Copy");
+                        textArea.remove();
+                    }
+                    ';
+        $sx .= '</script>';
+        $js = true;
+    }
+
+    return ($sx);
+}
+
 function read_link($url, $read = 'CURL')
 {
     $cached = false;

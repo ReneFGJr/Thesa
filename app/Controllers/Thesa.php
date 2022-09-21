@@ -45,11 +45,21 @@ class Thesa extends BaseController
                 break;
             case 'a':
                 $Thesa = new \App\Models\Thesa\Thesa();
-                $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
-                $dt = $Thesa->le($id);
-                $sx .= $Thesa->header($dt);
+                $ThTerm = new \App\Models\RDF\ThTerm();
+                $ThConcept = new \App\Models\RDF\ThConcept();
 
-                $sx .= $ThConceptPropriety->edit($id);
+                /******************* Thesaurus Header */
+                $dt = $ThConcept->find($id);
+                $th = $dt['c_th'];
+                $dh = $Thesa->le($th);
+                $sx .= $Thesa->header($dh);
+
+                $dc = $ThConcept->le($id);
+                $sx .= $ThConcept->header($dc);
+
+                $sx .= $ThConcept->edit($id);
+
+
 
                 break;
             case 't':

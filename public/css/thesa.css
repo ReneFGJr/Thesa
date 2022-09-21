@@ -8,3 +8,28 @@
   display: block;
   width: 80%;
 }
+
+.clipboard, .clipboard:hover,
+.clipboard:active, .clipboard:focus,
+.clipboard.input:focus
+{
+  border: 0px;
+  outline: none;
+}
+
+.extrabig
+  {
+    font-size: 300%;
+  }
+.big
+  {
+    font-size: 200%;
+  }
+.small
+  {
+    font-size: 75%;
+  }
+.supersmall
+  {
+    font-size: 75%;
+  }
