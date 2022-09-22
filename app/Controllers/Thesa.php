@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 
 helper(['boostrap', 'url', 'sisdoc_forms', 'form', 'nbr', 'sessions', 'cookie']);
 $session = \Config\Services::session();
+$language = \Config\Services::language();
 
 define("URL", getenv("app.baseURL"));
 define("PATH", getenv("app.baseURL") . '/');
@@ -43,6 +44,10 @@ class Thesa extends BaseController
                 $dt = $Thesa->le($id);
                 $sx .= $Thesa->header($dt);
                 break;
+            case 'thopen':
+                $sx .= bs(bsc(h(lang('thesa.ThOpen'))));
+
+                break;
             case 'a':
                 $Thesa = new \App\Models\Thesa\Thesa();
                 $ThTerm = new \App\Models\RDF\ThTerm();
@@ -58,9 +63,6 @@ class Thesa extends BaseController
                 $sx .= $ThConcept->header($dc);
 
                 $sx .= $ThConcept->edit($id);
-
-
-
                 break;
             case 't':
                 $Thesa = new \App\Models\Thesa\Thesa();
@@ -83,10 +85,6 @@ class Thesa extends BaseController
                 $sx .= bs(bsc($sa,4).bsc($sb,8));
 
                 $data['body'] = 'Corpo do texto';
-
-                $sx .= bs(bsc('xx'));
-
-                $sx .= view('Theme/Standard/frame', $data);
                 break;
 
             default:

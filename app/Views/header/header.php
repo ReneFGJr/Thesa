@@ -32,12 +32,4 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Glory:wght@100&family=Maiden+Orange&family=Oranienbaum&display=swap" rel="stylesheet">
-
-    <?php
-    $css .= 'body { font-family: "Arial", "Glory", sans-serif; } h1, h2, h3 { font-family: "Maiden Orange", "Oranienbaum", sans-serif; } ';
-    if (isset($css)) {
-        echo '<style type="text/css">' . $css . '</style>';
-    }
-    ?>
 </head>

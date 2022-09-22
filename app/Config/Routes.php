@@ -40,6 +40,7 @@ $routes->get('/admin', 'Admin::index');
 $routes->get('/admin/(:any)', 'Admin::index/$1');
 $routes->post('/admin/(:any)', 'Admin::index/$1');
 
+$routes->get('/thopen', 'Thesa::index/thopen');
 $routes->get('/th/(:any)', 'Thesa::index/th/$1');
 $routes->get('/t/(:any)', 'Thesa::index/t/$1');
 $routes->get('/v/(:any)', 'Thesa::index/v/$1');

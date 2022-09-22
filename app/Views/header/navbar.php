@@ -14,14 +14,16 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Link</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= getenv("app.baseURL"); ?>/thopen"><?= lang('thesa.ThOpen'); ?></a>
+                </li>
                 <?php
-                if (isset($_SESSION['th']))
-                    {
-                        echo '
+                if (isset($_SESSION['th'])) {
+                    echo '
                         <li class="nav-item">
-                            <a class="nav-link" href="'.PATH.'/th/'.$_SESSION['th'].'">'.lang('thesa.th_atual').'</a>
+                            <a class="nav-link" href="' . PATH . '/th/' . $_SESSION['th'] . '">' . lang('thesa.th_atual') . '</a>
                         </li>';
-                    }
+                }
                 ?>
 
                 <li class="nav-item">

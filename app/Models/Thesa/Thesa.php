@@ -54,9 +54,10 @@ class Thesa extends Model
                         break;
                     default:
                         $sx = $this->list();
-                        $sx .= bs(bsc($this->btn_new_thesa()));
+                        $sx .= bs(bsc($this->btn_new_thesa(),12, 'mt-5'));
                         break;
                 }
+            $sx .= view('Theme/Standard/footer');
             return $sx;
         }
 
@@ -120,21 +121,32 @@ class Thesa extends Model
                 ->where('ct_th', $id)
                 ->where('ct_literal > 0')
                 ->findAll();
-                $sx .= '<ul>';
+
+
+                //$sx .= '<ul class="list-unstyled">';
                 //pre($dt);
+                $sx .= '<select id="thesa_terms" size=25 style="width: 100%; border: 0px solid #000; outline: none;">';
 
                 for($r=0;$r < count($dt);$r++)
                     {
                         $line = $dt[$r];
                         $link = '<a href="#" onclick="view('.$line['ct_concept'].');">';
                         $linka = '</a>';
-                        $sx .= '<li>'.$link.$line['term_name'].$linka.'</li>';
+                        //$sx .= '<li>'.$link.$line['term_name'].$linka.'</li>';
+                        $sx .= '<option value="'.$line['ct_concept'].'">'.$line['term_name'].'</option>';
                     }
-                $sx .= '</ul>';
+                //$sx .= '</ul>';
+                $sx .= '</select>';
                 $sx .= '<script>';
+                $sx .= '
+                        $("#thesa_terms").change(function() {
+                            var value = $(this).val();
+                             $("#desc").load("' . PATH . '/t/"+value);
+                        });
+                ';
                 $sx .= 'function view(id)
                             {
-                                $("#desc").load("'.PATH.'/t/"+id);
+
                             }';
                 $sx .= '</script>';
             return($sx);
@@ -146,8 +158,6 @@ class Thesa extends Model
         $request = \Config\Services::request();
         $validation =  \Config\Services::validation();
         $data = array();
-
-        echo 'Hello';
 
         if (isset($_POST)) {
 
@@ -186,10 +196,6 @@ class Thesa extends Model
                 $data['ERROS'] = $validation->getErrors();
                 $data['validation'] = $this->validator;
 
-                echo '<pre>';
-                print_r($data);
-                echo '</pre>';
-
                 return view('Thesa/Forms/ThesaNew', $data);
             }
         }
@@ -197,8 +203,8 @@ class Thesa extends Model
 
     function btn_new_thesa()
         {
-            $sx = '<a href="'.base_url(PATH.'admin/thesaurus/new').'" class="btn btn-primary">';
-            $sx .= msg('new_thesa');
+            $sx = '<a href="'.base_url(PATH.'admin/thesaurus/new').'" class="btn btn-outline-primary">';
+            $sx .= lang('thesa.new_thesa');
             $sx .= '</a>';
             return $sx;
         }
@@ -222,6 +228,7 @@ class Thesa extends Model
         {
             $sx = '';
             $sx .= $this->store();
+
             return $sx;
         }
 
@@ -246,16 +253,17 @@ class Thesa extends Model
 
     function list()
         {
+            $sx = '<h1>'.lang('thesa.Thesaurus'). '</h1>';
             $ThIcone = new \App\Models\Thesa\ThIcone();
             $dt = $this
                 ->orderBy('th_name', 'ASC')
                 ->findAll();
-            $sx = '';
+
             for($r=0;$r < count($dt);$r++)
                 {
                     $line = $dt[$r];
                     $line['img'] = $ThIcone->icone($dt);
-                    $sx .= view('Theme/Standard/ViewThList',$line);
+                    $sx .= bsc(view('Theme/Standard/ViewThList',$line),2,'p-2');
                 }
             $sx .= '';
 
