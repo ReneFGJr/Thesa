@@ -52,6 +52,7 @@ class ThTerm extends Model
                 $sx = $this->create_concept($d1, $d2, $d3);
                 break;
             case 'selected':
+                echo $d2;
                 $this->ajax_selected($d1, $d2, $d3);
                 break;
             case 'add_ajax':
@@ -149,8 +150,18 @@ class ThTerm extends Model
             return $sx;
         }
 
-    function ajax_term_concept($act, $id)
+    function ajax_term_concept($act, $id='')
         {
+            echo "OK";
+            print_r($_POST);
+            exit;
+            $idg = get('id');
+            echo $idg;
+            exit;
+            if ($idg != '')
+                {
+                    $id = $idg;
+                }
             $dt = $this->le($id);
             echo $this->term_header($dt);
 
@@ -178,10 +189,11 @@ class ThTerm extends Model
                     echo '
                         <script>
                             $("#btn_confirm").click(function() {
-                                var id = ' . $id . ';
-                                var url = "' . PATH . 'admin/terms/ajax_term_concept/' . $id . '?confirm=yes";
+                                var id = JSON.stringify(' . $id . ');
+                                var url = "' . PATH . 'admin/terms/ajax_term_concept/?id="+id+"?confirm=yes";
                                 $("#drashboard").load(url);
                             });
+
                             $("#btn_cancel_drash").click(function() {
                                 $("#drashboard").html("");
                                 $("#result").html("");
@@ -216,35 +228,86 @@ class ThTerm extends Model
     function ajax_selected()
         {
             $id = get('id');
-            if ($id > 0)
-                {
-                    $dt = $this->le($id);
-                    echo $this->term_header($dt);
 
+            if ($id != '')
+                {
+                    /*
+                    $id = troca($id, '"', '');
+                    $id = troca($id, '[', '');
+                    $id = troca($id, ']', '');
+                    */
+                    $idr = $id;
+                    $idr = troca($idr,'[','');
+                    $idr = troca($idr, ']', '');
+                    $idr = troca($idr, '"', '');
+                    //$idr = troca($idr, ',', ';');
+
+                    $idr = explode(',', $idr);
+                    $sa = '';
+                    for ($r=0;$r < count($idr);$r++)
+                        {
+                            $dt = $this->le($idr[$r]);
+                            if (count($idr) == 1)
+                                {
+                                    $sa .= $this->term_header($dt);
+                                } else {
+                                    $dt = (array)$dt[0];
+                                    $sa .= $dt['term_name'].'. ';
+                                }
+
+                        }
+                    if (count($idr) > 0)
+                        {
+                            echo h(lang('thesa.terms_selected_to_create'),3);
+                            echo h(lang('thesa.terms').': '.$sa,6);
+                        } else {
+                            echo $sa;
+                        }
 
                     /***** CREATE */
                     echo '<a href="#" id="btn_create_concept" class="btn btn-outline-primary ms-3 me-3 mb-3 btn-fluid" >' . lang('thesa.term_create_concept') . '</a>';
 
-                    /***** EDIT */
-                    echo '<a href="#" id="btn_edit_term" class="btn btn-outline-success ms-3 me-3 mb-3 btn-fluid">' . lang('thesa.term_edit') . '</a>';
+                    /********************************************* UNICO TERMO */
+                    if (count($idr)== 1) {
+                        /***** EDIT */
+                        echo '<a href="#" id="btn_edit_term" class="btn btn-outline-success ms-3 me-3 mb-3 btn-fluid">' . lang('thesa.term_edit') . '</a>';
 
-                    /***** REMOVE */
-                    echo '<a href="#" id="btn_remove" class="btn btn-outline-danger ms-3 me-3 mb-3 btn-fluid">'. lang('thesa.term_remove').'</a>';
+                        /***** REMOVE */
+                        echo '<a href="#" id="btn_remove" class="btn btn-outline-danger ms-3 me-3 mb-3 btn-fluid">'. lang('thesa.term_remove').'</a>';
+                    } else {
+                        echo '<span class="hidden" id="btn_edit_term"></span>';
+                        echo '<span class="hidden" id="btn_remove"></span>';
+                    }
 
                     /***** CANCEL */
                     echo '<a href="#" id="btn_cancel" class="btn btn-outline-warning ms-3 me-3 mb-3 btn-fluid">' . lang('thesa.cancel') . '</a>';
 
+                    /***** CREATE ON CLICK*/
+                    echo '<a href="#" id="btn_create_concept_oneclick" class="btn btn-outline-primary ms-3 me-3 mb-3 btn-fluid" >' . lang('thesa.term_create_concept_onclick') . '</a>';
                     echo '
                     <script>
-                        $("#btn_create_concept").click(function() {
-                            var id = '.$id.';
-                            var url = "' . PATH . 'admin/terms/ajax_term_concept/' . $id . '";
-                            $("#drashboard").load(url);
-                        });
                         $("#btn_cancel").click(function() {
                             $("#drashboard").html("");
                             $("#result").html("");
                         });
+
+
+                        /**************************************************** CREATE **/
+                        $("#btn_create_concept").click(function() {
+                            alert(JSON.stringify('. get('id').'));
+                            var url = "' . PATH . 'admin/terms/ajax_term_concept' . '";
+                            $.ajax({
+                                type: "POST",
+                                url: url,
+                                data: { id: '.$id.' },
+                                success: function(data)
+                                {
+                                    $("#drashboard").html(data);
+                                }
+                            });
+
+                        });
+
 
                     </script>';
                     exit;
@@ -270,11 +333,12 @@ class ThTerm extends Model
 
     function term_list_script()
         {
+            /***************************************** CHANGE */
             $sx = '
             <script>
                 $("#term_list").change(function() {
                     $("#drashboard").html("");
-                    var id = $(this).val();
+                    var id = JSON.stringify($(this).val());
                     var url = "'.base_url(PATH.'admin/terms/selected').'";
                     $.ajax({
                         type: "POST",
@@ -298,7 +362,7 @@ class ThTerm extends Model
             $th = $Thesa->setThesa();
             $rlt = $ThTermTh->termNoUse($th);
 
-            $sx .= '<select class="form-control" id="term_list" name="term_list" size="15">';
+            $sx .= '<select class="form-control" id="term_list" name="term_list" size="15" multiple>';
             for ($r=0;$r < count($rlt);$r++)
                 {
                     $sx .= '<option value="'.$rlt[$r]['id_term'].'">'.$rlt[$r]['term_name'].'</option>';
