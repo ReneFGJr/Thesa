@@ -17,14 +17,26 @@ a:hover {
     text-decoration: underline;
     color: #006;
 }
+
+/***************************** CARDS */
 .cards
   {
     box-shadow: 4px 4px 5px #DDD;
   }
+
 .cards:hover
   {
     box-shadow: 4px 4px 5px #888;
+    background-color: #E8E8E8;
   }
+
+a.cards
+    {
+       text-decoration: none;
+       color: #338;
+    }
+
+
 .form-control
     {
         border-left: 1px solid #000;
