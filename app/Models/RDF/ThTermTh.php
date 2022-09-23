@@ -8,7 +8,7 @@ class ThTermTh extends Model
 {
     protected $DBGroup          = 'default';
     protected $table            = 'thesa_terms_th';
-    protected $primaryKey       = 'id';
+    protected $primaryKey       = 'term_th_id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';

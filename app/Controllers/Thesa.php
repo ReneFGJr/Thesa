@@ -40,13 +40,16 @@ class Thesa extends BaseController
 
         switch ($act) {
             case 'v':
+                $ThConcept = new \App\Models\RDF\ThConcept();
                 $Thesa = new \App\Models\Thesa\Thesa();
-                $dt = $Thesa->le($id);
+                $dtc = $ThConcept->le($id);
+                $dt = $Thesa->le($dtc[0]['c_th']);
                 $sx .= $Thesa->header($dt);
                 break;
             case 'thopen':
                 $sx .= bs(bsc(h(lang('thesa.ThOpen'))));
-
+                $Thesa = new \App\Models\Thesa\Thesa();
+                $sx .= $Thesa->index($id, $id, $id);
                 break;
             case 'a':
                 $Thesa = new \App\Models\Thesa\Thesa();

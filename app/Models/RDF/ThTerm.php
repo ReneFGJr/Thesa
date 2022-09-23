@@ -67,7 +67,7 @@ class ThTerm extends Model
                 echo $this->term_list();
                 echo $this->term_list_script();
                 echo '<small style="font-size: 70%;">';
-                echo lang("thesa.updated_at").' '. date("Y-m-d H:i:s");
+                echo lang("thesa.updated_at") . ' ' . date("Y-m-d H:i:s");
                 echo '</small>';
                 exit;
                 break;
@@ -78,11 +78,15 @@ class ThTerm extends Model
 
             default:
                 $menu['#TERM'] = 'Terms';
-                $menu[PATH . '/admin/terms/add'] = msg('add_term');
+                $menu[PATH . '/admin/terms/add'] = lang('thesa.add_term');
 
                 $ThTermTh = new \App\Models\RDF\ThTermTh();
-                $menu[PATH . '/admin/terms/'] = lang('thesa.total_terms').' '.$ThTermTh->total($th);
-                $menu[PATH . '/admin/terms/create_concept'] = msg('thesa.total_not_attribuit') . ' ' . $ThTermTh->totalNoUse($th);
+                $menu[PATH . '/admin/terms/'] = $ThTermTh->total($th) . ' ' . lang('thesa.total_terms');
+                $total = $ThTermTh->totalNoUse($th);
+                if ($total > 0) {
+                    $menu[PATH . '/admin/terms/create_concept'] = $total . ' ' . msg('thesa.total_not_attribuit');
+                }
+
 
                 $sx .= menu($menu);
         }
@@ -133,213 +137,225 @@ class ThTerm extends Model
         return $sx;
     }
 
-    function create_concept($d1,$d2,$d3)
-        {
-            $sa = h(lang('thesa.terms_add'),3);
-            $sa .= '<div id="term_list_div">';
-            $sa .= $this->term_list();
-            $sa .= '</div>';
-            $sb = $this->term_functions();
-            $sc = $this->term_drashboard();
+    function create_concept($d1, $d2, $d3)
+    {
+        $sa = h(lang('thesa.terms_add'), 3);
+        $sa .= '<div id="term_list_div">';
+        $sa .= $this->term_list();
+        $sa .= '</div>';
+        $sb = $this->term_functions();
+        $sc = $this->term_drashboard();
 
-            $sx = bs(
-                bsc($sa, 4).
-                bsc($sb, 4).
+        $sx = bs(
+            bsc($sa, 4) .
+                bsc($sb, 4) .
                 bsc($sc, 4)
-            );
-            return $sx;
+        );
+        return $sx;
+    }
+
+    function show_term_selected($id)
+    {
+
+        $idr = explode('|', $id);
+        $sa = '';
+        for ($r = 0; $r < count($idr); $r++) {
+            $dt = $this->le($idr[$r]);
+
+            if (count($idr) == 1) {
+                $sa .= $this->term_header($dt);
+            } else {
+                $dt = (array)$dt[0];
+                $sa .= $dt['term_name'] . '. ';
+            }
         }
+        if (count($idr) > 0) {
+            echo h(lang('thesa.terms_selected_to_create'), 3);
+            echo h(lang('thesa.terms') . ': ' . $sa, 6);
+        } else {
+            echo $sa;
+        }
+    }
 
-    function ajax_term_concept($act, $id='')
-        {
-            echo "OK";
-            print_r($_POST);
-            exit;
-            $idg = get('id');
-            echo $idg;
-            exit;
-            if ($idg != '')
+    function ajax_term_concept($act, $id = '')
+    {
+        $TtTermTh = new \App\Models\RDF\ThTermTh();
+        $id = get('id');
+
+        echo $this->show_term_selected($id);
+
+        /************************************************************* CONFIRM */
+
+        $confirm = get("confirm");
+        if ($confirm == 'yes') {
+            $ids = explode('|', trim($id));
+
+            if (count($ids) > 0)
                 {
-                    $id = $idg;
+                    jslog("Loading....");
+                    $thd = $TtTermTh->le($ids[0]);
+                    $th = $thd[0]['term_th_thesa'];
                 }
-            $dt = $this->le($id);
-            echo $this->term_header($dt);
 
-            $confirm = get("confirm");
-            if ($confirm == 'yes')
-                {
-                    /*********************************** CREATE CONCEPT */
-                    $ThConcept = new \App\Models\RDF\ThConcept();
-                    $ThConcept->register($id, $dt[0]['term_th_thesa']);
+            /*********************************** CREATE CONCEPT */
+            for ($r = 0; $r < count($ids); $r++) {
+                $ThConcept = new \App\Models\RDF\ThConcept();
+                echo $ThConcept->register($ids[$r], $th);
+            }
 
-                    /********************************** Messages *******/
+            /********************************** Messages *******/
 
-                    echo bsmessage(lang('thesa.term_concept_creadted'), 1);
-                    echo '
+            echo bsmessage(lang('thesa.term_concept_creadted'), 1);
+            echo '
                     <script>
-                        var url = "' . PATH . 'admin/terms/ajax_term_update/' . $id.'";
+                        var url = "' . PATH . 'admin/terms/ajax_term_update/' . $id . '";
                         $("#result").html("");
                         $("#term_list_div").load(url);
                     </script>
                     ';
-                } else {
-                    /***** CONFIRM */
-                    echo '<a href="#" id="btn_confirm" class="btn btn-outline-primary ms-3 me-3 mb-3 btn-fluid">' . lang('thesa.term_confirm') . '</a>';
-                    echo '<a href="#" id="btn_cancel_drash" class="btn btn-outline-warning ms-3 me-3 mb-3 btn-fluid">' . lang('thesa.cancel') . '</a>';
-                    echo '
+        } else {
+            /***** CONFIRM */
+            echo '<a href="#" id="btn_confirm" class="btn btn-outline-primary ms-3 me-3 mb-3 btn-fluid">' . lang('thesa.term_confirm') . '</a>';
+            echo '<a href="#" id="btn_cancel_drash" class="btn btn-outline-warning ms-3 me-3 mb-3 btn-fluid">' . lang('thesa.cancel') . '</a>';
+            echo '
                         <script>
-                            $("#btn_confirm").click(function() {
-                                var id = JSON.stringify(' . $id . ');
-                                var url = "' . PATH . 'admin/terms/ajax_term_concept/?id="+id+"?confirm=yes";
-                                $("#drashboard").load(url);
-                            });
+                        $("#btn_confirm").click(function() {
 
-                            $("#btn_cancel_drash").click(function() {
-                                $("#drashboard").html("");
-                                $("#result").html("");
+                            var url = "' . PATH . 'admin/terms/ajax_term_concept' . '";
+                            $.ajax({
+                                type: "POST",
+                                url: url,
+                                data: { id: "' . $id . '","confirm":"yes" },
+                                success: function(data)
+                                {
+                                    $("#drashboard").html(data);
+                                }
                             });
+                        });
+
+                        $("#btn_cancel_drash").click(function() {
+                            $("#drashboard").html("");
+                            $("#result").html("");
+                        });
 
                         </script>';
-                }
-            exit;
         }
+        exit;
+    }
 
     function term_header($dt)
-        {
+    {
         $sx = '';
-        $lang = '<sup>(' . $dt[0]['lg_code'] . ')</sup>';
-        $sx .= h($dt[0]['term_name'] . $lang, 3);
-        $sx .= '<small>' . lang('thesa.language') . ': ' . $dt[0]['lg_language'] . '</small>';
-        $sx .= '<hr class="mb-3">';
+        if (count($dt) > 0) {
+            $lang = '<sup>(' . $dt[0]['lg_code'] . ')</sup>';
+            $sx .= h($dt[0]['term_name'] . $lang, 3);
+            $sx .= '<small>' . lang('thesa.language') . ': ' . $dt[0]['lg_language'] . '</small>';
+            $sx .= '<hr class="mb-3">';
+        } else {
+        }
         return $sx;
-        }
+    }
 
-    function term_block($id,$concept,$th)
-        {
-            $ThTermTh = new \App\Models\RDF\ThTermTh();
-            $data['term_th_concept'] = $concept;
+    function term_block($id, $concept, $th)
+    {
+        $ThTermTh = new \App\Models\RDF\ThTermTh();
+        $data['term_th_concept'] = $concept;
 
-            $ThTermTh->set($data)
-                ->where('term_th_term',$id)
-                ->where('term_th_thesa',$th)
-                ->update();
-        }
+        $ThTermTh->set($data)
+            ->where('term_th_term', $id)
+            ->where('term_th_thesa', $th)
+            ->update();
+    }
 
     function ajax_selected()
-        {
-            $id = get('id');
+    {
+        /**************************************************************** SELECTED */
+        $id = get('id');
+        $id_original = $id;
 
-            if ($id != '')
-                {
-                    /*
-                    $id = troca($id, '"', '');
-                    $id = troca($id, '[', '');
-                    $id = troca($id, ']', '');
-                    */
-                    $idr = $id;
-                    $idr = troca($idr,'[','');
-                    $idr = troca($idr, ']', '');
-                    $idr = troca($idr, '"', '');
-                    //$idr = troca($idr, ',', ';');
+        if ($id != '') {
+            $idr = $id;
+            $idr = troca($idr, '[', '');
+            $idr = troca($idr, ']', '');
+            $idr = troca($idr, '"', '');
+            //$idr = troca($idr, ',', ';');
+            $id_js = troca($idr, ',', '|');
+            $id_js = (string)$id_js;
 
-                    $idr = explode(',', $idr);
-                    $sa = '';
-                    for ($r=0;$r < count($idr);$r++)
-                        {
-                            $dt = $this->le($idr[$r]);
-                            if (count($idr) == 1)
-                                {
-                                    $sa .= $this->term_header($dt);
-                                } else {
-                                    $dt = (array)$dt[0];
-                                    $sa .= $dt['term_name'].'. ';
-                                }
+            echo $this->show_term_selected($id_js);
 
-                        }
-                    if (count($idr) > 0)
-                        {
-                            echo h(lang('thesa.terms_selected_to_create'),3);
-                            echo h(lang('thesa.terms').': '.$sa,6);
-                        } else {
-                            echo $sa;
-                        }
+            /***** CREATE */
+            echo '<a href="#" id="btn_create_concept" class="btn btn-outline-primary ms-3 me-3 mb-3 btn-fluid" >' . lang('thesa.term_create_concept') . '</a>';
 
-                    /***** CREATE */
-                    echo '<a href="#" id="btn_create_concept" class="btn btn-outline-primary ms-3 me-3 mb-3 btn-fluid" >' . lang('thesa.term_create_concept') . '</a>';
+            /********************************************* UNICO TERMO */
+            if (!strpos($id_js, '|')) {
+                /***** EDIT */
+                echo '<a href="#" id="btn_edit_term" class="btn btn-outline-success ms-3 me-3 mb-3 btn-fluid">' . lang('thesa.term_edit') . '</a>';
 
-                    /********************************************* UNICO TERMO */
-                    if (count($idr)== 1) {
-                        /***** EDIT */
-                        echo '<a href="#" id="btn_edit_term" class="btn btn-outline-success ms-3 me-3 mb-3 btn-fluid">' . lang('thesa.term_edit') . '</a>';
+                /***** REMOVE */
+                echo '<a href="#" id="btn_remove" class="btn btn-outline-danger ms-3 me-3 mb-3 btn-fluid">' . lang('thesa.term_remove') . '</a>';
+            } else {
+                echo '<span class="hidden" id="btn_edit_term"></span>';
+                echo '<span class="hidden" id="btn_remove"></span>';
+            }
 
-                        /***** REMOVE */
-                        echo '<a href="#" id="btn_remove" class="btn btn-outline-danger ms-3 me-3 mb-3 btn-fluid">'. lang('thesa.term_remove').'</a>';
-                    } else {
-                        echo '<span class="hidden" id="btn_edit_term"></span>';
-                        echo '<span class="hidden" id="btn_remove"></span>';
-                    }
+            /***** CANCEL */
+            echo '<a href="#" id="btn_cancel" class="btn btn-outline-warning ms-3 me-3 mb-3 btn-fluid">' . lang('thesa.cancel') . '</a>';
 
-                    /***** CANCEL */
-                    echo '<a href="#" id="btn_cancel" class="btn btn-outline-warning ms-3 me-3 mb-3 btn-fluid">' . lang('thesa.cancel') . '</a>';
-
-                    /***** CREATE ON CLICK*/
-                    echo '<a href="#" id="btn_create_concept_oneclick" class="btn btn-outline-primary ms-3 me-3 mb-3 btn-fluid" >' . lang('thesa.term_create_concept_onclick') . '</a>';
-                    echo '
+            /***** CREATE ON CLICK*/
+            echo '<a href="#" id="btn_create_concept_oneclick" class="btn btn-outline-primary ms-3 me-3 mb-3 btn-fluid" >' . lang('thesa.term_create_concept_onclick') . '</a>';
+            echo '
                     <script>
                         $("#btn_cancel").click(function() {
                             $("#drashboard").html("");
                             $("#result").html("");
                         });
 
-
                         /**************************************************** CREATE **/
                         $("#btn_create_concept").click(function() {
-                            alert(JSON.stringify('. get('id').'));
+
                             var url = "' . PATH . 'admin/terms/ajax_term_concept' . '";
                             $.ajax({
                                 type: "POST",
                                 url: url,
-                                data: { id: '.$id.' },
+                                data: { id: "' . $id_js . '" },
                                 success: function(data)
                                 {
                                     $("#drashboard").html(data);
                                 }
                             });
-
                         });
-
-
                     </script>';
-                    exit;
-                }
-            echo "OPS";
             exit;
         }
+        echo "OPS";
+        exit;
+    }
 
     function term_drashboard()
-        {
+    {
         $sx = '';
         $sx .= '<div id="drashboard" style="width: 100%;"></div>';
         return $sx;
-        }
+    }
 
     function term_functions()
-        {
-            $sx = '';
-            $sx .= '<div id="result" style="width: 100%;">'.lang('thesa.select_a_term').'</div>';
-            $sx .= $this->term_list_script();
-            return $sx;
-        }
+    {
+        $sx = '';
+        $sx .= '<div id="result" style="width: 100%;">' . lang('thesa.select_a_term') . '</div>';
+        $sx .= $this->term_list_script();
+        return $sx;
+    }
 
     function term_list_script()
-        {
-            /***************************************** CHANGE */
-            $sx = '
+    {
+        /***************************************** CHANGE */
+        $sx = '
             <script>
                 $("#term_list").change(function() {
                     $("#drashboard").html("");
                     var id = JSON.stringify($(this).val());
-                    var url = "'.base_url(PATH.'admin/terms/selected').'";
+                    var url = "' . base_url(PATH . 'admin/terms/selected') . '";
                     $.ajax({
                         type: "POST",
                         url: url,
@@ -351,25 +367,24 @@ class ThTerm extends Model
                     });
                 });
             </script>';
-            return $sx;
-        }
+        return $sx;
+    }
 
     function term_list()
-        {
-            $sx = '';
-            $Thesa = new \App\Models\Thesa\Thesa();
-            $ThTermTh = new \App\Models\RDF\ThTermTh();
-            $th = $Thesa->setThesa();
-            $rlt = $ThTermTh->termNoUse($th);
+    {
+        $sx = '';
+        $Thesa = new \App\Models\Thesa\Thesa();
+        $ThTermTh = new \App\Models\RDF\ThTermTh();
+        $th = $Thesa->setThesa();
+        $rlt = $ThTermTh->termNoUse($th);
 
-            $sx .= '<select class="form-control" id="term_list" name="term_list" size="15" multiple>';
-            for ($r=0;$r < count($rlt);$r++)
-                {
-                    $sx .= '<option value="'.$rlt[$r]['id_term'].'">'.$rlt[$r]['term_name'].'</option>';
-                }
-            $sx .= '</select>';
-            return $sx;
+        $sx .= '<select class="form-control" id="term_list" name="term_list" size="15" multiple>';
+        for ($r = 0; $r < count($rlt); $r++) {
+            $sx .= '<option value="' . $rlt[$r]['id_term'] . '">' . $rlt[$r]['term_name'] . '</option>';
         }
+        $sx .= '</select>';
+        return $sx;
+    }
 
     /***************************************** AJAX ou API */
     function term_register($d1, $d2, $d3)
@@ -377,44 +392,40 @@ class ThTerm extends Model
         $Thesa = new \App\Models\Thesa\Thesa();
         $th = $Thesa->setThesa();
         $term = get("terms");
-        $term = troca($term,chr(13),';');
+        $term = troca($term, chr(13), ';');
         $term = troca($term, chr(10), ';');
-        $terms = explode(';',$term);
+        $terms = explode(';', $term);
 
         $lang = get("lang");
 
-        for ($r=0;$r < count($terms);$r++)
-            {
-                $trms = $terms[$r];
-                if ($this->register($trms,$lang,$th))
-                    {
-                        echo $trms.' - '.lang('thesa.inserted').'<br>';
-                    } else {
-                        echo $trms . ' - ' . lang('thesa.already') . '<br>';
-                    }
+        for ($r = 0; $r < count($terms); $r++) {
+            $trms = $terms[$r];
+            if ($this->register($trms, $lang, $th)) {
+                echo $trms . ' - ' . lang('thesa.inserted') . '<br>';
+            } else {
+                echo $trms . ' - ' . lang('thesa.already') . '<br>';
             }
+        }
         exit;
     }
 
     /*********************************************************** REGISTER */
-    function register($term,$lang,$th)
-        {
-            $ThTermTh = new \App\Models\RDF\ThTermTh();
-            $dt = $this->where('term_name',$term)->where('term_lang',$lang)->findAll();
-            if (count($dt) == 0)
-                {
-                    $data = array();
-                    $data['term_name'] = $term;
-                    $data['term_lang'] = $lang;
-                    $id = $this->insert($data);
-                    return $ThTermTh->link_th($id, $th);
-
-                } else {
-                    $id = $dt[0]['id_term'];
-                    /************************ Vinculo com o tesauro */
-                    return $ThTermTh->link_th($id,$th);
-                }
+    function register($term, $lang, $th)
+    {
+        $ThTermTh = new \App\Models\RDF\ThTermTh();
+        $dt = $this->where('term_name', $term)->where('term_lang', $lang)->findAll();
+        if (count($dt) == 0) {
+            $data = array();
+            $data['term_name'] = $term;
+            $data['term_lang'] = $lang;
+            $id = $this->insert($data);
+            return $ThTermTh->link_th($id, $th);
+        } else {
+            $id = $dt[0]['id_term'];
+            /************************ Vinculo com o tesauro */
+            return $ThTermTh->link_th($id, $th);
         }
+    }
 
     function btn_append($th)
     {
@@ -435,7 +446,7 @@ class ThTerm extends Model
 
                         if ($("input[type=radio][name=lg]:checked").is(":checked"))
                         {
-                            let userHtml = "apikey=' . md5('RENE') . '&lang="+lang+"&terms="+items;
+                            let userHtml = "apikey=' . md5('THESA') . '&lang="+lang+"&terms="+items;
 
                             document.querySelector(\'#result\').innerHTML = "Registrando ...<br>";
 
@@ -463,6 +474,4 @@ class ThTerm extends Model
         $sx .= '<a href="' . PATH . '/admin/terms' . '" class="btn btn-outline-primary">' . lang("thesa.return") . '</a>';
         return $sx;
     }
-
-
 }

@@ -184,15 +184,6 @@ class ThConcept extends Model
             $Term = new \App\Models\RDF\ThTerm();
             $Term->term_block($id_term, $id_concept, $th);
 
-            echo '
-            <script>
-                var url = "'.base_url(PATH.COLLECTION. '/terms/ajax_term_update/').'";
-                $("#result").html("");
-                $("#term_list_div").load(url);
-            </script>
-            ';
-            echo h($id_concept);
-            exit;
-
+            return $id_term. ' created'.'<br>';
         }
 }
