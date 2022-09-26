@@ -40,6 +40,16 @@ class Admin extends BaseController
         $sx .= view('header/navbar_admin');
 
         switch ($d1) {
+            case 'ajax_docs':
+                $txt = get("txt");
+                $th = get("th");
+                $class = get("class");
+
+                $Config = new \App\Models\Thesa\Config();
+                $sx .= $Config->ajax_save($th,$class,$txt);
+                echo $sx;
+                exit;
+                break;
             case 'config':
                 $sx .= $this->config($d2, $d3, $d4, $d5);
                 break;

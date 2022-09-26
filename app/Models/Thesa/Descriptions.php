@@ -57,6 +57,28 @@ class Descriptions extends Model
             return $sx;
         }
 
+    function register($th, $class, $txt)
+        {
+
+        $data['ds_descrition'] = $txt;
+        $data['ds_th'] = $th;
+        $data['ds_prop'] = $class;
+        $data['updated_at'] = date("Y-m-d H:i:s");
+
+            $dt = $this
+                ->where('ds_th', $th)
+                ->where('ds_prop', $class)
+                ->FindAll();
+
+            if (count($dt) == 0)
+            {
+                $this->insert($data);
+            } else {
+                $idr = $dt[0]['id_ds'];
+                $this->set($data)->where('id_ds', $idr)->update();
+            }
+        }
+
    function show($th)
         {
             $sx = '';
