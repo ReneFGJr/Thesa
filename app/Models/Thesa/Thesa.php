@@ -72,6 +72,7 @@ class Thesa extends Model
                 ->join('owl_vocabulary_vc as vc2', 'ct_resource = vc2.id_vc', 'left')
                 ->join('language','term_lang = id_lg','left')
                 ->where('ct_concept', $id)
+                ->orderBy('term_name')
                 ->findAll();
 
                 //echo $this->getlastquery();
@@ -120,16 +121,23 @@ class Thesa extends Model
                 ->join('owl_vocabulary_vc', 'id_vc = ct_propriety', 'left')
                 ->where('ct_th', $id)
                 ->where('ct_literal > 0')
+                ->orderBy('term_name', 'ASC')
                 ->findAll();
 
 
                 //$sx .= '<ul class="list-unstyled">';
                 //pre($dt);
                 $sx .= '<select id="thesa_terms" size=25 style="width: 100%; border: 0px solid #000; outline: none;">';
-
+                $xlt = '';
                 for($r=0;$r < count($dt);$r++)
                     {
                         $line = $dt[$r];
+                        $lt = mb_strtoupper(substr(ascii($line['term_name']),0,1));
+                        if ($lt != $xlt)
+                            {
+                                $sx .= '<option value="" style="background-color: #f8f8f8; border-top: 1px solid #000; border-bottom: 1px solid #000; text-align: center; font-weight: bold;">= = '.$lt.' = =</option>';
+                                $xlt = $lt;
+                            }
                         $link = '<a href="#" onclick="view('.$line['ct_concept'].');">';
                         $linka = '</a>';
                         //$sx .= '<li>'.$link.$line['term_name'].$linka.'</li>';

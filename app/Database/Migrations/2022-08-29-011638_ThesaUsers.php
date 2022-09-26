@@ -23,7 +23,7 @@ class ThesaUsers extends Migration
                 'type' => 'INT',
                 'null' => true,
             ],
-            'th_us_function' => [
+            'th_us_perfil' => [
                 'type' => 'INT',
                 'null' => true,
             ],
@@ -32,8 +32,15 @@ class ThesaUsers extends Migration
         $this->forge->addKey('id_th_us', true);
         $this->forge->addForeignKey('th_us_user', 'Users', 'id_us');
         $this->forge->addForeignKey('th_us_th', 'Thesa', 'id_th');
-        $this->forge->addForeignKey('th_us_function', 'Thesa_Perfil', 'id_perfil');
+        $this->forge->addForeignKey('th_us_perfil', 'Thesa_Perfil', 'id_perfil');
         $this->forge->createTable('Thesa_Users');
+
+        $data = array(
+            'th_us_user' => '1',
+            'th_us_th' => '1',
+            'th_us_perfil' => '1',
+        );
+        $this->db->table('thesa_users')->insert($data);
     }
 
     public function down()

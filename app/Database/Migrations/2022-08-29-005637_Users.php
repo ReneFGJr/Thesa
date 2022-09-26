@@ -67,7 +67,7 @@ class Users extends Migration
 
         $data = array(
                 'us_nome' => 'Administrador',
-                'us_email' => 'administrador',
+                'us_email' => 'renefgj@gmail.com',
                 'us_image'=>'',
                 'us_genero' => 'N',
                 'us_verificado' => 1,
@@ -80,6 +80,8 @@ class Users extends Migration
                 'us_apikey_date' => '1900-01-01',
             );
         $this->db->table('Users')->insert($data);
+
+
     }
 
     public function down()

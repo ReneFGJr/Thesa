@@ -378,7 +378,7 @@ class ThTerm extends Model
         $th = $Thesa->setThesa();
         $rlt = $ThTermTh->termNoUse($th);
 
-        $sx .= '<select class="form-control" id="term_list" name="term_list" size="15" multiple>';
+        $sx .= '<select class="xform-control scrollbar" id="term_list" name="term_list" size="15" multiple>';
         for ($r = 0; $r < count($rlt); $r++) {
             $sx .= '<option value="' . $rlt[$r]['id_term'] . '">' . $rlt[$r]['term_name'] . '</option>';
         }
@@ -400,10 +400,17 @@ class ThTerm extends Model
 
         for ($r = 0; $r < count($terms); $r++) {
             $trms = $terms[$r];
-            if ($this->register($trms, $lang, $th)) {
-                echo $trms . ' - ' . lang('thesa.inserted') . '<br>';
-            } else {
-                echo $trms . ' - ' . lang('thesa.already') . '<br>';
+            if (trim($trms) != '')
+            {
+                if ($this->register($trms, $lang, $th)) {
+                    echo '<div>';
+                    echo $trms . ' - ' . lang('thesa.inserted') . '<br/>';
+                    echo '</div>';
+                } else {
+                    echo '<div>';
+                    echo $trms . ' - ' . lang('thesa.already') . '<br/>';
+                    echo '</div>';
+                }
             }
         }
         exit;

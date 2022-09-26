@@ -68,11 +68,14 @@ class Thesa extends BaseController
                 $sx .= $ThConcept->edit($id);
                 break;
             case 't':
+                /******************** Visualizado Ajax Term */
                 $Thesa = new \App\Models\Thesa\Thesa();
                 echo $Thesa->t($id);
                 exit;
                 break;
+
             case 'th':
+                $Descriptions = new \App\Models\Thesa\Descriptions();
                 $data = array();
                 //$sx .= view('header/menu_left');
                 $id = $Thesa->setThesa($id);
@@ -82,7 +85,8 @@ class Thesa extends BaseController
 
                 $sa = '<div id="terms">'.$Thesa->terms($id). '</div>';
                 $sb = '<div id="desc">';
-                $sb .= '<h1>'.'Description'.'</h1>';
+                $sb .= $Descriptions->resume($id);
+                $sb .= $Descriptions->show($id);
                 $sb .= '</div>';
 
                 $sx .= bs(bsc($sa,4).bsc($sb,8));
@@ -91,7 +95,9 @@ class Thesa extends BaseController
                 break;
 
             default:
-                $sx .= view('Thesa/Welcome');
+                $bg = (date("s") % 4)+1;
+                $data['bg'] = $bg;
+                $sx .= view('Thesa/Welcome',$data);
                 break;
         }
         $sx .= $this->footer($data);

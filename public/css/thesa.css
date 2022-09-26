@@ -1,74 +1,165 @@
-@import url('https://fonts.googleapis.com/css2?family=Actor&family=Arsenal&family=Cabin+Condensed&family=Lora:ital@1&family=Roboto+Slab:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Actor&family=Arsenal&family=Cabin+Condensed&family=Lora:ital@1&family=Roboto+Slab:wght@300&family=Roboto:wght@100&family=Titillium+Web:wght@200&display=swap');
 body {
-    font-family: 'Cabin Condensed','Arsenal','Roboto Slab','Actor', sans-serif;
-    font-size: 1.2rem;
-    background-color: #f5f5f5;
-    color: #333;
+  font-size: 1.2rem;
+  background-color: #f5f5f5;
+  color: #333;
 }
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Lora', sans-serif;
-    color: #333;
+
+.font
+  {
+    font-family: "Cabin Condensed", "Arsenal", "Roboto Slab", "Actor", sans-serif;
+  }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Lora", sans-serif;
+  color: #333;
 }
 a {
-    text-decoration: none;
-    color: #669;
+  text-decoration: none;
+  color: #669;
 }
 a:hover {
-    text-decoration: underline;
-    color: #006;
+  text-decoration: underline;
+  color: #006;
 }
 
 /***************************** CARDS */
-.cards
-  {
-    box-shadow: 4px 4px 5px #DDD;
-  }
+.cards {
+  box-shadow: 4px 4px 5px #ddd;
+}
 
-.cards:hover
-  {
-    box-shadow: 4px 4px 5px #888;
-    background-color: #E8E8E8;
-  }
+.cards:hover {
+  box-shadow: 4px 4px 5px #888;
+  background-color: #e8e8e8;
+}
 
-a.cards
-    {
-       text-decoration: none;
-       color: #338;
-    }
+a.cards {
+  text-decoration: none;
+  color: #338;
+}
 
-
-.form-control
-    {
-        border-left: 1px solid #000;
-        border-bottom: 1px solid #000;
-    }
+.form-control {
+  border-left: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
 
 .btn-fluid {
   display: block;
   width: 80%;
 }
 
-.clipboard, .clipboard:hover,
-.clipboard:active, .clipboard:focus,
-.clipboard.input:focus
-{
+.clipboard,
+.clipboard:hover,
+.clipboard:active,
+.clipboard:focus,
+.clipboard.input:focus {
   border: 0px;
   outline: none;
 }
 
-.extrabig
-  {
-    font-size: 300%;
-  }
-.big
-  {
-    font-size: 200%;
-  }
-.small
-  {
-    font-size: 75%;
-  }
-.supersmall
-  {
-    font-size: 75%;
-  }
+.extrabig {
+  font-size: 300%;
+}
+.big {
+  font-size: 200%;
+}
+.small {
+  font-size: 75%;
+}
+.supersmall {
+  font-size: 75%;
+}
+
+/**************************** Resume******/
+.resume {
+  font-size: 1.2rem;
+  border: 1px solid #0000;
+  border-radius: 5px;
+}
+
+/**************************** SCROLL BAR */
+
+select::-webkit-scrollbar {
+  width: 20px;
+  background-color: #fff;
+  border: 0px solid #eee;
+}
+
+select::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border: 0px solid #000;
+}
+
+.sidebar {
+  position: absolute;
+}
+
+/****************************** Paralax */
+.parallax_background_1 {
+  /* The image used */
+  background-image: url("https://www.ufrgs.br/thesa/img/background/background_1.jpg");
+}
+
+.parallax {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/******************************************** Logo Thesa */
+.logo_thesa_text {
+  font-family: Roboto, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+  font-size: 600%;
+}
+
+.logo_thesa_text_sub {
+  font-family: Roboto, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+  font-size: 200%;
+}
+
+.separador {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -webkit-box-pack: justify;
+        -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+.separator-line {
+  width: 125px;
+  height: 1px;
+  background-color: hsla(0, 0%, 100%, 0.6);
+  margin: 20px 0;
+}
+
+	.box
+	{
+	    margin-top: 40px;
+        border: 5px solid #00000;
+        background-color: #C0C0C0; opacity: 0.7;
+        border-radius: 10px;
+        margin: 10px;
+	}

@@ -24,6 +24,14 @@ class Admin extends BaseController
         return view('header/header', $data);
     }
 
+    public function foot($data = array())
+    {
+        $data['title'] = 'Thesa - #ADMIN';
+        $data['bg_color'] = '#4B0082;';
+        $data['css'] = '';
+        return view('Theme/Standard/footer', $data);
+    }
+
     public function index($d1 = '',$d2 = '',$d3 = '',$d4 = '',$d5='')
     {
         $Thesa = new \App\Models\Thesa\Thesa();
@@ -32,6 +40,9 @@ class Admin extends BaseController
         $sx .= view('header/navbar_admin');
 
         switch ($d1) {
+            case 'config':
+                $sx .= $this->config($d2, $d3, $d4, $d5);
+                break;
             case 'ontology':
                 $Ontology = new \App\Models\RDF\Ontology\Index();
                 $sx .= $Ontology->index($d2, $d3, $d4, $d5);
@@ -55,4 +66,51 @@ class Admin extends BaseController
         }
         return $sx;
     }
+
+    function config($d1,$d2,$d3)
+        {
+            $Thesa = new \App\Models\Thesa\Thesa();
+            $th = $Thesa->setThesa();
+
+            if (($th == '') or ($th == 0))
+                {
+                    echo "OPS";
+                    exit;
+                }
+
+            $Config = new \App\Models\Thesa\Config();
+            $Description = new \App\Models\Thesa\Descriptions();
+            $Collaborators = new \App\Models\Thesa\Collaborators();
+
+            $sx = '';
+            $sx .= bs(bsc('Configurações'),12);
+
+            $data = array();
+            $data['link'] = array();
+
+            $sa = '';
+
+            /******************************************* Collarations */
+            array_push($data['link'], '<a href="#_" class="nav-link">Colaboradores</a>');
+            $sa .= '<h1>'.lang("thesa.Collaborators").'</h1>';
+            $sa .= $Collaborators->list($th);
+
+            $class = $Description->classes();
+            foreach($class as $id=>$name)
+                {
+                    array_push($data['link'], '<a href="#'.$name.'" class="nav-link">'.lang("thesa.$name").'</a>');
+                    $sa .= $Config->control($name);
+                }
+
+
+            array_push($data['link'], '<a href="#_" class="nav-link">Visibilidade</a>');
+            array_push($data['link'], '<a href="#_" class="nav-link">Language</a>');
+
+            $data['body'] = $sa;
+
+            $sx .= view('Admin/body',$data);
+
+            $sx .= $this->foot();
+            return $sx;
+        }
 }

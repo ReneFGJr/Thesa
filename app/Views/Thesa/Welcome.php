@@ -1,4 +1,42 @@
-<div class="container">
+<style>
+    .parallax_background_1 {
+        /* The image used */
+        background-image: url("https://www.ufrgs.br/thesa/img/background/background_<?= $bg; ?>.jpg");
+    }
+
+    .parallax_background_2 {
+        /* The image used */
+        background-image: url("https://www.ufrgs.br/thesa/img/background/background_<?= $bg + 1; ?>.jpg");
+    }
+</style>
+<!-- Container element -->
+<div class="parallax parallax_background_1" style="height: 280px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 text-center" style="margin-top: 50px;">
+                <span class="logo_thesa_text">THESA</span>
+                <br>
+                <span class="logo_thesa_text_sub">Tesauro Semântico Aplicado</span>
+            </div>
+            <div class="col-md-2 text-center" style="margin-top: 50px;">
+            </div>
+            <div class="col-md-5 text-center" style="margin-top: 50px;">
+                <span style="color: white;" class="h1">Bem vindo a Thesa</span><br />
+                <span style="color: white;">Sistema de Representação de Conhecimento</span>
+                <div class="separador">
+                    <div class="separator-line"></div>
+                    <span style="color: white;">Já tem uma conta?</span>
+                    <div class="separator-line"></div>
+                </div>
+                <a href="https://www.ufrgs.br/thesa/thesa/social/login" style="text-decoration: none;">
+                    <div style="padding: 10px; background-color: #ffffff; text-decoration: none; border-radius: 20px; color: black; font-size: 12px; font-family: Titillium+Web;">Não tem cadastro? Clique aqui!</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5 mb-3 font">
     <div class="row">
         <div class="col-12">
             <h1>Apresentação do Thesa</h1>
@@ -8,7 +46,21 @@
             <p>Como citar: GABRIEL JUNIOR, R. F.; LAIPELT, R. C. Thesa: ferramenta para construção de tesauro semântico aplicado interoperável. <b>Revista P2P & Inovação</b>, Rio de Janeiro, v. 3, n. 2, p.124-145, Mar./Set. 2017.</p>
             <p>Para saber mais: GABRIEL JUNIOR, R. F.; LAIPELT, R. C. Descrição das relações semânticas para aplicação em kos: uso do tesauro semântico aplicado (thesa). <b>Revista P2P e INOVAÇÃO</b>, Rio de Janeiro, v. 6, n. 1, p. 117-135, 2019. DOI: 10.21721/p2p.2019v6n1.p117-135 Acesso em: 13 set. 2022.</p>
             <p>Projeto Financionado com recursos do CNPq Projeto: 439277/2018-3</p>
+        </div>
+    </div>
+</div>
 
+<div class="parallax parallax_background_2" style="height: 280px; padding: 100px;">
+    <?php
+    $Thesa = new \App\Models\Thesa\Index();
+    $data = $Thesa->summary();
+    echo view('Thesa/Summary',$data);
+    ?>
+</div>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
             <h1>Sobre o Thesa</h1>
             <p>O Thesa foi desenvolvido inicialmente como um protótipo utilizando a linguagem php e banco de dados MySql, de forma a possibilitar o compartilhamento e desenvolvimento colaborativo da ferramenta.</p>
             <p>O software funciona em ambiente Web e pode ser baixado gratuitamente, podendo ser utilizado para fins didáticos em disciplinas dos cursos de graduação e pós-graduação ou para uso profissional. O Thesa foi desenvolvido com o princípio de multi-idioma, podendo ser traduzido para qualquer idioma, entretanto sua versão de teste está somente em português, as traduções vão depender de se estabelecerem convênios com instituições nativas de outros idiomas, que demonstrarem interesse pelo uso do software.</p>
