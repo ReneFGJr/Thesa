@@ -10,6 +10,21 @@ body {
     font-family: "Cabin Condensed", "Arsenal", "Roboto Slab", "Actor", sans-serif;
   }
 
+.over
+  {
+    border: 1px #fff solid;
+    border-radius: 10px;
+    padding: 2px;
+    margin-bottom: 5px;
+
+  }
+
+.over:hover
+  {
+    background-color: #fff;
+    border: 1px #888 solid;
+  }
+
 h1,
 h2,
 h3,

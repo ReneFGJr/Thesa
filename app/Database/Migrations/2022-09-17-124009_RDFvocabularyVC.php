@@ -54,6 +54,29 @@ class RDFvocabularyVC extends Migration
         $data['vc_prefix'] = 1;
         $data['vc_label'] = 'isInstanceOf';
         $this->db->table('OWL_vocabulary_vc')->insert($data);
+
+        $data['vc_prefix'] = 2;
+        $data['vc_resource'] = 2;
+        $data['vc_label'] = 'Concept';
+        $this->db->table('OWL_vocabulary_vc')->insert($data);
+
+        $data['vc_label'] = 'prefLabel';
+        $this->db->table('OWL_vocabulary_vc')->insert($data);
+
+        $data['vc_label'] = 'altLabel';
+        $this->db->table('OWL_vocabulary_vc')->insert($data);
+
+        $data['vc_label'] = 'hiddenLabel';
+        $this->db->table('OWL_vocabulary_vc')->insert($data);
+
+        $data['vc_label'] = 'broader';
+        $this->db->table('OWL_vocabulary_vc')->insert($data);
+
+        $data['vc_label'] = 'narrower';
+        $this->db->table('OWL_vocabulary_vc')->insert($data);
+
+        $data['vc_label'] = 'related';
+        $this->db->table('OWL_vocabulary_vc')->insert($data);
     }
 
     public function down()

@@ -18,7 +18,6 @@ class ThConceptPropriety extends Model
         'id_ct', 'ct_concept', 'ct_th',
         'ct_literal', 'ct_use', 'ct_propriety',
         'ct_resource'
-
     ];
 
     // Dates

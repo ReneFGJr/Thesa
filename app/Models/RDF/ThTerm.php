@@ -117,6 +117,8 @@ class ThTerm extends Model
         $sa .= $this->btn_append($th);
         $sa .= '&nbsp;|&nbsp;';
         $sa .= $this->btn_return($th);
+        $sa .= '<hr>';
+        $sa .= '<a href="'.PATH.COLLECTION. '/terms/create_concept'.'" class="btn btn-outline-secondary">'.msg('thesa.see_term_candidatos').'</a>';
 
         /**************************************** Serie B */
         $sb = '';
@@ -325,6 +327,21 @@ class ThTerm extends Model
                                 }
                             });
                         });
+
+                        /****************************************** ONE CLICK CREATE **/
+                        $("#btn_create_concept_oneclick").click(function() {
+
+                            var url = "' . PATH . 'admin/terms/ajax_term_concept' . '";
+                            $.ajax({
+                                type: "POST",
+                                url: url,
+                                data: { id: "' . $id_js . '", "confirm":"yes" },
+                                success: function(data)
+                                {
+                                    $("#drashboard").html(data);
+                                }
+                            });
+                        });
                     </script>';
             exit;
         }
@@ -378,7 +395,7 @@ class ThTerm extends Model
         $th = $Thesa->setThesa();
         $rlt = $ThTermTh->termNoUse($th);
 
-        $sx .= '<select class="xform-control scrollbar" id="term_list" name="term_list" size="15" multiple>';
+        $sx .= '<select class="scrollbar" style="width: 100%;" id="term_list" name="term_list" size="15" multiple>';
         for ($r = 0; $r < count($rlt); $r++) {
             $sx .= '<option value="' . $rlt[$r]['id_term'] . '">' . $rlt[$r]['term_name'] . '</option>';
         }
@@ -438,7 +455,7 @@ class ThTerm extends Model
     {
         $sx = '';
         $sx .= '<span class="btn btn-primary" onclick="new_term(' . $th . ');">';
-        $sx .= msg('add_term');
+        $sx .= msg('thesa.add_term');
         $sx .= '</span>';
 
         $sx .= '
@@ -478,7 +495,7 @@ class ThTerm extends Model
     function btn_return($th)
     {
         $sx = '';
-        $sx .= '<a href="' . PATH . '/admin/terms' . '" class="btn btn-outline-primary">' . lang("thesa.return") . '</a>';
+        $sx .= '<a href="' . PATH . '/admin/terms' . '" class="btn btn-outline-warning">' . lang("thesa.return") . '</a>';
         return $sx;
     }
 }

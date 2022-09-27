@@ -80,6 +80,15 @@ class VocabularyVC extends Model
             $sx = bs(bsc($sx,12));
             return $sx;
         }
+    function find_prop($prop)
+        {
+            $dt = $this
+                ->where('vc_label',$prop)
+                ->first();
+            $id = $dt['id_vc'];
+            return $id;
+
+        }
 
     function import($dt, $id)
     {

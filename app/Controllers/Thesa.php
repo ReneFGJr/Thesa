@@ -45,6 +45,8 @@ class Thesa extends BaseController
                 $dtc = $ThConcept->le($id);
                 $dt = $Thesa->le($dtc[0]['c_th']);
                 $sx .= $Thesa->header($dt);
+                pre($dt,false);
+                pre($dtc, false);
                 break;
             case 'thopen':
                 $sx .= bs(bsc(h(lang('thesa.ThOpen'))));

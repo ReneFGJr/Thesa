@@ -40,6 +40,25 @@ class Admin extends BaseController
         $sx .= view('header/navbar_admin');
 
         switch ($d1) {
+            case 'ajax_form_save':
+                $id = get("id");
+                $prop = get("prop");
+                $vlr = get("vlr");
+
+                echo h($d1);
+
+                $ThConcept = new \App\Models\RDF\ThConcept();
+                echo $ThConcept->ajax_save($id, $prop, $vlr);
+                exit;
+                break;
+
+            case 'ajax_form':
+                $id = get("id");
+                $prop = get("prop");
+
+                $ThConcept = new \App\Models\RDF\ThConcept();
+                echo $ThConcept->ajax_edit($id,$prop);
+                exit;
             case 'ajax_docs':
                 $txt = get("txt");
                 $th = get("th");

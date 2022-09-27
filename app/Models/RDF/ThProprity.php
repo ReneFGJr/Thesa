@@ -61,6 +61,22 @@ class ThProprity extends Model
         return $sx;
     }
 
+    function find_prop($name)
+        {
+            $dt = $this
+                ->join('thesa_property_range', 'p_range = id_rg', 'left')
+                ->where('p_name', $name)
+                ->findAll();
+
+            if (count($dt) > 0)
+                {
+                    return $dt[0];
+                } else {
+                    echo "ERRO";
+                    exit;
+                }
+        }
+
 
 
     function edit($id, $th)

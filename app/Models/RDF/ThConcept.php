@@ -66,24 +66,201 @@ class ThConcept extends Model
             return $dt;
         }
 
+    function form($id)
+        {
+        $Thesa = new \App\Models\Thesa\Thesa();
+        $ThConcept = new \App\Models\RDF\ThConcept();
+        $ThProprity = new \App\Models\RDF\ThProprity();
+        $sx = '';
+        $sx .= bsc(h('Propriedades',3),12);
+
+        $dt = $ThConcept->le($id);
+        $th = $dt[0]['c_th'];
+
+        $ts = $Thesa->find($th);
+
+        $type = $ts['th_type'];
+
+
+        $cp = 'p_name, p_reverse, p_group, rg_range';
+        $f = $ThProprity
+            ->select($cp)
+            ->join('owl_vocabulary_vc','p_name = vc_label','left')
+            ->join('thesa_property_range', 'p_name = rg_class', 'left')
+            ->where('p_th',$th)
+            ->orwhere('p_global >= '.$type)
+            ->groupBy($cp)
+            ->orderBy('p_group')
+            ->findAll();
+
+        $xgr = '';
+        for ($r=0;$r < count($f);$r++)
+            {
+                $line = $f[$r];
+                $gr = substr($line['p_group'],0,1);
+                if ($xgr != $gr)
+                    {
+                        if ($xgr != '') { $sx .= '</div>'; }
+
+                        $sx .= '<div id="grupo_'.$gr.'" class="row">';
+                        $sx .= h('<b>'.lang('thesa.form_group_'.$gr). '</b>',5);
+                        $xgr = $gr;
+
+                    }
+                $sx .= bsc(lang('thesa.'.$line['p_name']),3, 'text-end');
+
+                /*********************************************** RECUPERA VALORES  */
+                $st = '<div id="form_thesa_'. $line['p_name'].'">';
+                for ($y=0;$y < count($dt);$y++)
+                    {
+                        $dtl = $dt[$y];
+                        if ($dtl['property'] == $line['p_name'])
+                            {
+                                $linkr = '<span style="color: red">' . bsicone('trash', 18) . '</span>';
+                                $st .= $linkr;
+                                $st .= '<b>'.$dtl['label']. '</b>'.'<sup>@'.$dtl['lg_code']. '</sup>';
+                            }
+                    }
+                $st .= $this->form_field($id, $line['p_name']);
+                $st .= '</div>';
+                $sx .= bsc($st,10, 'over');
+
+            }
+
+
+        if ($xgr != '') {
+            $sx .= '</div>';
+        }
+        //$sx .= '<style> div { border: 1px solid #000; } </style>';
+        $sx = bs($sx);
+        return $sx;
+        }
+
+    function ajax_save($id,$prop,$vlr)
+        {
+        /***************************************************** PROPRERTY */
+            $VocabularyVC = new \App\Models\RDF\Ontology\VocabularyVC();
+            $id_prop = $VocabularyVC->find_prop($prop);
+
+            /***************************************************** RANGE */
+            $ThProprity = new \App\Models\RDF\ThProprity();
+            $dp = $ThProprity->find_prop($prop);
+            if (count($dp) == 0)
+                {
+                    echo "ERRO DE RANGE - $prop";
+                }
+
+            /************************************************* ID CONCEPT */
+            $ThConcept = new \App\Models\RDF\ThConcept();
+            $dtc = $ThConcept->find($id);
+            $th = $dtc['c_th'];
+            $concept = $id;
+            $resource = 0;
+            $literal = $vlr;
+            $range = $dp['rg_range'];
+
+            switch($range)
+                {
+                    case 'Literal':
+                        $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
+                        $ThConceptPropriety->register($th, $concept, $id_prop, $resource, $literal);
+                        echo "RANGE: $range";
+                        echo "<hr>OK-Literal [$prop] $vlr";
+                        break;
+                    default:
+                        echo "save $id - $prop - $vlr";
+                    break;
+                }
+        }
+
+    function ajax_edit($id,$prop)
+        {
+            $sx = '';
+            $tp = 'label';
+
+            switch($tp)
+                {
+                    case 'label':
+                        $sx .= $this->form_field_level($id,$prop);
+                        break;
+                }
+            return $sx;
+        }
+
+    function form_field_level($id,$prop)
+        {
+            $ThConcept = new \App\Models\RDF\ThConcept();
+            $ThTermTh = new \App\Models\RDF\ThTermTh();
+
+            $dc = $ThConcept->le($id);
+            $th = $dc[0]['c_th'];
+
+            $sx = '';
+            $sx .= '<div class="row">';
+            $sx .= '<div class="col-md-3">';
+            $sx .= '<input type="text" id="form_thesa_'.$prop.'_label" class="form-control">';
+            $sx .= 'Filter';
+            $sx .= '</div>';
+            $sx .= '<div class="col-md-10">';
+            $sx .= '<select id="form_thesa_prop_'.$prop. '_label" class="form-control" size=5>';
+            $dt = $ThTermTh->termNoUse($th);
+            for ($r=0;$r < count($dt);$r++)
+                {
+                    $line = $dt[$r];
+                    $sx .= '<option value="'. $line['id_term'].'">'.$dt[$r]['term_name'].' ('.$dt[$r]['lg_code'].')</option>';
+                }
+            $sx .= '</select>';
+            $sx .= '<span class="btn btn-outline-primary" onclick="save_form_'.$prop.'();">'.lang('thesa.save').'</span>';
+            $sx .= '</div>';
+
+            $sx .= '<script>';
+            $sx .= 'function save_form_'.$prop.'()' . cr();
+            $sx .= '{' . cr();
+            $sx .= '$vlr = $("#form_thesa_prop_'.$prop.'_label").val();' . cr();
+            $sx .= ' var url = "'.PATH.'/admin/ajax_form_save/?id='.$id.'&prop='.$prop.'&vlr="+$vlr;' . cr();
+            $sx .= ' $("#form_thesa_'.$prop.'").load(url);' . cr();
+            $sx .= '}' . cr();
+            $sx .= '</script>';
+            return $sx;
+        }
+
+    function form_field($id=0,$prop=0,$gr=2)
+        {
+            global $jsf;
+
+            $sx = '<div id="form_thesa_'.$id.'">';
+            $sx .= '<a href="#" onclick="form_thesa_label(\''.$id.'\',\''.$prop.'\');">'.bsicone('plus',18).'</a>';
+            $sx .= '</div>';
+
+            if (!isset($jsf))
+                {
+                    $jsf = true;
+                    $sx .= '
+                    <script>
+                    function form_thesa_label($id,$prop)
+                        {
+                            $("#form_thesa_"+$prop).html("' . lang('thesa.loading') . '");
+                            var url = "'.PATH . '/admin/ajax_form/?id=" + $id + "&prop=" + $prop;
+                            $.ajax({
+                                type: "POST",
+                                url: url,
+                                success: function(rsp)
+                                {
+                                    $("#form_thesa_"+$prop).html(rsp);
+                                }
+                            });
+                        }
+                    </script>';
+                }
+            return $sx;
+        }
+
     function edit($id)
     {
         $sx = '';
         $Term = new \App\Models\RDF\ThTerm();
 
-        $sa = '<h3>S1</h3>';
-        $sb = '<h3>S2</h3>';
-        $sb .= '<div id="s2">S2</div>';
-
-        $sa .= 'Termos';
-        $sa .= '<br/>';
-        $sa .= '<a href="#" id="prefLabel">prefLabel</a>';
-        $sa .= '<br/>';
-        $sa .= '<a href="#" id="altLabel">altLabel</a>';
-        $sa .= '<br/>';
-        $sa .= '<a href="#" id="hiddenLabel">hiddenLabel</a>';
-
-        $sx .= bs(bsc($sa, 4) . bsc($sb, 8));
+        $sx .= $this->form($id);
 
         $sx .= '<script>';
         $sx .= '$("#prefLabel").click(function() {';
@@ -183,7 +360,7 @@ class ThConcept extends Model
             /********************************************** Trava o Termos do Vocabulario */
             $Term = new \App\Models\RDF\ThTerm();
             $Term->term_block($id_term, $id_concept, $th);
-
-            return $id_term. ' created'.'<br>';
+            $sx = '<a href="'.PATH.'v/'. $id_concept.'" class="btn btn-outline-secondary">' . 'thesa:c' . $id_term . '</a>' . ' created';
+            return $sx . '<br>';
         }
 }
