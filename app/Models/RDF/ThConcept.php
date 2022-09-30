@@ -118,7 +118,7 @@ class ThConcept extends Model
                             {
                                 $linkr = '<span style="color: red">' . bsicone('trash', 18) . '</span>';
                                 $st .= $linkr;
-                                $st .= '<b>'.$dtl['label']. '</b>'.'<sup>@'.$dtl['lg_code']. '</sup>';
+                                $st .= '<b>'.$dtl['label']. '</b>'.'<sup>@'.$dtl['lg_code']. '</sup><br/>';
                             }
                     }
                 $st .= $this->form_field($id, $line['p_name']);
@@ -133,6 +133,50 @@ class ThConcept extends Model
         }
         //$sx .= '<style> div { border: 1px solid #000; } </style>';
         $sx = bs($sx);
+        return $sx;
+        }
+
+    function list_concepts_terms($id,$prop='')
+        {
+
+        $Thesa = new \App\Models\Thesa\Thesa();
+        $ThConcept = new \App\Models\RDF\ThConcept();
+        $ThProprity = new \App\Models\RDF\ThProprity();
+        $sx = '';
+        $sx .= bsc(h('Propriedades', 3), 12);
+
+        $dt = $ThConcept->le($id);
+        $th = $dt[0]['c_th'];
+
+        $ts = $Thesa->find($th);
+
+        $type = $ts['th_type'];
+        $cp = 'p_name, p_reverse, p_group, rg_range';
+        $f = $ThProprity
+            ->select($cp)
+            ->join('owl_vocabulary_vc', 'p_name = vc_label', 'left')
+            ->join('thesa_property_range', 'p_name = rg_class', 'left')
+            ->where('p_th', $th)
+            ->where('p_name',$prop)
+            ->groupBy($cp)
+            ->orderBy('p_group')
+            ->findAll();
+
+            echo $this->getlastquery();
+
+        $xgr = '';
+        for ($r = 0; $r < count($f); $r++) {
+            $line = $f[$r];
+            for ($y = 0; $y < count($dt); $y++) {
+                $dtl = $dt[$y];
+                if ($dtl['property'] == $line['p_name']) {
+                    $linkr = '<span style="color: red">' . bsicone('trash', 18) . '</span>';
+                    $sx .= $linkr;
+                    $sx .= '<b>' . $dtl['label'] . '</b>' . '<sup>@' . $dtl['lg_code'] . '</sup><br/>';
+                }
+            }
+            $sx .= $this->form_field($id, $line['p_name']);
+        }
         return $sx;
         }
 
@@ -164,13 +208,12 @@ class ThConcept extends Model
                     case 'Literal':
                         $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
                         $ThConceptPropriety->register($th, $concept, $id_prop, $resource, $literal);
-                        echo "RANGE: $range";
-                        echo "<hr>OK-Literal [$prop] $vlr";
                         break;
                     default:
                         echo "save $id - $prop - $vlr";
                     break;
                 }
+            return "";
         }
 
     function ajax_edit($id,$prop)

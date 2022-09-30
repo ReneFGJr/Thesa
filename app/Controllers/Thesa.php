@@ -30,23 +30,37 @@ class Thesa extends BaseController
         return view($thema, $data);
     }
 
-    public function index($act = '', $id = '')
+    public function index($act = '', $id = '',$tp='')
     {
+
         $Thesa = new \App\Models\Thesa\Thesa();
         $data = array();
 
         $sx = $this->cab();
         $sx .= view('header/navbar');
-
         switch ($act) {
             case 'v':
+                $Descriptions = new \App\Models\Thesa\Descriptions();
                 $ThConcept = new \App\Models\RDF\ThConcept();
-                $Thesa = new \App\Models\Thesa\Thesa();
-                $dtc = $ThConcept->le($id);
-                $dt = $Thesa->le($dtc[0]['c_th']);
-                $sx .= $Thesa->header($dt);
-                pre($dt,false);
-                pre($dtc, false);
+
+                $dth = $ThConcept->le($id);
+                $th = $dth[0]['c_th'];
+
+                $data = array();
+                //$sx .= view('header/menu_left');
+                $Thesa->setThesa($th);
+
+                $dth = $Thesa->le($th);
+                $sx .= $Thesa->header($dth);
+
+                $sa = '<div id="terms">' . $Thesa->terms($th) . '</div>';
+                $sb = '<div id="desc">';
+                //$sb .= $Descriptions->resume($th);
+                $sb .= $Thesa->t($id);
+                //$sb .= $Descriptions->show($th);
+                $sb .= '</div>';
+
+                $sx .= bs(bsc($sa, 4) . bsc($sb, 8));
                 break;
             case 'thopen':
                 $sx .= bs(bsc(h(lang('thesa.ThOpen'))));

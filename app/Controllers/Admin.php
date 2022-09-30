@@ -45,10 +45,12 @@ class Admin extends BaseController
                 $prop = get("prop");
                 $vlr = get("vlr");
 
-                echo h($d1);
-
                 $ThConcept = new \App\Models\RDF\ThConcept();
+
                 echo $ThConcept->ajax_save($id, $prop, $vlr);
+                echo $ThConcept->list_concepts_terms($id, $prop);
+
+
                 exit;
                 break;
 
