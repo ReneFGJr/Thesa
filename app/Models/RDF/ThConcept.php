@@ -152,12 +152,13 @@ class ThConcept extends Model
 
         $type = $ts['th_type'];
         $cp = 'p_name, p_reverse, p_group, rg_range';
+
         $f = $ThProprity
             ->select($cp)
             ->join('owl_vocabulary_vc', 'p_name = vc_label', 'left')
             ->join('thesa_property_range', 'p_name = rg_class', 'left')
             ->where('p_th', $th)
-            ->where('p_name',$prop)
+            //->where('p_name', $prop)
             ->groupBy($cp)
             ->orderBy('p_group')
             ->findAll();
