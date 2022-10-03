@@ -69,6 +69,9 @@ class Config extends Model
             case 'Audience':
                 $sx .= $this->form($class, $th);
                 break;
+            case 'Language':
+                $sx .= '<div class="row" id="language">'.$this->form_language($th). '</div>';
+                break;
             default:
                 $sx .= '<p>Information not found - ' . $class . '</p>';
                 break;
@@ -105,6 +108,74 @@ class Config extends Model
                 ';
                 $js = true;
             }
+            return $sx;
+        }
+
+    function form_language($th)
+        {
+            $sx = '';
+            $sx .= (lang('thesa.Language_help'));
+
+            $Language = new \App\Models\Language\Index();
+            $dt = $Language
+                ->select('lg_code,lg_language,count(*) as total')
+                ->join('thesa_language', 'id_lg = lgt_language', 'left')
+                ->where('lgt_th', $th)
+                ->groupBy('lg_code,lg_language')
+                ->orderBy('lg_language', 'ASC')
+                ->findAll();
+
+            $ds = array();
+            for($r=0;$r < count($dt);$r++)
+                {
+                    $line = $dt[$r];
+                    $ds[$line['lg_code']] = $line['lg_language'];
+                }
+            /****************** IDIOMAS EXISTENTES */
+            $s1 = '<span class="small">'.lang('thesa.language_to_selected'). '</span>';
+            $s1 .= '<select id="lang_in" name="lang_in" class="form-control" size=10>';
+            foreach ($ds as $code => $lang_name) {
+                $s1 .= '<option value="' . $code . '">' . $lang_name . '</option>';
+            }
+            $s1 .= '</select>';
+
+            /****************** IDIOMAS PARA ATIVAR */
+            $dl = $Language->languages();
+            $s2 = '<span class="small">'.lang('thesa.language_to_select') . '</span>';
+            $s2 .= '<select id="lang_out" name="lang_out" class="form-control" size=10>';
+            foreach($dl as $code=>$lang_name)
+                {
+                    if (!isset($ds[$code]))
+                    {
+                        $s2 .= '<option value="' . $code . '">' . $lang_name . '</option>';
+                    }
+
+                }
+            $s2 .= '</select>';
+
+            $sx .= '<div class="row">';
+            $sx .= '<div class="col-md-5">'.$s2.'</div>';
+            $sx .= '<div class="col-md-2">';
+            $sx .= '<button id="lang_select" type="button" class="btn btn-outline-secondary btn-sm form-control mt-5">>>></button>';
+            $sx .= '<button id="lang_unselect" type="button" class="btn btn-outline-secondary btn-sm form-control mt-5"><<<</button>';
+            $sx .= '</div>';
+            $sx .= '<div class="col-md-5">' . $s1 . '</div>';
+            $sx .= '</div>';
+            $sx .= '
+            <script>
+                $("#lang_select").click(function() {
+                    $vlr = $("#lang_out option:selected").val()
+                    var url = "' . PATH . '/admin/ajax_lang/?th='.$th. '&lang="+$vlr;
+                    $("#language").load(url);
+                });
+
+                $("#lang_unselect").click(function() {
+                    $vlr = $("#lang_in option:selected").val()
+                    var url = "' . PATH . '/admin/ajax_lang/?th=' . $th . '&act=del&lang="+$vlr;
+                    $("#language").load(url);
+                });
+            </script>';
+
             return $sx;
         }
 

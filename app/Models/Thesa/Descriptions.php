@@ -45,7 +45,7 @@ class Descriptions extends Model
 
     function classes()
         {
-            $class = array('Introduction', 'Methodology', 'Audience', 'License');
+            $class = array('Introduction', 'Methodology', 'Audience', 'License','Language');
             return $class;
         }
 

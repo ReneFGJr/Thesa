@@ -108,6 +108,8 @@ class ThTerm extends Model
 
     function form($th = 0)
     {
+        $Thesa = new \App\Models\Thesa\Thesa();
+        $th = $Thesa->setThesa();
         $Language = new \App\Models\Language\Index();
         $sx = '';
         /*************************************** Serie A */
@@ -123,7 +125,7 @@ class ThTerm extends Model
         /**************************************** Serie B */
         $sb = '';
         $sb .= '<small>' . lang('thesa.terms_lang') . '</small>';
-        $sb .= $Language->form($th);
+        $sb .= $Language->lang_form($th);
         /**************************************** Serie C */
         $sc = '';
         $sc .= '<small>' . lang('thesa.process_area') . '</small>';

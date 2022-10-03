@@ -80,11 +80,31 @@ class ThTermTh extends Model
             ->join('language', 'term_lang = id_lg')
             ->where('term_th_thesa', $th)
             ->where('term_th_concept', 0)
-            ->orderBy('term_name', 'ASC')
+            ->orderBy('lg_code, term_name', 'ASC')
             ->findAll();
         return $dt;
         }
 
+
+
+    /************************* Atualiza Themo do Conceito */
+    function update_term_th($id, $th, $concept)
+    {
+        if ($concept > 0)
+            {
+            $dt['term_th_concept'] = $concept;
+            $dt = $this
+                ->set($dt)
+                ->where('term_th_term', $id)
+                ->where('term_th_thesa', $th)
+                ->update();
+            } else {
+                echo "ERRO Update Term TH";
+                echo '==>'.$id.'==>'.$th.'==>'.$concept;
+                exit;
+            }
+
+    }
 
     function link_th($id, $th)
     {
@@ -92,6 +112,7 @@ class ThTermTh extends Model
                 ->where('term_th_term', $id)
                 ->where('term_th_thesa', $th)
                 ->findAll();
+
         if (count($dt) == 0)
             {
                 $data = array();

@@ -71,7 +71,7 @@ class Licences extends Model
             $lc = $dt[0]['ds_descrition'];
         }
 
-        $sx = '<div class="input-group mb-3">';
+        $sx = '<div class="input-group mb-5">';
         $sx .= '<select name="license" id="licence" class="form-control">';
         for ($r = 0; $r < count($licences); $r++) {
             $check = '';

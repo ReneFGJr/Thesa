@@ -28,6 +28,10 @@
                 if (isset($_SESSION['th'])) {
                     echo '
                         <li class="nav-item">
+                            <a class="nav-link" href="'.getenv("app.baseURL"). '/admin/terms/add">'.lang('thesa.add_terms').'</a>
+                        </li>';
+                    echo '
+                        <li class="nav-item">
                             <a class="nav-link" href="' . PATH . '/th/' . $_SESSION['th'] . '">' . lang('thesa.th_atual') . '</a>
                         </li>';
                 }

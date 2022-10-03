@@ -52,8 +52,15 @@ return [
     'editorialNote' => 'Nota editorial',
     'example' => 'Exemplo',
     'historyNote' => 'Notas históricas',
-    '' => '',
+    'Language' => 'Idiomas',
     'broader' => 'Conceito mais amplo',
+    'add_terms' => 'Adicionar novos termos',
+    'language_to_selected' => 'Idiomas habilitados',
+    'language_to_select' => 'Idiomas disponíveis',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
 
 
 

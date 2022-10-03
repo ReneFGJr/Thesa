@@ -30,6 +30,17 @@ class ThesaLinguageTh extends Migration
         ]);
         $this->forge->addKey('id_lgt', true);
         $this->forge->createTable('thesa_language');
+
+        $data = array();
+        $data['lgt_th'] = 1;
+        $data['lgt_language'] = '3';
+        $data['lgt_order'] = '1';
+        $this->db->table('thesa_language')->insert($data);
+
+        $data = array();
+        $data['lgt_language'] = '1';
+        $data['lgt_order'] = '2';
+        $this->db->table('thesa_language')->insert($data);
     }
 
     public function down()

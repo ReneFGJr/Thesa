@@ -43,9 +43,38 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function form($th=0)
+    function check($th)
         {
-            $dt = $this->orderBy('lg_order')->findAll();
+            $Language = new \App\Models\Thesa\Language();
+            $dt = $Language->where('lgt_th',$th)->findAll();
+            if (count($dt) == 0)
+                {
+                    $data['lgt_th'] = $th;
+                    $data['lgt_language'] = 3;
+                    $data['lgt_order'] = 1;
+                    $Language->insert($data);
+                }
+            return true;
+        }
+    function languages()
+        {
+            $dt = $this->findAll();
+            $lang = array();
+            for($r=0;$r < count($dt);$r++)
+                {
+                    $line = $dt[$r];
+                    $lang[$line['lg_code']] = $line['lg_language'];
+                }
+            return $lang;
+        }
+
+    function lang_form($th=0)
+        {
+            $this->check($th);
+            $dt = $this
+                ->join('thesa_language','lgt_language = id_lg','left')
+                ->where('lgt_th',$th)
+                ->orderBy('lg_order')->findAll();
             $sx = '';
             for ($r=0;$r < count($dt);$r++)
                 {

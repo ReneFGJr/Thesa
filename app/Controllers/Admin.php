@@ -49,8 +49,34 @@ class Admin extends BaseController
 
                 echo $ThConcept->ajax_save($id, $prop, $vlr);
                 echo $ThConcept->list_concepts_terms($id, $prop);
+                exit;
+                break;
 
+            case 'ajax_lang':
+                $Config = new \App\Models\Thesa\Config();
+                $th = get("th");
+                $idioma = get("lang");
+                $act = get("act");
+                if ($idioma != '')
+                    {
+                        $lang = new \App\Models\Language\Index();
+                        $language = new \App\Models\Thesa\Language();
 
+                        $dl = $lang->where('lg_code',$idioma)->first();
+                        if ($dl != '')
+                        {
+                        $id_lg = $dl['id_lg'];
+
+                        if ($act == '')
+                            {
+                                $language->register($th, $id_lg);
+                            } else {
+                                $language->remove($th, $id_lg);
+                            }
+                        }
+                    }
+
+                echo $Config->form_language($th);
                 exit;
                 break;
 
@@ -133,9 +159,6 @@ class Admin extends BaseController
                     $sa .= $Config->control($name);
                 }
 
-
-            array_push($data['link'], '<a href="#_" class="nav-link">Visibilidade</a>');
-            array_push($data['link'], '<a href="#_" class="nav-link">Language</a>');
 
             $data['body'] = $sa;
 
