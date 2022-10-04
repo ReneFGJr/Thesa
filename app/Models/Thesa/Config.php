@@ -60,6 +60,9 @@ class Config extends Model
                 $Licences = new \App\Models\Thesa\Licences();
                 $sx .= $Licences->radiobox($th);
                 break;
+            case 'Title':
+                $sx .= $this->field($class, $th);
+                break;
             case 'Introduction':
                 $sx .= $this->form($class, $th);
                 break;
@@ -108,6 +111,56 @@ class Config extends Model
                 ';
                 $js = true;
             }
+            return $sx;
+        }
+
+    function form_field($class, $th, $value)
+        {
+            $sx = '';
+
+            /* FIELD */
+            $sx .= '<style> div { border: 1px solid #00000;"} </style>';
+            $sx .= '<span class="small mt-3">' . lang('thesa.'.$class) . '</span>';
+
+            /* Link */
+            $lk = '<span class="ms-2" onclick="togglet(\''.$class.'\');">' . bsicone('edit', 16) . '</span>';
+
+            /* SHOW */
+            $sx .= '<div id="status_' . $class . '">';
+            $sx .= h($value.$lk,5);
+            $sx .= '</div>';
+
+            $sx .= '<div class="input-group mb-3" id="form_' . $class . '" style="display: none;">';
+            $sx .= form_input($class, $value, 'id="title" class="form-control"');
+            $sx .= '    <div class="input-group-append  ms-2">';
+            $sx .= '    <button class="btn btn-outline-primary" type="button" onclick="form_field_save(\''.$class.'\');">' . lang('thesa.save') . '</button>';
+            $sx .= '    <button class="btn btn-outline-danger" type="button" onclick="togglet(\'' . $class . '\');">' . lang('thesa.cancel') . '</button>';
+            $sx .= '    </div>';
+            $sx .= '</div>';
+            return $sx;
+
+        }
+
+    function field($cp,$th)
+        {
+            $sx = '';
+            switch($cp)
+                {
+                    case 'Title':
+                        $Thesa = new \App\Models\Thesa\Thesa();
+                        $dt = $Thesa->find($th);
+
+                        $title = $dt['th_name'];
+                        $achronic = $dt['th_achronic'];
+                        $sx .= '<div class="row">';
+
+                        /* Title */
+                        $sx .= $this->form_field('title',$th,$title);
+
+                        /* Achronic */
+                        $sx .= $this->form_field('achronic', $th, $achronic);
+                }
+            $sx .= "$cp - $th";
             return $sx;
         }
 

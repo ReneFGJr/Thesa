@@ -40,6 +40,9 @@ class Admin extends BaseController
         $sx .= view('header/navbar_admin');
 
         switch ($d1) {
+            case 'ajax_form_field_save':
+                pre($_GET);
+                exit;
             case 'ajax_term_delete':
                 $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
                 $sx = $ThConceptPropriety->ajax_term_delete();

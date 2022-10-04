@@ -31,3 +31,18 @@ function term_delete($id, $prop) {
     $("#form_thesa_" + $prop).load(url);
   }
 }
+function form_field_save($form)
+  {
+    vlr = $("#" + $form).val();
+
+    $vlr = "";
+    var url = '/admin/ajax_form_field_save?form=' + $form + "&vlr=" + vlr;
+    url = encodeURI(url);
+    $("#status_"+$form).load(url);
+    togglet($form);
+  }
+function togglet($form)
+  {
+    $("#status_" + $form).toggle();
+    $("#form_" + $form).toggle();
+  }
