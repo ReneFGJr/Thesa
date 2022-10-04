@@ -40,7 +40,7 @@ return [
     'form_group_3' => 'Grupo 3',
     'form_group_4' => 'Grupo 4',
     'form_group_5' => 'Notas e definições',
-    '' => '',
+    'save' => 'salvar',
     'prefLabel' => 'Termo preferencial',
     'altLabel' => 'Termo alternativo',
     'hiddenLabel' => 'Termo oculto',

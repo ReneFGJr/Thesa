@@ -105,9 +105,9 @@ class Thesa extends Model
                 $sx .= '</table>';
 
                 /******************************* PrefLabel */
+                $edit = '<a href="'.base_url(PATH.'a/'.$id).'" class="ms-2">'.bsicone('edit').'</a>';
                 $st = '<h1>'.$prefLabel.'</h1>';
-                $st .= '<h6>URI: '.anchor(PATH.'v/'.$id).'</h6>';
-
+                $st .= '<h6>URI: '.anchor(PATH.'v/'.$id).$edit.'</h6>';
             return $st.$sx;
         }
 

@@ -49,6 +49,7 @@ class ThConcept extends Model
             /*  */
             ->select('
                             id_c, c_concept, c_th,
+                            id_ct,
                             term_name as label,
                             vc2.vc_label as resource,
                             lg_code, lg_language,
@@ -72,17 +73,17 @@ class ThConcept extends Model
         $ThConcept = new \App\Models\RDF\ThConcept();
         $ThProprity = new \App\Models\RDF\ThProprity();
         $sx = '';
-        $sx .= bsc(h('Propriedades', 3), 12);
+        $sx .= bsc(h('Propriedades-1', 3), 12);
 
-        $dt = $ThConcept->le($id);
-        $th = $dt[0]['c_th'];
-
+        $concept_data = $ThConcept->le($id);
+        $th = $concept_data[0]['c_th'];
         $ts = $Thesa->find($th);
-
         $type = $ts['th_type'];
 
 
+        /* Form */
         $cp = 'p_name, p_reverse, p_group, rg_range';
+
         $f = $ThProprity
             ->select($cp)
             ->join('owl_vocabulary_vc', 'p_name = vc_label', 'left')
@@ -92,35 +93,29 @@ class ThConcept extends Model
             ->groupBy($cp)
             ->orderBy('p_group')
             ->findAll();
-
         $xgr = '';
         for ($r = 0; $r < count($f); $r++) {
             $line = $f[$r];
+
+            /**** Groups */
             $gr = substr($line['p_group'], 0, 1);
             if ($xgr != $gr) {
                 if ($xgr != '') {
                     $sx .= '</div>';
                 }
 
-                $sx .= '<div id="grupo_' . $gr . '" class="row">';
+                $sx .= '<div id="grupo_' . $gr . '" class="row mt-4">';
                 $sx .= h('<b>' . lang('thesa.form_group_' . $gr) . '</b>', 5);
                 $xgr = $gr;
             }
-            $sx .= bsc(lang('thesa.' . $line['p_name']), 3, 'text-end');
+            $btn_plus = $this->form_field($id, $line['p_name']);
+            $sx .= bsc(lang('thesa.' . $line['p_name']). $btn_plus, 4,'mb-3');
 
             /*********************************************** RECUPERA VALORES  */
-            $st = '<div id="form_thesa_' . $line['p_name'] . '">';
-            for ($y = 0; $y < count($dt); $y++) {
-                $dtl = $dt[$y];
-                if ($dtl['property'] == $line['p_name']) {
-                    $linkr = '<span style="color: red">' . bsicone('trash', 18) . '</span>';
-                    $st .= $linkr;
-                    $st .= '<b>' . $dtl['label'] . '</b>' . '<sup>@' . $dtl['lg_code'] . '</sup><br/>';
-                }
-            }
-            $st .= $this->form_field($id, $line['p_name']);
+            $st = '<div id="form_thesa_' . $line['p_name'] . '" class="mb-3">';
+            $st .= $this->list_concepts_terms($id, $line['p_name'],false);
             $st .= '</div>';
-            $sx .= bsc($st, 10, 'over');
+            $sx .= bsc($st, 9, 'over');
         }
 
 
@@ -132,7 +127,7 @@ class ThConcept extends Model
         return $sx;
     }
 
-    function list_concepts_terms($id, $prop = '')
+    function list_concepts_terms($id, $prop = '',$stop=true)
     {
 
         $Thesa = new \App\Models\Thesa\Thesa();
@@ -140,7 +135,7 @@ class ThConcept extends Model
         $ThProprity = new \App\Models\RDF\ThProprity();
         $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
         $sx = '';
-        $sx .= bsc(h('Propriedades', 3), 12);
+        //$sx .= bsc(h('Propriedades-2', 3), 12);
 
         $dt = $ThConcept->le($id);
         $th = $dt[0]['c_th'];
@@ -148,7 +143,7 @@ class ThConcept extends Model
         $ts = $Thesa->find($th);
 
         $type = $ts['th_type'];
-        $cp = 'vc_label, term_name, lg_code';
+        $cp = 'vc_label, term_name, lg_code, id_ct';
 
         $f = $ThConceptPropriety
             ->select($cp)
@@ -164,13 +159,18 @@ class ThConcept extends Model
 
         for ($r = 0; $r < count($f); $r++) {
             $line = $f[$r];
-            $linkr = '<span style="color: red">' . bsicone('trash', 18) . '</span>';
+            $linkr = '<span style="color: red" onclick="term_delete('.$line['id_ct'].',\''.$line['vc_label'].'\');">' . bsicone('trash', 18) . '</span>';
             $sx .= $linkr;
             $sx .= '<b>' . $line['term_name'] . '</b>' . '<sup>@' . $line['lg_code'] . '</sup><br/>';
+        }
+
+        if ($stop)
+            {
+                echo $sx;
+                exit;
+            } else {
+                return $sx;
             }
-        $sx .= $this->form_field($id, $line['vc_label']);
-        echo $sx;
-        exit;
     }
 
     function ajax_save($id, $prop, $vlr)
@@ -200,7 +200,7 @@ class ThConcept extends Model
             case 'Literal':
                 $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
                 $ThConceptPropriety->register($th, $concept, $id_prop, $resource, $literal);
-                $ThTermTh->update_term_th($vlr,$th, $concept);
+                $ThTermTh->update_term_th($vlr, $th, $concept);
                 break;
             default:
                 echo "save $id - $prop - $vlr";
@@ -213,20 +213,25 @@ class ThConcept extends Model
     {
         $sx = '';
         $ThPropertyRange = new \App\Models\RDF\ThPropertyRange();
-//        $da = $ThPropertyRange->find_prop($prop);
+        //        $da = $ThPropertyRange->find_prop($prop);
 
-        echo h($prop);
         $tp = 'Literal';
 
         switch ($tp) {
             case 'Literal':
-                $sx .= $this->form_field_level($id, $prop);
+                if ($prop == 'prefLabel') {
+                    $no = true;
+                    $sx .= $this->form_field_level($id, $prop, $no);
+                } else {
+                    $sx .= $this->form_field_level($id, $prop);
+                }
+
                 break;
         }
         return $sx;
     }
 
-    function form_field_level($id, $prop)
+    function form_field_level($id, $prop, $nr = false)
     {
         $ThConcept = new \App\Models\RDF\ThConcept();
         $ThTermTh = new \App\Models\RDF\ThTermTh();
@@ -234,29 +239,58 @@ class ThConcept extends Model
         $dc = $ThConcept->le($id);
         $th = $dc[0]['c_th'];
 
-
-        echo h($prop);
-
-        $dt = $ThTermTh->termNoUse($th);
-
+        if ($nr == true) {
+            $langs = array();
+            for ($r = 0; $r < count($dc); $r++) {
+                $line = $dc[$r];
+                if (strlen(trim($line['lg_code'])) > 0) {
+                    $langs[$line['lg_code']] = 1;
+                }
+            }
+            $dt = $ThTermTh->termNoUse($th, $langs);
+        } else {
+            $dt = $ThTermTh->termNoUse($th);
+        }
 
         $sx = '';
         $sx .= '<div class="row">';
-        $sx .= '<div class="col-md-3">';
-        $sx .= '<input type="text" id="form_thesa_' . $prop . '_label" class="form-control">';
-        $sx .= 'Filter';
-        $sx .= '</div>';
-        $sx .= '<div class="col-md-10">';
-        $sx .= '<select id="form_thesa_prop_' . $prop . '_label" class="form-control" size=5>';
-        for ($r = 0; $r < count($dt); $r++) {
-            $line = $dt[$r];
-            $sx .= '<option value="' . $line['id_term'] . '">' . $dt[$r]['term_name'] . ' (' . $dt[$r]['lg_code'] . ')</option>';
+        if (count($dt) > 0) {
+            $sx .= '<div class="col-md-3">';
+            $sx .= '<input type="text" id="form_thesa_' . $prop . '_label" class="form-control">';
+            $sx .= 'Filter-Form';
+            $sx .= '</div>';
         }
-        $sx .= '</select>';
-        $sx .= '<span class="btn btn-outline-primary" onclick="save_form_' . $prop . '();">' . lang('thesa.save') . '</span>';
+        $sx .= '<div class="col-md-10">';
+        if (count($dt) > 0) {
+
+            /***** Select terms */
+            $sx .= '<select id="form_thesa_prop_' . $prop . '_label" class="form-control" size=5>';
+            for ($r = 0; $r < count($dt); $r++) {
+                $line = $dt[$r];
+                $sx .= '<option value="' . $line['id_term'] . '">' . $dt[$r]['term_name'] . ' (' . $dt[$r]['lg_code'] . ')</option>';
+            }
+            $sx .= '</select>';
+
+            /**** Bobutton saver */
+            $sx .= '<span class="btn btn-outline-primary" onclick="save_form_' . $prop . '();">' . lang('thesa.save') . '</span>';
+        } else {
+
+            /**** Message No Terms */
+            $sx .= bsmessage(lang('thesa.no_terms'), 3);
+        }
+
+        /**** Bobutton cancel */
+        $sx .= '<span class="btn btn-outline-danger ms-2" onclick="return_form_' . $prop . '();">' . lang('thesa.cancel') . '</span>';
         $sx .= '</div>';
 
+        /**** JavaScript */
         $sx .= '<script>';
+        $sx .= 'function return_form_' . $prop . '()' . cr();
+        $sx .= '{' . cr();
+        $sx .= ' var url = "' . PATH . '/admin/ajax_form_save/?id=' . $id . '&prop=' . $prop . '";' . cr();
+        $sx .= ' $("#form_thesa_' . $prop . '").load(url);' . cr();
+        $sx .= '}' . cr();
+
         $sx .= 'function save_form_' . $prop . '()' . cr();
         $sx .= '{' . cr();
         $sx .= '$vlr = $("#form_thesa_prop_' . $prop . '_label").val();' . cr();
@@ -270,30 +304,8 @@ class ThConcept extends Model
     function form_field($id = 0, $prop = 0, $gr = 2)
     {
         global $jsf;
-
-        $sx = '<div id="form_thesa_' . $id . '">';
-        $sx .= '<a href="#" onclick="form_thesa_label(\'' . $id . '\',\'' . $prop . '\');">' . bsicone('plus', 18) . '</a>';
-        $sx .= '</div>';
-
-        if (!isset($jsf)) {
-            $jsf = true;
-            $sx .= '
-                    <script>
-                    function form_thesa_label($id,$prop)
-                        {
-                            $("#form_thesa_"+$prop).html("' . lang('thesa.loading') . '");
-                            var url = "' . PATH . '/admin/ajax_form/?id=" + $id + "&prop=" + $prop;
-                            $.ajax({
-                                type: "POST",
-                                url: url,
-                                success: function(rsp)
-                                {
-                                    $("#form_thesa_"+$prop).html(rsp);
-                                }
-                            });
-                        }
-                    </script>';
-        }
+        $sx = '';
+        $sx .= '<a href="#'.$id.'" class="ms-2" onclick="form_thesa_label(\'' . $id . '\',\'' . $prop . '\');">' . bsicone('plus', 18) . '</a>';
         return $sx;
     }
 
@@ -393,7 +405,6 @@ class ThConcept extends Model
         $class = 'skos:prefLabel';
         $prop_prefLabel = $ClassPropriety->Class($class, 'Property');
         $idr = $ThConceptPropriety->register($th, $id_concept, $prop_prefLabel, 0, $id_term);
-
 
         /********************************************** Trava o Termos do Vocabulario */
         $Term = new \App\Models\RDF\ThTerm();

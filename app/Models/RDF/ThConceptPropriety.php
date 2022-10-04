@@ -45,6 +45,31 @@ class ThConceptPropriety extends Model
     protected $afterDelete    = [];
 
 
+    function ajax_term_delete()
+    {
+        $ThTermTh = new \App\Models\RDF\ThTermTh();
+        $ThConcept = new \App\Models\RDF\ThConcept();
+
+
+        $id = get("id");
+        $prop = get("prop");
+        $dt = $this->find($id);
+
+        $th = $dt['ct_th'];
+        $idt = $dt['ct_literal'];
+        $idc = $dt['ct_concept'];
+
+        /* Term FREE */
+        $dt['term_th_concept'] = 0;
+        $ThTermTh->set($dt)->where('term_th_term', $idt)->where('term_th_thesa',$th)->update();
+
+        /* Delete */
+        $this->where('id_ct', $id)->delete();
+
+        echo $ThConcept->list_concepts_terms($idc,$prop);
+        exit;
+    }
+
 
     function register($th, $concept, $prop, $resource, $literal)
         {
