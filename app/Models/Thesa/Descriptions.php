@@ -57,6 +57,70 @@ class Descriptions extends Model
             return $sx;
         }
 
+    function ajax_field_save()
+        {
+            $th = get("th");
+            $prop = get("form");
+            $vlr = get("vlr");
+
+            if($prop == 'achronic')
+                {
+                    $vlr = trim(ascii($vlr));
+                    $vlr = troca($vlr,' ','_');
+                }
+
+            $da = array();
+            $da['ds_th'] = $th;
+            $da['ds_prop'] = $prop;
+            $da['ds_descrition'] = $vlr;
+            $da['updated_at'] = date("Y-m-d H:i:s");
+
+            $dt = $this
+                ->where('ds_th',$th)
+                ->where('ds_prop', $prop)
+                ->findAll();
+
+            if (count($dt) == 0)
+                {
+                    $da['ds_th'] = $th;
+                    $da['ds_prop'] = $prop;
+                    $da['ds_descrition'] = $vlr;
+                    $da['updated_at'] = date("Y-m-d H:i:s");
+                    $this->insert($da);
+                } else {
+                    $this->set($da)
+                    ->where('ds_th', $th)
+                    ->where('ds_prop', $prop)
+                    ->update();
+                }
+
+            /* Title */
+            if ($prop == 'title')
+                {
+                    $Thesa = new \App\Models\Thesa\Thesa();
+                    $db['th_name'] = $vlr;
+                    $Thesa->set($db)->where('id_th',$th)->update();
+                }
+            /* Achronic */
+            if ($prop == 'achronic') {
+                $Thesa = new \App\Models\Thesa\Thesa();
+                $db['th_achronic'] = $vlr;
+                $Thesa->set($db)->where('id_th', $th)->update();
+            }
+
+            if ($prop == 'License') {
+                exit;
+            }
+
+            /* Link */
+            $lk = '<span class="ms-2" onclick="togglet(\'' . $prop . '\');">' . bsicone('edit', 16) . '</span>';
+
+            /* Label */
+            $label = $vlr;
+            $label .= $lk;
+            echo h($label,5);
+        }
+
     function register($th, $class, $txt)
         {
 
@@ -97,6 +161,7 @@ class Descriptions extends Model
                             if ($line['ds_prop'] == $class[$r])
                                 {
                                     $text = $line['ds_descrition'];
+                                    $text = troca($text,chr(10),'<br/>');
                                 }
                         }
                     $sx .= '<h3>'.lang('thesa.'.$class[$r]).'</h3>';

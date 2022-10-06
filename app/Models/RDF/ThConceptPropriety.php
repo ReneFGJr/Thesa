@@ -17,7 +17,7 @@ class ThConceptPropriety extends Model
     protected $allowedFields    = [
         'id_ct', 'ct_concept', 'ct_th',
         'ct_literal', 'ct_use', 'ct_propriety',
-        'ct_resource'
+        'ct_resource', 'ct_concept_2'
     ];
 
     // Dates
@@ -43,6 +43,73 @@ class ThConceptPropriety extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    function broader_save()
+    {
+        $ThConcept = new \App\Models\RDF\ThConcept();
+        $ThProprity = new \App\Models\RDF\ThProprity();
+
+        $id = get('id');
+        $th = get('th');
+        $prop = get('prop');
+        $concept = get('concept');
+
+        $dtc = $ThConcept->find($id);
+        $th = $dtc['c_th'];
+
+        $prop = $ThProprity->find_prop_id($prop);
+
+        /* CHECK LOOP */
+        //$loop = $this->loop_check($th, $prop, $concept);
+
+        $da = $this
+            ->where('ct_th', $th)
+            ->where('ct_concept', $id)
+            ->where('ct_concept_2', $concept)
+            ->findAll();
+        if (count($da) == 0)
+            {
+                $da['ct_th'] = $th;
+                $da['ct_concept'] = $id;
+                $da['ct_concept_2'] = $concept;
+                $da['ct_propriety'] = $prop;
+                $da['ct_resource'] = 0;
+                $da['ct_use'] = 0;
+                $da['ct_literal'] = 0;
+                $this->set($da)->insert();
+            } else {
+                echo "OPS";
+            }
+    }
+
+    function candidate_broader($id)
+        {
+            $ThConcept = new \App\Models\RDF\ThConcept();
+            $dtc = $ThConcept->find($id);
+            $th = $dtc['c_th'];
+
+            $dt = $this
+                ->join('thesa_terms', 'id_term = ct_literal', 'inner')
+                ->where('ct_th',$th)
+                ->where('ct_concept !=',$id)
+                ->orderBy('term_name', 'ASC')
+                ->findAll();
+
+            $sx = '<select id="select_broader" name="select_broader" class="form-control" size=6>';
+            for ($r=0;$r < count($dt);$r++)
+                {
+                    $line = $dt[$r];
+                    $idc = $line['ct_concept'];
+                    $term = $line['term_name'];
+                    $sx .= '<option value="' . $idc . '">' . $term . '</option>';
+                }
+            $sx .= '</select>';
+
+            $sx .= '<span class="btn btn-outline-primary" onclick="save_ajax_broader('.$id.',\'broader\');">';
+            $sx .= 'SAVE BROADER';
+            $sx .= '</span>';
+            return $sx;
+        }
 
 
     function ajax_term_delete()

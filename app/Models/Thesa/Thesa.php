@@ -66,39 +66,54 @@ class Thesa extends Model
             $sx = '';
             $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
             $dt = $ThConceptPropriety
-                ->select('term_name, vc1.vc_label as vc_label, vc2.vc_label as vc_resource, lg_code, lg_language')
+                ->select('p_group, term_name, vc1.vc_label as vc_label, vc2.vc_label as vc_resource, lg_code, lg_language')
                 ->join('thesa_terms', 'ct_literal = id_term', 'left')
                 ->join('owl_vocabulary_vc as vc1', 'ct_propriety = vc1.id_vc', 'left')
                 ->join('owl_vocabulary_vc as vc2', 'ct_resource = vc2.id_vc', 'left')
                 ->join('language','term_lang = id_lg','left')
+                ->join('thesa_property', 'vc1.vc_label = p_name','left')
                 ->where('ct_concept', $id)
-                ->orderBy('term_name')
+                ->orderBy('p_group, term_name')
                 ->findAll();
 
                 //echo $this->getlastquery();
                 $prefLabel = '';
 
-                $sx .= '<table class="table">';
+                $sx .= '<table class="table_theme">';
+                $xgr = '';
                 for ($r=0;$r < count($dt);$r++)
                     {
                         $line = $dt[$r];
+                        $gr = $line['p_group'];
+
                         if ($line['vc_label'] == 'prefLabel')
                             {
                                 $prefLabel = $line['term_name'];
                                 $prefLabel .= ' <sup>('.$line['lg_code'].')</sup>';
                             }
+
                         if (strlen(trim($line['term_name'])) > 0)
                         {
                             $sx .= '<tr>';
-                            $sx .= '<td width="10%">'. $line['vc_label'].'</td>';
-                            $sx .= '<td>'. $line['term_name'];
+                            $classF = '';
+                            if ($gr != $xgr)
+                                {
+                                    $sx .= '<td width="20%" class="small trh">' .
+                                        lang('thesa.'.$line['vc_label']) . '</td>';
+                                        $xgr = $gr;
+                                    $classF = 'tdh';
+                                } else {
+                                    $sx .= '<td></td>';
+                                }
+
+                            $sx .= '<td class="ps-3 '.$classF.'">'. $line['term_name'];
                             $sx .= ' <sup>(' . $line['lg_code'] . ')</sup>';
                             $sx .= '</td>';
                             $sx .= '</tr>';
                         } else {
                             $sx .= '<tr>';
-                            $sx .= '<td width="10%">' . $line['vc_label'] . '</td>';
-                            $sx .= '<td>' . $line['vc_resource'] . '</td>';
+                            $sx .= '<td width="20%" class="small trh">' . lang('thesa.'.$line['vc_label']) . '</td>';
+                            $sx .= '<td class="ps-3 tdh">' . $line['vc_resource'] . '</td>';
                             $sx .= '</tr>';
                         }
                     }

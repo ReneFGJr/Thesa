@@ -40,8 +40,14 @@ class Admin extends BaseController
         $sx .= view('header/navbar_admin');
 
         switch ($d1) {
-            case 'ajax_form_field_save':
+            case 'ajax_broader_save':
+                $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
+                $ThConceptPropriety->broader_save();
                 pre($_GET);
+                exit;
+            case 'ajax_form_field_save':
+                $Description = new \App\Models\Thesa\Descriptions();
+                $Description->ajax_field_save($d2,$d3,$d4);
                 exit;
             case 'ajax_term_delete':
                 $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
@@ -102,7 +108,8 @@ class Admin extends BaseController
                 $class = get("class");
 
                 $Config = new \App\Models\Thesa\Config();
-                $sx .= $Config->ajax_save($th,$class,$txt);
+                $sx = $Config->ajax_save($th,$class,$txt);
+                echo "SAVED AT ".date("H:i:s");
                 echo $sx;
                 exit;
                 break;

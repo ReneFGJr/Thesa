@@ -14,7 +14,44 @@ function copytoClipboard($text) {
 }
 
 function form_thesa_label($id, $prop) {
-  $("#form_thesa_" + $prop).html("' . lang('thesa.loading') . '");
+  $("#form_thesa_" + $prop).html("Loading...");
+  var url = "/admin/ajax_form/?id=" + $id + "&prop=" + $prop;
+  $.ajax({
+    type: "POST",
+    url: url,
+    success: function (rsp) {
+      $("#form_thesa_" + $prop).html(rsp);
+    },
+  });
+}
+
+function save_ajax_broader($id,$prop)
+  {
+    var concept = $("#select_"+$prop).val();
+    if (concept == null)
+      {
+        alert("ERRO: Select a concept");
+      } else {
+        var url = "/admin/ajax_broader_save?id="+$id+"&prop=" + $prop + "&concept=" + concept;
+        $("#form_thesa_" + $prop).load(url);
+      }
+
+  }
+
+function form_thesa_concept($id, $prop) {
+  $("#form_thesa_" + $prop).html("Loading...");
+  var url = "/admin/ajax_form/?id=" + $id + "&prop=" + $prop;
+  $.ajax({
+    type: "POST",
+    url: url,
+    success: function (rsp) {
+      $("#form_thesa_" + $prop).html(rsp);
+    },
+  });
+}
+
+function form_thesa_text($id, $prop) {
+  $("#form_thesa_" + $prop).html("Loading...");
   var url = "/admin/ajax_form/?id=" + $id + "&prop=" + $prop;
   $.ajax({
     type: "POST",
@@ -31,12 +68,10 @@ function term_delete($id, $prop) {
     $("#form_thesa_" + $prop).load(url);
   }
 }
-function form_field_save($form)
+function form_field_save($form,$th)
   {
     vlr = $("#" + $form).val();
-
-    $vlr = "";
-    var url = '/admin/ajax_form_field_save?form=' + $form + "&vlr=" + vlr;
+    var url = '/admin/ajax_form_field_save?th='+$th+'&form=' + $form + "&vlr=" + vlr;
     url = encodeURI(url);
     $("#status_"+$form).load(url);
     togglet($form);

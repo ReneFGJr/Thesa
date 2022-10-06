@@ -57,8 +57,8 @@ class Config extends Model
         $sx .= '<h1>' . lang('thesa.' . $class) . '</h1>';
         switch ($class) {
             case 'License':
-                $Licences = new \App\Models\Thesa\Licences();
-                $sx .= $Licences->radiobox($th);
+                $Licenses = new \App\Models\Thesa\Licenses();
+                $sx .= $Licenses->radiobox($th);
                 break;
             case 'Title':
                 $sx .= $this->field($class, $th);
@@ -95,7 +95,7 @@ class Config extends Model
                         $("#btn_save_"+$class).html("'.lang('thesa.saving'). '...");
                         var url =  "' . base_url(PATH . COLLECTION . '/ajax_docs/save') . '";
                         var $txt = $("#"+$class).val();
-                        alert($txt);
+
                         $.ajax({
                             type: "POST",
                             url: url,
@@ -131,9 +131,9 @@ class Config extends Model
             $sx .= '</div>';
 
             $sx .= '<div class="input-group mb-3" id="form_' . $class . '" style="display: none;">';
-            $sx .= form_input($class, $value, 'id="title" class="form-control"');
+            $sx .= form_input($class, $value, 'id="'. $class.'" class="form-control"');
             $sx .= '    <div class="input-group-append  ms-2">';
-            $sx .= '    <button class="btn btn-outline-primary" type="button" onclick="form_field_save(\''.$class.'\');">' . lang('thesa.save') . '</button>';
+            $sx .= '    <button class="btn btn-outline-primary" type="button" onclick="form_field_save(\''.$class.'\','.$th.');">' . lang('thesa.save') . '</button>';
             $sx .= '    <button class="btn btn-outline-danger" type="button" onclick="togglet(\'' . $class . '\');">' . lang('thesa.cancel') . '</button>';
             $sx .= '    </div>';
             $sx .= '</div>';

@@ -61,6 +61,11 @@ class ThProprity extends Model
         return $sx;
     }
 
+    function find_prop_id($name)
+    {
+        $dt=$this->find_prop($name);
+        return($dt['id_p']);
+    }
     function find_prop($name)
         {
             $dt = $this

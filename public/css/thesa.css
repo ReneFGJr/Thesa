@@ -5,6 +5,19 @@ body {
   color: #333;
 }
 
+.table_theme
+  {
+    width: 100%;
+    font-size: 1.2rem;
+  }
+.trh
+  {
+    border-top:1px solid #555;
+  }
+.tdh
+  {
+    border-top:1px solid #555;
+  }
 .font
   {
     font-family: "Cabin Condensed", "Arsenal", "Roboto Slab", "Actor", sans-serif;

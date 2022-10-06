@@ -4,7 +4,7 @@ namespace App\Models\Thesa;
 
 use CodeIgniter\Model;
 
-class Licences extends Model
+class Licenses extends Model
 {
     protected $DBGroup          = 'default';
     protected $table            = 'thesa_descriptions';
@@ -43,7 +43,7 @@ class Licences extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function saveLicence($th, $lc)
+    function saveLicense($th, $lc)
     {
         $Descriptions = new \App\Models\Thesa\Descriptions();
         $dd = $this
@@ -58,33 +58,35 @@ class Licences extends Model
 
     function radiobox($th)
     {
-        $licences = array('CC-BY', 'CC-BY-SA', 'CC-BY-ND', 'CC-BY-NC', 'CC-BY-NC-SA', 'CC-BY-NC-ND', 'CC0');
+        $Licenses = array('CC-BY', 'CC-BY-SA', 'CC-BY-ND', 'CC-BY-NC', 'CC-BY-NC-SA', 'CC-BY-NC-ND', 'CC0');
 
         $dt = $this
             ->where('ds_th', $th)
             ->where('ds_prop', 'License')
             ->findAll();
         if (count($dt) == 0) {
-            $lc = $licences[0];
-            $this->saveLicence($th, $lc);
+            $lc = $Licenses[0];
+            $this->saveLicense($th, $lc);
         } else {
             $lc = $dt[0]['ds_descrition'];
         }
 
         $sx = '<div class="input-group mb-5">';
-        $sx .= '<select name="license" id="licence" class="form-control">';
-        for ($r = 0; $r < count($licences); $r++) {
+        $sx .= '<select name="License" id="License" class="form-control">';
+        for ($r = 0; $r < count($Licenses); $r++) {
             $check = '';
-            if ($licences[$r] == $lc) {
+            if ($Licenses[$r] == $lc) {
                 $check = 'selected';
             }
-            $sx .= '<option value="' . $licences[$r] . '" ' . $check . '> ' . lang('thesa.' . $licences[$r]) . '</option>';
+            $sx .= '<option value="' . $Licenses[$r] . '" ' . $check . '> ' . lang('thesa.' . $Licenses[$r]) . '</option>';
         }
         $sx .= '</select>';
         $sx .= '<div class="input-group-append">';
-        $sx .= '<button class="btn btn-outline-primary" onclick="saveLicence(\'licence\');" type="button">'.lang('thesa.save').'</button>';
+        $sx .= '<button class="btn btn-outline-primary" onclick="form_field_save(\'License\','.$th.');" type="button">'.lang('thesa.save').'</button>';
         $sx .= '</div>';
+        $sx .= '<div id="status_License"></div>';
         $sx .= '</div>';
+
         return $sx;
     }
 }

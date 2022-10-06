@@ -28,6 +28,11 @@ class ThesaConecptTerms extends Migration
                 'type' => 'INT',
                 'null' => true,
             ],
+            'ct_concept_2' => [
+                'type' => 'INT',
+                'default' => 0,
+                'null' => true,
+            ],
             'ct_resource' => [
                 'type' => 'INT',
                 'null' => true,

@@ -49,22 +49,57 @@ class ThConcept extends Model
             /*  */
             ->select('
                             id_c, c_concept, c_th,
-                            id_ct,
+                            t1.id_ct as id_ct,
                             term_name as label,
-                            vc2.vc_label as resource,
+                            vc2.vc_label as resource_name,
                             lg_code, lg_language,
+                            t1.ct_resource as ct_resource,
+                            t1.ct_concept_2 as ct_concept_2,
                             vc1.vc_label as property, spaceName')
             /*  */
-            ->join('thesa_concept_term', 'ct_concept = id_c')
+            ->join('thesa_concept_term as t1', 't1.ct_concept = id_c')
             ->join('thesa_terms', 'ct_literal = id_term', 'left')
             ->join('owl_vocabulary_vc as vc1', 'ct_propriety = vc1.id_vc', 'left')
             ->join('owl_vocabulary', 'vc1.vc_prefix = id_owl', 'left')
             ->join('owl_vocabulary_vc as vc2', 'ct_resource = vc2.id_vc', 'left')
             ->join('language', 'term_lang = id_lg', 'left')
-
             ->where('id_c', $id)
             ->findAll();
         return $dt;
+    }
+
+    function le_relation($id,$prop='')
+    {
+        $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
+        $dt =
+            $ThConceptPropriety
+            ->join('owl_vocabulary_vc', 'ct_propriety = id_vc', 'left')
+            ->where('(ct_concept = '.$id. ' or ct_concept_2 = '.$id. ') and ct_literal = 0')
+            ->findAll();
+
+        pre($dt,false);
+        return $dt;
+        /* Relations */
+        $this
+            ->select('*')
+            ->join('thesa_concept_term as t1', 't1.ct_concept = id_c')
+            ->join('thesa_concept_term as t2', 't1.ct_concept = t2.ct_concept')
+            ->join('thesa_terms', 't2.ct_literal = id_term', 'left')
+            ->join('language', 'term_lang = id_lg', 'left');
+
+        /* Proposition */
+        if ($prop != '')
+            {
+                $this->join('owl_vocabulary_vc', 't1.ct_propriety = id_vc', 'left');
+                //$this->where('ct_propriety',$prop);
+            }
+        $this
+            ->where('c_concept', $id)
+            ->where('t1.ct_concept_2 >', 0)
+            ->where('term_name is not null');
+        $dr = $this->findAll();
+        pre($dr,false);
+        return $dr;
     }
 
     function form($id)
@@ -87,7 +122,7 @@ class ThConcept extends Model
         $f = $ThProprity
             ->select($cp)
             ->join('owl_vocabulary_vc', 'p_name = vc_label', 'left')
-            ->join('thesa_property_range', 'p_name = rg_class', 'left')
+            ->join('thesa_property_range', 'p_group >= rg_group_1 and p_group <= rg_group_2', 'left')
             ->where('p_th', $th)
             ->orwhere('p_global >= ' . $type)
             ->groupBy($cp)
@@ -108,13 +143,32 @@ class ThConcept extends Model
                 $sx .= h('<b>' . lang('thesa.form_group_' . $gr) . '</b>', 5);
                 $xgr = $gr;
             }
-            $btn_plus = $this->form_field($id, $line['p_name']);
-            $sx .= bsc(lang('thesa.' . $line['p_name']). $btn_plus, 4,'mb-3');
 
-            /*********************************************** RECUPERA VALORES  */
-            $st = '<div id="form_thesa_' . $line['p_name'] . '" class="mb-3">';
-            $st .= $this->list_concepts_terms($id, $line['p_name'],false);
-            $st .= '</div>';
+            switch ($line['rg_range']) {
+                case 'Concept':
+                    $btn_plus = $this->form_field_concept($id, $line['p_name']);
+                    /*********************************************** RECUPERA VALORES  */
+                    $st = '<div id="form_thesa_' . $line['p_name'] . '" class="mb-3">';
+                    $st .= $this->list_concepts_relations($id, $line['p_name'], false);
+                    $st .= '</div>';
+                    $st = '';
+                    break;
+                case 'Literal':
+                    $btn_plus = $this->form_field($id, $line['p_name']);
+                    /*********************************************** RECUPERA VALORES  */
+                    $st = '<div id="form_thesa_' . $line['p_name'] . '" class="mb-3">';
+                    $st .= $this->list_concepts_terms($id, $line['p_name'], false);
+                    $st .= '</div>';
+                    break;
+                case 'Text':
+                    $st = '';
+                    $btn_plus = $this->form_field_text($id, $line['p_name']);
+                    break;
+            }
+
+            $sx .= bsc(lang('thesa.' . $line['p_name']) . $btn_plus, 4, 'mb-3');
+
+
             $sx .= bsc($st, 9, 'over');
         }
 
@@ -127,9 +181,42 @@ class ThConcept extends Model
         return $sx;
     }
 
-    function list_concepts_terms($id, $prop = '',$stop=true)
+    /************************************************** LISTA CONCEITOS */
+    function list_concepts_relations($id, $prop = '', $stop = true)
     {
+        $Thesa = new \App\Models\Thesa\Thesa();
+        $ThConcept = new \App\Models\RDF\ThConcept();
+        $sx = '';
+        $dt = $ThConcept->le_relation($id,$prop);
 
+        pre($dt);
+        return "XX";
+
+        $th = $dt[0]['c_th'];
+
+        $ts = $Thesa->find($th);
+
+        for ($r = 0; $r < count($f); $r++) {
+            $line = $f[$r];
+            $linkr = '<span style="color: red" onclick="term_delete(' . $line['id_ct'] . ',\'' . $line['vc_label'] . '\');">' . bsicone('trash', 18) . '</span>';
+            $sx .= $linkr;
+            $sx .= '<b>' .
+                $line['term_name'] . '</b>' .
+                '<sup>@' . $line['lg_code'] .
+                '</sup><br/>';
+        }
+
+        if ($stop) {
+            echo $sx;
+            exit;
+        } else {
+            return $sx;
+        }
+    }
+
+    /*************************************************** LISTA TERMOS */
+    function list_concepts_terms($id, $prop = '', $stop = true)
+    {
         $Thesa = new \App\Models\Thesa\Thesa();
         $ThConcept = new \App\Models\RDF\ThConcept();
         $ThProprity = new \App\Models\RDF\ThProprity();
@@ -138,12 +225,13 @@ class ThConcept extends Model
         //$sx .= bsc(h('Propriedades-2', 3), 12);
 
         $dt = $ThConcept->le($id);
+
         $th = $dt[0]['c_th'];
 
         $ts = $Thesa->find($th);
 
         $type = $ts['th_type'];
-        $cp = 'vc_label, term_name, lg_code, id_ct';
+        $cp = 'vc_label, term_name, lg_code, id_ct, ct_resource';
 
         $f = $ThConceptPropriety
             ->select($cp)
@@ -159,18 +247,20 @@ class ThConcept extends Model
 
         for ($r = 0; $r < count($f); $r++) {
             $line = $f[$r];
-            $linkr = '<span style="color: red" onclick="term_delete('.$line['id_ct'].',\''.$line['vc_label'].'\');">' . bsicone('trash', 18) . '</span>';
+            $linkr = '<span style="color: red" onclick="term_delete(' . $line['id_ct'] . ',\'' . $line['vc_label'] . '\');">' . bsicone('trash', 18) . '</span>';
             $sx .= $linkr;
-            $sx .= '<b>' . $line['term_name'] . '</b>' . '<sup>@' . $line['lg_code'] . '</sup><br/>';
+            $sx .= '<b>' .
+                $line['term_name'] . '</b>' .
+                '<sup>@' . $line['lg_code'] .
+                '</sup><br/>';
         }
 
-        if ($stop)
-            {
-                echo $sx;
-                exit;
-            } else {
-                return $sx;
-            }
+        if ($stop) {
+            echo $sx;
+            exit;
+        } else {
+            return $sx;
+        }
     }
 
     function ajax_save($id, $prop, $vlr)
@@ -212,10 +302,10 @@ class ThConcept extends Model
     function ajax_edit($id, $prop)
     {
         $sx = '';
-        $ThPropertyRange = new \App\Models\RDF\ThPropertyRange();
-        //        $da = $ThPropertyRange->find_prop($prop);
+        $ThProprity = new \App\Models\RDF\ThProprity();
+        $dtp = $ThProprity->find_prop($prop);
 
-        $tp = 'Literal';
+        $tp = $dtp['rg_range'];
 
         switch ($tp) {
             case 'Literal':
@@ -225,9 +315,34 @@ class ThConcept extends Model
                 } else {
                     $sx .= $this->form_field_level($id, $prop);
                 }
+                break;
+            case 'Concept':
+                /* CONCEPT */
+                $sx .= $this->form_link_concept($id, $prop);
+                break;
+            default:
+                echo 'Method not found <b>' . $tp . '</b>';
+        }
+        return $sx;
+    }
 
+    function form_link_concept($id, $prop)
+    {
+        switch ($prop) {
+            case 'broader':
+                $sx = $this->form_link_concept_broader($id);
+                break;
+            default:
+                $sx = 'Method not found';
                 break;
         }
+        return $sx;
+    }
+
+    function form_link_concept_broader($id)
+    {
+        $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
+        $sx = $ThConceptPropriety->candidate_broader($id);
         return $sx;
     }
 
@@ -301,11 +416,24 @@ class ThConcept extends Model
         return $sx;
     }
 
+    function form_field_concept($id = 0, $prop = 0, $gr = 2)
+    {
+        $sx = '';
+        $sx .= '<a href="#' . $id . '" class="ms-2" onclick="form_thesa_concept(\'' . $id . '\',\'' . $prop . '\');">' . bsicone('plusn', 18) . '</a>';
+        return $sx;
+    }
+
+    function form_field_text($id = 0, $prop = 0, $gr = 2)
+    {
+        $sx = '';
+        $sx .= '<a href="#' . $id . '" class="ms-2" onclick="form_thesa_text(\'' . $id . '\',\'' . $prop . '\');">' . bsicone('text', 18) . '</a>';
+        return $sx;
+    }
+
     function form_field($id = 0, $prop = 0, $gr = 2)
     {
-        global $jsf;
         $sx = '';
-        $sx .= '<a href="#'.$id.'" class="ms-2" onclick="form_thesa_label(\'' . $id . '\',\'' . $prop . '\');">' . bsicone('plus', 18) . '</a>';
+        $sx .= '<a href="#' . $id . '" class="ms-2" onclick="form_thesa_label(\'' . $id . '\',\'' . $prop . '\');">' . bsicone('plus', 18) . '</a>';
         return $sx;
     }
 
