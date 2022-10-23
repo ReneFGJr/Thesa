@@ -189,7 +189,7 @@ class ThConcept extends Model
         $sx = '';
         $dt = $ThConcept->le_relation($id,$prop);
 
-        pre($dt);
+        //pre($dt);
         return "XX";
 
         $th = $dt[0]['c_th'];

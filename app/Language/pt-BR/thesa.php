@@ -42,7 +42,7 @@ return [
     'form_group_5' => 'Notas e definições',
     'save' => 'salvar',
     'prefLabel' => 'Termo preferencial',
-    'altLabel' => 'Termo alternativo',
+    'altLabel' => 'Termo equivalente',
     'hiddenLabel' => 'Termo oculto',
     'labels' => 'Etiquetas',
     'scopeNote' => 'Nota de escopo',
