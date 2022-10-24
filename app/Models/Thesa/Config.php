@@ -75,6 +75,9 @@ class Config extends Model
             case 'Language':
                 $sx .= '<div class="row" id="language">'.$this->form_language($th). '</div>';
                 break;
+            case 'ISBN':
+                $sx .= $this->form_string($class, $th);
+                break;
             default:
                 $sx .= '<p>Information not found - ' . $class . '</p>';
                 break;
@@ -260,6 +263,39 @@ class Config extends Model
         $sx .= form_close();
 
         $sx .= '<div id="status_'.$class.'">...</div>';
+
+        $sx .= '<br/>';
+        $sx .= '<br/>';
+
+        return $sx;
+    }
+
+    function form_string($class, $th)
+    {
+        $Description = new \App\Models\Thesa\Descriptions();
+        $dt = $Description->where('ds_th', $th)->where('ds_prop', $class)->findAll();
+        $vlr = '';
+        for ($r = 0; $r < count($dt); $r++) {
+            $vlr .= $dt[$r]['ds_descrition'] . cr();
+        }
+
+        $sx = form_open($class);
+        $sx .= lang('thesa.' . $class . '_help');
+        $sx .= '<input type="text" name="' . $class . '" id="' . $class . '" class="form-control"';
+        $sx .= ' value="' . $vlr . '">';
+        $sx .= '<input type="hidden" name="class" value="' . $class . '">';
+
+        $sx .= '<span id="btn_save_' . $class . '" class="btn btn-outline-primary" onclick="form_save(\'' . $class . '\',\'' . $th . '\');">';
+        $sx .= lang('thesa.save');
+        $sx .= '</span>';
+
+        $sx .= '<span id="btn_cancel" class="ms-2 btn btn-outline-danger" onclick="form_cancel("' . $class . '","' . $th . '");">';
+        $sx .= lang('thesa.cancel');
+        $sx .= '</span>';
+
+        $sx .= form_close();
+
+        $sx .= '<div id="status_' . $class . '">...</div>';
 
         $sx .= '<br/>';
         $sx .= '<br/>';

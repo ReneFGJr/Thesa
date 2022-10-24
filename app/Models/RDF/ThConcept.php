@@ -77,7 +77,7 @@ class ThConcept extends Model
             ->where('(ct_concept = '.$id. ' or ct_concept_2 = '.$id. ') and ct_literal = 0')
             ->findAll();
 
-        pre($dt,false);
+        //pre($dt,false);
         return $dt;
         /* Relations */
         $this
@@ -161,14 +161,14 @@ class ThConcept extends Model
                     $st .= '</div>';
                     break;
                 case 'Text':
-                    $st = '';
+                    $st = '<div id="form_thesa_' . $line['p_name'] . '" class="mb-3">';
+                    $st .= $this->list_concepts_text($id, $line['p_name'], false);
+                    $st .= '</div>';
                     $btn_plus = $this->form_field_text($id, $line['p_name']);
                     break;
             }
 
             $sx .= bsc(lang('thesa.' . $line['p_name']) . $btn_plus, 4, 'mb-3');
-
-
             $sx .= bsc($st, 9, 'over');
         }
 
@@ -213,6 +213,20 @@ class ThConcept extends Model
             return $sx;
         }
     }
+
+    /*************************************************** TEXT CONCEPT */
+    function list_concepts_text($id, $prop = '', $stop = true)
+        {
+            $ThNotes = new \App\Models\RDF\ThNotes();
+            $sx = $ThNotes->list($id, $prop);
+
+            if ($sx == '')
+            {
+                $sx = '<span class="small ms-2 text-danger"><i>' . mb_strtolower(lang('thesa.without') . ' ' . lang('thesa.' . $prop)) . '</i></span>';
+            }
+
+            return $sx;
+        }
 
     /*************************************************** LISTA TERMOS */
     function list_concepts_terms($id, $prop = '', $stop = true)
@@ -316,6 +330,9 @@ class ThConcept extends Model
                     $sx .= $this->form_field_level($id, $prop);
                 }
                 break;
+            case 'Text':
+                $sx .= $this->form_link_concept_text($id, $prop);
+                break;
             case 'Concept':
                 /* CONCEPT */
                 $sx .= $this->form_link_concept($id, $prop);
@@ -326,14 +343,22 @@ class ThConcept extends Model
         return $sx;
     }
 
+    function form_link_concept_text($id,$prop)
+        {
+            $ThNotes = new \App\Models\RDF\ThNotes();
+            $sx = $ThNotes->form_link_concept_text($id, $prop);
+            return $sx;
+        }
+
     function form_link_concept($id, $prop)
     {
+        $prop = mb_strtolower($prop);
         switch ($prop) {
             case 'broader':
                 $sx = $this->form_link_concept_broader($id);
                 break;
             default:
-                $sx = 'Method not found';
+                $sx = lang('thesa.method_not_found_concept') . ' ' . $prop;
                 break;
         }
         return $sx;

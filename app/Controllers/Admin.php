@@ -40,6 +40,27 @@ class Admin extends BaseController
         $sx .= view('header/navbar_admin');
 
         switch ($d1) {
+            case 'ajax_text_list':
+                $ThNotes = new \App\Models\RDF\ThNotes();
+                $id = get("id");
+                $prop = get("prop");
+                $sx = $ThNotes->list($id, $prop);
+                echo $sx;
+                exit;
+                break;
+            case 'ajax_text_edit':
+                $ThNotes = new \App\Models\RDF\ThNotes();
+                echo $ThNotes->ajax_text_edit();
+                exit;
+                break;
+            case 'ajax_text_delete':
+                $ThNotes = new \App\Models\RDF\ThNotes();
+                echo $ThNotes->delete_note();
+                exit;
+            case 'ajax_form_text_save':
+                $ThNotes = new \App\Models\RDF\ThNotes();
+                echo $ThNotes->text_save();
+                exit;
             case 'ajax_broader_save':
                 $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
                 $ThConceptPropriety->broader_save();

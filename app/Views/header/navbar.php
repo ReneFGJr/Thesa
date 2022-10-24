@@ -1,3 +1,18 @@
+<?php
+$Socials = new \App\Models\Socials();
+if ((isset($_SESSION['id'])) and ($_SESSION['id'] != '')) {
+    $acesso = $Socials->nav_user();
+} else {
+    $lk = "'" . PATH . 'socials/login' . "'";
+    $acesso = '<li class="nav-item" style="list-style-type: none;">';
+    $acesso .= '<button class="btn btn-outline-danger" ';
+    $acesso .= 'onclick="location.href=' . $lk . ';" ';
+    $acesso .= 'style="margin-left: 7px;" type="submit">';
+    $acesso .= 'ACESSO';
+    $acesso .= '</button>';
+    $acesso .= '</li>';
+}
+?>
 <nav class="navbar navbar-expand-lg d-print-none" style="border-bottom: 2px solid <?= $bg_color; ?>">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
@@ -28,7 +43,7 @@
                 if (isset($_SESSION['th'])) {
                     echo '
                         <li class="nav-item">
-                            <a class="nav-link" href="'.getenv("app.baseURL"). '/admin/terms/add">'.lang('thesa.add_terms').'</a>
+                            <a class="nav-link" href="' . getenv("app.baseURL") . '/admin/terms/add">' . lang('thesa.add_terms') . '</a>
                         </li>';
                     echo '
                         <li class="nav-item">
@@ -41,6 +56,7 @@
                 <input class="form-control me-2 " type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-secondary" type="submit">Search</button>
             </form>
+            <?php echo $acesso; ?>
         </div>
     </div>
 </nav>

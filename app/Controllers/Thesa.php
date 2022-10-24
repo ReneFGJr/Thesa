@@ -30,6 +30,17 @@ class Thesa extends BaseController
         return view($thema, $data);
     }
 
+    function socials($d1 = '', $d2 = '', $d3 = '', $d4 = '')
+    {
+        $Thesa = new \App\Models\Thesa\Thesa();
+        $sx = '';
+        $dt = array();
+        $sx .= $this->cab($dt);
+        $Socials = new \App\Models\Socials();
+        $sx .= $Socials->index($d1, $d2, $d3, $d4);
+        return $sx;
+    }
+
     public function index($act = '', $id = '',$tp='')
     {
 

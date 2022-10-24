@@ -255,6 +255,11 @@ class Thesa extends Model
             return $sx;
         }
 
+    function getThesa()
+        {
+            return $this->setThesa();
+        }
+
     function setThesa($id='')
         {
             if ($id != '')

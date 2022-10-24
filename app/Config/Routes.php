@@ -48,6 +48,9 @@ $routes->get('/t/(:any)', 'Thesa::index/t/$1');
 $routes->get('/v/(:any)', 'Thesa::index/v/$1');
 $routes->get('/a/(:any)', 'Thesa::index/a/$1');
 
+$routes->get('/socials/(:any)', 'Thesa::socials/$1');
+$routes->post('/socials/(:any)', 'Thesa::socials/$1');
+
 $routes->get('/', 'Thesa::index');
 
 /*

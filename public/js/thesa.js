@@ -68,6 +68,40 @@ function term_delete($id, $prop) {
     $("#form_thesa_" + $prop).load(url);
   }
 }
+
+function text_delete($id,$prop) {
+  if (confirm("Remove?")) {
+    var url = "/admin/ajax_text_delete?id=" + $id + "&prop=" + $prop;
+    $("#form_thesa_" + $prop).load(url);
+  }
+}
+
+function text_edit($id, $prop) {
+    var url = "/admin/ajax_text_edit?id=" + $id + "&prop=" + $prop;
+    $("#form_thesa_" + $prop).load(url);
+}
+
+function close_text($id,$prop)
+  {
+    var url = "/admin/ajax_text_list?id=" + $id + "&prop=" + $prop;
+    $("#form_thesa_" + $prop).load(url);
+  }
+
+function save_text($id,$prop)
+  {
+    var vlr = $("#text_"+$prop).val();
+    var reg = $("#text_rg_" + $prop).val();
+    var url = "/admin/ajax_form_text_save?id="+$id+"&prop=" + $prop;
+
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: {text: vlr, id: $id, prop: $prop, reg: reg},
+      success: function (rsp) {
+        $("#form_thesa_" + $prop).html(rsp);
+      },
+    });
+  }
 function form_field_save($form,$th)
   {
     vlr = $("#" + $form).val();
