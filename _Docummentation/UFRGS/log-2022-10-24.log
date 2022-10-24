@@ -1,0 +1,30 @@
+CRITICAL - 2022-10-24 13:44:21 --> Invalid file: Theme\Standard\footer.php
+in SYSTEMPATH/Exceptions/FrameworkException.php on line 33.
+ 1 SYSTEMPATH/View/View.php(201): CodeIgniter\Exceptions\FrameworkException::forInvalidFile()
+ 2 SYSTEMPATH/Common.php(1135): CodeIgniter\View\View->render()
+ 3 APPPATH/Controllers/Thesa.php(30): view()
+ 4 APPPATH/Controllers/Thesa.php(130): App\Controllers\Thesa->footer()
+ 5 SYSTEMPATH/CodeIgniter.php(896): App\Controllers\Thesa->index()
+ 6 SYSTEMPATH/CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController()
+ 7 SYSTEMPATH/CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest()
+ 8 FCPATH/index.php(71): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-10-24 13:53:44 --> Invalid file: Theme\Standard\footer.php
+in SYSTEMPATH/Exceptions/FrameworkException.php on line 33.
+ 1 SYSTEMPATH/View/View.php(201): CodeIgniter\Exceptions\FrameworkException::forInvalidFile()
+ 2 SYSTEMPATH/Common.php(1135): CodeIgniter\View\View->render()
+ 3 APPPATH/Controllers/Thesa.php(30): view()
+ 4 APPPATH/Controllers/Thesa.php(130): App\Controllers\Thesa->footer()
+ 5 SYSTEMPATH/CodeIgniter.php(896): App\Controllers\Thesa->index()
+ 6 SYSTEMPATH/CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController()
+ 7 SYSTEMPATH/CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest()
+ 8 FCPATH/index.php(71): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2022-10-24 13:56:53 --> Invalid file: Theme\Standard\footer.php
+in SYSTEMPATH/Exceptions/FrameworkException.php on line 33.
+ 1 SYSTEMPATH/View/View.php(201): CodeIgniter\Exceptions\FrameworkException::forInvalidFile()
+ 2 SYSTEMPATH/Common.php(1135): CodeIgniter\View\View->render()
+ 3 APPPATH/Controllers/Thesa.php(30): view()
+ 4 APPPATH/Controllers/Thesa.php(130): App\Controllers\Thesa->footer()
+ 5 SYSTEMPATH/CodeIgniter.php(896): App\Controllers\Thesa->index()
+ 6 SYSTEMPATH/CodeIgniter.php(466): CodeIgniter\CodeIgniter->runController()
+ 7 SYSTEMPATH/CodeIgniter.php(349): CodeIgniter\CodeIgniter->handleRequest()
+ 8 FCPATH/index.php(71): CodeIgniter\CodeIgniter->run()

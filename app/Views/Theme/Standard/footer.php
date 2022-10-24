@@ -1,12 +1,10 @@
 <!-- Footer -->
 <footer class="bg-seconday text-center text-lg-start text-black mt-5" style="border-top: 1px solid #4B0082;">
-
     <!-- Copyright -->
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
         © 2017-<?= date("Y"); ?> Copyright:
         <a href="https://ufrgs.br/">UFRGS.br</a>
     </div>
-    <!-- Copyright -->
 
     <!-- Grid container -->
     <div class="container p-4">
@@ -35,7 +33,6 @@
                     <p>
                         <?= anchor('https://ufrgs.br/thesa'); ?><br />
                         rene.gabriel@ufrgs.br</p>
-
                 </div>
                 <!--Grid column-->
 
@@ -70,8 +67,5 @@
 
     </div>
     <!-- Grid container -->
-
-
-
 </footer>
 <!-- Footer -->
