@@ -31,7 +31,7 @@
                 <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
                     <h5 class="text-uppercase">Contato</h5>
                     <p>
-                        <?= anchor('https://ufrgs.br/thesa'); ?><br />
+                        <?= anchor(PATH,'home'); ?><br />
                         rene.gabriel@ufrgs.br</p>
                 </div>
                 <!--Grid column-->
@@ -55,7 +55,7 @@
                             <a href="#!">ORCALAB</a>
                         </li>
                         <li>
-                            <a href="<?= getenv("app.baseURL"); ?>/admin">Admin</a>
+                            <a href="<?= PATH; ?>/admin">Admin</a>
                         </li>
                     </ul>
                 </div>
