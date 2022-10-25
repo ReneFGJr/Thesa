@@ -26,7 +26,7 @@ class Thesa extends BaseController
 
     public function footer($data = array())
     {
-        $thema = 'Theme\Standard\footer';
+        $thema = 'Theme/Standard/footer';
         return view($thema, $data);
     }
 
