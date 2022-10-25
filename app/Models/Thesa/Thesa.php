@@ -242,7 +242,7 @@ class Thesa extends Model
 
     function header($dt)
         {
-            $header = 'Theme\Standard\headerTh';
+            $header = 'Theme/Standard/headerTh';
             $sx = view($header,$dt);
             return $sx;
         }
