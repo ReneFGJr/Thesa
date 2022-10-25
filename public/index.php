@@ -12,6 +12,8 @@ if (version_compare(PHP_VERSION, $minPhpVersion, '<')) {
     exit($message);
 }
 
+$_SERVER["DOCUMENT_ROOT"] = "/membri/xxx/codeigniter4/public";
+
 // Path to the front controller (this file)
 define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR);
 
