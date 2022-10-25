@@ -51,7 +51,7 @@ class Descriptions extends Model
 
     function resume($id)
         {
-            $Thesa = new \App\Models\Thesa\index();
+            $Thesa = new \App\Models\Thesa\Index();
             $dt = $Thesa->summary($id);
             $sx = view('Thesa/Summary_line', $dt);
             return $sx;
