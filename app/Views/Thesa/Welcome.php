@@ -1,12 +1,12 @@
 <style>
     .parallax_background_1 {
         /* The image used */
-        background-image: url("https://www.ufrgs.br/thesa/img/background/background_<?= $bg; ?>.jpg");
+        background-image: url("/img/background/background_<?= $bg; ?>.jpg");
     }
 
     .parallax_background_2 {
         /* The image used */
-        background-image: url("https://www.ufrgs.br/thesa/img/background/background_<?= $bg + 1; ?>.jpg");
+        background-image: url("/img/background/background_<?= $bg + 1; ?>.jpg");
     }
 </style>
 <!-- Container element -->
@@ -28,7 +28,7 @@
                     <span style="color: white;">Já tem uma conta?</span>
                     <div class="separator-line"></div>
                 </div>
-                <a href="https://www.ufrgs.br/thesa/thesa/social/login" style="text-decoration: none;">
+                <a href="/thesa/social/login" style="text-decoration: none;">
                     <div style="padding: 10px; background-color: #ffffff; text-decoration: none; border-radius: 20px; color: black; font-size: 12px; font-family: Titillium+Web;">Não tem cadastro? Clique aqui!</div>
                 </a>
             </div>
