@@ -88,12 +88,12 @@ class ClassPropryties extends Model
                         ->where('rs_namespace',$subclass)
                         ->findAll();
                 }
-
             if (count($da) == 1)
                 {
-                    return $da[0]['id_vc'];
+                    $da = $da[0];
+                    return $da['id_vc'];
                 } else {
-                    pre($da);
+                    pre($da,false);
                     echo "Multiples output";
                     exit;
                 }

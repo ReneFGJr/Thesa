@@ -389,7 +389,7 @@ class Socials extends Model
 			for ($r = 0; $r < count($dt); $r++) {
 				$line = (array)$dt[$r];
 				if ($line['id_pa'] == '') {
-					$link = '<a href="' . base_url(PATH . MODULE . '/social/perfis_add/' . $d1 . '/') . '?user=' . $line['id_us'] . '&assign=' . md5($d1 . $line['id_us'] . date("Ymd")) . '">';
+					$link = '<a href="' . (PATH . MODULE . '/social/perfis_add/' . $d1 . '/') . '?user=' . $line['id_us'] . '&assign=' . md5($d1 . $line['id_us'] . date("Ymd")) . '">';
 					$link .= lang('social.add_perfil');
 					$link .= '</a>';
 					$sx .= bsc($line['id_us'], 1);

@@ -1,12 +1,12 @@
 <style>
     .parallax_background_1 {
         /* The image used */
-        background-image: url("/img/background/background_<?= $bg; ?>.jpg");
+        background-image: url("<?php echo URL; ?>/img/background/background_<?= $bg; ?>.jpg");
     }
 
     .parallax_background_2 {
         /* The image used */
-        background-image: url("/img/background/background_<?= $bg + 1; ?>.jpg");
+        background-image: url("<?php echo URL; ?>/img/background/background_<?= $bg + 1; ?>.jpg");
     }
 </style>
 <!-- Container element -->
@@ -54,7 +54,7 @@
     <?php
     $Thesa = new \App\Models\Thesa\Index();
     $data = $Thesa->summary();
-    echo view('Thesa/Summary',$data);
+    echo view('Thesa/Summary', $data);
     ?>
 </div>
 

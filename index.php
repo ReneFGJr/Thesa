@@ -1,5 +1,5 @@
 <?php
-echo "OLA-1";
+
 // Check PHP version.
 $minPhpVersion = '7.4'; // If you update this, don't forget to update `spark`.
 if (version_compare(PHP_VERSION, $minPhpVersion, '<')) {
@@ -11,6 +11,8 @@ if (version_compare(PHP_VERSION, $minPhpVersion, '<')) {
 
     exit($message);
 }
+
+$_SERVER["DOCUMENT_ROOT"] = "/export/var/www/public/";
 
 // Path to the front controller (this file)
 define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR);
@@ -29,11 +31,10 @@ chdir(FCPATH);
 
 // Load our paths config file
 // This is the line that might need to be changed, depending on your folder structure.
-require FCPATH . '../app/Config/Paths.php';
+require FCPATH . 'app/Config/Paths.php';
 // ^^^ Change this line if you move your application folder
 
 $paths = new Config\Paths();
-
 
 // Location of the framework bootstrap file.
 require rtrim($paths->systemDirectory, '\\/ ') . DIRECTORY_SEPARATOR . 'bootstrap.php';
@@ -52,14 +53,8 @@ require_once SYSTEMPATH . 'Config/DotEnv.php';
  * the pieces all working together.
  */
 
-
-
 $app = Config\Services::codeigniter();
 $app->initialize();
-
-echo "LOG=> " . date("Y-m-d H:i:s");
-exit;
-
 $context = is_cli() ? 'php-cli' : 'web';
 $app->setContext($context);
 
@@ -70,6 +65,5 @@ $app->setContext($context);
  * Now that everything is setup, it's time to actually fire
  * up the engines and make this app do its thang.
  */
-
 
 $app->run();

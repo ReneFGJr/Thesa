@@ -201,11 +201,14 @@ class ThTerm extends Model
                     $th = $thd[0]['term_th_thesa'];
                 }
 
+
+
             /*********************************** CREATE CONCEPT */
             for ($r = 0; $r < count($ids); $r++) {
                 $ThConcept = new \App\Models\RDF\ThConcept();
-                echo $ThConcept->register($ids[$r], $th);
+                 echo $ThConcept->register($ids[$r], $th);
             }
+
 
             /********************************** Messages *******/
 
@@ -374,7 +377,7 @@ class ThTerm extends Model
                 $("#term_list").change(function() {
                     $("#drashboard").html("");
                     var id = JSON.stringify($(this).val());
-                    var url = "' . base_url(PATH . 'admin/terms/selected') . '";
+                    var url = "' . (PATH . '/admin/terms/selected') . '";
                     $.ajax({
                         type: "POST",
                         url: url,
@@ -476,7 +479,7 @@ class ThTerm extends Model
 
                             document.querySelector(\'#result\').innerHTML = "Registrando ...<br>";
 
-                            xhr.open("POST", "' . PATH . 'admin/terms/add_ajax", true);
+                            xhr.open("POST", "' . PATH . '/admin/terms/add_ajax", true);
                             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                             xhr.send(userHtml);
 

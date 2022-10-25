@@ -198,10 +198,10 @@ class Admin extends BaseController
 
 
             $data['body'] = $sa;
-
             $sx .= view('Admin/body',$data);
-
+            $sx .= view('Admin/environment', $data);
             $sx .= $this->foot();
+
             return $sx;
         }
 }

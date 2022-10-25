@@ -60,7 +60,7 @@ class Vocabulary extends Model
 
     function btn_update($id)
         {
-            $sx = '<a href="'.base_url(PATH. 'admin/ontology/import/'.$id).'" class="btn btn-outline-secondary">'.msg('update').'</a>';
+            $sx = '<a href="'.(PATH. 'admin/ontology/import/'.$id).'" class="btn btn-outline-secondary">'.msg('update').'</a>';
             return $sx;
         }
 

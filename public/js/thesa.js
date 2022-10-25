@@ -105,7 +105,7 @@ function save_text($id,$prop)
 function form_field_save($form,$th)
   {
     vlr = $("#" + $form).val();
-    var url = '/admin/ajax_form_field_save?th='+$th+'&form=' + $form + "&vlr=" + vlr;
+    var url = "/admin/ajax_form_field_save?th="+$th+'&form=' + $form + "&vlr=" + vlr;
     url = encodeURI(url);
     $("#status_"+$form).load(url);
     togglet($form);
