@@ -14,6 +14,8 @@ define("MODULE", '');
 define("PREFIX", '');
 define("COLLECTION", 'thesa');
 
+define('BG_COLOR', 'bg-primary');
+
 class Thesa extends BaseController
 {
     public function cab($data = array())
@@ -41,7 +43,13 @@ class Thesa extends BaseController
         return $sx;
     }
 
-    public function index($act = '', $id = '',$tp='')
+    function pdf($d1 = '', $d2 = '', $d3 = '', $d4 = '')
+    {
+        $PDF = new \App\Models\PDF\Index();
+        $PDF->index();
+    }
+
+    public function index($act = '', $id = '', $tp = '')
     {
 
         $Thesa = new \App\Models\Thesa\Thesa();
@@ -110,21 +118,21 @@ class Thesa extends BaseController
                 $dt = $Thesa->le($id);
                 $sx .= $Thesa->header($dt);
 
-                $sa = '<div id="terms">'.$Thesa->terms($id). '</div>';
+                $sa = '<div id="terms">' . $Thesa->terms($id) . '</div>';
                 $sb = '<div id="desc">';
                 $sb .= $Descriptions->resume($id);
                 $sb .= $Descriptions->show($id);
                 $sb .= '</div>';
 
-                $sx .= bs(bsc($sa,4).bsc($sb,8));
+                $sx .= bs(bsc($sa, 4) . bsc($sb, 8));
 
                 $data['body'] = 'Corpo do texto';
                 break;
 
             default:
-                $bg = (date("s") % 4)+1;
+                $bg = (date("s") % 4) + 1;
                 $data['bg'] = $bg;
-                $sx .= view('Thesa/Welcome',$data);
+                $sx .= view('Thesa/Welcome', $data);
                 break;
         }
         $sx .= $this->footer($data);

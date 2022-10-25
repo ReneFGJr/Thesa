@@ -51,6 +51,8 @@ $routes->get('/a/(:any)', 'Thesa::index/a/$1');
 $routes->get('/socials/(:any)', 'Thesa::socials/$1');
 $routes->post('/socials/(:any)', 'Thesa::socials/$1');
 
+$routes->get('/pdf/(:any)', 'Thesa::pdf/$1');
+
 $routes->get('/', 'Thesa::index');
 
 /*
