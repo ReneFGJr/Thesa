@@ -14,7 +14,6 @@ function copytoClipboard($text) {
 }
 
 function form_thesa_label($id, $prop) {
-  global $path;
   $("#form_thesa_" + $prop).html("Loading...");
   var url = $path+"/admin/ajax_form/?id=" + $id + "&prop=" + $prop;
   $.ajax({
