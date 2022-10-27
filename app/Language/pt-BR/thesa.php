@@ -45,7 +45,7 @@ return [
     'prefLabel' => 'Termo preferencial',
     'altLabel' => 'Termo equivalente',
     'hiddenLabel' => 'Termo oculto',
-    'labels' => 'Etiquetas',
+    'labels' => 'Nota de definição',
     'scopeNote' => 'Nota de escopo',
     'notation' => 'Notação',
     'note' => 'Notas Gerais',
@@ -66,7 +66,7 @@ return [
     'Terms' => 'Termos',
     'Concepts' => 'Conceitos',
     'LastUpdate ' => 'Atualizado em',
-    '' => '',
+    'ThesauruName' => 'nome do tesauro',
     '' => '',
     '' => '',
 

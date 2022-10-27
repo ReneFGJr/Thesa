@@ -3,7 +3,7 @@ $Socials = new \App\Models\Socials();
 if ((isset($_SESSION['id'])) and ($_SESSION['id'] != '')) {
     $acesso = $Socials->nav_user();
 } else {
-    $lk = "'" . PATH . 'socials/login' . "'";
+    $lk = "'" . PATH . 'social/login' . "'";
     $acesso = '<li class="nav-item" style="list-style-type: none;">';
     $acesso .= '<button class="btn btn-outline-danger" ';
     $acesso .= 'onclick="location.href=' . $lk . ';" ';
