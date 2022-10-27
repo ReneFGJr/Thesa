@@ -560,23 +560,12 @@ class ThConcept extends Model
 
         $class = 'skos:prefLabel';
         $prop_prefLabel = $ClassPropriety->Class($class);
-        echo '=========>';
-        pre($prop_prefLabel);
-        exit;
-
-        echo 'YYYYYYYYYYYY -> '. $prop_prefLabel;
-        exit;
 
         $idr = $ThConceptPropriety->register($th, $id_concept, $prop_prefLabel, 0, $id_term);
-
-        echo 'XXXXXXXXXXXX';
-        exit;
 
         /********************************************** Trava o Termos do Vocabulario */
         $Term = new \App\Models\RDF\ThTerm();
         $Term->term_block($id_term, $id_concept, $th);
-
-
 
         $sx = '<a href="' . PATH . 'v/' . $id_concept . '" class="btn btn-outline-secondary">' . 'thesa:c' . $id_term . '</a>' . ' created';
         return $sx . '<br>';

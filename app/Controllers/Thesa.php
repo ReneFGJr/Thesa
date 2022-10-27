@@ -63,6 +63,12 @@ class Thesa extends BaseController
                 $ThConcept = new \App\Models\RDF\ThConcept();
 
                 $dth = $ThConcept->le($id);
+                if (!isset($dth[0]))
+                    {
+                        $sx = metarefresh(PATH.'ERRO/404',0);
+                        echo $sx;
+                        exit;
+                    }
                 $th = $dth[0]['c_th'];
 
                 $data = array();

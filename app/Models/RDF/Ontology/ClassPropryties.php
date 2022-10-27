@@ -72,6 +72,7 @@ class ClassPropryties extends Model
                     echo "OPS Prefix Class Not Found";
                     exit;
                 }
+
             $VocabularyVC = new \App\Models\RDF\Ontology\VocabularyVC();
 
             if ($subclass == '')
@@ -88,12 +89,14 @@ class ClassPropryties extends Model
                         ->where('rs_namespace',$subclass)
                         ->findAll();
                 }
+
             if (count($da) == 1)
                 {
                     $da = $da[0];
                     return $da['id_vc'];
                 } else {
-                    pre($da,false);
+                    $da = $da[0];
+                    return $da['id_vc'];
                     echo "Multiples output";
                     exit;
                 }
