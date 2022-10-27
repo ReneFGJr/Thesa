@@ -96,7 +96,7 @@ class Config extends Model
                 function form_save($class,$th)
                     {
                         $("#btn_save_"+$class).html("'.lang('thesa.saving'). '...");
-                        var url =  "' . base_url(PATH . COLLECTION . '/ajax_docs/save') . '";
+                        var url =  "' . (PATH . COLLECTION . '/ajax_docs/save') . '";
                         var $txt = $("#"+$class).val();
 
                         $.ajax({
