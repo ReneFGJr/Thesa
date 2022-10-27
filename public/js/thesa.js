@@ -14,8 +14,9 @@ function copytoClipboard($text) {
 }
 
 function form_thesa_label($id, $prop) {
+  global $path;
   $("#form_thesa_" + $prop).html("Loading...");
-  var url = "/admin/ajax_form/?id=" + $id + "&prop=" + $prop;
+  var url = $path+"/admin/ajax_form/?id=" + $id + "&prop=" + $prop;
   $.ajax({
     type: "POST",
     url: url,
@@ -40,7 +41,7 @@ function save_ajax_broader($id,$prop)
 
 function form_thesa_concept($id, $prop) {
   $("#form_thesa_" + $prop).html("Loading...");
-  var url = "/admin/ajax_form/?id=" + $id + "&prop=" + $prop;
+  var url = $path+"/admin/ajax_form/?id=" + $id + "&prop=" + $prop;
   $.ajax({
     type: "POST",
     url: url,
@@ -52,7 +53,7 @@ function form_thesa_concept($id, $prop) {
 
 function form_thesa_text($id, $prop) {
   $("#form_thesa_" + $prop).html("Loading...");
-  var url = "/admin/ajax_form/?id=" + $id + "&prop=" + $prop;
+  var url = $path+"/admin/ajax_form/?id=" + $id + "&prop=" + $prop;
   $.ajax({
     type: "POST",
     url: url,
@@ -91,7 +92,7 @@ function save_text($id,$prop)
   {
     var vlr = $("#text_"+$prop).val();
     var reg = $("#text_rg_" + $prop).val();
-    var url = "/admin/ajax_form_text_save?id="+$id+"&prop=" + $prop;
+    var url = $path+"/admin/ajax_form_text_save?id="+$id+"&prop=" + $prop;
 
     $.ajax({
       type: "POST",
@@ -105,7 +106,7 @@ function save_text($id,$prop)
 function form_field_save($form,$th)
   {
     vlr = $("#" + $form).val();
-    var url = "/admin/ajax_form_field_save?th="+$th+'&form=' + $form + "&vlr=" + vlr;
+    var url = $path+"/admin/ajax_form_field_save?th="+$th+'&form=' + $form + "&vlr=" + vlr;
     url = encodeURI(url);
     $("#status_"+$form).load(url);
     togglet($form);
