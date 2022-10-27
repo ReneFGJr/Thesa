@@ -33,7 +33,7 @@ function save_ajax_broader($id,$prop)
       {
         alert("ERRO: Select a concept");
       } else {
-        var url = "/admin/ajax_broader_save?id="+$id+"&prop=" + $prop + "&concept=" + concept;
+        var url = $path+"/admin/ajax_broader_save?id="+$id+"&prop=" + $prop + "&concept=" + concept;
         $("#form_thesa_" + $prop).load(url);
       }
 
@@ -65,26 +65,26 @@ function form_thesa_text($id, $prop) {
 
 function term_delete($id, $prop) {
   if (confirm("Remove?")) {
-    var url = "/admin/ajax_term_delete?id=" + $id + "&prop=" + $prop;
+    var url = $path+"/admin/ajax_term_delete?id=" + $id + "&prop=" + $prop;
     $("#form_thesa_" + $prop).load(url);
   }
 }
 
 function text_delete($id,$prop) {
   if (confirm("Remove?")) {
-    var url = "/admin/ajax_text_delete?id=" + $id + "&prop=" + $prop;
+    var url = $path+"/admin/ajax_text_delete?id=" + $id + "&prop=" + $prop;
     $("#form_thesa_" + $prop).load(url);
   }
 }
 
 function text_edit($id, $prop) {
-    var url = "/admin/ajax_text_edit?id=" + $id + "&prop=" + $prop;
+    var url = $path+"/admin/ajax_text_edit?id=" + $id + "&prop=" + $prop;
     $("#form_thesa_" + $prop).load(url);
 }
 
 function close_text($id,$prop)
   {
-    var url = "/admin/ajax_text_list?id=" + $id + "&prop=" + $prop;
+    var url = $path+"/admin/ajax_text_list?id=" + $id + "&prop=" + $prop;
     $("#form_thesa_" + $prop).load(url);
   }
 
