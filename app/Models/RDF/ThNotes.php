@@ -42,6 +42,30 @@ class ThNotes extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function show($id)
+        {
+            $sx = '';
+            $dt = $this
+                ->join('thesa_property', 'id_p = nt_prop', 'left')
+                ->where('nt_concept', $id)->findAll();
+            for ($r=0;$r < count($dt);$r++)
+                {
+                    $line = $dt[$r];
+                    //pre($line);
+                    $sx .= '<tr>';
+                    $sx .= '<td class="col-2 small trh align-top">';
+                    $sx .= lang('thesa.'.$line['p_name']);
+                    $sx .= '</td>';
+                    $sx .= '<td class="lh-1 mb-3 trh ">';
+                    $txt = troca($line['nt_content'],chr(10),'<br><br>');
+                    $txt = troca($txt, '<br><br><br><br>', '<br><br>');
+                    $sx .= $txt;
+                    $sx .= '</td>';
+                    $sx .= '</tr>';
+                }
+            return $sx;
+        }
+
     function register($concept, $prop, $text, $lang)
     {
         if (trim($text) == '') {

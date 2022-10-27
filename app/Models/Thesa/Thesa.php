@@ -65,6 +65,7 @@ class Thesa extends Model
         {
             $sx = '';
             $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
+            $ThNotes = new \App\Models\RDF\ThNotes();
             $dt = $ThConceptPropriety
                 ->select('p_group, term_name, vc1.vc_label as vc_label, vc2.vc_label as vc_resource, lg_code, lg_language')
                 ->join('thesa_terms', 'ct_literal = id_term', 'left')
@@ -117,6 +118,8 @@ class Thesa extends Model
                             $sx .= '</tr>';
                         }
                     }
+
+                $sx .= $ThNotes->show($id);
                 $sx .= '</table>';
 
                 /******************************* PrefLabel */
