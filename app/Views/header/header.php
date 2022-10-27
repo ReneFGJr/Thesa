@@ -26,13 +26,13 @@
     <link href="<?= getenv("app.baseURL"); ?>/css/thesa.css" rel="stylesheet">
 
     <!-- JavaScript Bundle with Popper -->
+    <script>
+        $path = "<?php echo PATH; ?>";
+    </script>
     <script src="<?= getenv("app.baseURL"); ?>/js/bootstrap.bundle.min.js"></script>
     <script src="<?= getenv("app.baseURL"); ?>/js/jquery.js"></script>
     <script src="<?= getenv("app.baseURL"); ?>/js/thesa.js"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <sxript>
-        $path = "<?php echo PATH; ?>";
-    </sxript>
 </head>
