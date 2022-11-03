@@ -120,10 +120,21 @@ class Thesa extends Model
                     }
 
                 $sx .= $ThNotes->show($id);
+
+                $Reference = new \App\Models\Thesa\Reference();
+                $sx .= $Reference->show($id);
                 $sx .= '</table>';
 
                 /******************************* PrefLabel */
-                $edit = '<a href="'.(PATH.'a/'.$id).'" class="ms-2">'.bsicone('edit').'</a>';
+                $edit = '';
+                $Collaborators = new \App\Models\Thesa\Collaborators();
+                if ($Collaborators->own($id))
+                    {
+                        $edit = '<a href="' . (PATH . 'a/' . $id) . '" class="ms-2">' . bsicone('edit') . '</a>';
+                    }
+
+
+
                 $st = '<h1>'.$prefLabel.'</h1>';
                 $st .= '<h6>URI: '.anchor(PATH.'v/'.$id).$edit.'</h6>';
             return $st.$sx;
@@ -158,8 +169,22 @@ class Thesa extends Model
                             }
                         $link = '<a href="#" onclick="view('.$line['ct_concept'].');">';
                         $linka = '</a>';
+
+                        $type = $line['vc_label'];
+                        switch($type)
+                            {
+                                case 'prefLabel':
+                                    $sx .= '<option value="' . $line['ct_concept'] . '">' . $line['term_name'] . '</option>';
+                                    break;
+                                case 'altLabel':
+                                    $sx .= '<option class="fst-italic ps-1 text-secundary" style="font-size: 0.9em;" value="' . $line['ct_concept'] . '">' . $line['term_name'] . '</option>';
+                                    break;
+                                case 'hiddenLabel':
+                                    //$sx .= '<option value="' . $line['ct_concept'] . '">' . $line['term_name'] . '</option>';
+                                    break;
+                            }
                         //$sx .= '<li>'.$link.$line['term_name'].$linka.'</li>';
-                        $sx .= '<option value="'.$line['ct_concept'].'">'.$line['term_name'].'</option>';
+
                     }
                 //$sx .= '</ul>';
                 $sx .= '</select>';

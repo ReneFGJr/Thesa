@@ -22,6 +22,11 @@ function bt_cancel($url)
             $sx = '<a href="#" class="btn btn-outline-warning" onclick="wclose();">'.lang('rdf.return').'</a>';
             return $sx;
         }
+
+    if (!isset($url))
+        {
+            return "";
+        }
     if (strpos($url, '/edit')) {
         $url = substr($url, 0, strpos($url, '/edit'));
     }

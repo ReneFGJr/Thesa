@@ -19,6 +19,7 @@ require('sisdoc_cookies.php');
 require('sisdoc_form_js.php');
 require('sisdoc_drag_drop.php');
 require('sisdoc_help.php');
+require('sisdoc_email.php');
 
 function clog($msg)
 {
@@ -75,7 +76,9 @@ function ascii($d)
 {    //$d = strtoupper($d);
 
     $gr = array();
-    $gr['A'] = 'Â;À;Á;Ä;Ã';
+    $gr['-'] = '–';
+    $gr['.'] = 'º';
+    $gr['A'] = 'Â;À;Á;Ä;Ã;Å';
     $gr['a'] = 'â;ã;à;á;ä';
     $gr['E'] = 'Ê;È;É;Ë';
     $gr['e'] = 'ê;è;é;ë';
@@ -94,7 +97,17 @@ function ascii($d)
              $d = troca($d, $grp[$r], $lt);
         }
     }
-    return $d;
+    $name = '';
+    for ($r=0;$r < strlen($d);$r++)
+    {
+        $c = substr($d,$r,1);
+        $o = ord($c);
+        if ($o <= 127)
+        {
+            $name .= $c;
+        }
+    }
+    return $name;
 }
 
 function UpperCase($d)
@@ -208,11 +221,4 @@ function form_del($th)
 function cr()
 {
     return (chr(13) . chr(10));
-}
-
-
-function stodbr($dt)
-{
-    $rst = substr($dt, 6, 2) . '/' . substr($dt, 4, 2) . '/' . substr($dt, 0, 4);
-    return $rst;
 }

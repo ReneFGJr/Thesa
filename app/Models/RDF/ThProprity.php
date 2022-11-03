@@ -68,6 +68,11 @@ class ThProprity extends Model
     }
     function find_prop($name)
         {
+            if ($name == 'reference')
+                {
+                    $dtp['rg_range'] = 'Reference';
+                    return $dtp;
+                }
             $dt = $this
                 ->join('thesa_property_range', 'p_range = id_rg', 'left')
                 ->where('p_name', $name)
@@ -77,7 +82,7 @@ class ThProprity extends Model
                 {
                     return $dt[0];
                 } else {
-                    echo "ERRO";
+                    echo "ERRO DE PROPRIEDADE - ".$name;
                     exit;
                 }
         }

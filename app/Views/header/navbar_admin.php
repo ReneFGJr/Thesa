@@ -1,3 +1,6 @@
+<?php
+require("acesso.php");
+?>
 <nav class="navbar navbar-expand-lg d-print-none" style="border-bottom: 2px solid <?= $bg_color; ?>">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
@@ -30,14 +33,20 @@
                 <li class="nav-item">
                     <a class="nav-link" href="<?= getenv("app.baseURL"); ?>/admin/ontology">Ontology</a>
                 </li>
+
                 <li class="nav-item">
-                    <a class="nav-link" href="<?= getenv("app.baseURL"); ?>/admin/config"><?=lang('thesa.Configurations');?></a>
+                    <a class="nav-link" href="<?php echo PATH . '/th/' . $_SESSION['th']; ?>"><?= lang('thesa.th_atual'); ?></a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= getenv("app.baseURL"); ?>/admin/config"><?= lang('thesa.Configurations'); ?></a>
                 </li>
             </ul>
             <form class="d-flex" role="search">
                 <input class="form-control me-2 " type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-secondary" type="submit">Search</button>
             </form>
+            <?php echo $acesso; ?>
         </div>
     </div>
 </nav>

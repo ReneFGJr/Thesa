@@ -40,6 +40,28 @@ class Admin extends BaseController
         $sx .= view('header/navbar_admin');
 
         switch ($d1) {
+            case 'ajax_concept_reference':
+                $Reference = new \App\Models\Thesa\Reference();
+                $ReferenceConcept = new \App\Models\Thesa\ReferenceConcept();
+                $concept = get("id");
+                $ref = get("ref");
+                $set = get("set");
+                $ReferenceConcept->register($concept,$ref,$set);
+                echo $Reference->list_reference($concept);
+                exit;
+            case 'ajax_reference_list':
+                $Reference = new \App\Models\Thesa\Reference();
+                $id = get("term");
+                echo $Reference->list_reference($id);
+                exit;
+                break;
+            case 'ajax_form_reference_save':
+                $Reference = new \App\Models\Thesa\Reference();
+                $Reference->register($d2,$d3,$d4);
+                $id = get("term");
+                echo $Reference->list_reference($id);
+                exit;
+                break;
             case 'ajax_text_list':
                 $ThNotes = new \App\Models\RDF\ThNotes();
                 $id = get("id");

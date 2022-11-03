@@ -32,12 +32,18 @@ class Thesa extends BaseController
         return view($thema, $data);
     }
 
-    function socials($d1 = '', $d2 = '', $d3 = '', $d4 = '')
+    function social($d1 = '', $d2 = '', $d3 = '', $d4 = '')
     {
         $Thesa = new \App\Models\Thesa\Thesa();
         $sx = '';
         $dt = array();
-        $sx .= $this->cab($dt);
+        $sx = $this->cab();
+        if ($d1 == 'login')
+            {
+                $sx .= view('header/navbar');
+            }
+
+
         $Socials = new \App\Models\Socials();
         $sx .= $Socials->index($d1, $d2, $d3, $d4);
         return $sx;
@@ -93,6 +99,12 @@ class Thesa extends BaseController
                 $sx .= $Thesa->index($id, $id, $id);
                 break;
             case 'a':
+                $Collaborators = new \App\Models\Thesa\Collaborators();
+                if (!$Collaborators->own($id)) {
+                    echo metarefresh(PATH);
+                    exit;
+                }
+
                 $Thesa = new \App\Models\Thesa\Thesa();
                 $ThTerm = new \App\Models\RDF\ThTerm();
                 $ThConcept = new \App\Models\RDF\ThConcept();
@@ -104,7 +116,7 @@ class Thesa extends BaseController
                 $sx .= $Thesa->header($dh);
 
                 $dc = $ThConcept->le($id);
-                $sx .= $ThConcept->header($dc);
+                $sx .= $ThConcept->header_concept($dc);
 
                 $sx .= $ThConcept->edit($id);
                 break;

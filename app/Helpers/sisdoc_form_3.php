@@ -107,8 +107,10 @@ function menu($menu)
 function check_email($email)
 {
     $emailArray = explode("@", $email);
-    echo h($email);
-    pre($emailArray);
+    $emailArray = explode("@", $email);
+    if (count($emailArray) != 2) {
+        return false;
+    }
     if (checkdnsrr(array_pop($emailArray), "MX")) {
         return true;
     } else {

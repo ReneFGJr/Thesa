@@ -62,6 +62,56 @@ function form_thesa_text($id, $prop) {
   });
 }
 
+function form_thesa_reference($id, $prop) {
+  $("#form_thesa_" + $prop).html("Loading...");
+  var url = $path + "/admin/ajax_form/?id=" + $id + "&prop=" + $prop;
+  $.ajax({
+    type: "POST",
+    url: url,
+    success: function (rsp) {
+      $("#form_thesa_" + $prop).html(rsp);
+    },
+  });
+}
+
+function thesa_reference_set($id,$ref,item)
+  {
+    var cited = $("#cited").val();
+    var reference = $("#reference").val();
+    var $prop = "#form_thesa_reference";
+
+    var block = document.getElementById("ref_"+$ref);
+    if ($(item).is(":checked")) {
+          var url = $path + "/admin/ajax_concept_reference?id=" + $id + "&ref=" + $ref + "&set=1";
+          $($prop).load(url);
+    } else {
+          var url = $path + "/admin/ajax_concept_reference?id=" + $id + "&ref=" + $ref + "&set=0";
+          $($prop).load(url);
+    }
+  }
+
+function form_thesa_refecence_save($id,$prop,$term)
+  {
+    var cited = $("#cited").val();
+    var reference = $("#reference").val();
+    var url = $path+"/admin/ajax_form_reference_save?id="+$id+"&prop=" + $prop+"&term="+$term;
+
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: { cited: cited, id: $id, prop: $prop, reference: reference },
+      success: function (rsp) {
+        $("#form_thesa_" + $prop).html(rsp);
+      },
+    });
+  }
+
+function form_thesa_refecence_cancel($id,$prop,$term)
+  {
+    var url = $path + "/admin/ajax_reference_list?id=" + $id + "&prop=" + $prop + "&term=" + $term;
+    $("#form_thesa_" + $prop).load(url);
+  }
+
 function term_delete($id, $prop) {
   if (confirm("Remove?")) {
     var url = $path+"/admin/ajax_term_delete?id=" + $id + "&prop=" + $prop;

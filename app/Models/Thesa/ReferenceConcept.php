@@ -4,17 +4,19 @@ namespace App\Models\Thesa;
 
 use CodeIgniter\Model;
 
-class Collaborators extends Model
+class ReferenceConcept extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'thesa_users';
-    protected $primaryKey       = 'id_th_us';
+    protected $table            = 'thesa_references_concepts';
+    protected $primaryKey       = 'id_rfc';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = [
+        'id_rfc', 'rfc_concept', 'rfc_ref'
+    ];
 
     // Dates
     protected $useTimestamps = false;
@@ -40,42 +42,28 @@ class Collaborators extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function own($id)
-    {
-        if (isset($_SESSION['id'])) {
-            $user = $_SESSION['id'];
-            $ThConcept = new \App\Models\RDF\ThConcept();
-            $dt =
-                $ThConcept
-                ->join('thesa_users', 'th_us_th = c_th', 'left')
-                ->where('c_concept', $id)
-                ->where('th_us_user', $user)
-                ->first();
+    function register($id,$ref,$set)
+        {
+            $dt = $this
+                ->where('rfc_concept',$id)
+                ->where('rfc_ref',$ref)
+                ->findAll();
 
-            if ($dt != "")
+            if ($set == 1)
                 {
-                    return true;
+                    if (count($dt) == 0)
+                        {
+                            $data['rfc_concept'] = $id;
+                            $data['rfc_ref'] = $ref;
+                            $data['updated_at'] = date("Y-m-d H:i:s");
+                            $this->set($data)->insert();
+                        }
                 } else {
-                    return false;
+                    $this
+                        ->where('rfc_concept',$id)
+                        ->where('rfc_ref',$ref)
+                        ->delete();
                 }
-
+            return True;
         }
-        return false;
-    }
-
-    function list($th)
-    {
-        $dt = $this
-            ->join('users', 'th_us_user = users.id_us')
-            ->join('thesa_users_perfil', 'th_us_perfil = id_pf')
-            ->where('th_us_th', $th)
-            ->findAll();
-
-        $sx = '';
-        for ($r = 0; $r < count($dt); $r++) {
-            $line = $dt[$r];
-            $sx .= view('Admin/UsersPerfil', $line);
-        }
-        return $sx;
-    }
 }

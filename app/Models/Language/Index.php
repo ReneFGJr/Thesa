@@ -76,10 +76,14 @@ class Index extends Model
                 ->where('lgt_th',$th)
                 ->orderBy('lg_order')->findAll();
             $sx = '';
+
+            $tot = count($dt);
+            if ($tot == 1) { $check = 'checked'; }
+
             for ($r=0;$r < count($dt);$r++)
                 {
                     $sx .= '<br>';
-                    $sx .= '<input class="form-check-input" type="radio" name="lg" id="lg" value="'.$dt[$r]['id_lg'].'">';
+                    $sx .= '<input class="form-check-input" type="radio" name="lg" id="lg" value="'.$dt[$r]['id_lg'].'" '.$check.'>';
                     $sx .= '&nbsp;';
                     $sx .= $dt[$r]['lg_language'];
                     $sx .= '</input>';

@@ -169,9 +169,16 @@ class ThConcept extends Model
             }
 
             $sx .= bsc(lang('thesa.' . $line['p_name']) . $btn_plus, 4, 'mb-3');
-            $sx .= bsc($st, 9, 'over');
+            $sx .= bsc($st, 8, 'over');
         }
 
+        $Reference = new \App\Models\Thesa\Reference();
+        $btn_plus = $this->form_field_reference($id, 'reference');
+        $sx .= bsc(lang('thesa.reference') . $btn_plus,4);
+        $st = '<div id="form_thesa_reference'. '" class="mb-3">';
+        $st .= $Reference->list_reference($id);
+        $st .= '</div>';
+        $sx .= bsc($st, 8, 'over');
 
         if ($xgr != '') {
             $sx .= '</div>';
@@ -317,6 +324,7 @@ class ThConcept extends Model
     {
         $sx = '';
         $ThProprity = new \App\Models\RDF\ThProprity();
+
         $dtp = $ThProprity->find_prop($prop);
 
         $tp = $dtp['rg_range'];
@@ -336,6 +344,10 @@ class ThConcept extends Model
             case 'Concept':
                 /* CONCEPT */
                 $sx .= $this->form_link_concept($id, $prop);
+                break;
+            case 'Reference':
+                $Reference = new \App\Models\Thesa\Reference();
+                $sx .= $Reference->form_link_concept_reference($id, $prop);
                 break;
             default:
                 echo 'Method not found <b>' . $tp . '</b>';
@@ -451,7 +463,14 @@ class ThConcept extends Model
     function form_field_text($id = 0, $prop = 0, $gr = 2)
     {
         $sx = '';
-        $sx .= '<a href="#' . $id . '" class="ms-2" onclick="form_thesa_text(\'' . $id . '\',\'' . $prop . '\');">' . bsicone('text', 18) . '</a>';
+        $sx .= '<a href="#' . $id . '" class="ms-2" onclick="form_thesa_text(\'' . $id . '\',\'' . $prop . '\');">' . bsicone('plus', 18) . '</a>';
+        return $sx;
+    }
+
+    function form_field_reference($id = 0, $prop = 0, $gr = 2)
+    {
+        $sx = '';
+        $sx .= '<a href="#' . $id . '" class="ms-2" onclick="form_thesa_reference(\'' . $id . '\',\'' . $prop . '\');">' . bsicone('plus', 18) . '</a>';
         return $sx;
     }
 
@@ -488,7 +507,7 @@ class ThConcept extends Model
         return $sx;
     }
 
-    function header($dt)
+    function header_concept($dt)
     {
         $sx = '';
         $prefTerm = array();
@@ -498,7 +517,6 @@ class ThConcept extends Model
                 $prefTerm[$line['lg_code']] = $line['label'];
             }
         }
-
 
         $sa = '';
         $sb = '';

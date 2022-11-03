@@ -56,7 +56,7 @@ class ThNotes extends Model
                     $sx .= '<td class="col-2 small trh align-top">';
                     $sx .= lang('thesa.'.$line['p_name']);
                     $sx .= '</td>';
-                    $sx .= '<td class="lh-1 mb-3 trh ">';
+                    $sx .= '<td class="lh-1 mb-3 trh ps-3 ">';
                     $txt = troca($line['nt_content'],chr(10),'<br><br>');
                     $txt = troca($txt, '<br><br><br><br>', '<br><br>');
                     $sx .= $txt;
@@ -195,7 +195,7 @@ class ThNotes extends Model
         for ($r = 0; $r < count($dt); $r++) {
             $line = $dt[$r];
 
-            $sx .= '<p class="mb-2">';
+            $sx .= '<p class="mb-2 lh-1">';
             $sx .= '<span style="cursor: pointer;" onclick="text_edit(' . $line['id_nt'] . ',\'' . $line['p_name'] . '\');">';
             $sx .= bsicone('edit');
             $sx .= '</span>';
