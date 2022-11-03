@@ -190,7 +190,7 @@ class Admin extends BaseController
 
             if (($th == '') or ($th == 0))
                 {
-                    echo "OPS";
+                    echo "OPS - ADMIN";
                     exit;
                 }
 

@@ -43,6 +43,10 @@ class Users extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => '100',
             ],
+            'us_affiliation' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '100',
+            ],
             'us_password' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '50',

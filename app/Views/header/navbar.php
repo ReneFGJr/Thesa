@@ -1,4 +1,5 @@
 <?php
+
 require("acesso.php");
 ?>
 <nav class="navbar navbar-expand-lg d-print-none" style="border-bottom: 2px solid <?= $bg_color; ?>">

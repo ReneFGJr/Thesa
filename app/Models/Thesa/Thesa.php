@@ -45,6 +45,30 @@ class Thesa extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function own()
+        {
+            if (isset($_SESSION['th']))
+                {
+                    if (isset($_SESSION['id']))
+                        {
+                            $Collaborators = new \App\Models\Thesa\Collaborators();
+                            $dt = $Collaborators
+                                ->where('th_us_user',$_SESSION['id'])
+                                ->where('th_us_th', $_SESSION['th'])
+                                ->FindAll();
+                            if (count($dt) > 0)
+                                {
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+
+
+                        }
+                }
+            return false;
+        }
+
     function index($d1,$d2,$d3)
         {
             switch($d1)
@@ -129,12 +153,9 @@ class Thesa extends Model
                 $edit = '';
                 $Collaborators = new \App\Models\Thesa\Collaborators();
                 if ($Collaborators->own($id))
-                    {
+            {
                         $edit = '<a href="' . (PATH . 'a/' . $id) . '" class="ms-2">' . bsicone('edit') . '</a>';
                     }
-
-
-
                 $st = '<h1>'.$prefLabel.'</h1>';
                 $st .= '<h6>URI: '.anchor(PATH.'v/'.$id).$edit.'</h6>';
             return $st.$sx;
@@ -300,7 +321,7 @@ class Thesa extends Model
                             $id = $_SESSION['th'];
                             return $id;
                         } else {
-                            echo "OPS";
+                            echo "OPS - SEM TH";
                             exit;
                         }
                 }

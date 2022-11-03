@@ -350,7 +350,7 @@ class ThTerm extends Model
                     </script>';
             exit;
         }
-        echo "OPS";
+        echo "OPS - TERM NOT FOUND";
         exit;
     }
 

@@ -76,9 +76,10 @@ class Index extends Model
                 ->where('lgt_th',$th)
                 ->orderBy('lg_order')->findAll();
             $sx = '';
-
-            $tot = count($dt);
-            if ($tot == 1) { $check = 'checked'; }
+            if (count($dt) == 1)
+                {
+                    $check = 'checked';
+                }
 
             for ($r=0;$r < count($dt);$r++)
                 {
