@@ -68,13 +68,13 @@ class ThConcept extends Model
         return $dt;
     }
 
-    function le_relation($id,$prop='')
+    function le_relation($id, $prop = '')
     {
         $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
         $dt =
             $ThConceptPropriety
             ->join('owl_vocabulary_vc', 'ct_propriety = id_vc', 'left')
-            ->where('(ct_concept = '.$id. ' or ct_concept_2 = '.$id. ') and ct_literal = 0')
+            ->where('(ct_concept = ' . $id . ' or ct_concept_2 = ' . $id . ') and ct_literal = 0')
             ->findAll();
 
         //pre($dt,false);
@@ -88,17 +88,16 @@ class ThConcept extends Model
             ->join('language', 'term_lang = id_lg', 'left');
 
         /* Proposition */
-        if ($prop != '')
-            {
-                $this->join('owl_vocabulary_vc', 't1.ct_propriety = id_vc', 'left');
-                //$this->where('ct_propriety',$prop);
-            }
+        if ($prop != '') {
+            $this->join('owl_vocabulary_vc', 't1.ct_propriety = id_vc', 'left');
+            //$this->where('ct_propriety',$prop);
+        }
         $this
             ->where('c_concept', $id)
             ->where('t1.ct_concept_2 >', 0)
             ->where('term_name is not null');
         $dr = $this->findAll();
-        pre($dr,false);
+        pre($dr, false);
         return $dr;
     }
 
@@ -174,8 +173,8 @@ class ThConcept extends Model
 
         $Reference = new \App\Models\Thesa\Reference();
         $btn_plus = $this->form_field_reference($id, 'reference');
-        $sx .= bsc(lang('thesa.reference') . $btn_plus,4);
-        $st = '<div id="form_thesa_reference'. '" class="mb-3">';
+        $sx .= bsc(lang('thesa.reference') . $btn_plus, 4);
+        $st = '<div id="form_thesa_reference' . '" class="mb-3">';
         $st .= $Reference->list_reference($id);
         $st .= '</div>';
         $sx .= bsc($st, 8, 'over');
@@ -194,7 +193,7 @@ class ThConcept extends Model
         $Thesa = new \App\Models\Thesa\Thesa();
         $ThConcept = new \App\Models\RDF\ThConcept();
         $sx = '';
-        $dt = $ThConcept->le_relation($id,$prop);
+        $dt = $ThConcept->le_relation($id, $prop);
 
         //pre($dt);
         return "XX";
@@ -223,17 +222,16 @@ class ThConcept extends Model
 
     /*************************************************** TEXT CONCEPT */
     function list_concepts_text($id, $prop = '', $stop = true)
-        {
-            $ThNotes = new \App\Models\RDF\ThNotes();
-            $sx = $ThNotes->list($id, $prop);
+    {
+        $ThNotes = new \App\Models\RDF\ThNotes();
+        $sx = $ThNotes->list($id, $prop);
 
-            if ($sx == '')
-            {
-                $sx = '<span class="small ms-2 text-danger"><i>' . mb_strtolower(lang('thesa.without') . ' ' . lang('thesa.' . $prop)) . '</i></span>';
-            }
-
-            return $sx;
+        if ($sx == '') {
+            $sx = '<span class="small ms-2 text-danger"><i>' . mb_strtolower(lang('thesa.without') . ' ' . lang('thesa.' . $prop)) . '</i></span>';
         }
+
+        return $sx;
+    }
 
     /*************************************************** LISTA TERMOS */
     function list_concepts_terms($id, $prop = '', $stop = true)
@@ -252,13 +250,14 @@ class ThConcept extends Model
         $ts = $Thesa->find($th);
 
         $type = $ts['th_type'];
-        $cp = 'vc_label, term_name, lg_code, id_ct, ct_resource';
+        $cp = 'vc_label, term_name, lg_code, id_ct, ct_resource, pcst_achronic, pcst_name';
 
         $f = $ThConceptPropriety
             ->select($cp)
             ->join('owl_vocabulary_vc', 'id_vc = ct_propriety', 'left')
             ->join('thesa_terms', 'id_term = ct_literal', 'left')
             ->join('language', 'term_lang = id_lg', 'left')
+            ->join('thesa_property_custom', '(ct_concept_2_qualify = id_pcst)','left')
             ->where('ct_th', $th)
             ->where('ct_concept', $id)
             ->where('vc_label', $prop)
@@ -266,15 +265,30 @@ class ThConcept extends Model
             ->orderby($cp)
             ->findAll();
 
+        $pref = 0;
+
         for ($r = 0; $r < count($f); $r++) {
             $line = $f[$r];
             $linkr = '<span style="color: red" onclick="term_delete(' . $line['id_ct'] . ',\'' . $line['vc_label'] . '\');">' . bsicone('trash', 18) . '</span>';
+
+            if (($line['vc_label'] == 'prefLabel') and ($pref == 0))
+                {
+                    $linkr = '';
+                    $pref++;
+                }
+
+            $sx .= '<div class="">';
             $sx .= $linkr;
             $sx .= '<b>' .
                 $line['term_name'] . '</b>' .
                 '<sup>@' . $line['lg_code'] .
-                '</sup><br/>';
-        }
+                '</sup>';
+            if ($line['pcst_name'] != '')
+                {
+                    $sx .= '<sup class="ms-2">(' . $line['pcst_name'] .')</sup><br/>';
+                }
+            $sx .= '</div>';
+            }
 
         if ($stop) {
             echo $sx;
@@ -284,7 +298,7 @@ class ThConcept extends Model
         }
     }
 
-    function ajax_save($id, $prop, $vlr)
+    function ajax_save($id, $prop, $vlr, $qualy)
     {
         $ThTermTh = new \App\Models\RDF\ThTermTh();
         /***************************************************** PROPRERTY */
@@ -310,7 +324,7 @@ class ThConcept extends Model
         switch ($range) {
             case 'Literal':
                 $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
-                $ThConceptPropriety->register($th, $concept, $id_prop, $resource, $literal);
+                $ThConceptPropriety->register($th, $concept, $id_prop, $qualy, $resource, $literal);
                 $ThTermTh->update_term_th($vlr, $th, $concept);
                 break;
             default:
@@ -328,7 +342,6 @@ class ThConcept extends Model
         $dtp = $ThProprity->find_prop($prop);
 
         $tp = $dtp['rg_range'];
-
         switch ($tp) {
             case 'Literal':
                 if ($prop == 'prefLabel') {
@@ -355,12 +368,12 @@ class ThConcept extends Model
         return $sx;
     }
 
-    function form_link_concept_text($id,$prop)
-        {
-            $ThNotes = new \App\Models\RDF\ThNotes();
-            $sx = $ThNotes->form_link_concept_text($id, $prop);
-            return $sx;
-        }
+    function form_link_concept_text($id, $prop)
+    {
+        $ThNotes = new \App\Models\RDF\ThNotes();
+        $sx = $ThNotes->form_link_concept_text($id, $prop);
+        return $sx;
+    }
 
     function form_link_concept($id, $prop)
     {
@@ -387,6 +400,8 @@ class ThConcept extends Model
     {
         $ThConcept = new \App\Models\RDF\ThConcept();
         $ThTermTh = new \App\Models\RDF\ThTermTh();
+        $ThProprityType = new \App\Models\RDF\ThProprityType();
+        $ThProprityCustom = new \App\Models\RDF\ThProprityCustom();
 
         $dc = $ThConcept->le($id);
         $th = $dc[0]['c_th'];
@@ -411,6 +426,27 @@ class ThConcept extends Model
             $sx .= '<input type="text" id="form_thesa_' . $prop . '_label" class="form-control">';
             $sx .= 'Filter-Form';
             $sx .= '</div>';
+
+            /************************* Qualificador */
+            if ($prop == 'altLabel') {
+                $dc = $ThProprityCustom
+                    ->where('pcst_th', $th)
+                    ->where('pcst_class', 1)
+                    ->findAll();
+
+                $sx .= '<div class="col-md-9">';
+                $sx .= '<select id="form_thesa_' . $prop . '_qualifier" class="form-control">';
+                for ($r = 0; $r < count($dc); $r++) {
+                    $line = $dc[$r];
+                    $sx .= '<option value="' . $line['id_pcst'] . '">' . $line['pcst_name'] . '</option>';
+                }
+                $sx .= '</select>';
+                $sx .= '</div>';
+            } else {
+                $sx .= '<div class="col-md-9">';
+                $sx .= '<input type="hidden" id="form_thesa_' . $prop . '_qualifier" value="0">';
+                $sx .= '</div>';
+            }
         }
         $sx .= '<div class="col-md-10">';
         if (count($dt) > 0) {
@@ -446,7 +482,8 @@ class ThConcept extends Model
         $sx .= 'function save_form_' . $prop . '()' . cr();
         $sx .= '{' . cr();
         $sx .= '$vlr = $("#form_thesa_prop_' . $prop . '_label").val();' . cr();
-        $sx .= ' var url = "' . PATH . '/admin/ajax_form_save/?id=' . $id . '&prop=' . $prop . '&vlr="+$vlr;' . cr();
+        $sx .= '$qualy = $("#form_thesa_' . $prop . '_qualifier").val();' . cr();
+        $sx .= ' var url = "' . PATH . '/admin/ajax_form_save/?id=' . $id . '&prop=' . $prop . '&qualy="+$qualy+"&vlr="+$vlr;' . cr();
         $sx .= ' $("#form_thesa_' . $prop . '").load(url);' . cr();
         $sx .= '}' . cr();
         $sx .= '</script>';
@@ -546,7 +583,6 @@ class ThConcept extends Model
         $dt = $this->where('c_concept', -1)->where('c_th', $th)->findAll();
 
         if (count($dt) == 0) {
-            $data['c_concept'] = 0;
             $data['c_th'] = $th;
             $data['c_concept'] = -1;
             $data['c_ativo'] = 1;
@@ -569,12 +605,9 @@ class ThConcept extends Model
         /****************************************** Class- Register ****/
         $ThConceptPropriety->register($th, $id_concept, $id_prop, $id_class, 0);
 
-
         /********************************************** Update Concept */
         $du['c_concept'] = $id_concept;
         $this->set($du)->where('id_c', $id_concept)->update();
-
-
 
         $class = 'skos:prefLabel';
         $prop_prefLabel = $ClassPropriety->Class($class);

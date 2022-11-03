@@ -92,13 +92,32 @@ class ThProprity extends Model
     function edit($id, $th)
         {
             $ThProprityType = new \App\Models\RDF\ThProprityType();
+            $ThProprityCustom = new \App\Models\RDF\ThProprityCustom();
             $data = array();
+
+            if (get("action"))
+                {
+                    $ThProprityCustom->register($_POST);
+                    $sx = metarefresh(PATH.'/admin/proprity/');
+                    return $sx;
+                } else {
+
+                }
 
             $data['select_prop'][1] = $ThProprityType->select_prop(1);
             $data['select_prop'][2] = $ThProprityType->select_prop(2);
             $data['select_prop'][3] = $ThProprityType->select_prop(3);
+            $data['pcst_th'] = $th;
+            $data['id_pcst'] = 0;
+            $data['pcst_part_1'] = get('pcst_part_1');
+            $data['pcst_part_2'] = get('pcst_part_2');
+            $data['pcst_part_3'] = get('pcst_part_3');
+            $data['pcst_name'] = get("pcst_name");
+
 
             $sx = view('Thesa/Forms/Propriety', $data);
+
+            pre($_POST,false);
             return $sx;
         }
 

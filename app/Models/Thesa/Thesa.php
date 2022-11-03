@@ -91,12 +91,13 @@ class Thesa extends Model
             $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
             $ThNotes = new \App\Models\RDF\ThNotes();
             $dt = $ThConceptPropriety
-                ->select('p_group, term_name, vc1.vc_label as vc_label, vc2.vc_label as vc_resource, lg_code, lg_language')
+                ->select('p_group, term_name, vc1.vc_label as vc_label, vc2.vc_label as vc_resource, lg_code, lg_language, pcst_achronic, pcst_name')
                 ->join('thesa_terms', 'ct_literal = id_term', 'left')
                 ->join('owl_vocabulary_vc as vc1', 'ct_propriety = vc1.id_vc', 'left')
                 ->join('owl_vocabulary_vc as vc2', 'ct_resource = vc2.id_vc', 'left')
                 ->join('language','term_lang = id_lg','left')
                 ->join('thesa_property', 'vc1.vc_label = p_name','left')
+                ->join('thesa_property_custom', '(ct_concept_2_qualify = id_pcst)', 'left')
                 ->where('ct_concept', $id)
                 ->orderBy('p_group, term_name')
                 ->findAll();
@@ -133,6 +134,11 @@ class Thesa extends Model
 
                             $sx .= '<td class="ps-3 '.$classF.'">'. $line['term_name'];
                             $sx .= ' <sup>(' . $line['lg_code'] . ')</sup>';
+                            $qualy = trim($line['pcst_name']);
+                            if (strlen($qualy) > 0)
+                                {
+                                    $sx .= ' <sup class="ms-2">(' . $qualy . ')</sup>';
+                                }
                             $sx .= '</td>';
                             $sx .= '</tr>';
                         } else {
@@ -153,7 +159,7 @@ class Thesa extends Model
                 $edit = '';
                 $Collaborators = new \App\Models\Thesa\Collaborators();
                 if ($Collaborators->own($id))
-            {
+                    {
                         $edit = '<a href="' . (PATH . 'a/' . $id) . '" class="ms-2">' . bsicone('edit') . '</a>';
                     }
                 $st = '<h1>'.$prefLabel.'</h1>';

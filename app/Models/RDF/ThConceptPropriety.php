@@ -17,7 +17,7 @@ class ThConceptPropriety extends Model
     protected $allowedFields    = [
         'id_ct', 'ct_concept', 'ct_th',
         'ct_literal', 'ct_use', 'ct_propriety',
-        'ct_resource', 'ct_concept_2'
+        'ct_resource', 'ct_concept_2', 'ct_concept_2_qualify'
     ];
 
     // Dates
@@ -52,6 +52,7 @@ class ThConceptPropriety extends Model
         $id = get('id');
         $prop = get('prop');
         $concept = get('concept');
+        $qualify = round('0'.get('form_thesa_'.$prop.'_qualifier'));
 
         $dtc = $ThConcept->find($id);
         $th = $dtc['c_th'];
@@ -74,6 +75,7 @@ class ThConceptPropriety extends Model
             $da['ct_resource'] = 0;
             $da['ct_use'] = 0;
             $da['ct_literal'] = 0;
+            $da['ct_concept_2_qualify'] = $qualify;
             $this->set($da)->insert();
         } else {
             echo "OPS";
@@ -135,13 +137,14 @@ class ThConceptPropriety extends Model
     }
 
 
-    function register($th, $concept, $prop, $resource, $literal)
+    function register($th, $concept, $prop, $qualy, $resource, $literal)
     {
         $data['ct_concept'] = $concept;
         $data['ct_propriety'] = $prop;
         $data['ct_th'] = $th;
         $data['ct_literal'] = $literal;
         $data['ct_resource'] = $resource;
+        $data['ct_concept_2_qualify'] = $qualy;
         $data['ct_use'] = 0;
 
         $da = $this

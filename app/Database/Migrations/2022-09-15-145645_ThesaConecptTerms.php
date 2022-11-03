@@ -37,6 +37,11 @@ class ThesaConecptTerms extends Migration
                 'type' => 'INT',
                 'null' => true,
             ],
+            'ct_concept_2_qualify' => [
+                'type' => 'INT',
+                'default' => 0,
+                'null' => true,
+            ],
             'ct_literal' => [
                 'type' => 'INT',
                 'null' => true,
