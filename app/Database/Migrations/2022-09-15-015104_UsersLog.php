@@ -3,6 +3,7 @@
 namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
+use CodeIgniter\Database\RawSql;
 
 class UsersLog extends Migration
 {
@@ -22,6 +23,14 @@ class UsersLog extends Migration
             'ul_ip' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '40',
+            ],
+            'ul_access' => [
+                'type'    => 'TIMESTAMP',
+                'default' => new RawSql('CURRENT_TIMESTAMP'),
+            ],
+            'updated_at' => [
+                'type'       => 'TIMESTAMP',
+                'null' => true,
             ],
         ]);
         $this->forge->addKey('id_ul', true);

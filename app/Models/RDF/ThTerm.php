@@ -201,14 +201,11 @@ class ThTerm extends Model
                     $th = $thd[0]['term_th_thesa'];
                 }
 
-
-
             /*********************************** CREATE CONCEPT */
             for ($r = 0; $r < count($ids); $r++) {
                 $ThConcept = new \App\Models\RDF\ThConcept();
                  echo $ThConcept->register($ids[$r], $th);
             }
-
 
             /********************************** Messages *******/
 

@@ -28,7 +28,7 @@
                     <span style="color: white;">Já tem uma conta?</span>
                     <div class="separator-line"></div>
                 </div>
-                <a href="/thesa/social/login" style="text-decoration: none;">
+                <a href="/social/login" style="text-decoration: none;">
                     <div style="padding: 10px; background-color: #ffffff; text-decoration: none; border-radius: 20px; color: black; font-size: 12px; font-family: Titillium+Web;">Não tem cadastro? Clique aqui!</div>
                 </a>
             </div>

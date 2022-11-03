@@ -75,7 +75,7 @@ class Users extends Migration
 
         $data = array(
                 'us_nome' => 'Administrador',
-                'us_email' => 'renefgj@gmail.com',
+                'us_email' => 'admin',
                 'us_image'=>'',
                 'us_genero' => 'N',
                 'us_verificado' => 1,

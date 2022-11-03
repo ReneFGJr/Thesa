@@ -603,7 +603,7 @@ class ThConcept extends Model
         $id_prop = $ClassPropriety->Class($class);
 
         /****************************************** Class- Register ****/
-        $ThConceptPropriety->register($th, $id_concept, $id_prop, $id_class, 0);
+        $ThConceptPropriety->register($th, $id_concept, $id_prop, 0, $id_class, 0);
 
         /********************************************** Update Concept */
         $du['c_concept'] = $id_concept;
@@ -612,7 +612,7 @@ class ThConcept extends Model
         $class = 'skos:prefLabel';
         $prop_prefLabel = $ClassPropriety->Class($class);
 
-        $idr = $ThConceptPropriety->register($th, $id_concept, $prop_prefLabel, 0, $id_term);
+        $idr = $ThConceptPropriety->register($th, $id_concept, $prop_prefLabel, 0, 0, $id_term);
 
         /********************************************** Trava o Termos do Vocabulario */
         $Term = new \App\Models\RDF\ThTerm();
