@@ -128,6 +128,13 @@ class Thesa extends BaseController
                 break;
 
             case 'th':
+                if ($tp == 'import')
+                    {
+                        $Tools = new \App\Models\Thesa\Tools\Import;
+                        $sx .= $Tools->import($id);
+                        $sx .= bsmessage("Importing",2);
+                        exit;
+                    }
                 $Descriptions = new \App\Models\Thesa\Descriptions();
                 $data = array();
                 //$sx .= view('header/menu_left');
