@@ -42,6 +42,13 @@ $routes->post('/admin/(:any)', 'Admin::index/$1');
 $routes->post('/admin/(:any)/(:any)', 'Admin::index/$1/$2');
 $routes->get('/admin/(:any)/(:any)', 'Admin::index/$1/$2');
 
+
+$routes->get('/tools', 'Thesa::index/tools');
+$routes->get('/tools/(:any)', 'Thesa::index/tools/$1');
+//$routes->post('/tools/(:any)', 'Thesa::index/$1');
+//$routes->post('/tools/(:any)/(:any)', 'Thesa::index/$1/$2');
+//$routes->get('/tools/(:any)/(:any)', 'Thesa::index/tools/$1/$2');
+
 $routes->get('/thopen', 'Thesa::index/thopen');
 $routes->get('/th/(:any)', 'Thesa::index/th/$1');
 $routes->get('/t/(:any)', 'Thesa::index/t/$1');

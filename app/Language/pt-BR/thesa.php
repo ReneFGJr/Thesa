@@ -24,6 +24,7 @@ return [
     'guest' => 'Observador',
     'perfil' => 'Perfil',
     'Configurations' => bsicone('gear'),
+    'Tools' => bsicone('tools'),
     'ontology_access' => 'Ver',
     'ontology_edit' => 'Editar',
     'inserted' => '<font style="color: blue;">Inserido</font>',

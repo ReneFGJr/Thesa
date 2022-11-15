@@ -43,6 +43,30 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    var $lang = array();
+
+    function getLanguage($nlang)
+        {
+            $lang = $this->lang;
+            if (count($this->lang) == 0)
+                {
+                    $dt = $this->findAll();
+                    for($r=0;$r < count($dt);$r++)
+                        {
+                            $line = $dt[$r];
+                            $lang[$line['lg_code']] = $line['id_lg'];
+                            $lang[$line['lg_language']] = $line['id_lg'];
+                        }
+                    $this->lang = $lang;
+                }
+            if (isset($lang[$nlang]))
+                {
+                    return($lang[$nlang]);
+                } else {
+                    return(0);
+                }
+        }
+
     function check($th)
         {
             $Language = new \App\Models\Thesa\Language();

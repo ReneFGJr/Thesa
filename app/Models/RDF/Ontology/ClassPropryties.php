@@ -59,16 +59,21 @@ class ClassPropryties extends Model
     function Class($class,$subclass='')
         {
             $Prefix = new \App\Models\RDF\Ontology\Prefix();
+            $pre = '';
 
             if ($pos = strpos($class,':'))
                 {
                     $pre = substr($class,0,$pos);
                     $Class = substr($class,$pos+1,strlen($class));
                 }
+
             if ($pre != '')
                 {
                     $id_pre = $Prefix->identify($pre);
                 } else {
+                    $rlt = $Prefix->findAll();
+                    pre($rlt);
+
                     echo "OPS Prefix Class Not Found";
                     exit;
                 }

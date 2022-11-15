@@ -44,7 +44,11 @@ require("acesso.php");
                         echo '
                         <li class="nav-item">
                             <a class="nav-link" href="'.PATH.'/admin/config">'.lang('thesa.Configurations').'</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="'.PATH.'/tools">'.lang('thesa.Tools').'</a>
                         </li>';
+
                     }
                 }
                 ?>

@@ -33,13 +33,17 @@ require("acesso.php");
                 <li class="nav-item">
                     <a class="nav-link" href="<?= getenv("app.baseURL"); ?>/admin/ontology">Ontology</a>
                 </li>
-
+                <?php
+                if (isset($_SESSION['th'])) { ?>
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo PATH . '/th/' . $_SESSION['th']; ?>"><?= lang('thesa.th_atual'); ?></a>
                 </li>
-
                 <li class="nav-item">
                     <a class="nav-link" href="<?= getenv("app.baseURL"); ?>/admin/config"><?= lang('thesa.Configurations'); ?></a>
+                </li>
+                <?php } ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?=PATH.'/tools';?>">'<?=lang('thesa.Tools');?></a>
                 </li>
             </ul>
             <form class="d-flex" role="search">

@@ -85,7 +85,7 @@ class ThTermTh extends Model
         }
 
         $dt = $this
-            ->orderBy('lg_code, term_name', 'ASC')
+            ->orderBy('term_name, lg_code', 'ASC')
             ->findAll();
 
         return $dt;
