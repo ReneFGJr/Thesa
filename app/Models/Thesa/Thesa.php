@@ -89,6 +89,7 @@ class Thesa extends Model
         {
             $sx = '';
             $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
+            $Midias = new \App\Models\Thesa\Midias();
             $ThNotes = new \App\Models\RDF\ThNotes();
             $dt = $ThConceptPropriety
                 ->select('p_group, term_name, vc1.vc_label as vc_label, vc2.vc_label as vc_resource, lg_code, lg_language, pcst_achronic, pcst_name')
@@ -105,10 +106,15 @@ class Thesa extends Model
                 //echo $this->getlastquery();
                 $prefLabel = '';
 
+                /********************************** Image */
+                $Images = $Midias->show($id);
+
                 $sx .= '<table class="table_theme">';
                 $xgr = '';
+                $lns = 0;
                 for ($r=0;$r < count($dt);$r++)
                     {
+                        $lns++;
                         $line = $dt[$r];
                         $gr = $line['p_group'];
 
@@ -142,9 +148,14 @@ class Thesa extends Model
                             $sx .= '</td>';
                             $sx .= '</tr>';
                         } else {
-                            $sx .= '<tr>';
+                            $sx .= '<tr valign="top">';
                             $sx .= '<td width="20%" class="small trh">' . lang('thesa.'.$line['vc_label']) . '</td>';
                             $sx .= '<td class="ps-3 tdh">' . $line['vc_resource'] . '</td>';
+
+                            if ($Images != '')
+                                {
+                                    $sx .= '<td rowspan="20" class="align-end" style="width: 200px;">' . $Images . '</td>';
+                                }
                             $sx .= '</tr>';
                         }
                     }
@@ -153,6 +164,12 @@ class Thesa extends Model
 
                 $Reference = new \App\Models\Thesa\Reference();
                 $sx .= $Reference->show($id);
+
+                /********************* Completar */
+                for($r=$lns;$r < 20;$r++)
+                    {
+                        $sx .= '<tr><td colspan=2>&nbsp;</td><td>&nbsp;</td></tr>';
+                    }
                 $sx .= '</table>';
 
                 /******************************* PrefLabel */

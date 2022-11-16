@@ -15,7 +15,7 @@ class ThProprityCustom extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'pcst_class', 'pcst_th',
+        'pcst_class', 'pcst_th', 'pcst_type',
         'pcst_achronic', 'pcst_name', 'pcst_description',
         'pcst_part_1', 'pcst_part_2', 'pcst_part_3',
         'pcst_public', 'pcst_aplicable', 'updated_at',
@@ -57,5 +57,20 @@ class ThProprityCustom extends Model
                 }
                 echo $this->getlastquery();
                 return true;
+        }
+    function find_class($name)
+        {
+            $Thesa = new \App\Models\Thesa\Thesa();
+            $th = $Thesa->getThesa();
+            $dt = $this
+                ->where('pcst_achronic',$name)
+                ->where(('pcst_th = '.$th.' or pcst_th = 0'))
+                ->findAll();
+            if (count($dt) > 0)
+                {
+                    return $dt[0];
+                } else {
+                    return array();
+                }
         }
 }

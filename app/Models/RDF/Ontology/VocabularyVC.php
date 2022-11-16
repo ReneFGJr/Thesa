@@ -45,6 +45,8 @@ class VocabularyVC extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    var $quali = 0;
+
     function view($id)
         {
             $dt = $this
@@ -82,9 +84,24 @@ class VocabularyVC extends Model
         }
     function find_prop($prop)
         {
+            $ThProprityCustom = new \App\Models\RDF\ThProprityCustom();
+            $this->quali  = 0;
             $dt = $this
                 ->where('vc_label',$prop)
                 ->first();
+            if ($dt == '')
+                {
+                    $dt = $ThProprityCustom->find_class($prop);
+                    if (count($dt) > 0) {
+                        $this->quali = $dt['id_pcst'];
+                        $idp = $dt['pcst_aplicable'];
+                        $dtp = $this->find($idp);
+                        return $dtp['id_vc'];
+                    } else {
+                        echo "Propriedade não encontrada (VocabularyVC): $prop";
+                        exit;
+                    }
+                }
             $id = $dt['id_vc'];
             return $id;
 

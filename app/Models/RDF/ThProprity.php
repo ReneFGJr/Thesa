@@ -40,6 +40,8 @@ class ThProprity extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    var $quali = 0;
+
     function index($d1, $d2, $d3, $d4)
     {
         $th = 1;
@@ -63,11 +65,15 @@ class ThProprity extends Model
 
     function find_prop_id($name)
     {
+        $this->quali = 0;
         $dt=$this->find_prop($name);
         return($dt['id_p']);
     }
+
     function find_prop($name)
         {
+            $this->quali = 0;
+            $ThProprityCustom = new \App\Models\RDF\ThProprityCustom();
             if ($name == 'reference')
                 {
                     $dtp['rg_range'] = 'Reference';
@@ -82,8 +88,16 @@ class ThProprity extends Model
                 {
                     return $dt[0];
                 } else {
-                    echo "ERRO DE PROPRIEDADE - ".$name;
-                    exit;
+                    $dt = $ThProprityCustom->find_class($name);
+                    if (count($dt) > 0)
+                        {
+                            $this->quali = $dt['id_pcst'];
+                            $idp = $dt['pcst_class'];
+                            return $this->find($idp);
+                        } else {
+                            echo "ERRO DE PROPRIEDADE - " . $name;
+                            exit;
+                        }
                 }
         }
 
@@ -123,6 +137,23 @@ class ThProprity extends Model
 
     function list($th)
         {
-            $dt = $this->where('p_th', $th)->orwhere('p_global',0)->findAll();
+            $sx = '';
+            $ThProprityCustom = new \App\Models\RDF\ThProprityCustom();
+            $dt = $ThProprityCustom
+                    ->join('owl_vocabulary_vc', 'pcst_aplicable = id_vc', 'left')
+                    ->findAll();
+
+            $sx .= '<table class="table">';
+            for ($r=0;$r < count($dt);$r++)
+                {
+                    $line = $dt[$r];
+                    $sx .= '<tr>';
+                    $sx .= '<td>'.$line['pcst_achronic'].'</td>';
+                    $sx .= '<td>'.$line['vc_label'].'</td>';
+                    $sx .= '</tr>';
+                }
+            $sx .= '</table>';
+            //pre($line,false);
+            return $sx;
         }
 }

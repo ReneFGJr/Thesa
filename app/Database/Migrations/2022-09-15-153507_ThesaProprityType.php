@@ -93,6 +93,10 @@ class ThesaConecptPropityType extends Migration
         $data['pt_name_reverse'] = 'masculine';
         $this->db->table('thesa_property_type')->insert($data);
 
+        $data['pt_name'] = 'translation';
+        $data['pt_name_reverse'] = 'translation';
+        $this->db->table('thesa_property_type')->insert($data);
+
         $data['pt_name'] = 'notation';
         $data['pt_name_reverse'] = 'notation';
         $this->db->table('thesa_property_type')->insert($data);

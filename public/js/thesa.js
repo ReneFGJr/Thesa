@@ -1,3 +1,4 @@
+
 function copytoClipboard($text) {
   // Get the text field
   var copyText = document.getElementById("#" + $text);
@@ -165,3 +166,26 @@ function togglet($form)
     $("#status_" + $form).toggle();
     $("#form_" + $form).toggle();
   }
+
+ function newwin(url, xx, yy) {
+   NewWindow = window.open(
+     url,
+     "newwin2",
+     "scrollbars=yes,resizable=no,width=" +
+       xx +
+       ",height=" +
+       yy +
+       ",top=10,left=10"
+   );
+   NewWindow.focus();
+   void 0;
+ }
+
+ function winclose() {
+   close();
+ }
+
+ function wclose() {
+   window.opener.location.reload();
+   close();
+ }

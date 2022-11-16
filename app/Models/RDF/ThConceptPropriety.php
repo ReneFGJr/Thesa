@@ -151,8 +151,7 @@ class ThConceptPropriety extends Model
             ->where('ct_th', $th)
             ->where('ct_concept', $concept)
             ->where('ct_propriety', $prop)
-            ->where('ct_propriety', $prop)
-            ->where('ct_resource', $literal)
+            ->where('ct_literal', $literal)
             ->findAll();
 
         if (count($da) == 0) {

@@ -104,6 +104,7 @@ class ThConcept extends Model
     function form($id)
     {
         $Thesa = new \App\Models\Thesa\Thesa();
+        $Midia = new \App\Models\Thesa\Midias();
         $ThConcept = new \App\Models\RDF\ThConcept();
         $ThProprity = new \App\Models\RDF\ThProprity();
         $sx = '';
@@ -113,6 +114,25 @@ class ThConcept extends Model
         $th = $concept_data[0]['c_th'];
         $ts = $Thesa->find($th);
         $type = $ts['th_type'];
+
+        /******************************************************* */
+        $si = 'Midia';
+        $url = PATH . 'admin/media/' . $id;
+        $si_caption = lang('thesa.midias');
+        $si_caption .= ' <span onclick="newwin(\'' . $url.'\',600,200);" style="cursor: pointer;">';
+        $si_caption .= bsicone('plus');
+        $si_caption .= '</span>';
+        $gr = 'media';
+
+        $sx .= '<div id="grupo_' . $gr . '" class="row mt-4">';
+        $sx .= h('<b>' . lang('thesa.form_group_' . $gr) . '</b>', 5);
+        $si_img = $Midia->show($id);
+        $si_upload = $Midia->upload($id);
+        $sx .= bsc($si_caption,4,'mb-3');
+        $sx .= bsc($si_upload,6);
+        $sx .= bsc($si_img, 2);
+
+        $sx .= '</div>';
 
 
         /* Form */
@@ -178,7 +198,6 @@ class ThConcept extends Model
         $st .= $Reference->list_reference($id);
         $st .= '</div>';
         $sx .= bsc($st, 8, 'over');
-
         if ($xgr != '') {
             $sx .= '</div>';
         }
@@ -557,16 +576,17 @@ class ThConcept extends Model
 
         $sa = '';
         $sb = '';
+        $sc = '';
 
         foreach ($prefTerm as $key => $value) {
             $sb = '<span id="prefTerm" class="big">' . $value . '</span>';
             $sb .= textClipboard('prefTerm');
         }
 
-        $sc = anchor(PATH . 'v/' . $dt[0]['id_c'], bsicone('eye'));
+        $link = PATH . 'v/' . $dt[0]['id_c'];
 
         $sd = '';
-        $sd .= '<span class="btn btn-outline-secondary" id="btnEdit">Thesa:c' . $dt[0]['id_c'] . '</span>';
+        $sd .= '<a href="'.$link.'" class="btn btn-outline-secondary" id="btnEdit">Thesa:c' . $dt[0]['id_c'] . '</a>';
 
         $sx = bs(
             bsc($sa, 3, 'text-end') .
@@ -580,7 +600,12 @@ class ThConcept extends Model
     function register_concept($th,$agency)
         {
             /******************************************************* NEW CONCEPT */
-            $dt = $this->where('c_concept', -1)->where('c_th', $th)->findAll();
+            if ($agency != '')
+                {
+                    $dt = $this->where('c_agency', $agency)->where('c_th', $th)->findAll();
+                } else {
+                    $dt = $this->where('c_concept', -1)->where('c_th', $th)->findAll();
+                }
 
             if (count($dt) == 0) {
                 $data['c_th'] = $th;
@@ -604,6 +629,8 @@ class ThConcept extends Model
 
             /****************************************** Class- Register ****/
             $ThConceptPropriety->register($th, $id_concept, $id_prop, 0, $id_class, 0);
+            $data['c_concept'] = $id_concept;
+            $this->set($data)->where('id_c', $id_concept)->update();
 
             return $id_concept;
         }

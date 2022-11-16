@@ -77,6 +77,50 @@ class ThesaPropertyCustom extends Migration
         ]);
         $this->forge->addKey('id_pcst', true);
         $this->forge->createTable('thesa_property_custom');
+
+        $data = array(
+            'pcst_class' => 1,
+            'pcst_type' => 1,
+            'pcst_th' => '1',
+            'pcst_achronic' => 'abbreviation_of',
+            'pcst_name' => 'é abreviatura de',
+            'pcst_description' => '-',
+            'pcst_part_1' => 1,
+            'pcst_part_2' => 7,
+            'pcst_part_3' => 13,
+            'pcst_public' => 1,
+            'pcst_aplicable' => 4,
+        );
+        $this->db->table('thesa_property_custom')->insert($data);
+
+        $data['pcst_achronic'] = 'is_synonymous';
+        $data['pcst_name'] = 'é sinonimo de';
+        $data['pcst_part_2'] = 11;
+        $this->db->table('thesa_property_custom')->insert($data);
+
+        $data['pcst_achronic'] = 'hasAcronym';
+        $data['pcst_name'] = 'é sigla de';
+        $data['pcst_part_2'] = 11;
+        $this->db->table('thesa_property_custom')->insert($data);
+
+        $data['pcst_achronic'] = 'is_equivalent_another_language';
+        $data['pcst_name'] = 'tradução de';
+        $data['pcst_part_1'] = 2;
+        $data['pcst_part_2'] = 9;
+        $this->db->table('thesa_property_custom')->insert($data);
+
+        $data['pcst_achronic'] = 'coordinationOfCauseEffect';
+        $data['pcst_name'] = 'Relação causa/efeito';
+        $data['pcst_class'] = 2;
+        $data['pcst_part_1'] = 2;
+        $data['pcst_part_2'] = 9;
+        $data['pcst_aplicable'] = 8;
+        $this->db->table('thesa_property_custom')->insert($data);
+
+        $data['pcst_achronic'] = 'coordinationOfKinship';
+        $data['pcst_name'] = 'Parente de';
+        $this->db->table('thesa_property_custom')->insert($data);
+
     }
 
     public function down()

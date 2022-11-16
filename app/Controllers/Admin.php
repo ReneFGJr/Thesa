@@ -40,6 +40,21 @@ class Admin extends BaseController
         $sx .= view('header/navbar_admin');
 
         switch ($d1) {
+            case 'media':
+                $Midia = new \App\Models\Thesa\Midias();
+                $Socials = new \App\Models\Socials();
+                $user = $Socials->getUser();
+                if ($user > 0)
+                    {
+                        $sx = $this->cab();
+                        $sx .= $Midia->upload($d1,$d2);
+                    } else {
+                        echo "Acesso negado";
+                        exit;
+                    }
+                    echo $sx;
+                exit;
+                break;
             case 'ajax_concept_reference':
                 $Reference = new \App\Models\Thesa\Reference();
                 $ReferenceConcept = new \App\Models\Thesa\ReferenceConcept();

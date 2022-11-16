@@ -445,11 +445,14 @@ class ThTerm extends Model
             $data['term_name'] = $term;
             $data['term_lang'] = $lang;
             $id = $this->insert($data);
-            return $ThTermTh->link_th($id, $th);
+            $ThTermTh->link_th($id, $th);
+            return $id;
         } else {
             $id = $dt[0]['id_term'];
+
             /************************ Vinculo com o tesauro */
-            return $ThTermTh->link_th($id, $th);
+            $ThTermTh->link_th($id, $th);
+            return $id;
         }
     }
 
