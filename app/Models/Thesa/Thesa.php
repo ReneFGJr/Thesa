@@ -69,6 +69,17 @@ class Thesa extends Model
             return false;
         }
 
+    function myth()
+        {
+            $Social = new \App\Models\Socials();
+            $user = $Social->getuser();
+            $sx = h(lang('thesa.my_thesaurus'));
+            $sx .= $this->list($user);
+
+            $sx = bs(bsc($sx,12));
+            return $sx;
+        }
+
     function index($d1,$d2,$d3)
         {
             switch($d1)
@@ -250,6 +261,8 @@ class Thesa extends Model
 
     function store()
     {
+        $Collaborators = new \App\Models\Thesa\Collaborators();
+
         $request = \Config\Services::request();
         $validation =  \Config\Services::validation();
         $data = array();
@@ -278,16 +291,28 @@ class Thesa extends Model
                 ];
 
                 $id_th = $request->getVar('id_th');
+                $Social = new \App\Models\Socials();
+                $user = $Social->getUser();
+
                 if ($id_th == 0) {
-                    $this->save($data);
+                    /************************************ CHECK */
+                    $dt = $this->where('th_name', $request->getVar('th_name'))->findAll();
+                    if (count($dt) > 0) {
+                        $data['error'] = msg('Thesaurus already exists', 'danger');
+                    } else {
+                        $this->save($data);
+                        $id_th = $this->getInsertID();
+                        $perfil = 1; // owner
+                        $Collaborators->add($user, $id_th, $perfil);
+                        $data['error'] = msg('Thesaurus created', 'success');
+                    }
                 } else {
                     $this->set($data)->where('id_th', $id_th)->update();
+                    $Collaborators->add($$id_th, $user);
                 }
-
                 header("location: admin");
                 exit;
             } else {
-
                 $data['ERROS'] = $validation->getErrors();
                 $data['validation'] = $this->validator;
 
@@ -351,13 +376,24 @@ class Thesa extends Model
             return $id;
         }
 
-    function list()
+    function list($user=0)
         {
             $sx = '<h1>'.lang('thesa.Thesaurus'). '</h1>';
             $ThIcone = new \App\Models\Thesa\ThIcone();
+
+            if($user > 0)
+            {
             $dt = $this
+                ->join('thesa_users', 'th_us_th = id_th')
+                ->join('thesa_users_perfil', 'th_us_perfil = id_pf')
+                ->where('th_us_user', $user)
+                ->findAll();
+            } else {
+                $dt = $this
+                ->where('th_status', 1)
                 ->orderBy('th_name', 'ASC')
                 ->findAll();
+            }
 
             for($r=0;$r < count($dt);$r++)
                 {
@@ -366,6 +402,8 @@ class Thesa extends Model
                     $sx .= bsc(view('Theme/Standard/ViewThList',$line),2,'p-2');
                 }
             $sx .= '';
+
+            $sx .= bsc($this->btn_new_thesa(),12);
 
             $sx = bs($sx);
             return $sx;

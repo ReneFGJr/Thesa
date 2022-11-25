@@ -71,6 +71,6 @@ class ThesaConceptMedia extends Migration
 
     public function down()
     {
-        $this->forge->dropTable('thesa_references');
+        $this->forge->dropTable('thesa_midias');
     }
 }

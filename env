@@ -14,8 +14,8 @@
 # ENVIRONMENT
 #--------------------------------------------------------------------
 
-#CI_ENVIRONMENT = production
-CI_ENVIRONMENT = development
+CI_ENVIRONMENT = production
+#CI_ENVIRONMENT = development
 
 #--------------------------------------------------------------------
 # APP
@@ -35,6 +35,27 @@ app.baseURL = 'http://__URL__/thesa'
 # app.sessionRegenerateDestroy = false
 
 # app.CSPEnabled = false
+
+#--------------------------------------------------------------------
+# E-MAIL
+#--------------------------------------------------------------------
+# options: sendmail, smtp
+email.type = 'smtp'
+email.stmp = 'smtp.hostinger.com';
+
+# Sem o Uso do TLS
+#email.stmp_port = '465';
+#email.UseTLS = NO
+
+# Uso do TLS
+email.stmp_port = '587';
+email.UseTLS = YES
+##########
+email.fromEmail = 'thesa@thesa.com.br';
+email.fromName = 'Thesa';
+email.password = '<SENHA>';
+email.user_auth = 'thesa@thesa.com.br';
+email.FromLineOverride=YES
 
 #--------------------------------------------------------------------
 # DATABASE

@@ -49,6 +49,8 @@ $routes->get('/tools/(:any)', 'Thesa::index/tools/$1');
 //$routes->post('/tools/(:any)/(:any)', 'Thesa::index/$1/$2');
 //$routes->get('/tools/(:any)/(:any)', 'Thesa::index/tools/$1/$2');
 
+$routes->get('/myth', 'Thesa::index/myth');
+
 $routes->get('/thopen', 'Thesa::index/thopen');
 $routes->get('/th/(:any)', 'Thesa::index/th/$1');
 $routes->get('/t/(:any)', 'Thesa::index/t/$1');
@@ -61,6 +63,7 @@ $routes->post('/social/', 'Thesa::social/$1');
 $routes->post('/social/(:any)', 'Thesa::social/$1');
 
 $routes->get('/pdf/(:any)', 'Thesa::pdf/$1');
+
 
 $routes->get('/', 'Thesa::index');
 

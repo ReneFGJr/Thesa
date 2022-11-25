@@ -14,7 +14,9 @@ class Collaborators extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = [
+        'th_us_th', 'th_us_user', 'th_us_perfil'
+    ];
 
     // Dates
     protected $useTimestamps = false;
@@ -39,6 +41,25 @@ class Collaborators extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    function add($user,$th,$perfil)
+        {
+            $dt = $this
+                ->where('th_us_th',$th)
+                ->where('th_us_user',$user)
+                ->findAll();
+
+            if (count($dt) == 0)
+                {
+                    $data = array();
+                    $data['th_us_th'] = $th;
+                    $data['th_us_user'] = $user;
+                    $data['th_us_perfil'] = $perfil;
+                    $this->set($data)->insert();
+                    return true;
+                }
+            return false;
+        }
 
     function own($id)
     {

@@ -128,10 +128,14 @@ class Thesa extends BaseController
                 break;
 
             case 'tools':
-
                     $Tools = new \App\Models\Thesa\Tools\Index;
                     $sx .= $Tools->index($id,$tp);
                     break;
+
+            case 'myth':
+                $Thesa = new \App\Models\Thesa\Thesa();
+                $sx .= $Thesa->myth();
+                break;
 
             case 'th':
                 $Descriptions = new \App\Models\Thesa\Descriptions();
