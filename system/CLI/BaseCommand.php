@@ -120,7 +120,7 @@ abstract class BaseCommand
         $exception = $e;
         $message   = $e->getMessage();
 
-        require APPPATH . 'Views/errors/cli/error_exception.php';
+        require APPPATH . '/views/errors/cli/error_exception.php';
     }
 
     /**

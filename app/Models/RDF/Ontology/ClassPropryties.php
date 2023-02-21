@@ -56,6 +56,15 @@ class ClassPropryties extends Model
         exit;
     }
 
+    function findClass($name)
+        {
+            echo '===>'.$name;
+            $dt = $this
+                //->where('rs_namespace',$name)
+                ->findAll();
+            pre($dt);
+        }
+
     function Class($class,$subclass='')
         {
             $Prefix = new \App\Models\RDF\Ontology\Prefix();

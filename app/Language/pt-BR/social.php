@@ -65,10 +65,18 @@ return [
 	'password_not_match'=>'Senha de confirmação não confere',
 	'password_short' => 'Senha muito curso, mínimo 6 caracteres',
 	'password_changed' => 'Senha alterada com Sucesso!',
+	'save' => 'Alterar',
+	'add_perfil' => 'Adicionar',
+	'already_seted' => '<span style="color: green" class="small">já atribuído</span>',
+	'users_list' => 'Usuários do sistemas',
+	'users_perfis' => 'Perfis de usuários',
 	'' => '',
 	'' => '',
 	'' => '',
 	'' => '',
 	'' => '',
+	'' => '',
+	'' => '',
+
 
 ];

@@ -7,8 +7,8 @@ use CodeIgniter\Model;
 class Index extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'indices';
-    protected $primaryKey       = 'id';
+    protected $table            = 'thesa';
+    protected $primaryKey       = 'id_th';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
@@ -40,6 +40,50 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function getThesa($th=0)
+    {
+        return $this->setThesa($th);
+    }
+
+    function le($id)
+    {
+        $ThIcone = new \App\Models\Thesa\Icone();
+        $dt = $this->find($id);
+        $dt['icone'] = $ThIcone->icone($dt);
+        return $dt;
+    }
+
+    function show_header($th)
+        {
+            $dt = $this->le($th);
+            return $this->header($dt);
+        }
+
+    function header($dt)
+    {
+        $header = 'Theme/Standard/headerTh';
+        $sx = view($header, $dt);
+        return $sx;
+    }
+
+    function setThesa($th = '')
+    {
+        if ($th != '') {
+            $_SESSION['th'] = $th;
+            return $th;
+        } else {
+            if (isset($_SESSION['th'])) {
+                $th = $_SESSION['th'];
+                return $th;
+            } else {
+                echo "OPS - SEM TH - [$th]";
+                pre($_SESSION);
+                exit;
+            }
+        }
+        return $th;
+    }
+
     function summary($id = '')
     {
         $data = array();
@@ -50,7 +94,7 @@ class Index extends Model
             $dt = $Thesa->select('count(*) as total')->findAll();
             $data['nr_thesaurus'] = $dt[0]['total'];
 
-            $ThConcept = new \App\Models\RDF\ThConcept();
+            $ThConcept = new \App\Models\Thesa\Concepts\Index();
             $dt = $ThConcept->select('count(*) as total')->findAll();
             $data['nr_concepts'] = $dt[0]['total'];
 
@@ -58,7 +102,7 @@ class Index extends Model
             $dt = $ThTerm->select('count(*) as total')->findAll();
             $data['nr_terms'] = $dt[0]['total'];
         } else {
-            $ThConcept = new \App\Models\RDF\ThConcept();
+            $ThConcept = new \App\Models\Thesa\Concepts\Index();
             $dt = $ThConcept
                 ->select('count(*) as total')
                 ->where('c_th', $id)
@@ -72,7 +116,6 @@ class Index extends Model
                 ->findAll();
             $data['nr_terms'] = $dt[0]['total'];
         }
-
         return $data;
     }
 }

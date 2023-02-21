@@ -58,6 +58,10 @@ class Socials extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
+	var $path;
+	var $path_back;
+	var $id = 0;
+
 	function user()
 	{
 		$sx = '';
@@ -113,9 +117,6 @@ class Socials extends Model
 			case 'session':
 				if ($_SERVER['CI_ENVIRONMENT'] == 'development') {
 					$id = 1;
-					echo '<pre>';
-					print_r($_SESSION);
-					echo '</pre>';
 					$newdata = [
 						'id'  => $id,
 						'email'     => 'Usuário Test (ADMIN)',
@@ -124,10 +125,6 @@ class Socials extends Model
 					];
 					$session = session();
 					$session->set($newdata);
-
-					echo '<pre>';
-					print_r($_SESSION);
-					echo '</pre>';
 				}
 				break;
 			case 'test':
@@ -216,12 +213,18 @@ class Socials extends Model
 				/********************************************* PERFIS */
 			case 'perfis':
 				$sx .= $cab;
-				$sx .= breadcrumbs();
+				$bread = array();
+				$bread["Social"] = PATH . COLLECTION;
+				$bread["Perfil"] = PATH . COLLECTION.'/perfis';
+				$sx .= breadcrumbs($bread);
 				$sx .= $this->perfis($id, $dt);
 				break;
 			case 'perfis_add':
 				$sx .= $cab;
-				$sx .= breadcrumbs();
+				$bread = array();
+				$bread["Social"] = PATH . COLLECTION;
+				$bread["Perfil"] = PATH . COLLECTION . '/perfis';
+				$sx .= breadcrumbs($bread);
 				$sx .= $this->perfis_add($id, $dt);
 				break;
 			case 'profile':
@@ -245,7 +248,9 @@ class Socials extends Model
 
 			default:
 				$sx = $cab;
-				$sx .= breadcrumbs();
+				$bread = array();
+				$bread["Social"] = PATH . COLLECTION;
+				$sx .= breadcrumbs($bread);
 				$st =  h(lang('Social'), 1);
 				$access = $this->getAccess('#ADM#GER');
 
@@ -288,6 +293,8 @@ class Socials extends Model
 				$menu['#email'] = 'E-mail';
 				$menu[PATH . 'social/admin/email_config'] = 'E-mail - Configurações';
 				$menu[PATH . 'social/admin/email_test'] = 'E-mail - Teste';
+				$menu[PATH . 'social/users'] = 'Usuarios';
+				$menu[PATH . 'social/perfis'] = 'Perfis';
 				$sx .= menu($menu);
 				break;
 		}
@@ -341,6 +348,7 @@ class Socials extends Model
 	}
 	function admin_email_test()
 	{
+		$email = new \App\Models\Functions\Email();
 		$sx = '';
 		$sx .= h('Email Test', 1);
 		$sx .= form_open(PATH . 'social/admin/email_test');
@@ -351,7 +359,7 @@ class Socials extends Model
 		$xemail = get("email");
 
 		if (strlen($xemail) > 0) {
-			$sx .= sendemail($xemail, 'Teste de e-mail', 'Teste de e-mail');
+			$sx .= $email->sendemail($xemail, 'Teste de e-mail', 'Teste de e-mail');
 		}
 		return $sx;
 	}
@@ -359,10 +367,10 @@ class Socials extends Model
 	function menu($nivel = 0)
 	{
 		$menu = array();
-		$menu[PATH . 'social/users'] = '/social.users_list';
-		$menu[PATH . 'social/perfis'] = '/social.users_perfis';
-		$menu[PATH . 'social/convert'] = '/social.users_convert';
-		$sx = bs(bsc(bsmenu($menu), 12));
+		$menu[PATH . '/social/users'] = lang('social.users_list');
+		$menu[PATH . '/social/perfis'] = lang('social.users_perfis');
+		$sx = bs(bsc(menu($menu), 12));
+		$sx .= PATH;
 		return $sx;
 	}
 
@@ -397,19 +405,28 @@ class Socials extends Model
 
 			/********************************************* Check */
 			$tp = explode('#', $t);
-
-			for ($i = 0; $i < count($tp); $i++) {
-				$ta = $this->calcMD5('#' . $tp[$i]);
-				if (isset($_SESSION['access'])) {
-					$ac = $_SESSION['access'];
-					$ac = (array)json_decode($ac);
-					for ($r = 0; $r < count($ac); $r++) {
-						if ($ac[$r] == $ta) {
-							return true;
-						}
+			$wh = '';
+			foreach($tp as $id=>$pf)
+				{
+					if ($pf != '') {
+						if ($wh != '') { $wh .= ' or ';}
+						$wh .= "(pe_abrev = '#$pf')";
 					}
 				}
-			}
+			$user_id = $this->getUser();
+			$sql = "select * from users_perfil_attrib
+						inner join users_perfil ON id_pe = pa_perfil
+						where (pa_user = $user_id)";
+			if ($wh != '') { $sql .= "and ($wh)"; }
+
+			$db = $this->db->query($sql);
+			$db = $db->getresult();
+			if (count($db) > 0)
+				{
+					return true;
+				} else {
+					return false;
+				}
 		}
 		return false;
 	}
@@ -444,7 +461,7 @@ class Socials extends Model
 		$sf = form_open();
 		$sf .= lang('social.user_name') . ' ' . lang('social.search');
 		$sf .= '<div class="input-group mb-3">
-					<input type="text" name="user.name" class="form-control" placeholder="' . lang('social.user_name') . '" aria-label="' . lang('social.user_name') . '" aria-describedby="basic-addon2">
+					<input type="text" name="user.name" class="form-control-lg full" placeholder="' . lang('social.user_name') . '" aria-label="' . lang('social.user_name') . '" aria-describedby="basic-addon2">
 					<div class="input-group-append">
 						<input type="submit" class="btn btn-outline-primary" type="button" value="' . lang('social.search') . '">
 					</div>
@@ -457,11 +474,15 @@ class Socials extends Model
 		/**************************************************************************** ADD */
 		$assign = get("assign");
 		$user = get("user");
+
 		if ((strlen($assign) > 0) and (strlen($user) > 0)) {
 			$check = md5($d1 . $user . date("Ymd"));
 			if (($check == $assign) and (round($user) > 0)) {
 				$check = md5($user . $d1);
-				$sql = "select * from users_perfil_attrib where pa_user = '$user' and pa_perfil = '$d1' ";
+				$sql = "select * from users_perfil_attrib
+							where pa_user = '$user'
+							and pa_perfil = '$d1' ";
+
 				$dt = $this->db->query($sql)->getResult();
 				if (count($dt) == 0) {
 					$sql = "insert into users_perfil_attrib (pa_user, pa_perfil, pa_check) values ('$user','$d1','$check')";
@@ -479,14 +500,16 @@ class Socials extends Model
 		if (strlen($name) > 0) {
 			$this->setUserDb();
 			$sql = "select * from users
-								left join users_perfil_attrib ON pa_user = id_us
-								where (us_nome like '%$name%') or (us_email like '%$name%')";
+						left join users_perfil_attrib ON pa_user = id_us and (pa_perfil = $d1 )
+						where
+						((us_nome like '%$name%') or (us_email like '%$name%'))";
 			$dt = $this->db->query($sql)->getResult();
+			echo $sql;
 
 			for ($r = 0; $r < count($dt); $r++) {
 				$line = (array)$dt[$r];
 				if ($line['id_pa'] == '') {
-					$link = '<a href="' . base_url(PATH . MODULE . '/social/perfis_add/' . $d1 . '/') . '?user=' . $line['id_us'] . '&assign=' . md5($d1 . $line['id_us'] . date("Ymd")) . '">';
+					$link = '<a style="padding: 0px 10px;" class="btn btn-primary" href="' . base_url(PATH . MODULE . '/social/perfis_add/' . $d1 . '/') . '?user=' . $line['id_us'] . '&assign=' . md5($d1 . $line['id_us'] . date("Ymd")) . '">';
 					$link .= lang('social.add_perfil');
 					$link .= '</a>';
 					$sx .= bsc($line['id_us'], 1);
@@ -506,23 +529,11 @@ class Socials extends Model
 		return $sx;
 	}
 
-	function perfis($cmd = '')
+	function perfis($cmd = '',$id=0)
 	{
-		$cmd = '';
-		$url = geturl();
-		$url = explode('/', $url);
-		if (isset($url[5])) {
-			$cmd = $url[5];
-		}
-		if (isset($url[6])) {
-			$id = $url[6];
-		} else {
-			$id = 0;
-		}
-
 		/****************************** Config DataBase */
 		$this->setPerfilDB();
-		$this->path = PATH . MODULE . '/social/perfis';
+		$this->path = PATH . COLLECTION .'/perfis';
 
 		switch ($cmd) {
 			case 'viewid':
@@ -534,7 +545,7 @@ class Socials extends Model
 				break;
 			case 'edit':
 				$this->id = $id;
-				$this->path_back = PATH . MODULE . '/social/perfis';
+				$this->path_back = PATH . '/social/perfis';
 				$sx = form($this);
 				break;
 			default:
@@ -640,15 +651,18 @@ class Socials extends Model
 			->where('id_pe', $id)
 			->findAll();
 		$sx .= '<table class="table">';
-		$sx .= '<tr><th>#</th><th>' . lang('social.id_us') . '</th><th>' . lang('social.us_nome') . '</th></tr>';
+		$sx .= '<tr><th>#</th>
+					<th>' . lang('social.us_nome') . '</th>
+					<th>' . lang('social.us_login') . '</th>
+					<th>' . lang('social.last_access') . '</th>
+					</tr>';
 		for ($r = 0; $r < count($dt); $r++) {
 			$line = $dt[$r];
 			$sx .= '<tr>';
 			$sx .= '<td>' . ($r + 1) . '</td>';
 			$sx .= '<td>' . $line['us_nome'] . '</td>';
-			$sx .= '<td>' . $line['us_nome'] . '</td>';
-			$sx .= '<td>' . $line['us_nome'] . '</td>';
-			$sx .= '<td>' . $line['us_nome'] . '</td>';
+			$sx .= '<td>' . $line['us_email'] . '</td>';
+			$sx .= '<td>' . $line['us_lastaccess'] . '</td>';
 			$sx .= '</tr>';
 		}
 		if (count($dt) == 0) {
@@ -709,11 +723,15 @@ class Socials extends Model
 		$sx = '';
 		if ($id > 0) {
 			$dt = $this->Find($id);
-			$sx .= breadcrumbs(array('social.home' => PATH . MODULE, '/social.perfil' => PATH . MODULE . '/social/perfil'));
+			$sx .= breadcrumbs(array('social.home-xxx1' => PATH . MODULE, '/social.perfil' => PATH . MODULE . '/social/perfil'));
 			$sx .= $this->perfil_show_header($dt);
 			$sx .= $this->my_library($dt);
 			$logs = $this->logs($id);
-			$rese = $this->my_reasearchs($id);
+			$rese = '';
+			if (function_exists("my_reasearchs"))
+				{
+					$rese = my_reasearchs($id);
+				}
 			$setings = $this->my_setings($id);
 			$sx .= bs(
 				bsc($setings, 4) .
@@ -945,26 +963,6 @@ class Socials extends Model
 	}
 
 
-	/*************************************************** RESEARSH */
-	function my_reasearchs($id)
-	{
-		$sx = '
-			<div class="card h-100">
-					<div class="card-header pb-0 p-3">
-						<h6 class="mb-0">' . lang('social.researchs_register') . '</h6>
-					</div>
-					<div class="card-body p-3">
-						<h6 class="text-uppercase text-body text-xs font-weight-bolder">' . lang('social.research') . '</h6>
-						<ul class="list-group">';
-		$sx .= '<li class="list-group-item border-0 px-0">' . lang('social.research_info') . '</li>';
-		$sx .= '
-						</ul>
-					</div>
-					</div>
-					';
-		return $sx;
-	}
-
 	/*************************************************** LOGS */
 
 	function log_insert($id)
@@ -1107,8 +1105,16 @@ class Socials extends Model
 				$_SESSION['check'] = substr($_SESSION['id'] . $_SESSION['id'], 0, 10);
 
 				$sx .= '<h2>' . lang('social.success') . '<h2>';
-				$sx .= '<meta http-equiv="refresh" content="2;URL=\'' . PATH . COLLECTION . '\'">';
+				$sx .= '<meta http-equiv="refresh" content="2;URL=\'' . PATH . '\'">';
 				$this->log_insert($dt[0]['id_us']);
+
+				/* Atualiza último acesso */
+				$id = $dt[0]['id_us'];
+				$data = array('us_lastaccess'=>date("Y-m-d H:i:s"));
+				$this
+					->set($data)
+					->where('id_us',$id)
+					->update();
 			} else {
 				$sx .= '<h2>' . lang('ERROR') . '<h2>';
 				$sx .= '<span class="singin" onclick="showLogin()">' . lang('social.return') . '</span>';
@@ -1122,6 +1128,7 @@ class Socials extends Model
 
 	function forgout()
 	{
+		$Email = new \App\Models\Functions\Email();
 		$email = get("email");
 		$dt = $this->where('us_email', $email)->findAll();
 
@@ -1140,33 +1147,33 @@ class Socials extends Model
 
 		$key =  md5(date("YmdHis") . $email);
 		$_SESSION['forgout'] = $key;
-		$link = PATH . 'social/forgout/' . $user['id_us'] . '?key=' . $key;
+		$link = PATH . '/social/forgout/' . $user['id_us'] . '?key=' . $key;
 		$link_html = '<a href="' . $link . '">' . lang('social.forgout_email_link') . '</a>';
 
 		/*********************************/
 		$txt = '<h1>' . lang('social.forgout_email_title') . '</h1>';
 		$txt .= '<center>';
-		$txt .= '<table width="600" border=1>';
-		$txt .= '<tr><td style=" padding: 10px;">';
-		$txt .= '<h2>' . lang('social.forgout_email_user') . '</h2>';
-		$txt .= '</td></tr>';
+		$txt .= '<table width="600" border=0>';
+		$txt .= '<tr><td><img src="cid:$image1" style="width: 100%;"></td></tr>';
 
 		$txt .= '<tr><td cellpadding="5">';
-		$txt .= '<p>' . lang('social.forgout_email_text') . '</p>';
-		$txt .= '<p>' . lang('social.forgout_email_user') . ': ' . $user['us_nome'] . '</p>';
-		$txt .= '<p>' . lang('social.forgout_email_email') . ': ' . $user['us_email'] . '</p>';
-		$txt .= '<p>' . lang('social.forgout_email_password') . '</p>';
-		$txt .= '<p>' . $link . '</p>';
-		$txt .= '<p>' . lang('social.forgout_email_text2') . '</p>';
-		$txt .= '<p>' . lang('social.forgout_email_text3') . '</p>';
-		$txt .= '<p>' . lang('social.forgout_email_text4') . '</p>';
+		$size = ' style="font-size: 1.2em;"';
+		$txt .= '<br/><br/>';
+		$txt .= '<p style="font-size: 1.4em;"><b>' . lang('social.forgout_email_user') . ' ' . $user['us_nome'] . '</b></p>';
+
+		$txt .= '<p ' . $size . '>' . lang('social.forgout_email_text') . '</p>';
+		$txt .= '<p ' . $size . '>' . lang('social.forgout_email_password') . '</p>';
+		$txt .= '<p ' . $size . '>' . $link . '</p>';
+		$txt .= '<p ' . $size . '>' . lang('social.forgout_email_text2') . '</p>';
+		$txt .= '<p ' . $size . '>' . lang('social.forgout_email_text3') . '</p>';
+		$txt .= '<p ' . $size . '>' . lang('social.forgout_email_text4') . '</p>';
 		$txt .= '</td></tr>';
 
 		$txt = troca($txt, '$link', $link_html);
 		$txt .= '</center>';
-		$subject = '[' . getenv('app.ProjecName') . '] ' . lang('social.forgout_email_title');
-
-		sendmail($email, $subject, $txt);
+		$txt .= '<br><br><br>';
+		$subject = '[' . getenv('app.project_name') . '] ' . lang('social.forgout_email_title');
+		$Email->sendmail($email, $subject, $txt);
 
 		return $sx;
 	}
@@ -1334,8 +1341,8 @@ class Socials extends Model
 			$sx .= '            ' . $email . cr();
 			$sx .= '          </a>' . cr();
 			$sx .= '          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">' . cr();
-			$sx .= '            <li><a class="dropdown-item" href="' . (PATH . MODULE . '/social/?cmd=perfil') . '">' . lang('social.perfil') . '</a></li>' . cr();
-			$sx .= '            <li><a class="dropdown-item" href="' . (PATH . MODULE . '/social/?cmd=logout') . '">' . lang('social.logout') . '</a></li>' . cr();
+			$sx .= '            <li><a class="dropdown-item" href="' . (URL . '/social/?cmd=perfil') . '">' . lang('social.perfil') . '</a></li>' . cr();
+			$sx .= '            <li><a class="dropdown-item" href="' . (URL . '/social/?cmd=logout') . '">' . lang('social.logout') . '</a></li>' . cr();
 			$sx .= '          </ul>' . cr();
 			$sx .= '        </li>' . cr();
 			$sx .= '</ul>' . cr();

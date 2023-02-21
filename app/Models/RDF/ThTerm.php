@@ -106,11 +106,27 @@ class ThTerm extends Model
         return $dt;
     }
 
+    function caditate_prefLabel($id,$langs=array(),$th=0)
+        {
+            $this
+            ->join('thesa_terms_th', 'term_th_term = id_term')
+            ->join('language', 'term_lang = id_lg')
+            ->where('term_th_thesa', $th)
+            ->where('term_th_concept', 0);
+            foreach($langs as $lang=>$temp)
+                {
+                    $this->where('lg_code <> "'.$lang.'"');
+                }
+            $this->orderBy('term_name', 'ASC');
+            $dt = $this->findAll();
+            return($dt);
+        }
+
     function form($th = 0)
     {
-        $Thesa = new \App\Models\Thesa\Thesa();
+        $Thesa = new \App\Models\Thesa\Index();
         $th = $Thesa->setThesa();
-        $Language = new \App\Models\Language\Index();
+        $Language = new \App\Models\Thesa\Language();
         $sx = '';
         /*************************************** Serie A */
         $sa = '';
@@ -118,9 +134,9 @@ class ThTerm extends Model
         $sa .= '<textarea class="form-control" name="terms" id="terms" rows=10 cols=80></textarea>';
         $sa .= $this->btn_append($th);
         $sa .= '&nbsp;|&nbsp;';
-        $sa .= $this->btn_return($th);
+        $sa .= $this->btn_close($th);
         $sa .= '<hr>';
-        $sa .= '<a href="'.PATH.COLLECTION. '/terms/create_concept'.'" class="btn btn-outline-secondary">'.msg('thesa.see_term_candidatos').'</a>';
+        //$sa .= '<a href="'.PATH.COLLECTION. '/terms/create_concept'.'" class="btn btn-outline-secondary">'.msg('thesa.see_term_candidatos').'</a>';
 
         /**************************************** Serie B */
         $sb = '';
@@ -212,7 +228,7 @@ class ThTerm extends Model
             echo bsmessage(lang('thesa.term_concept_creadted'), 1);
             echo '
                     <script>
-                        var url = "' . PATH . 'admin/terms/ajax_term_update/' . $id . '";
+                        var url = "' . PATH . '/admin/terms/ajax_term_update/' . $id . '";
                         $("#result").html("");
                         $("#term_list_div").load(url);
                     </script>
@@ -225,7 +241,7 @@ class ThTerm extends Model
                         <script>
                         $("#btn_confirm").click(function() {
 
-                            var url = "' . PATH . 'admin/terms/ajax_term_concept' . '";
+                            var url = "' . PATH . '/admin/terms/ajax_term_concept' . '";
                             $.ajax({
                                 type: "POST",
                                 url: url,
@@ -318,7 +334,7 @@ class ThTerm extends Model
                         /**************************************************** CREATE **/
                         $("#btn_create_concept").click(function() {
 
-                            var url = "' . PATH . 'admin/terms/ajax_term_concept' . '";
+                            var url = "' . PATH . '/admin/terms/ajax_term_concept' . '";
                             $.ajax({
                                 type: "POST",
                                 url: url,
@@ -333,7 +349,7 @@ class ThTerm extends Model
                         /****************************************** ONE CLICK CREATE **/
                         $("#btn_create_concept_oneclick").click(function() {
 
-                            var url = "' . PATH . 'admin/terms/ajax_term_concept' . '";
+                            var url = "' . PATH . '/admin/terms/ajax_term_concept' . '";
                             $.ajax({
                                 type: "POST",
                                 url: url,
@@ -408,7 +424,7 @@ class ThTerm extends Model
     /***************************************** AJAX ou API */
     function term_register($d1, $d2, $d3)
     {
-        $Thesa = new \App\Models\Thesa\Thesa();
+        $Thesa = new \App\Models\Thesa\Index();
         $th = $Thesa->setThesa();
         $term = get("terms");
         $term = troca($term, chr(13), ';');
@@ -501,6 +517,13 @@ class ThTerm extends Model
     {
         $sx = '';
         $sx .= '<a href="' . PATH . '/admin/terms' . '" class="btn btn-outline-warning">' . lang("thesa.return") . '</a>';
+        return $sx;
+    }
+
+    function btn_close($th)
+    {
+        $sx = '';
+        $sx .= '<a href="#" onclick="wclose();" class="btn btn-outline-warning">' . lang("thesa.close") . '</a>';
         return $sx;
     }
 }

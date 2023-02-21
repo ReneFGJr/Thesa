@@ -16,7 +16,7 @@ class Thesa extends Model
     protected $protectFields    = true;
     protected $allowedFields    = [
         'id_th', 'th_name', 'th_achronic',
-        'th_description', 'th_status','',
+        'th_description', 'th_status', '',
         'th_terms', 'th_version', 'th_icone',
         'th_type', 'th_own'
     ];
@@ -45,368 +45,69 @@ class Thesa extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function own()
-        {
-            if (isset($_SESSION['th']))
-                {
-                    if (isset($_SESSION['id']))
-                        {
-                            $Collaborators = new \App\Models\Thesa\Collaborators();
-                            $dt = $Collaborators
-                                ->where('th_us_user',$_SESSION['id'])
-                                ->where('th_us_th', $_SESSION['th'])
-                                ->FindAll();
-                            if (count($dt) > 0)
-                                {
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-
-
-                        }
-                }
-            return false;
-        }
-
-    function myth()
-        {
-            $Social = new \App\Models\Socials();
-            $user = $Social->getuser();
-            $sx = h(lang('thesa.my_thesaurus'));
-            $sx .= $this->list($user);
-
-            $sx = bs(bsc($sx,12));
-            return $sx;
-        }
-
-    function index($d1,$d2,$d3)
-        {
-            switch($d1)
-                {
-                    case 'new':
-                        $sx = $this->new_thesa();
-                        break;
-                    default:
-                        $sx = $this->list();
-                        $sx .= bs(bsc($this->btn_new_thesa(),12, 'mt-5'));
-                        break;
-                }
-            $sx .= view('Theme/Standard/footer');
-            return $sx;
-        }
-
-    function t($id)
-        {
-            $sx = '';
-            $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
-            $Midias = new \App\Models\Thesa\Midias();
-            $ThNotes = new \App\Models\RDF\ThNotes();
-            $dt = $ThConceptPropriety
-                ->select('p_group, term_name, vc1.vc_label as vc_label, vc2.vc_label as vc_resource, lg_code, lg_language, pcst_achronic, pcst_name')
-                ->join('thesa_terms', 'ct_literal = id_term', 'left')
-                ->join('owl_vocabulary_vc as vc1', 'ct_propriety = vc1.id_vc', 'left')
-                ->join('owl_vocabulary_vc as vc2', 'ct_resource = vc2.id_vc', 'left')
-                ->join('language','term_lang = id_lg','left')
-                ->join('thesa_property', 'vc1.vc_label = p_name','left')
-                ->join('thesa_property_custom', '(ct_concept_2_qualify = id_pcst)', 'left')
-                ->where('ct_concept', $id)
-                ->orderBy('p_group, term_name')
-                ->findAll();
-
-                //echo $this->getlastquery();
-                $prefLabel = '';
-
-                /********************************** Image */
-                $Images = $Midias->show($id);
-
-                $sx .= '<table class="table_theme">';
-                $xgr = '';
-                $lns = 0;
-                for ($r=0;$r < count($dt);$r++)
-                    {
-                        $lns++;
-                        $line = $dt[$r];
-                        $gr = $line['p_group'];
-
-                        if ($line['vc_label'] == 'prefLabel')
-                            {
-                                $prefLabel = $line['term_name'];
-                                $prefLabel .= ' <sup>('.$line['lg_code'].')</sup>';
-                            }
-
-                        if (strlen(trim($line['term_name'])) > 0)
-                        {
-                            $sx .= '<tr>';
-                            $classF = '';
-                            if ($gr != $xgr)
-                                {
-                                    $sx .= '<td width="20%" class="small trh">' .
-                                        lang('thesa.'.$line['vc_label']) . '</td>';
-                                        $xgr = $gr;
-                                    $classF = 'tdh';
-                                } else {
-                                    $sx .= '<td></td>';
-                                }
-
-                            $sx .= '<td class="ps-3 '.$classF.'">'. $line['term_name'];
-                            $sx .= ' <sup>(' . $line['lg_code'] . ')</sup>';
-                            $qualy = trim($line['pcst_name']);
-                            if (strlen($qualy) > 0)
-                                {
-                                    $sx .= ' <sup class="ms-2">(' . $qualy . ')</sup>';
-                                }
-                            $sx .= '</td>';
-                            $sx .= '</tr>';
-                        } else {
-                            $sx .= '<tr valign="top">';
-                            $sx .= '<td width="20%" class="small trh">' . lang('thesa.'.$line['vc_label']) . '</td>';
-                            $sx .= '<td class="ps-3 tdh">' . $line['vc_resource'] . '</td>';
-
-                            if ($Images != '')
-                                {
-                                    $sx .= '<td rowspan="20" class="align-end" style="width: 200px;">' . $Images . '</td>';
-                                }
-                            $sx .= '</tr>';
-                        }
-                    }
-
-                $sx .= $ThNotes->show($id);
-
-                $Reference = new \App\Models\Thesa\Reference();
-                $sx .= $Reference->show($id);
-
-                /********************* Completar */
-                for($r=$lns;$r < 20;$r++)
-                    {
-                        $sx .= '<tr><td colspan=2>&nbsp;</td><td>&nbsp;</td></tr>';
-                    }
-                $sx .= '</table>';
-
-                /******************************* PrefLabel */
-                $edit = '';
-                $Collaborators = new \App\Models\Thesa\Collaborators();
-                if ($Collaborators->own($id))
-                    {
-                        $edit = '<a href="' . (PATH . 'a/' . $id) . '" class="ms-2">' . bsicone('edit') . '</a>';
-                    }
-                $st = '<h1>'.$prefLabel.'</h1>';
-                $st .= '<h6>URI: '.anchor(PATH.'v/'.$id).$edit.'</h6>';
-            return $st.$sx;
-        }
-
-    function terms($id)
-        {
-            $sx = '';
-            $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
-
-            $dt = $ThConceptPropriety
-                ->join('thesa_terms', 'ct_literal = id_term', 'left')
-                ->join('owl_vocabulary_vc', 'id_vc = ct_propriety', 'left')
-                ->where('ct_th', $id)
-                ->where('ct_literal > 0')
-                ->orderBy('term_name', 'ASC')
-                ->findAll();
-
-
-                //$sx .= '<ul class="list-unstyled">';
-                //pre($dt);
-                $sx .= '<select id="thesa_terms" size=25 style="width: 100%; border: 0px solid #000; outline: none;">';
-                $xlt = '';
-                for($r=0;$r < count($dt);$r++)
-                    {
-                        $line = $dt[$r];
-                        $lt = mb_strtoupper(substr(ascii($line['term_name']),0,1));
-                        if ($lt != $xlt)
-                            {
-                                $sx .= '<option value="" style="background-color: #f8f8f8; border-top: 1px solid #000; border-bottom: 1px solid #000; text-align: center; font-weight: bold;">= = '.$lt.' = =</option>';
-                                $xlt = $lt;
-                            }
-                        $link = '<a href="#" onclick="view('.$line['ct_concept'].');">';
-                        $linka = '</a>';
-
-                        $type = $line['vc_label'];
-                        switch($type)
-                            {
-                                case 'prefLabel':
-                                    $sx .= '<option value="' . $line['ct_concept'] . '">' . $line['term_name'] . '</option>';
-                                    break;
-                                case 'altLabel':
-                                    $sx .= '<option class="fst-italic ps-1 text-secundary" style="font-size: 0.9em;" value="' . $line['ct_concept'] . '">' . $line['term_name'] . '</option>';
-                                    break;
-                                case 'hiddenLabel':
-                                    //$sx .= '<option value="' . $line['ct_concept'] . '">' . $line['term_name'] . '</option>';
-                                    break;
-                            }
-                        //$sx .= '<li>'.$link.$line['term_name'].$linka.'</li>';
-
-                    }
-                //$sx .= '</ul>';
-                $sx .= '</select>';
-                $sx .= '<script>';
-                $sx .= '
-                        $("#thesa_terms").change(function() {
-                            var value = $(this).val();
-                             $("#desc").load("' . PATH . '/t/"+value);
-                        });
-                ';
-                $sx .= 'function view(id)
-                            {
-
-                            }';
-                $sx .= '</script>';
-            return($sx);
-
-        }
-
-    function store()
+    function index($d1, $d2, $d3)
     {
-        $Collaborators = new \App\Models\Thesa\Collaborators();
-
-        $request = \Config\Services::request();
-        $validation =  \Config\Services::validation();
-        $data = array();
-
-        if (isset($_POST)) {
-
-            $data = $request->getPost();
-
-            /********************************* RULES */
-            $rules = [
-                'th_name' => ['label' => 'Name', 'rules' => 'required|min_length[3]'],
-                'th_achronic' => ['label' => 'Silga', 'rules' => 'required|min_length[2]'],
-                'th_status' => ['label' => 'Silga', 'rules' => 'required|min_length[1]'],
-                'th_type' => ['label' => 'Silga', 'rules' => 'required|min_length[1]']
-            ];
-            //$validation->setRule('sc_name', 'Username', 'required|min_length[3]');
-            $validation->setRules($rules);
-
-            if ($validation->withRequest($request)->run()) {
-                $data = [
-                    'th_type' => $request->getVar('th_type'),
-                    'th_name'  => $request->getVar('th_name'),
-                    'th_status'  => $request->getVar('th_status'),
-                    'th_achronic'  => $request->getVar('th_achronic'),
-                    'th_description'  => $request->getVar('th_description')
-                ];
-
-                $id_th = $request->getVar('id_th');
-                $Social = new \App\Models\Socials();
-                $user = $Social->getUser();
-
-                if ($id_th == 0) {
-                    /************************************ CHECK */
-                    $dt = $this->where('th_name', $request->getVar('th_name'))->findAll();
-                    if (count($dt) > 0) {
-                        $data['error'] = msg('Thesaurus already exists', 'danger');
-                    } else {
-                        $this->save($data);
-                        $id_th = $this->getInsertID();
-                        $perfil = 1; // owner
-                        $Collaborators->add($user, $id_th, $perfil);
-                        $data['error'] = msg('Thesaurus created', 'success');
-                    }
-                } else {
-                    $this->set($data)->where('id_th', $id_th)->update();
-                    $Collaborators->add($$id_th, $user);
-                }
-                header("location: admin");
-                exit;
-            } else {
-                $data['ERROS'] = $validation->getErrors();
-                $data['validation'] = $this->validator;
-
-                return view('Thesa/Forms/ThesaNew', $data);
-            }
+        switch ($d1) {
+            case 'new':
+                $sx = $this->new_thesa();
+                break;
+            default:
+                $sx = $this->list();
+                $sx .= bs(bsc($this->btn_new_thesa(), 12, 'mt-5'));
+                break;
         }
+        return $sx;
     }
 
     function btn_new_thesa()
-        {
-            $sx = '<a href="'.(PATH.'admin/thesaurus/new').'" class="btn btn-outline-primary">';
-            $sx .= lang('thesa.new_thesa');
-            $sx .= '</a>';
-            return $sx;
-        }
+    {
+        $sx = '<a href="' . (PATH . 'admin/thesaurus/new') . '" class="btn btn-outline-primary">';
+        $sx .= lang('thesa.new_thesa');
+        $sx .= '</a>';
+        return $sx;
+    }
 
     function le($id)
+    {
+        $ThIcone = new \App\Models\Thesa\Icone();
+        $dt = $this->find($id);
+        $dt['icone'] = $ThIcone->icone($dt);
+        return $dt;
+    }
+
+    function setThesa($th='')
         {
-            $ThIcone = new \App\Models\Thesa\ThIcone();
-            $dt = $this->find($id);
-            $dt['icone'] = $ThIcone->icone($dt);
-            return $dt;
+            $Thesa = new \App\Models\Thesa\Index();
+            return $Thesa->setThesa($th);
         }
 
-    function header($dt)
-        {
-            $header = 'Theme/Standard/headerTh';
-            $sx = view($header,$dt);
-            return $sx;
-        }
+    function list($user = 0)
+    {
+        $sx = '';
+        $ThIcone = new \App\Models\Thesa\Icone();
 
-    function new_thesa()
-        {
-            $sx = '';
-            $sx .= $this->store();
-
-            return $sx;
-        }
-
-    function getThesa()
-        {
-            return $this->setThesa();
-        }
-
-    function setThesa($id='')
-        {
-            if ($id != '')
-                {
-                    $_SESSION['th'] = $id;
-                    return $id;
-                } else {
-                    if (isset($_SESSION['th']))
-                        {
-                            $id = $_SESSION['th'];
-                            return $id;
-                        } else {
-                            echo "OPS - SEM TH";
-                            exit;
-                        }
-                }
-            return $id;
-        }
-
-    function list($user=0)
-        {
-            $sx = '<h1>'.lang('thesa.Thesaurus'). '</h1>';
-            $ThIcone = new \App\Models\Thesa\ThIcone();
-
-            if($user > 0)
-            {
+        if ($user > 0) {
             $dt = $this
                 ->join('thesa_users', 'th_us_th = id_th')
                 ->join('thesa_users_perfil', 'th_us_perfil = id_pf')
                 ->where('th_us_user', $user)
                 ->findAll();
-            } else {
-                $dt = $this
+        } else {
+            $dt = $this
                 ->where('th_status', 1)
                 ->orderBy('th_name', 'ASC')
                 ->findAll();
-            }
-
-            for($r=0;$r < count($dt);$r++)
-                {
-                    $line = $dt[$r];
-                    $line['img'] = $ThIcone->icone($dt);
-                    $sx .= bsc(view('Theme/Standard/ViewThList',$line),2,'p-2');
-                }
-            $sx .= '';
-
-            $sx .= bsc($this->btn_new_thesa(),12);
-
-            $sx = bs($sx);
-            return $sx;
         }
+
+        for ($r = 0; $r < count($dt); $r++) {
+            $line = $dt[$r];
+            $line['img'] = $ThIcone->icone($dt);
+            $sx .= bsc(view('Theme/Standard/ViewThList', $line), 2, 'p-2');
+        }
+        $sx .= '';
+
+        $sx = bs($sx);
+        return $sx;
+    }
 
 }

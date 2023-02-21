@@ -53,6 +53,7 @@ $routes->get('/myth', 'Thesa::index/myth');
 
 $routes->get('/thopen', 'Thesa::index/thopen');
 $routes->get('/th/(:any)', 'Thesa::index/th/$1');
+$routes->get('/thh/(:any)', 'Thesa::index/thh/$1');
 $routes->get('/t/(:any)', 'Thesa::index/t/$1');
 $routes->get('/v/(:any)', 'Thesa::index/v/$1');
 $routes->get('/a/(:any)', 'Thesa::index/a/$1');

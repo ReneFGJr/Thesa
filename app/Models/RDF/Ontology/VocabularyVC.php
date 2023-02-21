@@ -82,6 +82,15 @@ class VocabularyVC extends Model
             $sx = bs(bsc($sx,12));
             return $sx;
         }
+
+    function findClass($prop)
+        {
+            return $this->find_prop($prop);
+        }
+    function findProp($prop)
+    {
+        return $this->find_prop($prop);
+    }
     function find_prop($prop)
         {
             $ThProprityCustom = new \App\Models\RDF\ThProprityCustom();

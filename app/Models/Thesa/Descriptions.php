@@ -53,7 +53,7 @@ class Descriptions extends Model
         {
             $Thesa = new \App\Models\Thesa\Index();
             $dt = $Thesa->summary($id);
-            $sx = view('Thesa/Summary_line', $dt);
+            $sx = view('Theme/Standard/Summary', $dt);
             return $sx;
         }
 
@@ -164,7 +164,7 @@ class Descriptions extends Model
                                     $text = troca($text,chr(10),'<br/>');
                                 }
                         }
-                    $sx .= '<h3>'.lang('thesa.'.$class[$r]).'</h3>';
+                    $sx .= '<h6 class="lora">'.lang('thesa.'.$class[$r]).'</h6>';
                     $sx .= '<div id="sp_'.$class[$r].'" class="m-2 p-2">'.$text.'</div>';
                 }
             return $sx;

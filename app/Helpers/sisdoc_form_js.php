@@ -2,7 +2,11 @@
 
 function jslog($txt)
 {
-    echo '<script> console.log("'.$txt.'"); </script>';
+    global $bot;
+    if (!isset($bot))
+        {
+            echo '<script> console.log("' . $txt . '"); </script>';
+        }
     return "";
 }
 
@@ -79,6 +83,12 @@ function reload()
         $sx = '<script>reload();</script>';
         return $sx;
     }
+
+function reload_master()
+{
+    $sx = '<script>window.opener.location.reload();</script>';
+    return $sx;
+}
 
 function wclose($tp = '')
 {

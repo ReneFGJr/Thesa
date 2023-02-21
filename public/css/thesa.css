@@ -1,51 +1,74 @@
-@import url('https://fonts.googleapis.com/css2?family=Actor&family=Arsenal&family=Cabin+Condensed&family=Lora:ital@1&family=Roboto+Slab:wght@300&family=Roboto:wght@100&family=Titillium+Web:wght@200&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Actor&family=Arsenal&family=Cabin+Condensed&family=Lora:ital@1&family=Roboto+Slab:wght@300&family=Roboto:wght@100&family=Titillium+Web:wght@200&display=swap");
 body {
   font-size: 1.2rem;
   background-color: #f5f5f5;
   color: #333;
 }
 
-.table_theme
-  {
-    width: 100%;
-    font-size: 1.2rem;
-  }
-.trh
-  {
-    border-top:1px solid #555;
-  }
-.tdh
-  {
-    border-top:1px solid #555;
-  }
-.font
-  {
-    font-family: "Cabin Condensed", "Arsenal", "Roboto Slab", "Actor", sans-serif;
-  }
+.full {
+  width: 100%;
+}
 
-.over
-  {
-    border: 1px #fff solid;
-    border-radius: 10px;
-    padding: 10px 20px 0px 20px;
-    margin-bottom: 5px;
+.term_list {
+  border: 1px solid #0000;
+  background-color: #888;
+  height: 400px;
+}
 
-  }
+.prefLabel {
+  opacity: 0.7;
+}
 
-.over:hover
-  {
-    background-color: #fff;
-    border: 1px #888 solid;
-  }
+.altLabel {
+  opacity: 0.7;
+  font-style: italic;
+  font-size: 0.8em;
+}
 
+.prefLabel:hover {
+  opacity: 1;
+}
+
+.abrev {
+  background-color: #f8f8f8;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  text-align: center;
+  font-weight: bold;
+}
+
+.table_theme {
+  width: 100%;
+  font-size: 1.2rem;
+}
+.trh {
+  border-top: 1px solid #555;
+}
+.tdh {
+  border-top: 1px solid #555;
+}
+.font {
+  font-family: "Cabin Condensed", "Arsenal", "Roboto Slab", "Actor", sans-serif;
+}
+
+.over {
+  border: 1px #fff solid;
+  border-radius: 10px;
+  padding: 10px 20px 0px 20px;
+  margin-bottom: 5px;
+}
+
+.over:hover {
+  background-color: #fff;
+  border: 1px #888 solid;
+}
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  font-family: "Lora", sans-serif;
-  color: #333;
+  color: #006;
 }
 a {
   text-decoration: none;
@@ -55,6 +78,23 @@ a:hover {
   text-decoration: underline;
   color: #006;
 }
+
+.lora
+{
+  font-family: 'Lora', 'Times New Roman';
+  font-style: italic;
+  font-weight: bold;
+}
+
+.handle
+  {
+    cursor: pointer;
+  }
+
+.bghover:hover
+  {
+    background-color: #e8e8e8;
+  }
 
 /***************************** CARDS */
 .cards {
@@ -90,19 +130,28 @@ a.cards {
   outline: none;
 }
 
+sup
+  {
+    color: #AAA;
+    font-size: 0.5em;
+  }
+
 .extrabig {
-  font-size: 300%;
+  font-size: 2em;
 }
 .big {
-  font-size: 200%;
+  font-size: 1.6em;
 }
 .small {
-  font-size: 75%;
+  font-size: 0.7em;
 }
 .supersmall {
-  font-size: 75%;
+  font-size: 0.6em;
 }
-
+.notes
+  {
+    font-size: 0.7em;
+  }
 /**************************** Resume******/
 .resume {
   font-size: 1.2rem;
@@ -154,27 +203,27 @@ select::-webkit-scrollbar-thumb {
 }
 
 .separador {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-orient: horizontal;
-        -webkit-box-direction: normal;
-        -webkit-flex-direction: row;
-        -ms-flex-direction: row;
-        flex-direction: row;
-        -webkit-box-pack: justify;
-        -webkit-justify-content: space-between;
-        -ms-flex-pack: justify;
-        justify-content: space-between;
-        -webkit-box-align: center;
-        -webkit-align-items: center;
-        -ms-flex-align: center;
-        align-items: center;
-        width: 100%;
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
 
 .separator-line {
   width: 125px;
@@ -183,11 +232,11 @@ select::-webkit-scrollbar-thumb {
   margin: 20px 0;
 }
 
-	.box
-	{
-	    margin-top: 40px;
-        border: 5px solid #00000;
-        background-color: #C0C0C0; opacity: 0.7;
-        border-radius: 10px;
-        margin: 10px;
-	}
+.box {
+  margin-top: 40px;
+  border: 5px solid #00000;
+  background-color: #c0c0c0;
+  opacity: 0.7;
+  border-radius: 10px;
+  margin: 10px;
+}

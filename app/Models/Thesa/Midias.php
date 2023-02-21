@@ -47,7 +47,7 @@ class Midias extends Model
     function upload($id, $d2 = '')
     {
         $sx = '';
-        $url = PATH . 'admin/ajax/upload/' . $id;
+        $url = PATH . '/admin/ajax/upload/' . $id;
         $sx .= h('Upload de arquivos', 2);
 
         $sx .= form_open_multipart();

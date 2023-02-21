@@ -4,10 +4,10 @@ namespace App\Models\Thesa;
 
 use CodeIgniter\Model;
 
-class ThIcone extends Model
+class Icone extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'thicones';
+    protected $table            = 'icones';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
@@ -40,21 +40,19 @@ class ThIcone extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function icone($dt=array())
-        {
-            if (!isset($dt['th_icone']))
-                {
-                    $img = strzero(0, 4) . '.svg';
-                    $img = PATH . '/img/icons/' . $img;
-                } else {
-                    $img = strzero($dt['th_icone'],4).'.png';
-                    $img = PATH.'/img/icons/'.$img;
-                    if ($dt['th_icone'] != 0)
-                        {
-                            $img = strzero($dt['th_icone'], 4) . '.png';
-                            $img = PATH . '/img/icons/' . $img;
-                        }
-                }
-            return $img;
+    function icone($dt = array())
+    {
+        if (!isset($dt['th_icone'])) {
+            $img = strzero(0, 4) . '.svg';
+            $img = PATH . '/img/icons/' . $img;
+        } else {
+            $img = strzero($dt['th_icone'], 4) . '.png';
+            $img = PATH . '/img/icons/' . $img;
+            if ($dt['th_icone'] != 0) {
+                $img = strzero($dt['th_icone'], 4) . '.png';
+                $img = PATH . '/img/icons/' . $img;
+            }
         }
+        return $img;
+    }
 }

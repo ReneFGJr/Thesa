@@ -47,8 +47,8 @@ defined('CIPATH')        || define('CIPATH', realpath(SYSTEMPATH . '../') . DIRE
 defined('FCPATH')        || define('FCPATH', realpath(PUBLICPATH) . DIRECTORY_SEPARATOR);
 defined('TESTPATH')      || define('TESTPATH', realpath(HOMEPATH . 'tests/') . DIRECTORY_SEPARATOR);
 defined('SUPPORTPATH')   || define('SUPPORTPATH', realpath(TESTPATH . '_support/') . DIRECTORY_SEPARATOR);
-defined('COMPOSER_PATH') || define('COMPOSER_PATH', realpath(HOMEPATH . 'vendor/autoload.php'));
-defined('VENDORPATH')    || define('VENDORPATH', realpath(HOMEPATH . 'vendor') . DIRECTORY_SEPARATOR);
+defined('COMPOSER_PATH') || define('COMPOSER_PATH', realpath(HOMEPATH . '/vendor/autoload.php'));
+defined('VENDORPATH')    || define('VENDORPATH', realpath(HOMEPATH . '/vendor') . DIRECTORY_SEPARATOR);
 
 // Load Common.php from App then System
 if (is_file(APPPATH . 'Common.php')) {

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models\Thesa;
+namespace App\Models\Thesa\Notes;
 
 use CodeIgniter\Model;
 
-class FichaCatalografica extends Model
+class Index extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'fichacatalograficas';
+    protected $table            = 'indices';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
@@ -40,12 +40,16 @@ class FichaCatalografica extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function ficha($id)
-    {
-        $sx = '';
-        $sx .= '<center>';
-        $sx .= '<div style="min-width:800px; min-height: 400">';
-        $sx .= '</div>';
-        return $sx;
-    }
+    function recover($id=0,$edit=0)
+        {
+            $ThNotes = new \App\Models\RDF\ThNotes();
+            $nt = ['scopeNote', 'notation', 'note', 'changeNote', 'editorialNote', 'example', 'historyNote'];
+            $dt = [];
+            foreach($nt as $note)
+                {
+                    $dt[$note] = $ThNotes->list($id,$note,$edit);
+                }
+            return $dt;
+
+        }
 }

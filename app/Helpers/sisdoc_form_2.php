@@ -1,4 +1,18 @@
 <?php
+
+function form_simple($extra='')
+    {
+        $text = get("text");
+        $test = !empty(get("test"));
+        $sx = '';
+        $sx .= form_open();
+        $sx .= form_textarea(array('name'=>'text','class'=>'form-control-sm','value'=>$text,'style'=>'width: 100%;'));
+        $sx .= form_checkbox(array('name'=>'test','value'=>1,'checked'=> $test)). ' Test';
+        $sx .= $extra;
+        $sx .= '<br>'.form_submit(array('name'=>'action','value'=>lang('brapci.send')));
+        $sx .= form_close();
+        return $sx;
+    }
 function show_array($ar)
 {
     $sx = '<table class="table">';

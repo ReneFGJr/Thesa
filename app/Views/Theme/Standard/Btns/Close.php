@@ -1,0 +1,1 @@
+<span onclick="wclose();" class="btn btn-outline-secondary handle"><?=lang('thesa.close');?></span>

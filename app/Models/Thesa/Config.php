@@ -172,13 +172,13 @@ class Config extends Model
             $sx = '';
             $sx .= (lang('thesa.Language_help'));
 
-            $Language = new \App\Models\Language\Index();
+            $Language = new \App\Models\Thesa\Language();
             $dt = $Language
                 ->select('lg_code,lg_language,count(*) as total')
-                ->join('thesa_language', 'id_lg = lgt_language', 'left')
+                ->join('language', 'id_lg = lgt_language', 'left')
                 ->where('lgt_th', $th)
                 ->groupBy('lg_code,lg_language')
-                ->orderBy('lg_language', 'ASC')
+                ->orderBy('id_lgt, lg_language', 'ASC')
                 ->findAll();
 
             $ds = array();
@@ -196,11 +196,17 @@ class Config extends Model
             $s1 .= '</select>';
 
             /****************** IDIOMAS PARA ATIVAR */
-            $dl = $Language->languages();
+            $dl = $Language
+                ->join('language', 'id_lg = lgt_language', 'left')
+                ->orderby('lgt_order')
+                ->findAll();
+
             $s2 = '<span class="small">'.lang('thesa.language_to_select') . '</span>';
             $s2 .= '<select id="lang_out" name="lang_out" class="form-control" size=10>';
-            foreach($dl as $code=>$lang_name)
+            foreach($dl as $id=>$line)
                 {
+                    $code = $line['lg_code'];
+                    $lang_name = $line['lg_language'];
                     if (!isset($ds[$code]))
                     {
                         $s2 .= '<option value="' . $code . '">' . $lang_name . '</option>';

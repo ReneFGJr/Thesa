@@ -40,6 +40,37 @@ class Admin extends BaseController
         $sx .= view('header/navbar_admin');
 
         switch ($d1) {
+            case 'notes':
+                $ThNotes = new \App\Models\RDF\ThNotes();
+                $sx = $this->cab();
+                $sx .= $ThNotes->form($d2,$d3,$d4,$d5);
+                break;
+
+            case 'term_add':
+                $Terms = new \App\Models\RDF\ThTerm();
+                $sx = $this->cab();
+                $sx .= $Terms->form($d2);
+                break;
+            case 'ajax_exclude':
+                $sx = $this->cab();
+                $Terms = new \App\Models\Thesa\Terms\Index();
+                $sx .= $Terms->exclude($d2,$d3,$d4,$d5);
+                break;
+            case 'popup_prefLabel':
+                $sx = $this->cab();
+                $PrefLabel = new \App\Models\Thesa\Terms\PrefLabel();
+                $sx .= $PrefLabel->form($d2);
+                break;
+            case 'popup_altLabel':
+                $sx = $this->cab();
+                $AltLabel = new \App\Models\Thesa\Terms\AltLabel();
+                $sx .= $AltLabel->form($d2);
+                break;
+            case 'popup_hiddenLabel':
+                $sx = $this->cab();
+                $HiddenLabel = new \App\Models\Thesa\Terms\HiddenLabel();
+                $sx .= $HiddenLabel->form($d2);
+                break;
             case 'media':
                 $Midia = new \App\Models\Thesa\Midias();
                 $Socials = new \App\Models\Socials();
@@ -201,7 +232,7 @@ class Admin extends BaseController
 
     function config($d1,$d2,$d3)
         {
-            $Thesa = new \App\Models\Thesa\Thesa();
+            $Thesa = new \App\Models\Thesa\Index();
             $th = $Thesa->setThesa();
 
             if (($th == '') or ($th == 0))

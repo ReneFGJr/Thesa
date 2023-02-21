@@ -9,7 +9,7 @@ $session = \Config\Services::session();
 $language = \Config\Services::language();
 
 define("URL", getenv("app.baseURL"));
-define("PATH", getenv("app.baseURL") . '/');
+define("PATH", getenv("app.baseURL"));
 define("MODULE", '');
 define("PREFIX", '');
 define("COLLECTION", 'thesa');
@@ -26,6 +26,11 @@ class Thesa extends BaseController
         return view('header/header', $data);
     }
 
+    public function navbar($data = array())
+    {
+        return view('header/navbar');
+    }
+
     public function footer($data = array())
     {
         $thema = 'Theme/Standard/footer';
@@ -34,15 +39,12 @@ class Thesa extends BaseController
 
     function social($d1 = '', $d2 = '', $d3 = '', $d4 = '')
     {
-        $Thesa = new \App\Models\Thesa\Thesa();
-        $sx = '';
         $dt = array();
         $sx = $this->cab();
         if ($d1 == 'login')
             {
-                $sx .= view('header/navbar');
+                $sx .= $this->navbar();
             }
-
 
         $Socials = new \App\Models\Socials();
         $sx .= $Socials->index($d1, $d2, $d3, $d4);
@@ -55,115 +57,76 @@ class Thesa extends BaseController
         $PDF->index();
     }
 
-    public function index($act = '', $id = '', $tp = '')
+    public function index($act = '', $id = '', $tp = '',$id2='')
     {
-
-        $Thesa = new \App\Models\Thesa\Thesa();
-        $data = array();
-
-        $sx = $this->cab();
-        $sx .= view('header/navbar');
-        switch ($act) {
+        $sx = '';
+        $sx .= $this->cab();
+        $sx .= $this->navbar();
+        switch($act)
+            {
+            case 'a':
+                $ConceptForm = new \App\Models\Thesa\Concepts\Form();
+                $sx .= $ConceptForm->form($id);
+                return $sx;
+                break;
             case 'v':
-                $Descriptions = new \App\Models\Thesa\Descriptions();
-                $ThConcept = new \App\Models\RDF\ThConcept();
+                $ConceptForm = new \App\Models\Thesa\Concepts\Index();
+                $Language = new \App\Models\Thesa\Language();
+                $Terms = new \App\Models\Thesa\Terms\Index();
+                $dt = $ConceptForm->find($id);
+                $th = $dt['c_th'];
 
-                $dth = $ThConcept->le($id);
-                if (!isset($dth[0]))
-                    {
-                        $sx = metarefresh(PATH.'ERRO/404',0);
-                        echo $sx;
-                        exit;
-                    }
-                $th = $dth[0]['c_th'];
-
-                $data = array();
-                //$sx .= view('header/menu_left');
+                $Thesa = new \App\Models\Thesa\Index();
                 $Thesa->setThesa($th);
 
-                $dth = $Thesa->le($th);
-                $sx .= $Thesa->header($dth);
+                $dt = $Thesa->le($th);
+                $sx .= view('Theme/Standard/headerTh', $dt);
 
-                $sa = '<div id="terms">' . $Thesa->terms($th) . '</div>';
-                $sb = '<div id="desc">';
-                //$sb .= $Descriptions->resume($th);
-                $sb .= $Thesa->t($id);
-                //$sb .= $Descriptions->show($th);
-                $sb .= '</div>';
+                $lang = $Language->getLang();
 
-                $sx .= bs(bsc($sa, 4) . bsc($sb, 8));
+                $ConceptList = new \App\Models\Thesa\Concepts\Lists();
+                $Other = $Terms->show($id,false);
+                $sx .= $ConceptList->terms_alphabetic($th,$lang,$Other);
                 break;
+            case 't':
+                $sx = '';
+                $Terms = new \App\Models\Thesa\Terms\Index();
+                $sx .= $Terms->show($id);
+                return $sx;
+                break;
+            case 'th':
+                $Thesa = new \App\Models\Thesa\Index();
+                $Language = new \App\Models\Thesa\Language();
+                $Terms = new \App\Models\Thesa\Terms\Index();
+                $Description = new \App\Models\Thesa\Descriptions();
+
+                $Thesa->setThesa($id);
+
+                $dt = $Thesa->le($id);
+                $sx .= view('Theme/Standard/headerTh',$dt);
+
+                $Other = $Description->resume($id, false);
+                $Other .= $Description->show($id);
+                $lang = $Language->getLang();
+
+                $ConceptList = new \App\Models\Thesa\Concepts\Lists();
+                $sx .= $ConceptList->terms_alphabetic($id, $lang, $Other);
+                break;
+
+            /******* TH OPEN */
             case 'thopen':
-                $sx .= bs(bsc(h(lang('thesa.ThOpen'))));
+                $sx .= bs(bsc(h(lang('thesa.ThOpen'),1)));
                 $Thesa = new \App\Models\Thesa\Thesa();
                 $sx .= $Thesa->index($id, $id, $id);
                 break;
-            case 'a':
-                $Collaborators = new \App\Models\Thesa\Collaborators();
-                if (!$Collaborators->own($id)) {
-                    echo metarefresh(PATH);
-                    exit;
-                }
-
-                $Thesa = new \App\Models\Thesa\Thesa();
-                $ThTerm = new \App\Models\RDF\ThTerm();
-                $ThConcept = new \App\Models\RDF\ThConcept();
-
-                /******************* Thesaurus Header */
-                $dt = $ThConcept->find($id);
-                $th = $dt['c_th'];
-                $dh = $Thesa->le($th);
-                $sx .= $Thesa->header($dh);
-
-                $dc = $ThConcept->le($id);
-                $sx .= $ThConcept->header_concept($dc);
-
-                $sx .= $ThConcept->edit($id);
-                break;
-            case 't':
-                /******************** Visualizado Ajax Term */
-                $Thesa = new \App\Models\Thesa\Thesa();
-                echo $Thesa->t($id);
-                exit;
-                break;
-
-            case 'tools':
-                    $Tools = new \App\Models\Thesa\Tools\Index;
-                    $sx .= $Tools->index($id,$tp);
-                    break;
-
-            case 'myth':
-                $Thesa = new \App\Models\Thesa\Thesa();
-                $sx .= $Thesa->myth();
-                break;
-
-            case 'th':
-                $Descriptions = new \App\Models\Thesa\Descriptions();
-                $data = array();
-                //$sx .= view('header/menu_left');
-                $id = $Thesa->setThesa($id);
-
-                $dt = $Thesa->le($id);
-                $sx .= $Thesa->header($dt);
-
-                $sa = '<div id="terms">' . $Thesa->terms($id) . '</div>';
-                $sb = '<div id="desc">';
-                $sb .= $Descriptions->resume($id);
-                $sb .= $Descriptions->show($id);
-                $sb .= '</div>';
-
-                $sx .= bs(bsc($sa, 4) . bsc($sb, 8));
-
-                $data['body'] = 'Corpo do texto';
-                break;
-
             default:
+                $ThesaHome = new \App\Models\Thesa\Content\Resume();
                 $bg = (date("s") % 4) + 1;
                 $data['bg'] = $bg;
-                $sx .= view('Thesa/Welcome', $data);
+                $data['content'] = $ThesaHome->resume();
+                $sx .= view('Thesa/Homepage', $data);
                 break;
-        }
-        $sx .= $this->footer($data);
+            }
         return $sx;
     }
 }

@@ -31,8 +31,17 @@
     </script>
     <script src="<?= getenv("app.baseURL"); ?>/js/bootstrap.bundle.min.js"></script>
     <script src="<?= getenv("app.baseURL"); ?>/js/jquery.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.8.24/jquery-ui.min.js"></script>
     <script src="<?= getenv("app.baseURL"); ?>/js/thesa.js"></script>
+    <script src="<?= getenv("app.baseURL"); ?>/js/drop_drag.js"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora&family=Montserrat:wght@100;300;600&family=Titillium+Web:wght@200;400;600&display=swap" rel="stylesheet">
 </head>
+<style>
+    body {
+        /* font-family: 'Montserrat', sans-serif; */
+        font-family: 'Titillium Web', 'Montserrat', sans-serif;
+    }
+</style>

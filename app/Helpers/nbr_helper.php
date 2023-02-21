@@ -20,7 +20,7 @@ function nbr_title($t)
         $country = array();
         $file = '../.temp/oa/country-pt-BR.php';
         if (file_exists($file))    { eval(file_get_contents($file)); }
-            
+
         $tl = mb_strtolower($t);
         $tu = mb_strtoupper($t);
 
@@ -38,8 +38,8 @@ function nbr_title($t)
                                 $sx .= $wdl[$r];
                             } else {
                                 $sx .= substr($wdu[$r],0,1).substr($wdl[$r],1,strlen($wdl[$r]));
-                            }   
-                            $rl = 1;                     
+                            }
+                            $rl = 1;
                     } else {
                         /* Excessões *****************************************/
                         if (in_array($wdl[$r],$country))
@@ -48,7 +48,7 @@ function nbr_title($t)
                             } else {
                                 $sx .= $wdl[$r];
                             }
-                        
+
                     }
                 $sx .= ' ';
             }
@@ -61,7 +61,7 @@ function nbr_author($xa,$xp)
         if (mb_detect_encoding($xa) != 'UTF-8')
         {
             $xa = utf8_encode($xa);
-        } 
+        }
         //$xa = 'RENE FAUSTINO DE GABRIEL- AÚNIOR';
         /******************************** PREPARA *******/
         $xa = troca($xa,' -','-');
@@ -83,9 +83,9 @@ function nbr_author($xa,$xp)
             }
 
         /***************************************** SOBRENOMES FALSOS */
-        $er1 = array(utf8_decode('JÚNIOR'),"JUNIOR", "NETTO", "NETO", "SOBRINHO", "FILHO", "JR.", "JR");
+        $er1 = array('JÚNIOR',utf8_encode('JÚNIOR'), "JUNIOR", "JúNIOR", "NETTO", "NETO", "SOBRINHO", "FILHO", "JR.", "JR");
         $TOT = count($NM);
-        
+
         if (in_array($NM[$TOT-1],$er1) == 1)
             {
                 $NM[$TOT-2] .= ' '.$NM[$TOT-1];
@@ -93,7 +93,7 @@ function nbr_author($xa,$xp)
                 $TOT--;
             }
 
-        /****************************************** PREPOSICOES **************/                
+        /****************************************** PREPOSICOES **************/
         $er2 = array('DE','DA','DO','DOS');
 
         /***************************************** MINUSCULAS E ABREVIATUDAS */
@@ -113,7 +113,7 @@ function nbr_author($xa,$xp)
                         $Nf[$r] = mb_strtoupper(substr($NM[$r],0,1)).mb_strtolower(substr($NM[$r],1,strlen($NM[$r])));
                     }
 
-                
+
                 $char = substr($NM[$r],0,1);
                 if ((strpos($Nf[$r],'-')) or (strpos($Nf[$r],' ')))
                     {
@@ -125,7 +125,7 @@ function nbr_author($xa,$xp)
                             }
                         $pos = strpos($n,' ');
                             if ($pos)
-                            {                        
+                            {
                                 $Nf[$r] = substr($n,0,$pos+1).mb_strtoupper(substr($n,$pos+1,1)).mb_strtolower(substr($n,$pos+2,strlen($n)));;
                             }
                     }
@@ -149,6 +149,15 @@ function nbr_author($xa,$xp)
                             }
                         break;
 
+                    /* Sobrenome e Nome CURTO*/
+                    case '2':
+                        $name = $NM[$TOT - 1];
+                        $name .= ', ';
+                        for ($r = 0; $r < ($TOT - 1); $r++) {
+                            $name .= substr($Nf[$r],0,1) . '. ';
+                        }
+                        break;
+
                     /* Nome e Sobrenome */
                     case '7':
                         for ($r=0;$r < ($TOT);$r++)
@@ -163,11 +172,12 @@ function nbr_author($xa,$xp)
                             {
                                 $name .= ' '.$Nm[$r];
                             }
-                        break;                        
+                        break;
                 default:
                     echo h($xa);
                     echo "Method ".$xp." not implemented";
-                    exit;
+                    $name = $xa;
+                    //exit;
             }
         $name = trim($name);
         if (strlen($name) < 5)
@@ -177,17 +187,17 @@ function nbr_author($xa,$xp)
         return $name;
     }
 
-function nbr_author2($xa, $tp) 
+function nbr_author2($xa, $tp)
     {
         $xa = troca($xa,'ú','Ú');
         echo '<br>===0==>'.$xa;
         if (mb_detect_encoding($xa) == 'UTF-8')
         {
             $xa = utf8_decode($xa);
-        }        
+        }
         $xa = troca($xa,', ,',',');
         echo '<br>===1==>'.$xa;
-        if (strpos($xa, ',') > 0) 
+        if (strpos($xa, ',') > 0)
         {
             $xb = trim(substr($xa, strpos($xa, ',') + 1, 100));
             $xa = trim(substr($xa, 0, strpos($xa, ',')));
@@ -199,9 +209,9 @@ function nbr_author2($xa, $tp)
         $xx = "";
         for ($qk = 0; $qk < strlen($xa); $qk++)
         {
-            if (substr($xa, $qk, 1) == ' ') 
+            if (substr($xa, $qk, 1) == ' ')
             {
-                if (strlen(trim($xx)) > 0) 
+                if (strlen(trim($xx)) > 0)
                 {
                     array_push($xp, trim($xx));
                     $xx = '';
@@ -210,53 +220,53 @@ function nbr_author2($xa, $tp)
                 $xx = $xx . substr($xa, $qk, 1);
             }
         }
-        
-        $xa = "";    
+
+        $xa = "";
         /////////////////////////////
         $xp1 = "";
         $xp2 = "";
         $er1 = array(utf8_decode('JÚNIOR'),"JUNIOR", "NETTO", "NETO", "SOBRINHO", "FILHO", "JR.", "JR");
-        
+
         ///////////////////////////// SEPARA NOMES
         $xop = 0;
-        for ($qk = count($xp) - 1; $qk >= 0; $qk--) 
+        for ($qk = count($xp) - 1; $qk >= 0; $qk--)
         {
             $xa = trim($xa . ' - ' . $xp[$qk]);
-    
+
             /* Primeira operação */
-            if ($xop == 0) 
-            { 
+            if ($xop == 0)
+            {
                 $xp1 = trim($xp[$qk] . ' ' . $xp1);
                 $xop = -1;
-            } else { 
+            } else {
                 $xp2 = trim($xp[$qk] . ' ' . $xp2);
-            }  
-            /* Checa os nomes */ 
-            if ($xop == -1) 
+            }
+            /* Checa os nomes */
+            if ($xop == -1)
                 {
                 $xop = 1;
-                for ($kr = 0; $kr < count($er1); $kr++) 
+                for ($kr = 0; $kr < count($er1); $kr++)
                 {
-                    if (trim(mb_strtoupper($xp[$qk])) == trim($er1[$kr])) 
+                    if (trim(mb_strtoupper($xp[$qk])) == trim($er1[$kr]))
                     {
                         $xop = 0;
                     }
                 }
             }
         }
-        
+
         ////////// 1 e 2
         $xp2a = mb_strtolower($xp2);
         $xa = trim(trim($xp2) . ' ' . trim($xp1));
-        if (($tp == 1) or ($tp == 2)) 
+        if (($tp == 1) or ($tp == 2))
         {
             echo '<br>===>'.$xp1;
             //exit;
             if ($tp == 1) { $xp1 = mb_strtoupper($xp1);
             }
             $xa = trim(trim($xp1) . ', ' . trim($xp2));
-            if ($tp == 2) 
-            { 
+            if ($tp == 2)
+            {
                 $xa = UpperCaseSQL(trim(trim($xp1) . ', ' . trim($xp2)));
             }
         }
@@ -264,55 +274,55 @@ function nbr_author2($xa, $tp)
             if ($tp == 4) { $xa = mb_strtoupper($xa);
             }
         }
-        
-        if (($tp >= 5) or ($tp <= 6)) 
+
+        if (($tp >= 5) or ($tp <= 6))
         {
             $xp2a = str_word_count(mb_strtolower($xp2), 1);
             $xp2 = '';
-            for ($k = 0; $k < count($xp2a); $k++) 
+            for ($k = 0; $k < count($xp2a); $k++)
             {
-                if ($xp2a[$k] == 'do') 
-                { 
+                if ($xp2a[$k] == 'do')
+                {
                     $xp2a[$k] = '';
                 }
-                if ($xp2a[$k] == 'da') 
-                { 
+                if ($xp2a[$k] == 'da')
+                {
                     $xp2a[$k] = '';
                 }
-                if ($xp2a[$k] == 'de') 
-                { 
+                if ($xp2a[$k] == 'de')
+                {
                     $xp2a[$k] = '';
                 }
-                if (strlen($xp2a[$k]) > 0) 
-                { 
+                if (strlen($xp2a[$k]) > 0)
+                {
                     $xp2 = $xp2 . substr($xp2a[$k], 0, 1) . '. ';
                 }
             }
             $xp2 = trim($xp2);
-            if ($tp == 6) 
-            { 
+            if ($tp == 6)
+            {
                 $xa = UpperCaseSQL(trim(trim($xp2) . ' ' . trim($xp1)));
             }
-            if ($tp == 5) 
-            { 
+            if ($tp == 5)
+            {
                 $xa = mb_strtoupper(trim(trim($xp1) . ', ' . trim($xp2)));
             }
         }
-        
+
         ////////////////////////////////////////////////////////////////////////////////////
-        if (($tp == 7) or ($tp == 8)) 
+        if (($tp == 7) or ($tp == 8))
         {
             $mai = 1;
             $xa = mb_strtolower($xa);
-            for ($r = 0; $r < strlen($xa); $r++) 
+            for ($r = 0; $r < strlen($xa); $r++)
             {
-                if ($mai == 1) 
-                { 
+                if ($mai == 1)
+                {
                     $xa = substr($xa, 0, $r) . substr(mb_strtoupper($xa), $r, 1) . substr($xa, $r + 1, strlen($xa));
                     $mai = 0;
                 } else {
-                    if ((substr($xa, $r, 1) == ' ') or (substr($xa, $r, 1) == '-')) 
-                    { 
+                    if ((substr($xa, $r, 1) == ' ') or (substr($xa, $r, 1) == '-'))
+                    {
                         $mai = 1;
                     }
                 }
@@ -330,13 +340,13 @@ function nbr_author2($xa, $tp)
             $xa = troca($xa, ' To ', ' to ');
             $xa = troca($xa, ' For ', ' for ');
         }
-        
+
         ////////////////////////////////////////////////////////////////////////////////////
-        if (($tp == 17) or ($tp == 18)) 
+        if (($tp == 17) or ($tp == 18))
         {
             $mai = 1;
             $xa = substr($xa,0,1).mb_strtolower(substr($xa,1,strlen($xa)));
-        }  
-        $xa = utf8_encode($xa);  
+        }
+        $xa = utf8_encode($xa);
         return $xa;
     }

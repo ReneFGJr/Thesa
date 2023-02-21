@@ -96,18 +96,12 @@ class ThTermTh extends Model
     /************************* Atualiza Themo do Conceito */
     function update_term_th($id, $th, $concept)
     {
-        if ($concept > 0) {
-            $dt['term_th_concept'] = $concept;
-            $dt = $this
-                ->set($dt)
-                ->where('term_th_term', $id)
-                ->where('term_th_thesa', $th)
-                ->update();
-        } else {
-            echo "ERRO Update Term TH";
-            echo '==>' . $id . '==>' . $th . '==>' . $concept;
-            exit;
-        }
+        $dt['term_th_concept'] = $concept;
+        $dt = $this
+            ->set($dt)
+            ->where('term_th_term', $id)
+            ->where('term_th_thesa', $th)
+            ->update();
     }
 
     function link_th($id, $th)

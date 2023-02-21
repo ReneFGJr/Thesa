@@ -1,22 +1,20 @@
 <?php
 
-namespace App\Models\Thesa;
+namespace App\Models\Thesa\Content;
 
 use CodeIgniter\Model;
 
-class ReferenceConcept extends Model
+class Resume extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'thesa_references_concepts';
-    protected $primaryKey       = 'id_rfc';
+    protected $table            = 'resumes';
+    protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [
-        'id_rfc', 'rfc_concept', 'rfc_ref'
-    ];
+    protected $allowedFields    = [];
 
     // Dates
     protected $useTimestamps = false;
@@ -42,28 +40,22 @@ class ReferenceConcept extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function register($id,$ref,$set)
+    function resume()
         {
-            $dt = $this
-                ->where('rfc_concept',$id)
-                ->where('rfc_ref',$ref)
-                ->findAll();
+            $data = array();
+            $Thesa = new \App\Models\Thesa\Index();
 
-            if ($set == 1)
-                {
-                    if (count($dt) == 0)
-                        {
-                            $data['rfc_concept'] = $id;
-                            $data['rfc_ref'] = $ref;
-                            $data['updated_at'] = date("Y-m-d H:i:s");
-                            $this->set($data)->insert();
-                        }
-                } else {
-                    $this
-                        ->where('rfc_concept',$id)
-                        ->where('rfc_ref',$ref)
-                        ->delete();
-                }
-            return True;
+            $dt = $Thesa->select('count(*) as total')->findAll();
+            $data['nr_thesaurus'] = $dt[0]['total'];
+
+            $ThConcept = new \App\Models\Thesa\Concepts\Index();
+            $dt = $ThConcept->select('count(*) as total')->findAll();
+            $data['nr_concepts'] = $dt[0]['total'];
+
+            $ThTerm = new \App\Models\Thesa\Terms\Index();
+            $dt = $ThTerm->select('count(*) as total')->findAll();
+            $data['nr_terms'] = $dt[0]['total'];
+
+            return view('Thesa/Resume', $data);
         }
 }

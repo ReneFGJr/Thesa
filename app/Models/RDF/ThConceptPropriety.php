@@ -44,42 +44,27 @@ class ThConceptPropriety extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function le($id)
+        {
+            $dt = $this
+                    ->join('thesa_terms', 'ct_literal = id_term','left')
+                    ->join('language', 'term_lang = id_lg', 'left')
+                    ->where('id_ct',$id)
+                ->first();
+            return $dt;
+        }
+
     function broader_save()
     {
         $ThConcept = new \App\Models\RDF\ThConcept();
         $ThProprity = new \App\Models\RDF\ThProprity();
 
-        $id = get('id');
-        $prop = get('prop');
-        $concept = get('concept');
-        $qualify = round('0'.get('form_thesa_'.$prop.'_qualifier'));
+        $id = sonumero(get('idc'));
+        $concept = sonumero(get('ida'));
+        $th = sonumero(get('th'));
 
-        $dtc = $ThConcept->find($id);
-        $th = $dtc['c_th'];
-
-        $prop = $ThProprity->find_prop_id($prop);
-
-        /* CHECK LOOP */
-        //$loop = $this->loop_check($th, $prop, $concept);
-
-        $da = $this
-            ->where('ct_th', $th)
-            ->where('ct_concept', $id)
-            ->where('ct_concept_2', $concept)
-            ->findAll();
-        if (count($da) == 0) {
-            $da['ct_th'] = $th;
-            $da['ct_concept'] = $id;
-            $da['ct_concept_2'] = $concept;
-            $da['ct_propriety'] = $prop;
-            $da['ct_resource'] = 0;
-            $da['ct_use'] = 0;
-            $da['ct_literal'] = 0;
-            $da['ct_concept_2_qualify'] = $qualify;
-            $this->set($da)->insert();
-        } else {
-            echo "OPS";
-        }
+        $Broader = new \App\Models\Thesa\Concepts\Broader();
+        return $Broader->register($th,$concept,$id);
     }
 
     function candidate_broader($id)
@@ -131,8 +116,8 @@ class ThConceptPropriety extends Model
 
         /* Delete */
         $this->where('id_ct', $id)->delete();
-
-        echo $ThConcept->list_concepts_terms($idc, $prop);
+        echo "=META=";
+        echo metarefresh('');
         exit;
     }
 
@@ -156,6 +141,7 @@ class ThConceptPropriety extends Model
 
         if (count($da) == 0) {
             $id = $this->set($data)->insert();
+
         } else {
             $id = $da[0]['id_ct'];
         }

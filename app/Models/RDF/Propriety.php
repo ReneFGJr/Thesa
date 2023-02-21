@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Models\Thesa\Tools;
+namespace App\Models\RDF;
 
 use CodeIgniter\Model;
 
-class Index extends Model
+class Propriety extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'indices';
-    protected $primaryKey       = 'id';
+    protected $table            = 'thesa_property';
+    protected $primaryKey       = 'id_p';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
@@ -39,31 +39,4 @@ class Index extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
-    function index($d1,$d2)
-        {
-            $sx = '';
-            switch($d2)
-                {
-                    case 'import':
-                        $Import = new \App\Models\Thesa\Tools\Import();
-                        $sx .= $Import->index($d1);
-                    break;
-
-                    default:
-                        $sx = bsc($this->menu(),12);
-                }
-            $sx = bs($sx);
-            return $sx;
-        }
-
-        function menu()
-            {
-                $Thesa = new \App\Models\Thesa\Thesa();
-                $th = $Thesa->getThesa();
-                $menu = array();
-                $menu['#Importação'] = '';
-                $menu[PATH.'/tools/'.$th.'/import'] = lang('thesa.tools_import');
-                return menu($menu);
-            }
 }
