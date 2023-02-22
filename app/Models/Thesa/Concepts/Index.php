@@ -43,6 +43,73 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function register($id_term, $th, $agency = '',$rsp='')
+    {
+        $id_concept = $this->register_concept($th, $agency);
+
+        /***************************************** Class - SkosConcept */
+        $ClassPropriety = new \App\Models\RDF\Ontology\ClassPropryties();
+        $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
+
+        /********************************************** Update Concept */
+        $du = array();
+        $du['c_concept'] = $id_concept;
+        $this->set($du)->where('id_c', $id_concept)->update();
+
+        $class = 'skos:prefLabel';
+        $prop_prefLabel = $ClassPropriety->Class($class);
+        $idr = $ThConceptPropriety->register($th, $id_concept, $prop_prefLabel, 0, 0, $id_term);
+
+        /********************************************** Trava o Termos do Vocabulario */
+        $Term = new \App\Models\RDF\ThTerm();
+        $Term->term_block($id_term, $id_concept, $th);
+
+        if ($rsp == 'id')
+            {
+                return $id_concept;
+            }
+
+        $sx = '<a href="' . PATH . '/v/' . $id_concept . '" class="btn btn-outline-secondary">' . 'thesa:c' . $id_term . '</a>' . ' created';
+        return $sx . '<br>';
+    }
+
+    function register_concept($th, $agency)
+    {
+        /******************************************************* NEW CONCEPT */
+        if ($agency != '') {
+            $dt = $this->where('c_agency', $agency)->where('c_th', $th)->findAll();
+        } else {
+            $dt = $this->where('c_concept', -1)->where('c_th', $th)->findAll();
+        }
+
+        if (count($dt) == 0) {
+            $data['c_th'] = $th;
+            $data['c_concept'] = -1;
+            $data['c_ativo'] = 1;
+            $data['c_agency'] = $agency;
+            $id_concept = $this->insert($data);
+        } else {
+            $id_concept = $dt[0]['id_c'];
+        }
+
+        /***************************************** Class - SkosConcept */
+        $ClassPropriety = new \App\Models\RDF\Ontology\ClassPropryties();
+        $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
+
+        $class = 'skos:Concept';
+        $id_class = $ClassPropriety->Class($class);
+
+        $class = 'rdf:isInstanceOf';
+        $id_prop = $ClassPropriety->Class($class);
+
+        /****************************************** Class- Register ****/
+        $ThConceptPropriety->register($th, $id_concept, $id_prop, 0, $id_class, 0);
+        $data['c_concept'] = $id_concept;
+        $this->set($data)->where('id_c', $id_concept)->update();
+
+        return $id_concept;
+    }
+
     function recover_th($id)
         {
             $dt = $this->where('c_concept',$id)->first();
@@ -54,14 +121,14 @@ class Index extends Model
         $dt = $this
             /*  */
             ->select('
-                            id_c, c_concept, c_th,
-                            t1.id_ct as id_ct,
-                            term_name as label,
-                            vc2.vc_label as resource_name,
-                            lg_code, lg_language,
-                            t1.ct_resource as ct_resource,
-                            t1.ct_concept_2 as ct_concept_2,
-                            vc1.vc_label as property, spaceName')
+                id_c, c_concept, c_th,
+                t1.id_ct as id_ct,
+                term_name as label,
+                vc2.vc_label as resource_name,
+                lg_code, lg_language,
+                t1.ct_resource as ct_resource,
+                t1.ct_concept_2 as ct_concept_2,
+                vc1.vc_label as property, spaceName')
             /*  */
             ->join('thesa_concept_term as t1', 't1.ct_concept = id_c')
             ->join('thesa_terms', 'ct_literal = id_term', 'left')

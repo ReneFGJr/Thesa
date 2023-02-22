@@ -37,7 +37,8 @@ class Admin extends BaseController
         $Thesa = new \App\Models\Thesa\Thesa();
 
         $sx = $this->cab();
-        $sx .= view('header/navbar_admin');
+        $sx .= view('header/navbar');
+        $footer = view('Thesa/Foot');
 
         switch ($d1) {
             case 'notes':
@@ -206,6 +207,9 @@ class Admin extends BaseController
             case 'config':
                 $sx .= $this->config($d2, $d3, $d4, $d5);
                 break;
+            case 'tools':
+                $sx .= $this->tools($d2, $d3, $d4, $d5);
+                break;
             case 'ontology':
                 $Ontology = new \App\Models\RDF\Ontology\Index();
                 $sx .= $Ontology->index($d2, $d3, $d4, $d5);
@@ -222,13 +226,48 @@ class Admin extends BaseController
                 $ThProprity = new \App\Models\RDF\ThProprity();
                 $sx .= $ThProprity->index($d2, $d3, $d4, $d5);
                 return $sx;
+                break;
+            case 'import':
+                $sx .= $this->import();
+                break;
             default:
                 $sx .= bs(bsc("$d1 / $d2 / $d3 / $d4 / $d5",12));
                 $sx .= bs(bsc('Admin'),12);
             break;
         }
+        $sx .= $footer;
         return $sx;
     }
+
+    function import()
+        {
+            $sx = '';
+            $value = get("url");
+
+            if (($value != '') and (substr($value,0,4) == 'http'))
+                {
+                    $ThesaImport = new \App\Models\Thesa\Tools\ImportThesa();
+                    $sx .= $ThesaImport->import($value);
+                }
+
+            $sx .= form_open();
+            $sx .= form_label(lang('thesa.url'));
+            $sx .= form_input(array('name'=>'url','value'=>$value,'class'=>'form-control full'));
+            $sx .= form_submit('action',lang('thesa.save'));
+            $sx .= form_close();
+
+            $sx = bs(bsc($sx));
+            return $sx;
+        }
+
+    function tools($d1,$d2,$d3)
+        {
+            $sx = '';
+            $sa = anchor(PATH.'/admin/import/',bsicone('import',64));
+            $sa .= anchor(PATH . '/admin/ontology/', bsicone('import', 64)) . 'ontology';
+            $sx .= bs(bsc($sa,12));
+            return $sx;
+        }
 
     function config($d1,$d2,$d3)
         {

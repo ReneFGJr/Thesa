@@ -51,6 +51,7 @@ class ThTermTh extends Model
             ->findAll();
         return $dt[0]['total'];
     }
+
     function totalNoUse($th)
     {
         $dt = $this
@@ -80,9 +81,9 @@ class ThTermTh extends Model
             ->join('language', 'term_lang = id_lg')
             ->where('term_th_thesa', $th)
             ->where('term_th_concept', 0);
-        foreach ($langs as $lang => $txt) {
-            $this->where('lg_code <> \'' . $lang . '\'');
-        }
+            foreach ($langs as $lang => $txt) {
+                $this->where('lg_code <> \'' . $lang . '\'');
+            }
 
         $dt = $this
             ->orderBy('term_name, lg_code', 'ASC')
@@ -91,6 +92,23 @@ class ThTermTh extends Model
         return $dt;
     }
 
+
+    /********************************* Register */
+    function register($th,$id)
+        {
+            $dt = $this
+                ->where('term_th_thesa',$th)
+                ->where('term_th_term', $id)
+                ->findAll();
+
+            if (count($dt) == 0)
+                {
+                    $dt['term_th_thesa'] = $th;
+                    $dt['term_th_term'] = $id;
+                    $dt['term_th_concept'] = 0;
+                    $this->set($dt)->insert();
+                }
+        }
 
 
     /************************* Atualiza Themo do Conceito */

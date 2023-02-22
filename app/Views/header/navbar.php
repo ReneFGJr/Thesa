@@ -30,10 +30,21 @@ require("acesso.php");
         <!-- Right elements -->
         <div class="d-flex align-items-center">
             <!-- Icon -->
-            <a class="text-reset me-3" href="<?=PATH. '/admin/config';?>">
-                <?=bsicone('gear');?>
-            </a>
+            <?php
+            $Thesa = new \App\Models\Thesa\Index();
+            $th = $Thesa->getThesa();
+            $Collaboration = new \App\Models\Thesa\Collaborators();
+            if ($Collaboration->own($th))
+                {
+                    echo '<a class="text-reset me-3" href="' . PATH . '/admin/tools' . '">
+                    ' . bsicone('process') . '</a>';
 
+                    echo '<a class="text-reset me-3" href="'.PATH. '/admin/config'.'">
+                    '.bsicone('gear').'</a>';
+                } else {
+                echo '[['.$th.']]' ;
+                }
+            ?>
             <!-- Socials -->
             <?php echo $acesso; ?>
             </div>

@@ -47,6 +47,7 @@ class Lists extends Model
             $data['terms'] = $this->terms_alphabetic_index($th,$lang,$other);
             $data['other'] = $other;
 
+
             $sx = view("Theme/Standard/List",$data);
             return $sx;
         }
@@ -59,7 +60,7 @@ class Lists extends Model
         if ($lang == '') {
             $lang = $Language->getLang($langs[0]['lg_code']);
         }
-        $Language->setting($lang);
+        $lang = $Language->setting($lang);
 
         $sx = '';
 

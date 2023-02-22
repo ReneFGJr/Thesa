@@ -35,6 +35,7 @@ return [
     'term_remove' => 'Remover termo',
     'term_edit' => 'Editar termo',
     'terms_add' => 'Adicionar termos no Thesa',
+
     'see_term_candidatos' => 'Lista de candidatos a conceitos',
     'select_a_term' => 'Selecione um termo',
     'form_group_1' => 'Relação entre conceitos',
@@ -104,7 +105,15 @@ return [
     'close' => 'Fechar',
     'tsa' => 'TESAURO SEMÂNTICO APLICADO',
     'process_area' => 'Processando Termos',
+    'Authors' => 'Autores',
+    'author_abrev' => '',
+    'language' => 'Idioma',
+    'concepts_add'=>'Termos disponíveis',
     '' => '',
     '' => '',
     '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+
 ];

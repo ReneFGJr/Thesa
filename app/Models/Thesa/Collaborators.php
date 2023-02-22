@@ -84,6 +84,30 @@ class Collaborators extends Model
         return false;
     }
 
+    function authors($th)
+        {
+            $dt = $this
+                ->join('users','id_us = th_us_user')
+                ->join('thesa_users_perfil', 'th_us_perfil = id_pf')
+                ->orderBy('id_pf, id_th_us')
+                ->findAll();
+            $sx = '';
+            foreach($dt as $id=>$line)
+                {
+                    if ($sx != '') { $sx .= '; '; }
+                    $class = $line['pf_name'];
+                    $txt = trim(lang($line['pf_name'] . '_abrev'));
+                    if ($txt != '')
+                        {
+                            $txt = ' <sup>('.$txt.')</sup>';
+                        }
+                    $sx .= $line['us_nome'];
+                    $sx .= ' ';
+                    $sx .= $txt;
+                }
+            return $sx;
+        }
+
     function list($th)
     {
         $dt = $this

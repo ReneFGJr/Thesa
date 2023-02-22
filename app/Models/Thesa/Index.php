@@ -76,13 +76,22 @@ class Index extends Model
                 $th = $_SESSION['th'];
                 return $th;
             } else {
-                echo "OPS - SEM TH - [$th]";
-                pre($_SESSION);
+                return 0;
                 exit;
             }
         }
         return $th;
     }
+
+    function user_total_tesauros($id_us)
+        {
+            $sql = "select count(*) as total, th_us_user from thesa_users group by th_us_user";
+            $rlt = $this->db->query($sql);
+            $rlt = (array)$rlt->getResult();
+            $rlt = (array)$rlt[0];
+            $total = $rlt['total'];
+            return $total;
+        }
 
     function summary($id = '')
     {

@@ -62,6 +62,7 @@ class Thesa extends BaseController
         $sx = '';
         $sx .= $this->cab();
         $sx .= $this->navbar();
+        $footer = view("Thesa/Foot");
         switch($act)
             {
             case 'a':
@@ -127,6 +128,7 @@ class Thesa extends BaseController
                 $sx .= view('Thesa/Homepage', $data);
                 break;
             }
+        $sx .= $footer;
         return $sx;
     }
 }

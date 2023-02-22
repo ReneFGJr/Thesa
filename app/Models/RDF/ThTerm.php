@@ -159,7 +159,7 @@ class ThTerm extends Model
 
     function create_concept($d1, $d2, $d3)
     {
-        $sa = h(lang('thesa.terms_add'), 3);
+        $sa = h(lang('thesa.concepts_add'), 3);
         $sa .= '<div id="term_list_div">';
         $sa .= $this->term_list();
         $sa .= '</div>';
@@ -204,24 +204,27 @@ class ThTerm extends Model
 
         echo $this->show_term_selected($id);
 
+
         /************************************************************* CONFIRM */
 
         $confirm = get("confirm");
         if ($confirm == 'yes') {
+
             $ids = explode('|', trim($id));
 
             if (count($ids) > 0)
                 {
-                    jslog("Loading....");
                     $thd = $TtTermTh->le($ids[0]);
                     $th = $thd[0]['term_th_thesa'];
                 }
 
+
             /*********************************** CREATE CONCEPT */
+            $ThConcept = new \App\Models\Thesa\Concepts\Index();
             for ($r = 0; $r < count($ids); $r++) {
-                $ThConcept = new \App\Models\RDF\ThConcept();
                  echo $ThConcept->register($ids[$r], $th);
             }
+            echo "OK2";
 
             /********************************** Messages *******/
 

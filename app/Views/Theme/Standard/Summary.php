@@ -2,6 +2,8 @@
     <?= lang('thesa.Concepts'); ?>: <span class="big"><?= $nr_concepts; ?></span>
 </span>
 <span class="btn btn-outline-secondary" style="width: 150px;">
-    <?= lang('thesa.Terms'); ?>: <span class="big"><?= $nr_terms; ?></span>
+    <a href="<?= PATH . '/admin/terms/create_concept'; ?>">
+        <?= lang('thesa.Terms'); ?>: <span class="big"><?= $nr_terms; ?></span>
+    </a>
 </span>
 <br /><br />

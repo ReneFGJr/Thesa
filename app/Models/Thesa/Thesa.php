@@ -45,6 +45,68 @@ class Thesa extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function new_thesa()
+    {
+        $Collaborators = new \App\Models\Thesa\Collaborators();
+
+        $request = \Config\Services::request();
+        $validation =  \Config\Services::validation();
+        $data = array();
+
+        if (isset($_POST)) {
+
+            $data = $request->getPost();
+
+            /********************************* RULES */
+            $rules = [
+                'th_name' => ['label' => 'Name', 'rules' => 'required|min_length[3]'],
+                'th_achronic' => ['label' => 'Silga', 'rules' => 'required|min_length[2]'],
+                'th_status' => ['label' => 'Silga', 'rules' => 'required|min_length[1]'],
+                'th_type' => ['label' => 'Silga', 'rules' => 'required|min_length[1]']
+            ];
+            //$validation->setRule('sc_name', 'Username', 'required|min_length[3]');
+            $validation->setRules($rules);
+
+            if ($validation->withRequest($request)->run()) {
+                $data = [
+                    'th_type' => $request->getVar('th_type'),
+                    'th_name'  => $request->getVar('th_name'),
+                    'th_status'  => $request->getVar('th_status'),
+                    'th_achronic'  => $request->getVar('th_achronic'),
+                    'th_description'  => $request->getVar('th_description')
+                ];
+
+                $id_th = $request->getVar('id_th');
+                $Social = new \App\Models\Socials();
+                $user = $Social->getUser();
+
+                if ($id_th == 0) {
+                    /************************************ CHECK */
+                    $dt = $this->where('th_name', $request->getVar('th_name'))->findAll();
+                    if (count($dt) > 0) {
+                        $data['error'] = msg('Thesaurus already exists', 'danger');
+                    } else {
+                        $this->save($data);
+                        $id_th = $this->getInsertID();
+                        $perfil = 1; // owner
+                        $Collaborators->add($user, $id_th, $perfil);
+                        $data['error'] = msg('Thesaurus created', 'success');
+                    }
+                } else {
+                    $this->set($data)->where('id_th', $id_th)->update();
+                    $Collaborators->add($$id_th, $user);
+                }
+                header("location: admin");
+                exit;
+            } else {
+                $data['ERROS'] = $validation->getErrors();
+                $data['validation'] = $this->validator;
+
+                return view('Thesa/Forms/ThesaNew', $data);
+            }
+        }
+    }
+
     function index($d1, $d2, $d3)
     {
         switch ($d1) {
@@ -61,9 +123,19 @@ class Thesa extends Model
 
     function btn_new_thesa()
     {
-        $sx = '<a href="' . (PATH . 'admin/thesaurus/new') . '" class="btn btn-outline-primary">';
-        $sx .= lang('thesa.new_thesa');
-        $sx .= '</a>';
+        $sx = '';
+        $Socials = new \App\Models\Socials();
+        $Thesa = new \App\Models\Thesa\Index();
+        $user = $Socials->getUser();
+        if ($user > 0) {
+            $total = $Thesa->user_total_tesauros($user);
+            if (($total == 0) or ($Socials->getAccess("#ADM"))) {
+                $sx = '<a href="' . (PATH . '/admin/thesaurus/new') . '" class="btn btn-outline-primary">';
+                $sx .= lang('thesa.new_thesa');
+                $sx .= '</a>';
+            }
+        }
+
         return $sx;
     }
 
@@ -75,11 +147,11 @@ class Thesa extends Model
         return $dt;
     }
 
-    function setThesa($th='')
-        {
-            $Thesa = new \App\Models\Thesa\Index();
-            return $Thesa->setThesa($th);
-        }
+    function setThesa($th = '')
+    {
+        $Thesa = new \App\Models\Thesa\Index();
+        return $Thesa->setThesa($th);
+    }
 
     function list($user = 0)
     {
@@ -109,5 +181,4 @@ class Thesa extends Model
         $sx = bs($sx);
         return $sx;
     }
-
 }

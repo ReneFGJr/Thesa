@@ -174,10 +174,9 @@ class Config extends Model
 
             $Language = new \App\Models\Thesa\Language();
             $dt = $Language
-                ->select('lg_code,lg_language,count(*) as total')
-                ->join('language', 'id_lg = lgt_language', 'left')
-                ->where('lgt_th', $th)
-                ->groupBy('lg_code,lg_language')
+                ->select('lg_code,lg_language,count(*) as total, lgt_th')
+                ->join('language', 'id_lg = lgt_language and lgt_th = '.$th, 'right')
+                ->groupBy('lg_code,lg_language, lgt_th')
                 ->orderBy('id_lgt, lg_language', 'ASC')
                 ->findAll();
 
@@ -187,36 +186,36 @@ class Config extends Model
                     $line = $dt[$r];
                     $ds[$line['lg_code']] = $line['lg_language'];
                 }
+
             /****************** IDIOMAS EXISTENTES */
             $s1 = '<span class="small">'.lang('thesa.language_to_selected'). '</span>';
             $s1 .= '<select id="lang_in" name="lang_in" class="form-control" size=10>';
-            foreach ($ds as $code => $lang_name) {
-                $s1 .= '<option value="' . $code . '">' . $lang_name . '</option>';
+            $s2 = '';
+            foreach($dt as $id=>$line)
+            {
+                $code = $line['lg_code'];
+                $lang_name = $line['lg_language'];
+                if ($line['lgt_th'] != '')
+                    {
+                        $s1 .= '<option value="' . $code . '">' . $lang_name . '</option>';
+                    } else {
+                        $s2 .= '<option value="' . $code . '">' . $lang_name . '</option>';
+                    }
             }
             $s1 .= '</select>';
-
             /****************** IDIOMAS PARA ATIVAR */
             $dl = $Language
                 ->join('language', 'id_lg = lgt_language', 'left')
                 ->orderby('lgt_order')
                 ->findAll();
 
-            $s2 = '<span class="small">'.lang('thesa.language_to_select') . '</span>';
-            $s2 .= '<select id="lang_out" name="lang_out" class="form-control" size=10>';
-            foreach($dl as $id=>$line)
-                {
-                    $code = $line['lg_code'];
-                    $lang_name = $line['lg_language'];
-                    if (!isset($ds[$code]))
-                    {
-                        $s2 .= '<option value="' . $code . '">' . $lang_name . '</option>';
-                    }
-
-                }
-            $s2 .= '</select>';
+            $s0 = '<span class="small">'.lang('thesa.language_to_select') . '</span>';
+            $s0 .= '<select id="lang_out" name="lang_out" class="form-control" size=10>';
+            $s0 .= $s2;
+            $s0 .= '</select>';
 
             $sx .= '<div class="row">';
-            $sx .= '<div class="col-md-5">'.$s2.'</div>';
+            $sx .= '<div class="col-md-5">'.$s0.'</div>';
             $sx .= '<div class="col-md-2">';
             $sx .= '<button id="lang_select" type="button" class="btn btn-outline-secondary btn-sm form-control mt-5">>>></button>';
             $sx .= '<button id="lang_unselect" type="button" class="btn btn-outline-secondary btn-sm form-control mt-5"><<<</button>';

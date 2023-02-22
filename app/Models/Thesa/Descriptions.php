@@ -45,7 +45,7 @@ class Descriptions extends Model
 
     function classes()
         {
-            $class = array('Title','Introduction', 'Methodology', 'Audience','ISBN', 'License','Language');
+            $class = array('Title','Authors','Introduction', 'Language', 'Methodology', 'Audience','ISBN', 'License');
             return $class;
         }
 
@@ -143,7 +143,7 @@ class Descriptions extends Model
             }
         }
 
-   function show($th)
+   function show($th,$edit=true)
         {
             $sx = '';
             $this->select('id_ds, ds_prop, ds_descrition, ds_th');
@@ -151,21 +151,57 @@ class Descriptions extends Model
             $this->orderBy('ds_prop', 'ASC');
             $data = $this->findAll();
 
-            $class = $this->classes();
-            for ($r=0;$r < count($class);$r++)
+            $classes = $this->classes();
+
+            foreach($classes as $id=>$class)
                 {
                     $text = '';
-                    for ($y=0;$y < count($data);$y++)
+                    switch($class)
                         {
-                            $line = $data[$y];
-                            if ($line['ds_prop'] == $class[$r])
+                            case 'Language':
+                                $Language = new \App\Models\Thesa\Language();
+                                $dt = $Language
+                                    ->join('language','lgt_language = id_lg')
+                                    ->where('lgt_th',$th)
+                                    ->orderBy('id_lgt')
+                                    ->findAll();
+                                $text = '';
+                                foreach($dt as $id=>$line)
+                                    {
+                                        $text .= $line['lg_language'].'. ';
+                                    }
+                                    $sx .= '<h6 class="lora">' . lang('thesa.' . $class) . '</h6>';
+                                    $sx .= '<div id="sp_' . $class . '" class="m-2 p-2">' . $text . '</div>';
+                                break;
+                            case 'Title':
+                                $Thesa = new \App\Models\Thesa\Index();
+                                $dth = $Thesa->le($th);
+                                $text = $dth['th_name'];
+                                $sx .= '<h6 class="lora">' . lang('thesa.' . $class) . '</h6>';
+                                $sx .= '<div id="sp_' . $class . '" class="m-2 p-2">' . $text . '</div>';
+                                break;
+                            case 'Authors':
+                                $Collaborators = new \App\Models\Thesa\Collaborators();
+                                $text = $Collaborators->authors($th);
+                                $sx .= '<h6 class="lora">' . lang('thesa.' . $class) . '</h6>';
+                                $sx .= '<div id="sp_' . $class . '" class="m-2 p-2">' . $text . '</div>';
+                                break;
+                            default:
+                                foreach($data as $idx=>$line)
                                 {
-                                    $text = $line['ds_descrition'];
-                                    $text = troca($text,chr(10),'<br/>');
+                                    if ($line['ds_prop'] == $class) {
+                                        $text = $line['ds_descrition'];
+                                        $text = troca($text, chr(10), '<br/>');
+                                    }
                                 }
+                                if (($text != '') or ($edit == true))
+                                    {
+                                        $sx .= '<h6 class="lora">' . lang('thesa.' . $class) . '</h6>';
+                                        $sx .= '<div id="sp_' . $class . '" class="m-2 p-2">' . $text . '</div>';
+                                    }
+                                break;
                         }
-                    $sx .= '<h6 class="lora">'.lang('thesa.'.$class[$r]).'</h6>';
-                    $sx .= '<div id="sp_'.$class[$r].'" class="m-2 p-2">'.$text.'</div>';
+
                 }
             return $sx;
         }

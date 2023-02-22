@@ -42,6 +42,46 @@ class Language extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    var $langs = array();
+
+    function convert($lg)
+        {
+            $langs = $this->langs;
+            if (count($langs) == 0)
+                {
+                    $sql = "select id_lg, lg_code, lg_language from language";
+                    $rlt = $this->db->query($sql);
+                    $rlt = $rlt->getResult();
+
+                    foreach ($rlt as $id => $line) {
+                        $code = $line->lg_code;
+                        $langs[$code] = $line->id_lg;
+                    }
+                    $this->langs = $langs;
+                }
+
+            switch($lg)
+                {
+                    case 'pt':
+                        $lg = 'por';
+                        break;
+                    case 'es':
+                        $lg = 'spa';
+                        break;
+                    case 'en':
+                        $lg = 'eng';
+                        break;
+                }
+            if (!isset($langs[$lg]))
+                {
+                    echo "ERRO LINGAGE $lg";
+                    pre($langs);
+                    exit;
+                }
+            return $langs[$lg];
+
+        }
+
     function getLanguage($th)
         {
             $dt = $this
@@ -67,14 +107,16 @@ class Language extends Model
 
     function getLang($pref='')
         {
-            if (isset($_SESSION['lang']))
-                {
-                    $lang = $_SESSION['lang'];
-                }
-            else
+            if ($pref != '')
                 {
                     $lang = $pref;
                     $this->setting($lang);
+                } else {
+                    if (isset($_SESSION['lang'])) {
+                        $lang = $_SESSION['lang'];
+                    } else {
+                        $this->setting('por');
+                    }
                 }
             return $lang;
         }
@@ -82,6 +124,7 @@ class Language extends Model
     function setting($lang)
         {
             $_SESSION['lang'] = $lang;
+            return $lang;
         }
 
     function register($th,$lang)
