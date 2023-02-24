@@ -45,6 +45,10 @@ class ThTerm extends Model
 
     function index($d1, $d2, $d3, $d4)
     {
+
+        $Collaborators = new \App\Models\Thesa\Collaborators();
+        $access = $Collaborators->own($d2);
+
         $th = 1;
         $sx = '';
         switch ($d1) {
@@ -83,7 +87,7 @@ class ThTerm extends Model
                 $ThTermTh = new \App\Models\RDF\ThTermTh();
                 $menu[PATH . '/admin/terms/'] = $ThTermTh->total($th) . ' ' . lang('thesa.total_terms');
                 $total = $ThTermTh->totalNoUse($th);
-                if ($total > 0) {
+                if (($total > 0) and ($access)) {
                     $menu[PATH . '/admin/terms/create_concept'] = $total . ' ' . msg('thesa.total_not_attribuit');
                 }
 

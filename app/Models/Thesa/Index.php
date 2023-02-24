@@ -125,6 +125,7 @@ class Index extends Model
                 ->findAll();
             $data['nr_terms'] = $dt[0]['total'];
         }
+
         return $data;
     }
 }

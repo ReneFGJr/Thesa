@@ -43,27 +43,25 @@ class Index extends Model
     protected $afterDelete    = [];
 
     function le($id)
-        {
-            $dt = $this
-                ->join('language', 'id_lg = term_lang')
-                ->where('id_term',$id)
-                ->first();
-            return $dt;
-        }
+    {
+        $dt = $this
+            ->join('language', 'id_lg = term_lang')
+            ->where('id_term', $id)
+            ->first();
+        return $dt;
+    }
 
-    function recover($dt,$prop,$edit=false)
-        {
-            $sx = '';
-            foreach($dt as $id=>$line)
-                {
-                    $class = $line['property'];
-                    if ($class == $prop)
-                        {
-                            $sx .= $this->show_value($line,$edit).'<br>';
-                        }
-                }
-            return $sx;
+    function recover($dt, $prop, $edit = false)
+    {
+        $sx = '';
+        foreach ($dt as $id => $line) {
+            $class = $line['property'];
+            if ($class == $prop) {
+                $sx .= $this->show_value($line, $edit) . '<br>';
+            }
         }
+        return $sx;
+    }
 
     function show_header($id)
     {
@@ -87,30 +85,30 @@ class Index extends Model
     }
 
     function show_term($id)
-        {
-            $dt = $this->le($id);
-            return view('Theme/Standard/TermGeral',$dt);
-        }
+    {
+        $dt = $this->le($id);
+        return view('Theme/Standard/TermGeral', $dt);
+    }
 
-    function show($id,$edit=false)
-        {
-            $sx = '';
-            $Midias = new \App\Models\Thesa\Midias();
-            $Concept = new \App\Models\Thesa\Concepts\Index();
-            $NotesIndex = new \App\Models\Thesa\Notes\Index();
-            $Reference = new \App\Models\Thesa\Reference();
+    function show($id, $edit = false)
+    {
+        $sx = '';
+        $Midias = new \App\Models\Thesa\Midias();
+        $Concept = new \App\Models\Thesa\Concepts\Index();
+        $NotesIndex = new \App\Models\Thesa\Notes\Index();
+        $Reference = new \App\Models\Thesa\Reference();
 
-            $data = [];
-            $data['midias'] = $Midias->show($id);
+        $data = [];
+        $data['midias'] = $Midias->show($id);
 
-            $dt = $Concept->le($id);
+        $dt = $Concept->le($id);
 
-            $data['values'] = $this->show_proprieties($dt,$edit);
-            $data['notes'] = $NotesIndex->recover($id,false);
-            $sx .= $this->show_header($id);
-            $sx .= view("Theme/Standard/Term", $data);
-            return $sx;
-        }
+        $data['values'] = $this->show_proprieties($dt, $edit);
+        $data['notes'] = $NotesIndex->recover($id, false);
+        $sx .= $this->show_header($id);
+        $sx .= view("Theme/Standard/Term", $data);
+        return $sx;
+    }
 
     function caditate_prefLabel($id, $langs = array(), $th = 0)
     {
@@ -128,25 +126,25 @@ class Index extends Model
     }
 
     function prefLabel($dt)
-        {
-            $prefLabel = '';
-            foreach($dt as $id=>$line)
-                {
-                    $class = $line['property'];
-                    if ($class == 'prefLabel')
-                        {
-                            return $line['label'].' <sup>('.$line['lg_code'].')</sup>';
-                        }
-                }
-            return 'NaN';
-
+    {
+        $prefLabel = '';
+        foreach ($dt as $id => $line) {
+            $class = $line['property'];
+            if ($class == 'prefLabel') {
+                return $line['label'] . ' <sup>(' . $line['lg_code'] . ')</sup>';
+            }
         }
+        return 'NaN';
+    }
 
-    function btn_add($th=0,$type="plus")
+    function btn_add($th = 0, $type = "plus")
     {
         $sx = '';
-        switch($type)
-            {
+
+        $Collaborators = new \App\Models\Thesa\Collaborators();
+        $access = $Collaborators->own($th);
+        if ($access) {
+            switch ($type) {
                 case 'full':
                     $sx .= '<span class="handle btn btn-outline-primary full" onclick="newwin(\'' . PATH . '/admin/term_add/' . $th . '\',600,700);">' . lang('thesa.terms_add') . '</span>';
                     break;
@@ -155,13 +153,14 @@ class Index extends Model
                     $sx .= '<span class="handle" onclick="newwin(\'' . PATH . '/admin/term_add/' . $th . '\',600,700);">' . bsicone('plus') . '</span>';
                     break;
             }
-
+        }
         return $sx;
     }
 
-    function show_proprieties($dt,$edit)
+    function show_proprieties($dt, $edit)
     {
         $sv = '';
+
         $prop = [];
         foreach ($dt as $idx => $line) {
             $pn = $line['property'];
@@ -170,85 +169,81 @@ class Index extends Model
             } else {
                 $prop[$pn] .= '<br/>';
             }
-            $prop[$pn] .= $this->show_value($line,$edit);
+            $prop[$pn] .= $this->show_value($line, $edit);
         }
         return $prop;
     }
 
-    function exclude($d1,$d2,$d3,$d4)
-        {
-            $sx = '';
-            $sx = view('Theme/Standard/Logo');
+    function exclude($d1, $d2, $d3, $d4)
+    {
+        $sx = '';
+        $sx = view('Theme/Standard/Logo');
 
+        $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
+        $dt = $ThConceptPropriety->le($d1);
+
+        if ($dt == '') {
+            $sx .= bsmessage('404: Relation_not_exists', 3);
+            $sx .= view('Theme/Standard/Btns/Close');
+            return $sx;
+        }
+
+        $Terms = new \App\Models\Thesa\Terms\Index();
+        $sx .= $Terms->show_term($dt['id_term']);
+
+
+        if ($d3 == 'confirm') {
             $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
             $dt = $ThConceptPropriety->le($d1);
 
-            if ($dt == '') {
-                $sx .= bsmessage('404: Relation_not_exists', 3);
-                $sx .= view('Theme/Standard/Btns/Close');
-                return $sx;
-            }
+            $th = $dt['ct_th'];
+            $idt = $dt['ct_literal'];
+            $id_ct = $dt['id_ct'];
 
-            $Terms = new \App\Models\Thesa\Terms\Index();
-            $sx .= $Terms->show_term($dt['id_term']);
+            /* Libera termo */
+            $ThTerms = new \App\Models\RDF\ThTermTh();
+            $concept = 0;
+            $ThTerms->update_term_th($idt, $th, $concept);
 
+            /* Ativa log */
 
-            if($d3=='confirm')
-                {
-                    $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
-                    $dt = $ThConceptPropriety->le($d1);
-
-                    $th = $dt['ct_th'];
-                    $idt = $dt['ct_literal'];
-                    $id_ct = $dt['id_ct'];
-
-                    /* Libera termo */
-                    $ThTerms = new \App\Models\RDF\ThTermTh();
-                    $concept = 0;
-                    $ThTerms->update_term_th($idt, $th, $concept);
-
-                    /* Ativa log */
-
-                    /* Exclui registro */
-                    $ThConceptPropriety->where('id_ct',$id_ct)->delete();
-                    return wclose();
-
-                }
-
-            $sx .= '<hr>';
-            $sx .= bs(bsc(h(lang('thesa.exclude')), 12, 'text-center'));
-            $btn1 = '<a href="'.PATH.'/admin/ajax_exclude/'.$d1.'/'.$d2.'/confirm" class="btn btn-outline-danger">Confirmar</a>';
-            $btn2 = '<a href="#" onclick="wclose();" class="btn btn-outline-secondary">Cancel</a>';
-            $sx .= bs(bsc($btn1.' '.$btn2,12,'text-center'));
-            return $sx;
+            /* Exclui registro */
+            $ThConceptPropriety->where('id_ct', $id_ct)->delete();
+            return wclose();
         }
+
+        $sx .= '<hr>';
+        $sx .= bs(bsc(h(lang('thesa.exclude')), 12, 'text-center'));
+        $btn1 = '<a href="' . PATH . '/admin/ajax_exclude/' . $d1 . '/' . $d2 . '/confirm" class="btn btn-outline-danger">Confirmar</a>';
+        $btn2 = '<a href="#" onclick="wclose();" class="btn btn-outline-secondary">Cancel</a>';
+        $sx .= bs(bsc($btn1 . ' ' . $btn2, 12, 'text-center'));
+        return $sx;
+    }
 
     function edit_link($line, $edit)
-        {
-            if ($edit != true)
-                {
-                    return "";
-                }
-
-            $class = $line['property'];
-
-            switch($class)
-                {
-                    case 'altLabel':
-                        $onclick = ' onclick="newwin(\'' . PATH . '/admin/ajax_exclude/' . $line['id_ct'] . '/' . $class . '\',600,300);"';
-                        break;
-                    case 'hiddenLabel':
-                        $onclick = ' onclick="newwin(\''.PATH.'/admin/ajax_exclude/'.$line['id_ct'].'/'.$class.'\',600,300);"';
-                        break;
-                    default:
-                        $onclick = '';
-                        break;
-                }
-            $sx = '<span class="text-danger handle me-1" '.$onclick.'>'.bsicone('trash').'</span>';
-            return $sx;
+    {
+        if ($edit != true) {
+            return "";
         }
 
-    function show_value($line,$edit=false)
+        $class = $line['property'];
+
+        switch ($class) {
+            case 'altLabel':
+                $onclick = ' onclick="newwin(\'' . PATH . '/admin/ajax_exclude/' . $line['id_ct'] . '/' . $class . '\',600,300);"';
+                break;
+            case 'hiddenLabel':
+                $onclick = ' onclick="newwin(\'' . PATH . '/admin/ajax_exclude/' . $line['id_ct'] . '/' . $class . '\',600,300);"';
+                break;
+            default:
+                $onclick = '';
+                break;
+        }
+        $sx = '<span class="text-danger handle me-1" ' . $onclick . '>' . bsicone('trash') . '</span>';
+        return $sx;
+    }
+
+    function show_value($line, $edit = false)
     {
         $prop = $line['property'];
         $lang = '';
@@ -261,8 +256,8 @@ class Index extends Model
                 $sx = $line['resource_name'];
                 break;
             case 'prefLabel':
-                $sx = $this->edit_link($line,$edit);
-                $sx .= '<b>'.$line['label'] . '</b>'. $lang;
+                $sx = $this->edit_link($line, $edit);
+                $sx .= '<b>' . $line['label'] . '</b>' . $lang;
                 break;
             case 'altLabel':
                 $sx = $this->edit_link($line, $edit);

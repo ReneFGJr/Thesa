@@ -120,7 +120,7 @@ class Lists extends Model
             $Terms = new \App\Models\Thesa\Terms\Index();
             $sx = '';
             $sx .= bsmessage(lang('thesa.term_empty'),3);
-            $sx .= $Terms->btn_add($th);
+            $sx .= $Terms->btn_add($th,'full');
 
         /************************************ Termos Candidatos */
             $ThTerm = new \App\Models\Thesa\Terms\Index();

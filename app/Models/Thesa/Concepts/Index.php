@@ -118,6 +118,9 @@ class Index extends Model
 
     function le($id)
     {
+        $dt = $this->find($id);
+        $th = $dt['c_th'];
+
         $dt = $this
             /*  */
             ->select('
@@ -138,6 +141,7 @@ class Index extends Model
             ->join('language', 'term_lang = id_lg', 'left')
             ->join('thesa_language', 'lgt_language = id_lg')
             ->where('id_c', $id)
+            ->where('lgt_th',$th)
             ->orderBy('vc1.vc_label desc, lgt_order')
             ->findAll();
         return $dt;

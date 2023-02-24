@@ -51,8 +51,13 @@ class Descriptions extends Model
 
     function resume($id)
         {
+            $Collaborators = new \App\Models\Thesa\Collaborators();
+            $access = $Collaborators->own($id);
+
             $Thesa = new \App\Models\Thesa\Index();
             $dt = $Thesa->summary($id);
+            $dt['th'] = $id;
+            $dt['access'] = $access;
             $sx = view('Theme/Standard/Summary', $dt);
             return $sx;
         }
