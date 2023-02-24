@@ -33,8 +33,8 @@ require("acesso.php");
             <?php
             $Thesa = new \App\Models\Thesa\Index();
             $th = $Thesa->getThesa();
-            $Collaboration = new \App\Models\Thesa\Collaborators();
-            if ($Collaboration->own($th))
+            $Collaborators = new \App\Models\Thesa\Collaborators();
+            if ($Collaborators->own($th))
                 {
                     echo '<a class="text-reset me-3" href="' . PATH . '/admin/tools' . '">
                     ' . bsicone('process') . '</a>';
@@ -42,7 +42,7 @@ require("acesso.php");
                     echo '<a class="text-reset me-3" href="'.PATH. '/admin/config'.'">
                     '.bsicone('gear').'</a>';
                 } else {
-                echo '[['.$th.']]' ;
+                    echo '[[[[th:'.$th.']]]]' ;
                 }
             ?>
             <!-- Socials -->

@@ -65,11 +65,10 @@ class Collaborators extends Model
     {
         if (isset($_SESSION['id'])) {
             $user = $_SESSION['id'];
-            $ThConcept = new \App\Models\Thesa\Concepts\Index();
+
             $dt =
-                $ThConcept
-                ->join('thesa_users', 'th_us_th = c_th', 'left')
-                ->where('c_concept', $th)
+                $this
+                ->where('th_us_th', $th)
                 ->where('th_us_user', $user)
                 ->first();
 

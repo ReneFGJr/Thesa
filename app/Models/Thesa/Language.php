@@ -107,6 +107,7 @@ class Language extends Model
 
     function getLang($pref='')
         {
+            $lang = 'por';
             if ($pref != '')
                 {
                     $lang = $pref;

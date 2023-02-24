@@ -22,14 +22,7 @@
 
         <div class="col-4">
             <?php
-            foreach ($forms as $tag => $content) {
-                $onclick = ' onclick="newwin(\'' . PATH . '/admin/popup_' .
-                    $tag . '/' . $id . '\',600,600);"';
-                $plus = '<span class="text-primary ms-1 handle" ' . $onclick . '>' . bsicone('plus') . '</span>';
-                echo '<div class="border-bottom border-secondary">';
-                echo h(lang('thesa.' . $tag) . $plus, 6, 'lora');
-                echo $content . '</div>';
-            }
+
             ?>
         </div>
 

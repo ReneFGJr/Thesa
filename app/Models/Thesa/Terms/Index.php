@@ -142,10 +142,20 @@ class Index extends Model
 
         }
 
-    function btn_add($th=0)
+    function btn_add($th=0,$type="plus")
     {
         $sx = '';
-        $sx .= '<span class="handle" onclick="newwin(\'' . PATH . '/admin/term_add/' . $th . '\',600,700);">' . bsicone('plus') . '</span>';
+        switch($type)
+            {
+                case 'full':
+                    $sx .= '<span class="handle btn btn-outline-primary full" onclick="newwin(\'' . PATH . '/admin/term_add/' . $th . '\',600,700);">' . lang('thesa.terms_add') . '</span>';
+                    break;
+
+                default:
+                    $sx .= '<span class="handle" onclick="newwin(\'' . PATH . '/admin/term_add/' . $th . '\',600,700);">' . bsicone('plus') . '</span>';
+                    break;
+            }
+
         return $sx;
     }
 

@@ -46,11 +46,11 @@ class Admin extends BaseController
                 $sx = $this->cab();
                 $sx .= $ThNotes->form($d2,$d3,$d4,$d5);
                 break;
-
             case 'term_add':
                 $Terms = new \App\Models\RDF\ThTerm();
                 $sx = $this->cab();
                 $sx .= $Terms->form($d2);
+                return $sx;
                 break;
             case 'ajax_exclude':
                 $sx = $this->cab();

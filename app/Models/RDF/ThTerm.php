@@ -126,8 +126,10 @@ class ThTerm extends Model
     {
         $Thesa = new \App\Models\Thesa\Index();
         $th = $Thesa->setThesa();
-        $Language = new \App\Models\Thesa\Language();
+        $dt = $Thesa->le($th);
         $sx = '';
+        $Language = new \App\Models\Thesa\Language();
+        //$sx = '';
         /*************************************** Serie A */
         $sa = '';
         $sa .= '<small>' . lang('thesa.terms_add') . '</small>';
@@ -143,30 +145,36 @@ class ThTerm extends Model
         $sb .= '<small>' . lang('thesa.terms_lang') . '</small>';
         $sb .= $Language->lang_form($th);
         /**************************************** Serie C */
-        $sc = '';
+        $sc = '<br>';
         $sc .= '<small>' . lang('thesa.process_area') . '</small>';
         $sc .= '<div class="input-group mb-3" id="result">';
-        $sc .= 'results';
         $sx .= '</div>';
 
-        $sx = bs(
-            bsc($sa, 5) .
-                bsc($sb, 3) .
-                bsc($sc, 4)
+        $sx .= bs(
+            bsc($sa, 12) .
+                bsc($sb, 12) .
+                bsc($sc, 12)
         );
         return $sx;
     }
 
     function create_concept($d1, $d2, $d3)
     {
+        $Terms = new \App\Models\Thesa\Terms\Index();
+        $Thesa = new \App\Models\Thesa\Index();
+        $th = $Thesa->getThesa();
+        $dt = $Thesa->le($th);
+        $sx = bs(bsc($Thesa->header($dt), 12));
+
         $sa = h(lang('thesa.concepts_add'), 3);
         $sa .= '<div id="term_list_div">';
         $sa .= $this->term_list();
         $sa .= '</div>';
+        $sa .= $Terms->btn_add($th,'full');
         $sb = $this->term_functions();
         $sc = $this->term_drashboard();
 
-        $sx = bs(
+        $sx .= bs(
             bsc($sa, 4) .
                 bsc($sb, 4) .
                 bsc($sc, 4)
@@ -224,7 +232,6 @@ class ThTerm extends Model
             for ($r = 0; $r < count($ids); $r++) {
                  echo $ThConcept->register($ids[$r], $th);
             }
-            echo "OK2";
 
             /********************************** Messages *******/
 

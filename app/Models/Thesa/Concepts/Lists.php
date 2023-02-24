@@ -79,6 +79,12 @@ class Lists extends Model
             ->orderBy('term_name')
             ->findAll();
 
+        /******************* EMPTY */
+        if (count($dt) == 0)
+            {
+                return $this->terms_empty($th);
+            }
+
         $xlt = '';
         foreach ($dt as $id => $line) {
 
@@ -108,6 +114,22 @@ class Lists extends Model
         }
         return $sx;
     }
+
+    function terms_empty($th)
+        {
+            $Terms = new \App\Models\Thesa\Terms\Index();
+            $sx = '';
+            $sx .= bsmessage(lang('thesa.term_empty'),3);
+            $sx .= $Terms->btn_add($th);
+
+        /************************************ Termos Candidatos */
+            $ThTerm = new \App\Models\Thesa\Terms\Index();
+            $Candidates = $ThTerm->caditate_prefLabel($th, array(), $th);
+
+            //pre($Candidates,false);
+
+            return $sx;
+        }
 }
 
 /*
