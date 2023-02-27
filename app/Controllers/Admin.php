@@ -72,7 +72,21 @@ class Admin extends BaseController
                 $HiddenLabel = new \App\Models\Thesa\Terms\HiddenLabel();
                 $sx .= $HiddenLabel->form($d2);
                 break;
-            case 'media':
+            case 'popup_midia_exclude':
+                $Midia = new \App\Models\Thesa\Midias();
+                $Socials = new \App\Models\Socials();
+                $user = $Socials->getUser();
+                if ($user > 0) {
+                    $sx = $this->cab();
+                    $sx .= $Midia->item_delete($d1, $d2);
+                } else {
+                    echo "Acesso negado";
+                    exit;
+                }
+                echo $sx;
+                exit;
+                break;
+            case 'popup_midia':
                 $Midia = new \App\Models\Thesa\Midias();
                 $Socials = new \App\Models\Socials();
                 $user = $Socials->getUser();
@@ -129,6 +143,12 @@ class Admin extends BaseController
             case 'ajax_form_text_save':
                 $ThNotes = new \App\Models\RDF\ThNotes();
                 echo $ThNotes->text_save();
+                exit;
+            case 'popup_broader':
+                $Broader = new \App\Models\Thesa\Relations\Broader();
+                $sx = $this->cab();
+                $sx .= $Broader->form($d2, $d3, $d4, $d5);
+                echo $sx;
                 exit;
             case 'ajax_broader_save':
                 $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();

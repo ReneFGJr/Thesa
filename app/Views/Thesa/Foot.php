@@ -1,19 +1,32 @@
-<footer class="mt-5" style="background-color: #FFF; border-top: 10px solid #EFEFEF;">
-    <div class="container mt-3" style="min-height: 250px;">
+<?php
+echo view('Theme/Standard/Foot');
+?>
+<footer id="footer" class="mt-1" style="background-color: #FFF; border-top: 10px solid #EFEFEF;">
+    <div class="container mt-1" style="min-height: 50px;">
         <div class="row">
-            <div class="col-2">
-                <a href="<?=PATH;?>">
-                <img src="<?= URL; ?>/img/logo/logo_thesa.svg" class="img-fluid">
+            <div class="col-1">
+                <a href="<?= PATH; ?>">
+                    <img src="<?= URL; ?>/img/logo/logo_thesa.svg" class="img-fluid">
                 </a>
             </div>
-            <div class="col-6">
+            <div class="col-1">
+                <span class="small">
+                    &copy;2017-<?= date("Y"); ?>
+                </span>
             </div>
-            <div class="col-2">
-                <img src="<?= URL; ?>/img/logo/logo_orcalab.jpeg" class="img-fluid">
-            </div>
-            <div class="col-2">
-                <img src="<?= URL; ?>/img/logo/logo_ppgcin.png" class="img-fluid">
 
+            <div class="col-4 text-end">
+                <?= anchor('https://github.com/ReneFGJr/Thesa', '<img src="' . URL . '/img/logo/github.svg" style="height:25px;">'); ?>
+            </div>
+
+            <div class="col-2 text-end">
+            </div>
+
+            <div class="col-2">
+                <img src="<?= URL; ?>/img/logo/logo_orcalab.jpeg" class="float-right" style="height: 45px;">
+            </div>
+            <div class="col-2">
+                <img src="<?= URL; ?>/img/logo/logo_ppgcin.png" class="float-right" style="height: 45px;">
             </div>
         </div>
     </div>

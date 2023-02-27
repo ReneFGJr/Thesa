@@ -119,6 +119,7 @@ class Language extends Model
                         $this->setting('por');
                     }
                 }
+            if ($lang == '*') { $lang = 'por'; }
             return $lang;
         }
 

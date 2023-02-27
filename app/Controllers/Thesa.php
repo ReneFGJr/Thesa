@@ -79,7 +79,7 @@ class Thesa extends BaseController
                     if ($Collaborators->own($th)) {
                         $ConceptForm = new \App\Models\Thesa\Concepts\Form();
                         $sx .= $ConceptForm->form($id);
-                        return $sx;
+                        //return $sx;
                     } else {
                         $sx = metarefresh(PATH . '/v/' . $id);
                         echo $sx;
@@ -112,6 +112,12 @@ class Thesa extends BaseController
                 $sx .= $Terms->show($id);
                 return $sx;
                 break;
+            case 'ts':
+                $sx = '';
+                $Terms = new \App\Models\Thesa\Terms\Index();
+                $sx .= $Terms->show_simple($id);
+                return $sx;
+                break;
             case 'th':
                 $Thesa = new \App\Models\Thesa\Index();
                 $Language = new \App\Models\Thesa\Language();
@@ -129,6 +135,7 @@ class Thesa extends BaseController
 
                 $ConceptList = new \App\Models\Thesa\Concepts\Lists();
                 $sx .= $ConceptList->terms_alphabetic($id, $lang, $Other);
+
                 break;
 
                 /******* TH OPEN */

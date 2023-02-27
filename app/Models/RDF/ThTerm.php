@@ -427,7 +427,7 @@ class ThTerm extends Model
         $th = $Thesa->setThesa();
         $rlt = $ThTermTh->termNoUse($th);
 
-        $sx .= '<select class="scrollbar" style="width: 100%;" id="term_list" name="term_list" size="15" multiple>';
+        $sx .= '<select class="scrollbar" style="width: 100%;" id="term_list" name="term_list" size="8" multiple>';
         for ($r = 0; $r < count($rlt); $r++) {
             $sx .= '<option value="' . $rlt[$r]['id_term'] . '">' . $rlt[$r]['term_name'] . '</option>';
         }

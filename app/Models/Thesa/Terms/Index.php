@@ -70,13 +70,19 @@ class Index extends Model
         $Collaborators = new \App\Models\Thesa\Collaborators();
 
         $dt = $Concept->le($id);
+        $th = $dt[0]['c_th'];
 
         $data = [];
-        $data['prefLabel'] = $this->prefLabel($dt);
+        $data['prefLabel'] = $dt[0]['label'];
+        $data['lang'] = $dt[0]['lg_code'];
         $data['url'] = PATH . '/v/' . $id;
         $data['edit'] = '';
 
-        if ($Collaborators->own($id)) {
+        $data['others'] = $this->short_name($dt);
+        $data['others'] .= $this->link_copy($dt);
+        $data['others'] .= $this->link_rdf($dt);
+
+        if ($Collaborators->own($th)) {
             $data['edit'] = anchor(PATH . '/a/' . $id, bsicone('edit'));
         }
 
@@ -89,6 +95,18 @@ class Index extends Model
         $dt = $this->le($id);
         return view('Theme/Standard/TermGeral', $dt);
     }
+
+    function show_simple($id)
+        {
+            $Concept = new \App\Models\Thesa\Concepts\Index();
+            $dc = $Concept
+                ->join('thesa_concept_term', 'ct_concept = c_concept and ct_literal <> 0')
+                ->find($id);
+
+            $dt = $this->le($dc['ct_literal']);
+            return view('Theme/Standard/TermGeral', $dt);
+            pre($dt);
+        }
 
     function show($id, $edit = false)
     {
@@ -146,7 +164,7 @@ class Index extends Model
         if ($access) {
             switch ($type) {
                 case 'full':
-                    $sx .= '<span class="handle btn btn-outline-primary full" onclick="newwin(\'' . PATH . '/admin/term_add/' . $th . '\',600,700);">' . lang('thesa.terms_add') . '</span>';
+                    $sx .= '<span class="handle btn btn-outline-primary full mt-3" onclick="newwin(\'' . PATH . '/admin/term_add/' . $th . '\',600,700);">' . lang('thesa.terms_add') . '</span>';
                     break;
 
                 default:
@@ -154,6 +172,31 @@ class Index extends Model
                     break;
             }
         }
+        return $sx;
+    }
+
+    function short_name($dt)
+        {
+            $dt = $dt[0];
+            $sx = '<a href="'.PATH.'/v/'.$dt['id_c'].'" class="btn btn-outline-secondary">thesa:c'.$dt['id_c'].'</a>';
+            return $sx;
+        }
+    function link_rdf($dt)
+    {
+        $dt = $dt[0];
+        $sx = '<a href="' . PATH . '/v/' . $dt['id_c'] . '" class="btn btn-outline-secondary ms-1">';
+        $sx .= '<img src="'.URL.'/img/logo/rdf.svg'.'" height="22">';
+        $sx .= '</a>';
+        return $sx;
+    }
+
+    function link_copy($dt)
+    {
+        $dt = $dt[0];
+        $link = '';
+        $sx = '<span class="btn btn-outline-secondary ms-1 handle" onclick="copytoclipboard(\'cpc\');">';
+        $sx .= '<img src="' . URL . '/img/icons/copy.png' . '" height="22">';
+        $sx .= '</span>';
         return $sx;
     }
 

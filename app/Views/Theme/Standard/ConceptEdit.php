@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row">
-        <div class="col-2 border-bottom border-secondary"><?= $action;?></div>
+        <div class="col-2 border-bottom border-secondary"><?= $action; ?></div>
         <div class="col-10 border-bottom border-secondary"><?= $header; ?></div>
     </div>
 </div>
@@ -22,7 +22,26 @@
 
         <div class="col-4">
             <?php
+                foreach($relations as $tag=>$line)
+                    {
+                        $onclick = ' onclick="newwin(\'' . PATH . '/admin/popup_' .
+                            $tag . '/' . $id . '\',600,600);"';
+                        $plus = '<span class="text-primary ms-1 handle" ' . $onclick . '>' . bsicone('plus') . '</span>';
+                        echo h(lang('thesa.' . $tag) . $plus, 6, 'lora');
+                        echo $line;
+                    }
 
+            ?>
+
+            <?php
+            $tag = 'midia';
+            $onclick = ' onclick="newwin(\'' . PATH . '/admin/popup_' .
+                $tag . '/' . $id . '\',600,300);"';
+            $plus = '<span class="text-primary ms-1 handle" ' . $onclick . '>' . bsicone('plus') . '</span>';
+            echo h(lang('thesa.' .$tag) . $plus, 6, 'lora');
+            ?>
+            <?php
+            echo $midias;
             ?>
         </div>
 

@@ -20,7 +20,12 @@ function form_confirm($url='',$url2='')
 
         $sx .= anchor($url, lang('brapci.YES'));
         $sx .= ' | ';
-        $sx .= anchor($url2, lang('brapci.NO'));
+        if ($url2 == 'wclose')
+        {
+            $sx .= '<a href="#" onclick="wclose();">'.lang('brapci.NO').'</a>';
+        } else {
+            $sx .= anchor($url2, lang('brapci.NO'));
+        }
         return $sx;
     }
 

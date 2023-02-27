@@ -44,6 +44,12 @@ class Midias extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function recover($id, $edit = false)
+    {
+        $dt = $this->findAll();
+        pre($dt);
+    }
+
     function upload($id, $d2 = '')
     {
         $sx = '';
@@ -56,7 +62,7 @@ class Midias extends Model
         $sx .= form_close();
 
         if (isset($_FILES['userfile']['name'])) {
-            $ThConcept = new \App\Models\RDF\ThConcept();
+            $ThConcept = new \App\Models\Thesa\Concepts\Index();
             $dc = $ThConcept->le($d2);
             if (count($dc) > 0) {
                 $th = $dc[0]['c_th'];
@@ -85,7 +91,7 @@ class Midias extends Model
         return $sx;
     }
 
-    function show_content($dt)
+    function show_content($dt, $edit = false)
     {
         $content = $dt['mid_content_type'];
         $sx = '';
@@ -114,36 +120,81 @@ class Midias extends Model
                 $sx .= $content;
                 break;
         }
+
+        if ($edit) {
+            $sx .= '<span onclick="newwin(\'' . PATH . '/admin/popup_midia_exclude/' . $dt['id_mid'] . '\',800,300);" class="text-danger handle">';
+            $sx .= bsicone('trash');
+            $sx .= '</span>';
+        }
         return $sx;
     }
 
-    function show($idc)
+    function show($idc, $edit = false)
     {
         $midia = '';
         $dt = $this->where('mid_concept', $idc)->findAll();
-        if (count($dt) == 1)
-            {
-                $line = $dt[0];
-                $midia .= $this->show_content($line);
-            } else {
-                $midia .= '<div id="carouselExampleSlidesOnly"
+        if (count($dt) == 1) {
+            $line = $dt[0];
+            $midia .= $this->show_content($line);
+        } else {
+            $midia .= '<div id="carouselExampleSlidesOnly"
                             class="carousel slide"
                             data-bs-ride="carousel"
-                            data-bs-interval="15000">'.cr();
-                $midia .= '<div class="carousel-inner">';
+                            data-bs-interval="5000">' . cr();
+            $midia .= '<div class="carousel-inner">';
 
-                for ($r = 0; $r < count($dt); $r++) {
-                    $sel = '';
-                    if ($r==0) { $sel = ' active'; }
-                    $line = $dt[$r];
-                    $midia .= '<div class="carousel-item '.$sel.'">'.cr();
-                    $midia .= $this->show_content($line);
-                    $midia .= '</div>'.cr();
+            for ($r = 0; $r < count($dt); $r++) {
+                $sel = '';
+                if ($r == 0) {
+                    $sel = ' active';
                 }
-                $midia .= '</div>';
-                $midia .= '</div>';
+                $line = $dt[$r];
+                $midia .= '<div class="carousel-item ' . $sel . '">' . cr();
+                $midia .= $this->show_content($line, $edit);
+                $midia .= '</div>' . cr();
             }
+            $midia .= '</div>';
+            $midia .= '</div>';
+        }
+
         return $midia;
+    }
+
+    function item_delete($id, $id2)
+    {
+        $Thesa = new \App\Models\Thesa\Index();
+        $th = $Thesa->getThesa();
+        if ($th != 0) {
+
+            $Collaborations = new \App\Models\Thesa\Collaborators();
+            $access = $Collaborations->own($th);
+
+            if ($access) {
+                $sx = '';
+                $conf = get("confirm");
+
+                $url = PATH . '/admin/popup_midia_exclude/' . $id2;
+
+                $sa = h(lang('thesa.confirm_exclusion'), 1, 'lora');
+                $sa .= form_confirm($url, 'wclose');
+
+                $dt = $this->find($id2);
+
+                if ($conf != '') {
+                    $data['mid_concept'] = $dt['mid_concept'] * (-1);
+                    $this->set($data)->where('id_mid',$dt['id_mid'])->update();
+                    $sx .= wclose();
+                } else {
+                    $sx .= $this->show_content($dt);
+                }
+                $sx = bs(bsc($sx, 1) . bsc($sa, 2));
+            } else {
+                $sx = wclose();
+            }
+        } else {
+            $sx = wclose();
+        }
+        return $sx;
     }
 
     function load_link($th, $url, $idc)

@@ -1,0 +1,1 @@
+<img src="<?=URL.'/img/logo/licences/cc-by.png';?>" style="height: 40px; top: 20px; right: 20px; position: absolute;">

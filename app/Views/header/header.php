@@ -34,6 +34,7 @@
     <script type="text/javascript" src="https://code.jquery.com/ui/1.8.24/jquery-ui.min.js"></script>
     <script src="<?= getenv("app.baseURL"); ?>/js/thesa.js"></script>
     <script src="<?= getenv("app.baseURL"); ?>/js/drop_drag.js"></script>
+    <script src="<?= getenv("app.baseURL"); ?>/js/clipboard.js"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

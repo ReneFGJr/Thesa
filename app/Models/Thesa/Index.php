@@ -110,6 +110,8 @@ class Index extends Model
             $ThTerm = new \App\Models\RDF\ThTerm();
             $dt = $ThTerm->select('count(*) as total')->findAll();
             $data['nr_terms'] = $dt[0]['total'];
+            /* Nao aplicavel */
+            $data['nr_terms_candidates'] = 0;
         } else {
             $ThConcept = new \App\Models\Thesa\Concepts\Index();
             $dt = $ThConcept
@@ -124,6 +126,13 @@ class Index extends Model
                 ->where('term_th_thesa', $id)
                 ->findAll();
             $data['nr_terms'] = $dt[0]['total'];
+
+            $dt = $ThTerm
+                ->select('count(*) as total')
+                ->where('term_th_thesa', $id)
+                ->where('term_th_concept',0)
+                ->findAll();
+            $data['nr_terms_candidates'] = $dt[0]['total'];
         }
 
         return $data;

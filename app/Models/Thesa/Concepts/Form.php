@@ -47,6 +47,8 @@ class Form extends Model
         $Thesa = new \App\Models\Thesa\Index();
         $Notes = new \App\Models\Thesa\Notes\Index();
         $Terms = new \App\Models\Thesa\Terms\Index();
+        $Midias = new \App\Models\Thesa\Midias();
+        $Relations = new \App\Models\Thesa\Relations\Index();
 
         /****************** Cabecalho Thesauro */
         $th = $Concept->recover_th($id);
@@ -70,8 +72,14 @@ class Form extends Model
         $forms['hiddenLabel'] = $Terms->recover($dt, 'hiddenLabel', $edit);
         $data['forms'] = $forms;
 
+        /********* RELATIONS */
+        $data['relations'] = $Relations->recover($id, $edit);
+
+        /******** MIDIAS */
+        $data['midias'] = $Midias->show($id, $edit);
+        //$data['midias'] = $Midias->recover($id,$edit);
+
         /******** NOTAS */
-        $notes = [];
         $data['notes'] = $Notes->recover($id,$edit);
 
         $sx .= view('Theme/Standard/ConceptEdit',$data);

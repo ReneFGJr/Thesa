@@ -5,9 +5,20 @@ body {
   color: #333;
 }
 
+#footer{
+ position:fixed;
+ bottom:0;
+ left:0;
+}
+
 .full {
   width: 100%;
 }
+
+.none, .none:hover
+  {
+    border: 0px;
+  }
 
 .term_list {
   border: 1px solid #0000;
@@ -18,7 +29,7 @@ body {
 .prefLabel {
   opacity: 0.7;
   padding-right: 4px;
-  line-height: 100%;
+  line-height: 110%;
   font-size: 0.8em;
 }
 
@@ -26,7 +37,7 @@ body {
   opacity: 0.7;
   font-style: italic;
   font-size: 0.8em;
-  line-height: 100%;
+  line-height: 110%;
 }
 
 .prefLabel:hover {

@@ -40,6 +40,8 @@ class Resume extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    /********************** GLOBAL */
+
     function resume()
         {
             $data = array();
@@ -55,6 +57,7 @@ class Resume extends Model
             $ThTerm = new \App\Models\Thesa\Terms\Index();
             $dt = $ThTerm->select('count(*) as total')->findAll();
             $data['nr_terms'] = $dt[0]['total'];
+
 
             return view('Thesa/Resume', $data);
         }

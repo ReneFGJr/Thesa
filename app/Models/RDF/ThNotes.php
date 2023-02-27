@@ -42,42 +42,69 @@ class ThNotes extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function notes_array($th)
+    {
+        $dt = $this
+            ->join('thesa_concept', 'nt_concept = c_concept')
+            //->join('owl_vocabulary_vc', 'nt_prop = id_vc')
+            ->join('thesa_property', 'nt_prop = id_p')
+            ->where('c_th', $th)
+            ->findAll();
+        $da = [];
+        foreach ($dt as $id => $line) {
+            $idc = $line['c_concept'];
+            //$class = $line['vc_label'];
+            $class = $line['p_name'];
+            if (!isset($da[$idc])) {
+                $da[$idc] = [];
+            }
+
+            if (!isset($da[$idc][$class])) {
+                $da[$idc][$class] = '';
+            }
+
+            $da[$idc][$class] .= $line['nt_content'].'<br/>';
+        }
+        return ($da);
+    }
+
     function show($id)
-        {
-            $sx = '';
-            $dt = $this
-                ->join('thesa_property', 'id_p = nt_prop', 'left')
-                ->where('nt_concept', $id)->findAll();
-            for ($r=0;$r < count($dt);$r++)
-                {
-                    $line = $dt[$r];
-                    //pre($line);
-                    $sx .= '<tr>';
-                    $sx .= '<td class="col-2 small trh align-top">';
-                    $sx .= lang('thesa.'.$line['p_name']);
-                    $sx .= '</td>';
-                    $sx .= '<td class="lh-1 mb-3 trh ps-3 ">';
-                    $txt = troca($line['nt_content'],chr(10),'<br><br>');
-                    $txt = troca($txt, '<br><br><br><br>', '<br><br>');
-                    $sx .= $txt;
-                    $sx .= '</td>';
-                    $sx .= '</tr>';
-                }
-            return $sx;
+    {
+        $sx = '';
+        $dt = $this
+            ->join('thesa_property', 'id_p = nt_prop', 'left')
+            ->where('nt_concept', $id)->findAll();
+        for ($r = 0; $r < count($dt); $r++) {
+            $line = $dt[$r];
+            //pre($line);
+            $sx .= '<tr>';
+            $sx .= '<td class="col-2 small trh align-top">';
+            $sx .= lang('thesa.' . $line['p_name']);
+            $sx .= '</td>';
+            $sx .= '<td class="lh-1 mb-3 trh ps-3 ">';
+            $txt = troca($line['nt_content'], chr(10), '<br><br>');
+            $txt = troca($txt, '<br><br><br><br>', '<br><br>');
+            $sx .= $txt;
+            $sx .= '</td>';
+            $sx .= '</tr>';
+        }
+        return $sx;
+    }
+
+    function form($prop, $id, $reg = 'new')
+    {
+        $sx = view('Theme/Standard/Logo');
+
+        if ($reg == '') {
+            $reg = 'new';
         }
 
-    function form($prop,$id,$reg='new')
-        {
-            $sx = view('Theme/Standard/Logo');
+        $lang = 1;
+        $text = '';
 
-            if ($reg == '') { $reg = 'new'; }
-
-            $lang = 1;
-            $text = '';
-
-            $sx .= $this->form_link_concept_text($id,$prop,$reg);
-            return $sx;
-        }
+        $sx .= $this->form_link_concept_text($id, $prop, $reg);
+        return $sx;
+    }
 
     function register($concept, $prop, $text, $lang)
     {
@@ -96,29 +123,28 @@ class ThNotes extends Model
     }
 
     function delete_note()
-        {
-            $Thesa = new \App\Models\Thesa\Thesa();
-            $th = $Thesa->getThesa();
-            echo '==>'.$th;
-            $sx = '';
-            $id = get("id");
-            $prop = get("prop");
+    {
+        $Thesa = new \App\Models\Thesa\Thesa();
+        $th = $Thesa->getThesa();
+        $sx = '';
+        $id = get("id");
+        $prop = get("prop");
 
-            $dt = $this->find($id);
+        $dt = $this->find($id);
 
-            if ($dt != '') {
-                $concept = $dt['nt_concept'];
-                $this->where('id_nt', $id);
-                $this->delete();
-                $sx .= $this->list($concept, $prop);
-            } else {
-                $sx .= bsmessage('error: Note not found',3);
-            }
-
-            return $sx;
+        if ($dt != '') {
+            $concept = $dt['nt_concept'];
+            $this->where('id_nt', $id);
+            $this->delete();
+            $sx .= $this->list($concept, $prop);
+        } else {
+            $sx .= bsmessage('error: Note not found', 3);
         }
 
-    function form_link_concept_text($id, $prop,$reg='new')
+        return $sx;
+    }
+
+    function form_link_concept_text($id, $prop, $reg = 'new')
     {
         $Thesa = new \App\Models\Thesa\Index();
         $th = $Thesa->getThesa();
@@ -128,34 +154,31 @@ class ThNotes extends Model
         $txt = get("text");
         $lang = get("lg");
         $text = get("text");
-        if ($act != '')
-            {
-                if ($txt != '')
-                    {
-                        $this->text_save();
-                        exit;
-                    }
-            } else {
-                $dt = $this->find($reg);
-                if ($dt != '')
-                    {
-                        $text = $dt['nt_content'];
-                        $lang = $dt['nt_lang'];
-                    } else {
-                        $lang = 3;
-                    }
+        if ($act != '') {
+            if ($txt != '') {
+                $this->text_save();
+                exit;
             }
+        } else {
+            $dt = $this->find($reg);
+            if ($dt != '') {
+                $text = $dt['nt_content'];
+                $lang = $dt['nt_lang'];
+            } else {
+                $lang = 3;
+            }
+        }
 
         /************************* LANG */
-        $langs = $Language->lang_form($th,$lang);
+        $langs = $Language->lang_form($th, $lang);
 
         $sx = '';
         $sx .= lang('thesa.description_input');
-        $sx .= '('.$reg.')';
+        $sx .= '(' . $reg . ')';
         $sx .= form_open();
-        $sx .= form_textarea(array('name' => 'text', 'id' => 'text', 'class' => 'form-control', 'rows' => 8,'value'=>$text));
-        $sx .= form_hidden(array('reg'=> $reg, 'id'=>$id,'prop'=>$prop));
-        $sx .= form_label(lang('thesa.language')).': ';
+        $sx .= form_textarea(array('name' => 'text', 'id' => 'text', 'class' => 'form-control', 'rows' => 8, 'value' => $text));
+        $sx .= form_hidden(array('reg' => $reg, 'id' => $id, 'prop' => $prop));
+        $sx .= form_label(lang('thesa.language')) . ': ';
 
         $sx .= $langs;
         $sx .= '<br/>';
@@ -164,7 +187,7 @@ class ThNotes extends Model
         $sx .= $this->btn_close();
         $sx .= form_close();
 
-        return bs(bsc($sx,12));
+        return bs(bsc($sx, 12));
     }
 
     function btn_close()
@@ -194,25 +217,24 @@ class ThNotes extends Model
         */
         $text = strip_tags($text);
 
-        if ($reg == 'new')
-            {
-                $ThProprity = new \App\Models\RDF\ThProprity();
-                $prop = $ThProprity->find_prop($prop);
-                $prop = $prop['id_p'];
-                $this->register($id, $prop, $text, $lang);
-            } else {
-                $data['nt_content'] = $text;
-                $data['nt_lang'] = $lang;
-                $data['updated_at'] = date("Y-m-d H:i:s");
-                $this->where('id_nt', $reg);
-                $this->set($data);
-                $this->update();
-            }
+        if ($reg == 'new') {
+            $ThProprity = new \App\Models\RDF\ThProprity();
+            $prop = $ThProprity->find_prop($prop);
+            $prop = $prop['id_p'];
+            $this->register($id, $prop, $text, $lang);
+        } else {
+            $data['nt_content'] = $text;
+            $data['nt_lang'] = $lang;
+            $data['updated_at'] = date("Y-m-d H:i:s");
+            $this->where('id_nt', $reg);
+            $this->set($data);
+            $this->update();
+        }
         echo wclose();
         exit;
     }
 
-    function list($concept, $prop, $edit=true)
+    function list($concept, $prop, $edit = true)
     {
         $sx = '';
         $this
@@ -228,21 +250,20 @@ class ThNotes extends Model
 
         for ($r = 0; $r < count($dt); $r++) {
             $line = $dt[$r];
-            $url = PATH. '/admin/notes/scopeNote/'.$line['nt_concept'].'/'.$line['id_nt'];
+            $url = PATH . '/admin/notes/scopeNote/' . $line['nt_concept'] . '/' . $line['id_nt'];
             $sx .= '<p class="mb-2 lh-1 notes">';
-            if ($edit == true)
-                {
-                    $sx .= '<span style="cursor: pointer;" onclick="newwin(\'' . $url . '\');">';
-                    $sx .= bsicone('edit');
-                    $sx .= '</span>';
+            if ($edit == true) {
+                $sx .= '<span style="cursor: pointer;" onclick="newwin(\'' . $url . '\');">';
+                $sx .= bsicone('edit');
+                $sx .= '</span>';
 
-                    /* Remove */
-                    $sx .= '<span style="color: red; cursor: pointer;" onclick="text_delete(' . $line['id_nt'] . ',\'' . $line['p_name'] . '\');">';
-                    $sx .= bsicone('trash', 16);
-                    $sx .= '</span>';
-                }
+                /* Remove */
+                $sx .= '<span style="color: red; cursor: pointer;" onclick="text_delete(' . $line['id_nt'] . ',\'' . $line['p_name'] . '\');">';
+                $sx .= bsicone('trash', 16);
+                $sx .= '</span>';
+            }
 
-            $sx .= troca($line['nt_content'],chr(13),'<br/>');
+            $sx .= troca($line['nt_content'], chr(13), '<br/>');
             $sx .= '</p>';
         }
         return $sx;
