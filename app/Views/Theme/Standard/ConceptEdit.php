@@ -13,7 +13,7 @@
                 $onclick = ' onclick="newwin(\'' . PATH . '/admin/popup_' .
                     $tag . '/' . $id . '\',600,600);"';
                 $plus = '<span class="text-primary ms-1 handle" ' . $onclick . '>' . bsicone('plus') . '</span>';
-                echo '<div class="border-bottom border-secondary mb-1 mt-1">';
+                echo '<div class="border-bottom border-secondary mb-1 mt-1 pb-2">';
                 echo h(lang('thesa.' . $tag) . $plus, 6, 'lora');
                 echo $content . '</div>';
             }
@@ -25,10 +25,16 @@
                 foreach($relations as $tag=>$line)
                     {
                         $onclick = ' onclick="newwin(\'' . PATH . '/admin/popup_' .
-                            $tag . '/' . $id . '\',600,600);"';
+                            $tag . '/' . $id . '\',800,600);"';
                         $plus = '<span class="text-primary ms-1 handle" ' . $onclick . '>' . bsicone('plus') . '</span>';
-                        echo h(lang('thesa.' . $tag) . $plus, 6, 'lora');
+
+                        if (($tag == 'broader') and ($line != '')) { $plus = ''; }
+
+                        echo h(lang('thesa.' . $tag) . $plus, 6, 'lora mt-1');
+                        echo '<div class="border-bottom border-secondary mb-1 mt-1 pb-2">';
                         echo $line;
+                        echo '</div>';
+
                     }
 
             ?>

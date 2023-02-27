@@ -115,14 +115,18 @@ class Index extends Model
         $Concept = new \App\Models\Thesa\Concepts\Index();
         $NotesIndex = new \App\Models\Thesa\Notes\Index();
         $Reference = new \App\Models\Thesa\Reference();
+        $Broader = new \App\Models\Thesa\Relations\Broader();
 
         $data = [];
         $data['midias'] = $Midias->show($id);
 
         $dt = $Concept->le($id);
 
-        $data['values'] = $this->show_proprieties($dt, $edit);
+        $data['values'] = $this->show_proprieties($dt,false);
+        $data['broader'] = $Broader->broader($id,false);
+        $data['narrow'] = $Broader->narrow($id, false);
         $data['notes'] = $NotesIndex->recover($id, false);
+
         $sx .= $this->show_header($id);
         $sx .= view("Theme/Standard/Term", $data);
         return $sx;

@@ -51,7 +51,7 @@ class Broader extends Model
         return $sx;
     }
 
-    function broader($id)
+    function broader($id,$edit=false)
     {
         $dt = $this
             ->join('thesa_concept_term', 'ct_concept = b_concept_boader and ct_literal <> 0')
@@ -60,15 +60,16 @@ class Broader extends Model
             ->findAll();
         $sx = '';
         foreach ($dt as $id => $line) {
-            $sx .= '<span class="text-danger me-2">' . bsicone('trash', 18) . '</span>';
-            $sx .= anchor(PATH . '/v/' . $line['ct_concept'], $line['term_name']);
-            $sx .= '<br>';
-        }
-        $sx .= '<br>';
+            $icone = '';
+            if ($edit == true) {
+                $icone = '<span class="text-danger me-2">' . bsicone('trash', 18) . '</span>';
+            }
+            $sx .= '<span class="ms-3 prefLabel">' . $icone . anchor(PATH . '/v/' . $line['ct_concept'], $line['term_name']) . '</span>';
+            $sx .= '<br>';        }
         return $sx;
     }
 
-    function narrow($id)
+    function narrow($id,$edit=false)
     {
         $dt = $this
             ->join('thesa_concept_term', 'ct_concept = b_concept_narrow and ct_literal <> 0')
@@ -77,11 +78,13 @@ class Broader extends Model
             ->findAll();
         $sx = '';
         foreach ($dt as $id => $line) {
-            $sx .= '<span class="text-danger me-2">' . bsicone('trash', 18) . '</span>';
-            $sx .= anchor(PATH . '/v/' . $line['ct_concept'], $line['term_name']);
+            $icone = '';
+            if ($edit == true) {
+                $icone = '<span class="text-danger me-2">' . bsicone('trash', 18) . '</span>';
+            }
+            $sx .= '<span class="ms-3 prefLabel">'.$icone.anchor(PATH . '/v/' . $line['ct_concept'], $line['term_name']). '</span>';
             $sx .= '<br>';
         }
-        $sx .= '<br>';
         return $sx;
     }
 
@@ -109,6 +112,19 @@ class Broader extends Model
         return $sx;
     }
 
+    function exist_broader($id,$th)
+        {
+        $dt = $this
+            ->where('b_concept_narrow',$id)
+            ->where('b_th',$th)
+            ->findAll();
+        if (count($dt) == 0)
+            {
+                return false;
+            }
+        return true;
+        }
+
     function form($d1, $d2, $d3, $d4)
     {
         $Concept = new \App\Models\Thesa\Concepts\Index();
@@ -119,6 +135,12 @@ class Broader extends Model
         $access = $Collaborations->own($th);
 
         if ($access) {
+            if ($this->exist_broader($d1,$th))
+                {
+                    $sx = bsmessage(lang('thesa.already_broader'),3);
+                    return $sx;
+                }
+
             $dc = $this->canditates_broader($th, $d1);
             $sx = '';
             $sa = '<select id="concept" class="form-control" size=15">';
@@ -173,16 +195,35 @@ class Broader extends Model
 
     function canditates_broader($th, $id)
     {
-        $dt = $this
-            ->select('term_name, c_concept, ct_th')
+        $tl1 = $this
+            ->select('b_concept_narrow as idc')
             ->join('thesa_concept', 'c_concept = b_concept_boader', 'right')
-            ->join('thesa_concept_term', 'ct_concept = c_concept and ct_literal <> 0')
-            ->join('thesa_terms', 'id_term = ct_literal')
+            ->where('b_concept_boader',$id)
             ->where('c_th', $th)
-            ->where('c_concept <> ' . $id)
-            ->groupBy('term_name, c_concept, ct_th')
-            ->orderBy('term_name')
             ->findAll();
+
+        $tl2 = $this
+            ->select('b_concept_boader as idc')
+            ->join('thesa_concept', 'c_concept = b_concept_narrow', 'right')
+            ->where('b_concept_narrow', $id)
+            ->where('c_th', $th)
+            ->findAll();
+
+        /********************************/
+        $Concept = new \App\Models\Thesa\Concepts\Index();
+        $Concept->select('term_name, c_concept, ct_th');
+        $Concept->join('thesa_concept_term', 'ct_concept = c_concept and ct_literal <> 0');
+        $Concept->join('thesa_terms','id_term = ct_literal');
+        foreach ($tl1 as $idx => $xline) {
+            $Concept->where('c_concept <> ' . $xline['idc']);
+        }
+        foreach ($tl2 as $idx => $xline) {
+            $Concept->where('c_concept <> ' . $xline['idc']);
+        }
+        $Concept->orderby('term_name');
+        $dt = $Concept->findAll();
         return $dt;
+        pre($dt);
+
     }
 }

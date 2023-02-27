@@ -110,11 +110,10 @@ return [
     'author_abrev' => '',
     'language' => 'Idioma',
     'concepts_add'=>'Termos disponíveis',
-    'index_alphabetic' => 'ALFABÉTICO- ESTRUTURADA',
+    'index_alphabetic' => 'ALFABÉTICO-ESTRUTURADA',
     'index_systematic' => 'ORDEM SISTEMÁTICA',
     'Terms_candidate' => 'Candidatos',
     'midia' => 'Multimídia',
-    '' => '',
     '' => '',
 
 ];

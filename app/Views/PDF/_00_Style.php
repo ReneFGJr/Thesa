@@ -28,8 +28,9 @@
         top: -50px;
         right: 0px;
         height: 20px;
-        background-color: orange;
+        background-color: #000044;
         text-align: center;
+        color: white;
     }
 
     #ficha_catalografica {
@@ -56,23 +57,34 @@
         margin: 50px 50px 60px 60px;
     }
 
-    .small
-        {
-            font-size: 0.8em;
-        }
+    .small {
+        font-size: 0.8em;
+    }
 
     .recuo {
         text-indent: -1em;
         margin-left: 1em;
     }
 
-    .term_h
-        {
-            line-height: 100%;
-            font-size: 1.1em;
-            margin: 0px 0px 0px 0px;
-            margin-top: 0px;
-        }
+    h3 {
+        text-transform: uppercase;
+    }
+
+    .paragrafo {
+        text-indent: 2em;
+        margin-left: 1em;
+        text-align: justify;
+        line-height: 140%;
+        margin-bottom: 15px;
+    }
+
+    .term_h {
+        line-height: 100%;
+        font-size: 1.1em;
+        margin: 0px 0px 0px 0px;
+        margin-top: 0px;
+    }
+
     .avanco {
         margin-left: 20px;
         color: red;

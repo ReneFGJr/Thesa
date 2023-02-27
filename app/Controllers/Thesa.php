@@ -33,7 +33,7 @@ class Thesa extends BaseController
 
     public function footer($data = array())
     {
-        $thema = 'Theme/Standard/footer';
+        $thema = 'Theme/Standard/foot';
         return view($thema, $data);
     }
 
@@ -118,6 +118,7 @@ class Thesa extends BaseController
                 $sx .= $Terms->show_simple($id);
                 return $sx;
                 break;
+
             case 'th':
                 $Thesa = new \App\Models\Thesa\Index();
                 $Language = new \App\Models\Thesa\Language();
@@ -137,6 +138,27 @@ class Thesa extends BaseController
                 $sx .= $ConceptList->terms_alphabetic($id, $lang, $Other);
 
                 break;
+
+            case 'tz':
+                $Thesa = new \App\Models\Thesa\Index();
+                $Language = new \App\Models\Thesa\Language();
+                $Terms = new \App\Models\Thesa\Terms\Index();
+                $Description = new \App\Models\Thesa\Descriptions();
+
+                $Thesa->setThesa($id);
+
+                $dt = $Thesa->le($id);
+                $sx .= view('Theme/Standard/headerTh', $dt);
+
+                $Other = $Description->resume($id, false);
+                $Other .= $Description->show($id);
+                $lang = $Language->getLang();
+
+                $ConceptList = new \App\Models\Thesa\Concepts\Lists();
+                $sx .= $ConceptList->terms_systematic($id, $lang, $Other);
+
+                break;
+
 
                 /******* TH OPEN */
             case 'thopen':

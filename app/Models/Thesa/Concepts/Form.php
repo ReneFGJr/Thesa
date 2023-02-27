@@ -49,6 +49,7 @@ class Form extends Model
         $Terms = new \App\Models\Thesa\Terms\Index();
         $Midias = new \App\Models\Thesa\Midias();
         $Relations = new \App\Models\Thesa\Relations\Index();
+        $Broader = new \App\Models\Thesa\Relations\Broader();
 
         /****************** Cabecalho Thesauro */
         $th = $Concept->recover_th($id);
@@ -73,7 +74,8 @@ class Form extends Model
         $data['forms'] = $forms;
 
         /********* RELATIONS */
-        $data['relations'] = $Relations->recover($id, $edit);
+        $data['relations']['broader'] = $Broader->broader($id, $edit);
+        $data['relations']['narrow'] = $Broader->narrow($id, $edit);
 
         /******** MIDIAS */
         $data['midias'] = $Midias->show($id, $edit);

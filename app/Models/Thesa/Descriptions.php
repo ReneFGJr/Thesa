@@ -175,21 +175,26 @@ class Descriptions extends Model
                                     {
                                         $text .= $line['lg_language'].'. ';
                                     }
-                                    $sx .= '<h6 class="lora">' . lang('thesa.' . $class) . '</h6>';
-                                    $sx .= '<div id="sp_' . $class . '" class="m-2 p-2">' . $text . '</div>';
+                                    $sx .= '<h3 class="lora">' . lang('thesa.' . $class) . '</h3>';
+                                    $ln = explode(chr(13),$text);
+                                    foreach($ln as $id=>$lns)
+                                        {
+                                            $sx .= '<div id="sp_' . $class . '" class="m-2 mb-3 p-2 paragrafo">' . $lns . '</div>';
+                                        }
+
                                 break;
                             case 'Title':
                                 $Thesa = new \App\Models\Thesa\Index();
                                 $dth = $Thesa->le($th);
                                 $text = $dth['th_name'];
-                                $sx .= '<h6 class="lora">' . lang('thesa.' . $class) . '</h6>';
-                                $sx .= '<div id="sp_' . $class . '" class="m-2 p-2">' . $text . '</div>';
+                                $sx .= '<h3 class="lora">' . lang('thesa.' . $class) . '</h3>';
+                                $sx .= '<div id="sp_' . $class . '" class="m-2 mb-3 p-2 paragrafo">' . $text . '</div>';
                                 break;
                             case 'Authors':
                                 $Collaborators = new \App\Models\Thesa\Collaborators();
                                 $text = $Collaborators->authors($th);
-                                $sx .= '<h6 class="lora">' . lang('thesa.' . $class) . '</h6>';
-                                $sx .= '<div id="sp_' . $class . '" class="m-2 p-2">' . $text . '</div>';
+                                $sx .= '<h3 class="lora">' . lang('thesa.' . $class) . '</h3>';
+                                $sx .= '<div id="sp_' . $class . '" class="m-2 mb-3 p-2 paragrafo">' . $text . '</div>';
                                 break;
                             default:
                                 foreach($data as $idx=>$line)
@@ -201,8 +206,11 @@ class Descriptions extends Model
                                 }
                                 if (($text != '') or ($edit == true))
                                     {
-                                        $sx .= '<h6 class="lora">' . lang('thesa.' . $class) . '</h6>';
-                                        $sx .= '<div id="sp_' . $class . '" class="m-2 p-2">' . $text . '</div>';
+                                        $sx .= '<h3 class="lora">' . lang('thesa.' . $class) . '</h3>';
+                                        $ln = explode('<br/>', $text);
+                                        foreach ($ln as $id => $lns) {
+                                            $sx .= '<div id="sp_' . $class . '" class="m-2 mb-3 p-2 paragrafo">' . $lns . '</div>';
+                                        }
                                     }
                                 break;
                         }
