@@ -235,13 +235,13 @@ class Lists extends Model
                     $sx .= '<div onclick="load_content(' . $line['ct_concept'] . ')"
                                 class="full prefLabel bghover handle"
                                 id= "colm_' . $line['id_term'] . '" draggable="true" ondragstart="dragStart (event)">' .
-                        '<tt class="small">'.$line['term_name'] . '</tt>'.'</div>';
+                        ''.$line['term_name'] . ''.'</div>';
                     break;
                 case 'altLabel':
                     $sx .= '<div onclick="load_content(' . $line['ct_concept'] . ')"
                                 class="full altLabel bghover ps-2 handle"
                                 id= "colm2">' .
-                        '<tt class="small">' . $line['term_name'] . '</tt>' . '</div>';
+                        '' . $line['term_name'] . '' . '</div>';
                     break;
             }
         }

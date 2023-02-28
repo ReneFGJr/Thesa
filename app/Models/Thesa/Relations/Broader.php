@@ -56,16 +56,27 @@ class Broader extends Model
         $dt = $this
             ->join('thesa_concept_term', 'ct_concept = b_concept_boader and ct_literal <> 0')
             ->join('thesa_terms', 'id_term = ct_literal')
+            ->join('owl_vocabulary_vc', 'id_vc = ct_propriety')
             ->where('b_concept_narrow', $id)
             ->findAll();
         $sx = '';
+        $c = [];
         foreach ($dt as $id => $line) {
             $icone = '';
-            if ($edit == true) {
-                $icone = '<span class="text-danger me-2">' . bsicone('trash', 18) . '</span>';
+            if (trim($line['vc_label']) == 'prefLabel')
+            {
+                $idcc = $line['b_concept_boader'];
+                if (!isset($c[$idcc]))
+                {
+
+                    if ($edit == true) {
+                        $icone = '<span class="text-danger me-2">xx' . bsicone('trash', 18) . '</span>';
+                    }
+                    $c[$idcc] = 1;
+                $sx .= '<span class="ms-3 prefLabel">' . $icone . anchor(PATH . '/v/' . $line['ct_concept'], $line['term_name']) . '</span>';
+                $sx .= '<br>';        }
             }
-            $sx .= '<span class="ms-3 prefLabel">' . $icone . anchor(PATH . '/v/' . $line['ct_concept'], $line['term_name']) . '</span>';
-            $sx .= '<br>';        }
+        }
         return $sx;
     }
 
@@ -74,16 +85,26 @@ class Broader extends Model
         $dt = $this
             ->join('thesa_concept_term', 'ct_concept = b_concept_narrow and ct_literal <> 0')
             ->join('thesa_terms', 'id_term = ct_literal')
+            ->join('owl_vocabulary_vc', 'id_vc = ct_propriety')
             ->where('b_concept_boader', $id)
             ->findAll();
         $sx = '';
+        $c = [];
         foreach ($dt as $id => $line) {
             $icone = '';
-            if ($edit == true) {
-                $icone = '<span class="text-danger me-2">' . bsicone('trash', 18) . '</span>';
+            if (trim($line['vc_label']) == 'prefLabel') {
+                $idcc = $line['b_concept_narrow'];
+                //pre($line,false);
+                if (!isset($c[$idcc])) {
+
+                    if ($edit == true) {
+                        $icone = '<span class="text-danger me-2">xx' . bsicone('trash', 18) . '</span>';
+                    }
+                    $c[$idcc] = 1;
+                    $sx .= '<span class="ms-3 prefLabel">' . $icone . anchor(PATH . '/v/' . $line['ct_concept'], $line['term_name']) . '</span>';
+                    $sx .= '<br>';
+                }
             }
-            $sx .= '<span class="ms-3 prefLabel">'.$icone.anchor(PATH . '/v/' . $line['ct_concept'], $line['term_name']). '</span>';
-            $sx .= '<br>';
         }
         return $sx;
     }
