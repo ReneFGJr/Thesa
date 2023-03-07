@@ -33,7 +33,7 @@ class Thesa extends BaseController
 
     public function footer($data = array())
     {
-        $thema = 'Theme/Standard/foot';
+        $thema = 'Theme/';
         return view($thema, $data);
     }
 

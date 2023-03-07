@@ -29,7 +29,7 @@ class Admin extends BaseController
         $data['title'] = 'Thesa - #ADMIN';
         $data['bg_color'] = '#4B0082;';
         $data['css'] = '';
-        return view('Theme/Standard/foot', $data);
+        return view('Theme/Standard/Foot', $data);
     }
 
     public function index($d1 = '',$d2 = '',$d3 = '',$d4 = '',$d5='')
