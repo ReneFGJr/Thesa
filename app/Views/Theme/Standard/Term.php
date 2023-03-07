@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-4">
+        <div class="col-5">
             <table class="full">
                 <?php
                 foreach ($values as $prop => $value) {
@@ -13,7 +13,7 @@
             </table>
         </div>
 
-        <div class="col-4">
+        <div class="col-5">
             <?php
 
             if (isset($broader) and ($broader != ''))
@@ -39,7 +39,7 @@
 
         </div>
 
-        <div class="col-2 border-start border-top border-secondary">
+        <div class="col-2 border-start border-secondary text-end mt-2">
             <?= $midias; ?>
         </div>
     </div>

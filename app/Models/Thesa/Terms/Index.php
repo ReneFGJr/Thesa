@@ -70,6 +70,7 @@ class Index extends Model
         $Collaborators = new \App\Models\Thesa\Collaborators();
 
         $dt = $Concept->le($id);
+
         $th = $dt[0]['c_th'];
 
         $data = [];

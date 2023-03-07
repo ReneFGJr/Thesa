@@ -42,6 +42,98 @@ class Collaborators extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function management($th)
+        {
+            $sx = '';
+            $access = $this->own($th);
+            if ($access)
+                {
+                    $sx .= '<span class="handle" onclick="newwin(\''.PATH.'/admin/collaborators/add/'.$th.'\',1024,600);">';
+                    $sx .= bsicone('plus');
+                    $sx .= '</span>';
+                }
+            return $sx;
+        }
+
+    function index($d1,$th,$d3,$d4)
+        {
+            $sx = '';
+            switch($d1)
+                {
+                    case 'add':
+                        $sx .= $this->form($th);
+                    break;
+
+                    case 'del':
+                        $sql = "delete from thesa_users where id_th_us = $th";
+                        $this->query($sql);
+                        return wclose();
+                        break;
+                    default:
+                        echo '==>'.$d1.'='.$th;
+                        break;
+                }
+                return $sx;
+        }
+
+    function form($th)
+        {
+            $value = get("name");
+            $sx = '';
+            $sx .= h(lang('thesa.collaborators.add'),3);
+            $sx .= form_open();
+            $sx .= form_label(lang('thesa.user_name'));
+            $sx .= form_input(array('name'=>'name','class'=>'form-control full', 'value'=>$value));
+            $sx .= form_submit('action',lang('thesa.search'));
+            $sx .= form_close();
+
+            if ($value != '')
+                {
+                    $Socials = new \App\Models\Socials();
+                    $dt = $Socials
+                            ->where("us_nome like '%$value%'")
+                            ->ORwhere("us_email like '%$value%'")
+                            ->orderby('us_nome')
+                            ->findAll();
+                    $sfa = form_open();
+                    $sa = '';
+                    $sb = '';
+
+                    foreach($dt as $id=>$line)
+                        {
+                            $sa .= form_radio('id_us',$line['id_us']);
+                            $sa .= $line['us_nome'];
+                            $sa .= ' ('.$line['us_email'].')';
+                            $sa .= '<br>';
+                        }
+                    $sql = "select * from thesa_users_perfil";
+                    $dba = $Socials->query($sql);
+                    $dba = $dba->getresult();
+
+                    foreach ($dba as $id => $line) {
+                        $line = (array)$line;
+                        $sb .= form_radio('id_pf',$line['id_pf']);
+                        $sb .= lang($line['pf_name']);
+                        $sb .= '<br>';
+                    }
+                    $sa .= form_submit('action', lang('thesa.save'));
+                    $sfb = form_close();
+
+                    $us = get("id_us");
+                    $pf = get("id_pf");
+
+                    if (($us != '') and ($pf != ''))
+                        {
+                            $this->add($us,$th,$pf);
+                            return wclose();
+                        }
+
+                    $sx .= '<br/>'.bsc($sa,6).bsc($sb,6);
+                    $sx = $sfa . bs($sx). $sfb;
+                }
+            return $sx;
+        }
+
     function add($user,$th,$perfil)
         {
             $dt = $this
@@ -120,6 +212,7 @@ class Collaborators extends Model
             $line = $dt[$r];
             $sx .= view('Admin/UsersPerfil', $line);
         }
+        $sx = bs($sx);
         return $sx;
     }
 }

@@ -66,6 +66,8 @@ class ImportThesa extends Model
             $idc = 0;
 
             foreach ($xmlc as $class => $xmld) {
+                $term = '';
+                $lang = '';
                 $xmld = (array)$xmld;
                 $xmla = (array)$xmld['@attributes'];
 

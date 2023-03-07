@@ -41,6 +41,12 @@ class Admin extends BaseController
         $footer = view('Thesa/Foot');
 
         switch ($d1) {
+            case 'collaborators':
+                $Collaborators = new \App\Models\Thesa\Collaborators();
+                $sx = $this->cab();
+                $sx .= $Collaborators->index($d2,$d3,$d4,$d5);
+                return $sx;
+                break;
             case 'notes':
                 $ThNotes = new \App\Models\RDF\ThNotes();
                 $sx = $this->cab();
@@ -316,6 +322,7 @@ class Admin extends BaseController
             array_push($data['link'], '<a href="#_" class="nav-link">Colaboradores</a>');
             $sa .= '<h1>'.lang("thesa.Collaborators").'</h1>';
             $sa .= $Collaborators->list($th);
+            $sa .= $Collaborators->management($th);
 
             $class = $Description->classes();
             foreach($class as $id=>$name)
