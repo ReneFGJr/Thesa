@@ -23,10 +23,10 @@ echo view('Theme/Standard/Foot');
         </div>
 
         <div class="col-2">
-            <img class="img-fluid" src="<?= URL; ?>/img/logo/logo_orcalab.jpeg" class="float-right" >
+            <img class="img-fluid p-4" src="<?= URL; ?>/img/logo/logo_orcalab.jpeg" class="float-right">
         </div>
         <div class="col-2">
-            <img class="img-fluid" src="<?= URL; ?>/img/logo/logo_ppgcin.png" class="float-right">
+            <img class="img-fluid p-4" src="<?= URL; ?>/img/logo/logo_ppgcin.png" class="float-right">
         </div>
     </div>
 </footer>

@@ -43,7 +43,7 @@ class Index extends Model
     function recover($id=0,$edit=0)
         {
             $ThNotes = new \App\Models\RDF\ThNotes();
-            $nt = ['scopeNote', 'notation', 'note', 'changeNote', 'editorialNote', 'example', 'historyNote'];
+            $nt = ['definition','scopeNote', 'notation', 'note', 'changeNote', 'editorialNote', 'example', 'historyNote'];
             $dt = [];
             foreach($nt as $note)
                 {
