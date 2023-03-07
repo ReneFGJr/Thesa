@@ -174,9 +174,9 @@ class Config extends Model
 
             $Language = new \App\Models\Thesa\Language();
             $dt = $Language
-                ->select('lg_code,lg_language,count(*) as total, lgt_th')
+                ->select('id_lgt, lg_code,lg_language,count(*) as total, lgt_th')
                 ->join('language', 'id_lg = lgt_language and lgt_th = '.$th, 'right')
-                ->groupBy('lg_code,lg_language, lgt_th')
+                ->groupBy('id_lgt, lg_code,lg_language, lgt_th')
                 ->orderBy('id_lgt, lg_language', 'ASC')
                 ->findAll();
 
