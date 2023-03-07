@@ -232,13 +232,13 @@ class Lists extends Model
 
             switch ($type) {
                 case 'prefLabel':
-                    $sx .= '<div onclick="load_content(' . $line['ct_concept'] . ')"
+                    $sx .= '<div onclick="load_content(' . $line['ct_concept'] . ',\''.PATH.'\')"
                                 class="full prefLabel bghover handle"
                                 id= "colm_' . $line['id_term'] . '" draggable="true" ondragstart="dragStart (event)">' .
                         ''.$line['term_name'] . ''.'</div>';
                     break;
                 case 'altLabel':
-                    $sx .= '<div onclick="load_content(' . $line['ct_concept'] . ')"
+                    $sx .= '<div onclick="load_content(' . $line['ct_concept'] . ',\'' . PATH . '\')"
                                 class="full altLabel bghover ps-2 handle"
                                 id= "colm2">' .
                         '' . $line['term_name'] . '' . '</div>';
@@ -320,7 +320,7 @@ class Lists extends Model
                 $t = explode('#',$line);
                 if (isset($t[1]))
                 {
-                $sx .= '<div onclick="load_content(' . $t[1] . ')"
+                $sx .= '<div onclick="load_content(' . $t[1] . ',\'' . PATH . '\')"
                                     class="full prefLabel bghover handle"
                                     id= "colm_' . $t[1] . '" draggable="true" ondragstart="dragStart (event)">' .
                 '<tt>'.$t[0].'</tt>'. '</div>';
@@ -336,7 +336,7 @@ class Lists extends Model
                 foreach($terms as $id=>$line)
                     {
                         $t = explode('#', $line);
-                        $sa .= '<div onclick="load_content(' . $t[1] . ')"
+                        $sa .= '<div onclick="load_content(' . $t[1] . ',\'' . PATH . '\')"
                                             class="full prefLabel bghover handle text-danger"
                                             id= "colm_' . $t[1] . '" draggable="true" ondragstart="dragStart (event)">' .
                         '<tt>' . $t[0] . '</tt>' . '</div>';
