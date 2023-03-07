@@ -38,6 +38,7 @@ $routes->set404Override();
 
 $routes->get('/admin', 'Admin::index');
 $routes->get('/admin/(:any)', 'Admin::index/$1');
+$routes->get('/thesa/admin/(:any)', 'Admin::index/$1');
 $routes->post('/admin/(:any)', 'Admin::index/$1');
 $routes->post('/admin/(:any)/(:any)', 'Admin::index/$1/$2');
 $routes->get('/admin/(:any)/(:any)', 'Admin::index/$1/$2');
