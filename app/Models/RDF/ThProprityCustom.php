@@ -60,7 +60,7 @@ class ThProprityCustom extends Model
         }
     function find_class($name)
         {
-            $Thesa = new \App\Models\Thesa\Thesa();
+            $Thesa = new \App\Models\Thesa\Index();
             $th = $Thesa->getThesa();
             $dt = $this
                 ->where('pcst_achronic',$name)

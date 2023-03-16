@@ -94,7 +94,7 @@ class Thesa extends Model
                     }
                 } else {
                     $this->set($data)->where('id_th', $id_th)->update();
-                    $Collaborators->add($$id_th, $user);
+                    $Collaborators->add($id_th, $user);
                 }
                 header("location: admin");
                 exit;

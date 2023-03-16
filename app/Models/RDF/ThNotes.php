@@ -124,7 +124,7 @@ class ThNotes extends Model
 
     function delete_note()
     {
-        $Thesa = new \App\Models\Thesa\Thesa();
+        $Thesa = new \App\Models\Thesa\Index();
         $th = $Thesa->getThesa();
         $sx = '';
         $id = get("id");
