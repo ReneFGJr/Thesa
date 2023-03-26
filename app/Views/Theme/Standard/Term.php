@@ -13,7 +13,7 @@
             </table>
         </div>
 
-        <div class="col-5">
+        <div class="col-4">
             <?php
 
             if (isset($broader) and ($broader != ''))
@@ -39,7 +39,7 @@
 
         </div>
 
-        <div class="col-2 border-start border-secondary text-end mt-2">
+        <div class="col-3 border-start border-secondary text-end mt-2">
             <?= $midias; ?>
         </div>
     </div>
