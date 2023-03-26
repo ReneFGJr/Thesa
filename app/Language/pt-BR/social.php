@@ -70,7 +70,7 @@ return [
 	'already_seted' => '<span style="color: green" class="small">já atribuído</span>',
 	'users_list' => 'Usuários do sistemas',
 	'users_perfis' => 'Perfis de usuários',
-	'' => '',
+	'social_user_add' => 'Bem vindo ao Thesa!',
 	'' => '',
 	'' => '',
 	'' => '',
