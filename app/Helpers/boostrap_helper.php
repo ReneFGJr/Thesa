@@ -11,6 +11,27 @@
  * @version     v0.21+12.03
  */
 
+ function bscode($txt,$bg='bg')
+    {
+        global $primsJS;
+        $sx  = '';
+        if (!isset($primsJS))
+            {
+                $primsJS = true;
+                $sx .= '<!-- Theme PrimsJS-->'.cr();
+                $sx .= '<link rel="stylesheet" href="' . URL . '/js/theme/prims.css">' . cr();
+            }
+        $sx .= '<pre class="code '.$bg.'">';
+        $ln = explode(chr(13),$txt);
+        foreach($ln as $id=>$line)
+            {
+                $sx .= '<span>'.$line.'</span>';
+            }
+        $sx .= '</pre>';
+        return $sx;
+    }
+
+
 function bsicone($type = '', $w = 16)
 {
     if ($type == 'config') {

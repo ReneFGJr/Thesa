@@ -90,7 +90,7 @@ class ThesaConecptPropity extends Migration
         }
 
 
-        $notes = array('labels', 'scopeNote','notation','note','changeNote', 'editorialNote', 'example', 'historyNote');
+        $notes = array('definitions','labels', 'scopeNote','notation','note','changeNote', 'editorialNote', 'example', 'historyNote');
         for ($r=0;$r < count($notes);$r++)
             {
                 $data['p_range'] = 3;
