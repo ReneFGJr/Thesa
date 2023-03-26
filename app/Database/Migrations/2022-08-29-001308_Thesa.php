@@ -45,6 +45,11 @@ class Thesa extends Migration
                 'type' => 'INT',
                 'null' => true,
             ],
+            'th_icone_custom' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '100',
+                'null' => true,
+            ],
             'th_type' => [
                 'type' => 'INT',
                 'null' => true,

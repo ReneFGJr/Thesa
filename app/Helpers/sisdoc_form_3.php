@@ -31,13 +31,14 @@ function textClipboard($id, $class = '')
     return ($sx);
 }
 
-function read_link($url, $read = 'CURL')
+function read_link($url, $read = 'CURL',$force=false)
 {
     $cached = false;
     dircheck('../.tmp/');
     dircheck('../.tmp/.cache/');
     $file = '../.tmp/.cache/' . md5($url);
-    if (file_exists($file)) {
+    if (file_exists($file) and ($force==false))
+    {
         $cached = true;
         jslog('Cache: ' . $url);
         $txt = file_get_contents($file);

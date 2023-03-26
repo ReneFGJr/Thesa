@@ -209,7 +209,16 @@ function form_del($th)
     return ($sx);
 }
 
-function cr()
+function cr($tp=1)
 {
-    return (chr(13) . chr(10));
+    switch($tp)
+        {
+        case 0:
+            return (chr(13));
+            break;
+        default:
+            return (chr(13) . chr(10));
+            break;
+
+    }
 }

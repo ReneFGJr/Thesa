@@ -115,6 +115,13 @@ return [
     'index_systematic' => 'ORDEM SISTEMÁTICA',
     'Terms_candidate' => 'Candidatos',
     'midia' => 'Multimídia',
+    'Icons' => 'Icone',
+    'Image' => 'Imagem da Capa',
+    'select_icone' => 'Alterar para um incone já existente',
+    'upload_icone' => 'Fazer upload de uma imagem',
+    '' => '',
+    '' => '',
+    '' => '',
     '' => '',
 
 ];

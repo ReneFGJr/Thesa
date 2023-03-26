@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 
-helper(['boostrap', 'url', 'sisdoc_forms', 'form', 'nbr', 'sessions', 'cookie']);
+helper(['boostrap', 'url', 'sisdoc_forms', 'form', 'nbr', 'sessions', 'cookie', 'UploadedFile']);
 $session = \Config\Services::session();
 $language = \Config\Services::language();
 
@@ -51,6 +51,12 @@ class Admin extends BaseController
                 $ThNotes = new \App\Models\RDF\ThNotes();
                 $sx = $this->cab();
                 $sx .= $ThNotes->form($d2,$d3,$d4,$d5);
+                break;
+            case 'icone':
+                $Icone = new \App\Models\Thesa\Icone();
+                $sx = $this->cab();
+                $sx .= $Icone->change($d2, $d3, $d4, $d5);
+                return $sx;
                 break;
             case 'term_add':
                 $Terms = new \App\Models\RDF\ThTerm();

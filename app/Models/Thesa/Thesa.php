@@ -18,7 +18,7 @@ class Thesa extends Model
         'id_th', 'th_name', 'th_achronic',
         'th_description', 'th_status', '',
         'th_terms', 'th_version', 'th_icone',
-        'th_type', 'th_own'
+        'th_type', 'th_own', 'th_icone_custom'
     ];
 
     // Dates
@@ -173,7 +173,7 @@ class Thesa extends Model
 
         for ($r = 0; $r < count($dt); $r++) {
             $line = $dt[$r];
-            $line['img'] = $ThIcone->icone($dt);
+            $line['img'] = $ThIcone->icone($dt[$r]);
             $sx .= bsc(view('Theme/Standard/ViewThList', $line), 2, 'p-2');
         }
         $sx .= '';

@@ -70,7 +70,7 @@ class Broader extends Model
                 {
 
                     if ($edit == true) {
-                        $icone = '<span class="text-danger me-2">xx' . bsicone('trash', 18) . '</span>';
+                        $icone = '<span class="text-danger me-2">' . bsicone('trash', 18) . '</span>';
                     }
                     $c[$idcc] = 1;
                 $sx .= '<span class="ms-3 prefLabel">' . $icone . anchor(PATH . '/v/' . $line['ct_concept'], $line['term_name']) . '</span>';
@@ -98,7 +98,7 @@ class Broader extends Model
                 if (!isset($c[$idcc])) {
 
                     if ($edit == true) {
-                        $icone = '<span class="text-danger me-2">xx' . bsicone('trash', 18) . '</span>';
+                        $icone = '<span class="text-danger me-2">' . bsicone('trash', 18) . '</span>';
                     }
                     $c[$idcc] = 1;
                     $sx .= '<span class="ms-3 prefLabel">' . $icone . anchor(PATH . '/v/' . $line['ct_concept'], $line['term_name']) . '</span>';

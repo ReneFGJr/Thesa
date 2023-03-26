@@ -227,10 +227,6 @@ class Socials extends Model
 				$sx .= breadcrumbs($bread);
 				$sx .= $this->perfis_add($id, $dt);
 				break;
-			case 'profile':
-				$sx .= $cab;
-				$sx .= $this->perfil_list();
-				break;
 			case 'view':
 				$sx .= h("Usuários - View", 1);
 				$this->id = $id;
@@ -348,7 +344,6 @@ class Socials extends Model
 	}
 	function admin_email_test()
 	{
-		$email = new \App\Models\Functions\Email();
 		$sx = '';
 		$sx .= h('Email Test', 1);
 		$sx .= form_open(PATH . 'social/admin/email_test');
@@ -359,7 +354,7 @@ class Socials extends Model
 		$xemail = get("email");
 
 		if (strlen($xemail) > 0) {
-			$sx .= $email->sendemail($xemail, 'Teste de e-mail', 'Teste de e-mail');
+			$sx .= sendemail($xemail, 'Teste de e-mail', 'Teste de e-mail');
 		}
 		return $sx;
 	}
@@ -580,6 +575,11 @@ class Socials extends Model
 		$sx = 'Change Password';
 
 		if (($pw1 != '') and ($pw2 != '') and ($pw3 != '')) {
+			$password = md5($pw2);
+			$this
+				->set('us_password', $password)
+				->where('id_us', $id)
+				->update();
 			$sx = bsmessage(lang('social.password_change_ok'), 1);
 		} else {
 			$this->table = '*';
@@ -1128,12 +1128,11 @@ class Socials extends Model
 
 	function forgout()
 	{
-		$Email = new \App\Models\Functions\Email();
 		$email = get("email");
 		$dt = $this->where('us_email', $email)->findAll();
 
 		if (count($dt) == 0) {
-			$sx = '<h2>' . lang('Socials.email_not_found') . '</h2>';
+			$sx = '<h2>' . lang('social.email_not_found') . '</h2>';
 			$sx .= '<span class="psw" onclick="showForgotPassword()">Voltar</span>';
 			echo $sx;
 			exit;
@@ -1173,7 +1172,7 @@ class Socials extends Model
 		$txt .= '</center>';
 		$txt .= '<br><br><br>';
 		$subject = '[' . getenv('app.project_name') . '] ' . lang('social.forgout_email_title');
-		$Email->sendmail($email, $subject, $txt);
+		sendmail($email, $subject, $txt);
 
 		return $sx;
 	}

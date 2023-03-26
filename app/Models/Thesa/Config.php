@@ -78,6 +78,12 @@ class Config extends Model
             case 'ISBN':
                 $sx .= $this->form_string($class, $th);
                 break;
+            case 'Icons':
+                $sx .= $this->form_icon($class, $th);
+                break;
+            case 'Image':
+                $sx .= $this->form_string($class, $th);
+                break;
             default:
                 $sx .= '<p>Information not found - ' . $class . '</p>';
                 break;
@@ -114,6 +120,25 @@ class Config extends Model
                 ';
                 $js = true;
             }
+            return $sx;
+        }
+
+    function form_icon($class,$th)
+        {
+            $sx = '';
+            $Thesa = new \App\Models\Thesa\Index();
+            $Icons = new \App\Models\Thesa\Icone();
+
+            $dt = $Thesa->le($th);
+            $img = $Icons->icone($dt);
+
+            $img = '<img src="'.$img.'" class="img-fluid">';
+
+            $sa = '<span onclick="newwin(\''.PATH.'admin/icone/th/'.$th.'\',800,600);" class="btn btn-outline-secondary link">';
+            $sa .= 'Alterar icone';
+            $sa .= '</span>';
+
+            $sx .= bsc($img,2).bsc($sa,10);
             return $sx;
         }
 

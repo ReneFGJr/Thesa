@@ -58,6 +58,7 @@ function nbr_title($t)
 
 function nbr_author($xa,$xp)
     {
+        if (trim($xa) == '') { return ""; }
         if (mb_detect_encoding($xa) != 'UTF-8')
         {
             $xa = utf8_encode($xa);
@@ -88,9 +89,12 @@ function nbr_author($xa,$xp)
 
         if (in_array($NM[$TOT-1],$er1) == 1)
             {
-                $NM[$TOT-2] .= ' '.$NM[$TOT-1];
-                unset($NM[$TOT-1]);
-                $TOT--;
+                if (isset($NM[$TOT - 2]))
+                    {
+                        $NM[$TOT - 2] .= ' ' . $NM[$TOT - 1];
+                        unset($NM[$TOT - 1]);
+                        $TOT--;
+                    }
             }
 
         /****************************************** PREPOSICOES **************/
