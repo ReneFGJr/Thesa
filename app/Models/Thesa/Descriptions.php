@@ -204,7 +204,9 @@ class Descriptions extends Model
                                         $text = troca($text, chr(10), '<br/>');
                                     }
                                 }
-                                if (($text != '') or ($edit == true))
+                                //if ((strlen($text) > 0) or ($edit == true))
+
+                                if ((strlen($text) > 0))
                                     {
                                         $sx .= '<h3 class="lora">' . lang('thesa.' . $class) . '</h3>';
                                         $ln = explode('<br/>', $text);

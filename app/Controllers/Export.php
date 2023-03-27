@@ -86,10 +86,13 @@ class Export extends Controller
         $dompdf->loadHtml($pg, 'UTF-8');
         //$dompdf->setPaper('A4', 'landscape');
 
+        header('Content-type: application/pdf');
         //
         $dompdf->render();
         $dompdf->add_info('Subject', 'Thesauros');
         $dompdf->add_info('Subject', 'Thesa');
         $dompdf->stream('thesa.pdf', ['Attachment' => false]);
+
+        exit;
     }
 }
