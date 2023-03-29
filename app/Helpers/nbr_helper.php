@@ -65,6 +65,10 @@ function nbr_author($xa,$xp)
         }
         //$xa = 'RENE FAUSTINO DE GABRIEL- AÚNIOR';
         /******************************** PREPARA *******/
+        if (strpos($xa,';'))
+            {
+                $xa = substr($xa,0,strpos($xa,';'));
+            }
         $xa = troca($xa,' -','-');
         $xa = troca($xa,'- ','-');
         while (strpos($xa,'  ')) { $xa = troca($xa,'  ',' '); }
@@ -99,6 +103,14 @@ function nbr_author($xa,$xp)
 
         /****************************************** PREPOSICOES **************/
         $er2 = array('DE','DA','DO','DOS');
+        $NM2 = $NM;
+        for($nq=0;$nq < count($NM2);$nq++)
+            {
+                if (in_array($NM2[$nq], $er2) == 1)
+                    {
+                        unset($NM2[$nq]);
+                    }
+            }
 
         /***************************************** MINUSCULAS E ABREVIATUDAS */
         $Nm = array();
@@ -155,11 +167,14 @@ function nbr_author($xa,$xp)
 
                     /* Sobrenome e Nome CURTO*/
                     case '2':
-                        $name = $NM[$TOT - 1];
-                        $name .= ', ';
-                        for ($r = 0; $r < ($TOT - 1); $r++) {
-                            $name .= substr($Nf[$r],0,1) . '. ';
-                        }
+                        $TOT = count($NM2);
+                        foreach ($NM2 as $id=>$xname)
+                            {
+                                $Fname = $xname;
+                                $name .= substr($xname, 0, 1) . '. ';
+                            }
+                        $Fname .= ', ';
+                        $name = $Fname.$name;
                         break;
 
                     /* Nome e Sobrenome */
@@ -264,7 +279,6 @@ function nbr_author2($xa, $tp)
         $xa = trim(trim($xp2) . ' ' . trim($xp1));
         if (($tp == 1) or ($tp == 2))
         {
-            echo '<br>===>'.$xp1;
             //exit;
             if ($tp == 1) { $xp1 = mb_strtoupper($xp1);
             }
