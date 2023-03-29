@@ -67,6 +67,7 @@ class ThConceptPropriety extends Model
         return $Broader->register($th,$concept,$id);
     }
 
+
     function candidate_broader($id)
     {
         $ThConcept = new \App\Models\RDF\ThConcept();

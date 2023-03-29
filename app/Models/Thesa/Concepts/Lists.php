@@ -335,11 +335,14 @@ class Lists extends Model
             {
                 foreach($terms as $id=>$line)
                     {
+                        if ($line != '')
+                        {
                         $t = explode('#', $line);
                         $sa .= '<div onclick="load_content(' . $t[1] . ',\'' . PATH . '\')"
                                             class="full prefLabel bghover handle text-danger"
                                             id= "colm_' . $t[1] . '" draggable="true" ondragstart="dragStart (event)">' .
                         '<tt>' . $t[0] . '</tt>' . '</div>';
+                        }
                     }
             }
         return $sa.$sx;

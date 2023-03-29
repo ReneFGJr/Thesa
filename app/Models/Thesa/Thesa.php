@@ -49,6 +49,7 @@ class Thesa extends Model
     function new_thesa()
     {
         $Collaborators = new \App\Models\Thesa\Collaborators();
+        $Language = new \App\Models\Thesa\Language();
 
         $request = \Config\Services::request();
         $validation =  \Config\Services::validation();
@@ -94,9 +95,15 @@ class Thesa extends Model
                         $data['error'] = msg('Thesaurus created', 'success');
                     }
                 } else {
+                    $Socials = new \App\Models\Socials();
+                    $user = $Social->getUser();
                     $this->set($data)->where('id_th', $id_th)->update();
                     $Collaborators->add($id_th, $user);
                 }
+
+                /* Define linguagem padrão */
+                /* POR */
+                $Language->register($id_th,3);
                 header("location: admin");
                 exit;
             } else {

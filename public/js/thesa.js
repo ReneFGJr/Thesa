@@ -133,7 +133,7 @@ function term_delete($id, $prop) {
 }
 
 function text_delete($id, $prop) {
-  if (confirm("Remove?")) {
+  if (confirm("Remove Note?")) {
     var url = $path + "/admin/ajax_text_delete?id=" + $id + "&prop=" + $prop;
     $("#form_thesa_" + $prop).load(url);
   }

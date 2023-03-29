@@ -150,7 +150,9 @@ class Admin extends BaseController
                 break;
             case 'ajax_text_delete':
                 $ThNotes = new \App\Models\RDF\ThNotes();
-                echo $ThNotes->delete_note();
+                $sx = $this->cab();
+                $sx .= $ThNotes->delete_note($d2, $d3, $d4, $d5);
+                return bs(bsc($sx,12,'p-4'));
                 exit;
             case 'ajax_form_text_save':
                 $ThNotes = new \App\Models\RDF\ThNotes();

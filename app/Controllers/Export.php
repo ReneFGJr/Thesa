@@ -58,6 +58,7 @@ class Export extends Controller
     function exporHTML($th)
     {
         $data = $this->metadata($th);
+        pre($data);
         $pg = '';
         $pg .= view('PDF/_00_Style', $data);
         $pg .= bs(bsc(view('PDF/_01_Cover', $data),12));

@@ -122,21 +122,23 @@ class ThNotes extends Model
         return true;
     }
 
-    function delete_note()
+    function delete_note($d2,$d3,$d4)
     {
         $Thesa = new \App\Models\Thesa\Index();
         $th = $Thesa->getThesa();
         $sx = '';
-        $id = get("id");
-        $prop = get("prop");
-
+        $id = get("id").$d3;
         $dt = $this->find($id);
 
         if ($dt != '') {
-            $concept = $dt['nt_concept'];
-            $this->where('id_nt', $id);
-            $this->delete();
-            $sx .= $this->list($concept, $prop);
+            $conf = get("confirm");
+            $sx .= confirm_form('');
+            if ($conf!='')
+                {
+                    $this->where('id_nt', $id);
+                    $this->delete();
+                    $sx .= wclose();
+                }
         } else {
             $sx .= bsmessage('error: Note not found', 3);
         }
@@ -258,7 +260,8 @@ class ThNotes extends Model
                 $sx .= '</span>';
 
                 /* Remove */
-                $sx .= '<span style="color: red; cursor: pointer;" onclick="text_delete(' . $line['id_nt'] . ',\'' . $line['p_name'] . '\');">';
+                $url = PATH . '/admin/ajax_text_delete/' . $line['nt_concept'] . '/' . $line['id_nt'];
+                $sx .= '<span style="color: red; cursor: pointer;" style="cursor: pointer;" onclick="newwin(\'' . $url . '\',600,400);">';
                 $sx .= bsicone('trash', 16);
                 $sx .= '</span>';
             }

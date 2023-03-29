@@ -42,6 +42,24 @@ class ThProprity extends Model
 
     var $quali = 0;
 
+    function class($term)
+        {
+            if (strpos($term,':'))
+                {
+                    $t = explode(':',$term);
+                } else {
+                    $t = ['',$term];
+                }
+            $dt = $this->where('p_name',$t[1])->first();
+            if ($dt != '')
+                {
+                    return($dt['id_p']);
+                } else {
+                    echo "OPS CLASS/PROPRIETIES NOT FOUND";
+                    exit;
+                }
+        }
+
     function index($d1, $d2, $d3, $d4)
     {
         $th = 1;
@@ -100,8 +118,6 @@ class ThProprity extends Model
                         }
                 }
         }
-
-
 
     function edit($id, $th)
         {

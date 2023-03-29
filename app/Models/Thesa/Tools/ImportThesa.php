@@ -41,16 +41,18 @@ class ImportThesa extends Model
     protected $afterDelete    = [];
 
     function import($url)
-        {
+    {
 
         $Thesa = new \App\Models\Thesa\Index();
         $ThTerm = new \App\Models\RDF\ThTerm();
+        $Broader = new \App\Models\Thesa\Relations\Broader();
         $ThConcepts = new \App\Models\Thesa\Concepts\Index();
         $ThTermTh = new \App\Models\RDF\ThTermTh();
         $Language = new \App\Models\Thesa\Language();
         $ThNotes = new \App\Models\RDF\ThNotes();
         $ClassPropriety = new \App\Models\RDF\Ontology\ClassPropryties();
         $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
+        $ThProprity = new \App\Models\RDF\ThProprity();
 
         $th = $Thesa->getThesa();
 
@@ -61,6 +63,8 @@ class ImportThesa extends Model
         $txt = troca($txt, 'xmlns:', '');
 
         $xml = simplexml_load_string($txt);
+
+        $locate = [];
 
         foreach ($xml->Concept as $type => $xmlc) {
             $idc = 0;
@@ -76,16 +80,25 @@ class ImportThesa extends Model
                         $lang = $Language->convert($xmla['lang']);
                         $term = $xmld[0];
                         $idt = $ThTerm->register($term, $lang, $th);
-                        if ($idc > 0)
-                            {
-                                $class = 'skos:prefLabel';
-                                $prop = $ClassPropriety->Class($class);
-                                $idr = $ThConceptPropriety->register($th, $idc, $prop, 0, 0, $idt);
-                                $sx .= $term.'@'.$lang.' foi registrado como prefLabel (alternativo)'.' ['.$idc.']<br>';
+
+                        if ($idc > 0) {
+                            $class = 'skos:prefLabel';
+                            $prop = $ClassPropriety->Class($class);
+                            $idr = $ThConceptPropriety->register($th, $idc, $prop, 0, 0, $idt);
+                            $sx .= $term . '@' . $lang . ' foi registrado como prefLabel (alternativo)' . ' [' . $idc . ']<br>';
+                        } else {
+                            $attr = (array)($xmlc);
+                            $attr = (array)($attr['@attributes']);
+                            if (isset($attr['about'])) {
+                                $source = $attr['about'];
+                                $source = troca($source, '#', '');
                             } else {
-                                $idc = $ThConcepts->register($idt, $th, 'Thesa:' . $idt, 'id');
-                                $sx .= $term . '@' . $lang . ' foi registrado como prefLabel (principal)[' . $idc . ']' . '<br>';
+                                $source = '';
                             }
+                            $idc = $ThConcepts->register($idt, $th, $source, 'id');
+                            $sx .= $term . '@' . $lang . ' foi registrado como prefLabel (principal)[' . $idc . ']' . '<br>';
+                        }
+                        $locate[$term.'@'.$lang] = $idc;
                         break;
                     case 'altLabel':
                         $lang = $Language->convert($xmla['lang']);
@@ -95,7 +108,7 @@ class ImportThesa extends Model
                         $class = 'skos:altLabel';
                         $prop = $ClassPropriety->Class($class);
                         $idr = $ThConceptPropriety->register($th, $idc, $prop, 0, 0, $idt);
-                        $sx .= $term.'@'.$lang.' registrado como '.$class.'<br>';
+                        $sx .= $term . '@' . $lang . ' registrado como ' . $class . '<br>';
                         /********************************************** Trava o Termos do Vocabulario */
                         $Term = new \App\Models\RDF\ThTerm();
                         $Term->term_block($idt, $idc, $th);
@@ -116,27 +129,73 @@ class ImportThesa extends Model
                         break;
 
                     case 'scopeNote':
-                        $class = 'skos:'.$class;
-                        $prop = $ClassPropriety->Class($class);
+                        $class = 'skos:' . $class;
+                        $class = 'skos:definition';
+                        $prop = $ThProprity->Class($class);
                         $lang = $Language->convert($xmla['lang']);
-                        if (isset($xmld[0]))
-                            {
-                                $term = $xmld[0];
-                                $ThNotes->register($idc, $prop, $term, $lang);
-                            }
+                        if (isset($xmld[0])) {
+                            $term = $xmld[0];
+                            $ThNotes->register($idc, $prop, $term, $lang);
+                        }
                         break;
-
+                    case 'broader':
+                        break;
+                    case 'narrower':
+                        break;
                     default:
                         $sx .= h($class . '===>' . $term . '@' . $lang, 5);
                         break;
                 }
-
             }
-
             $xmlc = (array)$xmlc;
         }
 
-        return $sx;
+        /************************ RELACOES */
+        $xml = simplexml_load_string($txt);
 
+        foreach ($xml->Concept as $type => $xmlc) {
+            $idc = 0;
+            foreach ($xmlc as $class => $xmld) {
+                $term = '';
+                $lang = '';
+                $xmld = (array)$xmld;
+                $xmla = (array)$xmld['@attributes'];
+
+                switch ($class) {
+                    case 'prefLabel':
+                        $lang = $Language->convert($xmla['lang']);
+                        $term = $xmld[0];
+                        if (isset($locate[$term.'@'.$lang]))
+                            {
+                                $idc = $locate[$term . '@' . $lang];
+                            } else {
+                                echo "ERRO DE LOCATE";
+                                exit;
+                            }
+                        break;
+
+                    case 'broader':
+                        $broad = (array)$xmlc;
+                        $broad = (array)$broad['broader'];
+                        $broad = (array)$broad['@attributes'];
+                        $source = $broad['resource'];
+                        $source = troca($source, 'https://www.ufrgs.br/tesauros/index.php/thesa/c/','thesa:');
+
+                        $idb = $ThConcepts
+                                ->where('c_agency',$source)
+                                ->where('c_th', $th)
+                                ->first();
+                        $idb = $idb['c_concept'];
+                        $master = 0;
+                        $prop = $ThProprity->Class($class);
+                        $Broader->register($th, $idb, $idc, $master);
+                        break;
+                    default:
+                        $sx .= h($class . '=RELATION==>' . $term . '@' . $lang, 5);
+                        break;
+                }
+            }
         }
+        return $sx;
+    }
 }
