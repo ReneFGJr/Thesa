@@ -18,7 +18,8 @@ class Thesa extends Model
         'id_th', 'th_name', 'th_achronic',
         'th_description', 'th_status', '',
         'th_terms', 'th_version', 'th_icone',
-        'th_type', 'th_own', 'th_icone_custom'
+        'th_type', 'th_own', 'th_icone_custom',
+        'th_cover'
     ];
 
     // Dates

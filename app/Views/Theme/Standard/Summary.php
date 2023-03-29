@@ -21,11 +21,11 @@ if (($access) and ($nr_terms_candidates > 0)) {
 }
 ?>
 
-<span class="btn btn-outline-secondary mb-2" style="width: 150px;">
-    <span class="small"><?= lang('thesa.Export'); ?></span>
-    <br />
-    <a href="<?= PATH . '/export/' . $th; ?>/pdf" class=" btn-outline-secondary">
+<a href="<?= PATH . '/export/' . $th; ?>/pdf" class=" btn-outline-secondary">
+    <span class="btn btn-outline-secondary mb-2" style="width: 150px;">
+        <span class="small"><?= lang('thesa.Export'); ?></span>
+        <br />
         <span class="big btn-outline-secondary"><b>PDF</b></span>
-    </a>
-</span>
+    </span>
+</a>
 <br /><br />

@@ -40,6 +40,12 @@ class Export extends Controller
         $Description = new \App\Models\Thesa\Descriptions();
         $dt = $Thesa->le($th);
 
+        $file = trim($dt['th_cover']);
+
+        if ((trim($dt['th_cover']) == '') or (!file_exists($file)))
+            {
+                $dt['th_cover'] = '/_covers/cover_thesa.jpg';
+            }
 
         $dt['Description'] = $Description->show($th);
 
