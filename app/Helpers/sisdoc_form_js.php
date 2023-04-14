@@ -27,15 +27,6 @@ function confirm($url, $x = 800, $y = 800, $class = "")
     return $a;
 }
 
-function confirm_form($url, $x = 800, $y = 800, $class = "")
-{
-    $sx = '<h1>'.lang('brapci.confirm').'</h1>';
-    $sx .= '<br><br>';
-    $sx .= '<a href="'.$url.'?confirm=true" class="btn btn-outline-danger">'.lang("brapci.yes").'</a>';
-    $sx .= '<span onclick="wclose();" class="ms-2 btn btn-outline-secondary">' . lang("brapci.cancel") . '</span>';
-    return $sx;
-}
-
 function btn_trash_popup($url, $class = 'text-secondary', $txt = '')
 {
     $sx = '<a href="#" class="a ' . $class . ' text-danger" onclick="if (confirm(\'' . lang('brapci.exclusion?') . '\')) { NewWindow=window.open(\'' . $url . '\',\'newwin\',\'scrollbars=no,resizable=no,width=800,height=400,top=10,left=10\'); NewWindow.focus(); void(0); }" style="cursor: pointer;">' . bsicone('trash') . '</a>';

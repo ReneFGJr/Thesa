@@ -10,6 +10,7 @@ function sendemail($to = array(), $subject = '', $body = '', $attachs = array(),
 
         $config = array();
         $config['protocol'] = 'smtp';
+        $config['wordWrap'] = true;
         $config['SMTPHost'] = getenv('email.stmp');
         $config['SMTPUser'] = getenv('email.user_auth');
         $config['SMTPPass'] = getenv('email.password');
@@ -26,17 +27,29 @@ function sendemail($to = array(), $subject = '', $body = '', $attachs = array(),
         $config['mailType'] = 'html';
 
         $email->initialize($config);
-
     } else {
         $config['protocol'] = 'sendmail';
         $config['mailPath'] = '/usr/sbin/sendmail';
         $config['newline'] = "\r\n";
+
+        $config['newline'] = chr(13) . chr(10);
+        $config['mailType'] = 'html';
+
         $email = \Config\Services::email();
         $email->initialize($config);
     }
     /************************* Destinatarios */
     $emails = '';
     $email->setFrom(getenv('email.user_auth'), getenv('email.fromName'));
+
+    $filename = 'img/email/bg-email-hL3a.jpg';
+    if (file_exists($filename)) {
+        $email->attach($filename);
+        $cid = $email->setAttachmentCID($filename);
+        $body = troca($body, '$image1', $cid);
+    } else {
+        echo "Logo not found";
+    }
 
     if (is_array($to))
         {

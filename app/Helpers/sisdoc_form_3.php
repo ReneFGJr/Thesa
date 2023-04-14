@@ -40,9 +40,12 @@ function read_link($url, $read = 'CURL',$force=false)
     if (file_exists($file) and ($force==false))
     {
         $cached = true;
-        jslog('Cache: ' . $url);
-        $txt = file_get_contents($file);
-        return $txt;
+        $getLastModDir = filemtime($file);
+        if (date("Y-m-d") == date("Y-m-d",$getLastModDir))
+            {
+                $txt = file_get_contents($file);
+                return $txt;
+            }
     }
     switch ($read) {
         case 'file':

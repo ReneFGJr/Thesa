@@ -287,10 +287,10 @@ class Socials extends Model
 			default:
 				$menu = array();
 				$menu['#email'] = 'E-mail';
-				$menu[PATH . 'social/admin/email_config'] = 'E-mail - Configurações';
-				$menu[PATH . 'social/admin/email_test'] = 'E-mail - Teste';
-				$menu[PATH . 'social/users'] = 'Usuarios';
-				$menu[PATH . 'social/perfis'] = 'Perfis';
+				$menu[PATH . '/social/admin/email_config'] = 'E-mail - Configurações';
+				$menu[PATH . '/social/admin/email_test'] = 'E-mail - Teste';
+				$menu[PATH . '/social/users'] = 'Usuarios';
+				$menu[PATH . '/social/perfis'] = 'Perfis';
 				$sx .= menu($menu);
 				break;
 		}
@@ -346,7 +346,7 @@ class Socials extends Model
 	{
 		$sx = '';
 		$sx .= h('Email Test', 1);
-		$sx .= form_open(PATH . 'social/admin/email_test');
+		$sx .= form_open(PATH . '/social/admin/email_test');
 		$sx .= form_input(array('name' => 'email', 'class' => 'form-control', 'value' => get("email")), '', lang('social.email'));
 		$sx .= form_submit(array('class' => 'btn btn-primary'), 'Enviar');
 		$sx .= form_close();
@@ -1221,7 +1221,7 @@ class Socials extends Model
 
 				$sx = bsmessage(lang('social.password_changed'), 1);
 				$sx .= '<br/>';
-				$sx .= '<a href="' . PATH . 'social/login">' . lang('social.return_login') . '</a>';
+				$sx .= '<a href="' . PATH . '/social/login">' . lang('social.return_login') . '</a>';
 				return $sx;
 			} else {
 				$check = '<br/>' . bsmessage($erro, 3);
@@ -1299,10 +1299,17 @@ class Socials extends Model
 
 		/* Enviar e-mail */
 		$txt = '';
+		$txt .= '<table width="600" border=0>';
+		$txt .= '<tr><td><img src="cid:$image1" style="width: 100%;"></td></tr>';
+		$txt .= '<tr><td>';
 		$txt .= 'Prezado usuário ' . $name . ',<br>';
+		$txt .= '<br>';
+		$txt .= 'Seu cadastro foi realizado com sucesso em nossa plataforma, para ter acesso utilize essa credencial temporária.';
+		$txt .= '<br><br>';
 		$txt .= 'Usuário: ' . $user . '<br>';
 		$txt .= 'Senha:' . $pw1 . '<br>';
-		$subject = '[' . COLLECTION . '] ';
+		$txt .= '</td></tr></table>';
+		$subject = '[BRAPCI] ';
 		$subject .= lang('social.social_user_add');
 		sendemail($user, $subject, $txt);
 	}

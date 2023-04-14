@@ -43,6 +43,29 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function change_status($id,$st)
+        {
+            $data['c_status'] = $st;
+            $this->set($data)->where('id_c',$id)->update();
+            return "";
+        }
+
+    function reserve($th, $agency)
+        {
+            $dt = $this
+                ->where('c_agency',$agency)
+                ->where('c_th', $th)
+                ->first();
+            if ($dt=='')
+                {
+                    $data['c_agency'] = $agency;
+                    $data['c_th'] = $th;
+                    $data['c_ativo'] = -1;
+                    $data['c_concept'] = 0;
+                    $this->set($data)->insert();
+                }
+        }
+
     function register($id_term, $th, $agency = '',$rsp='')
     {
         $id_concept = $this->register_concept($th, $agency);
@@ -54,6 +77,7 @@ class Index extends Model
         /********************************************** Update Concept */
         $du = array();
         $du['c_concept'] = $id_concept;
+        $du['c_ativo'] = 1;
         $this->set($du)->where('id_c', $id_concept)->update();
 
         $class = 'skos:prefLabel';

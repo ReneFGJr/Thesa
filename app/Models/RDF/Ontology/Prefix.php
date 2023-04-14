@@ -45,7 +45,7 @@ class Prefix extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function identify($prefix)
+    function identify($prefix,$url='')
         {
             $xprefix = $prefix;
             $xsufix = '';
@@ -55,10 +55,19 @@ class Prefix extends Model
                      $xprefix = substr($prefix,0,$pos);
                      $xsufix =substr($prefix, $pos+1,strlen($prefix));
                 }
-            $dt = $this->like('endpoint',$xprefix)->findAll();
+            $dt = $this->where('owl_prefix',$xprefix)->findAll();
             if (count($dt) > 0)
                 {
                     $id = $dt['0']['id_owl'];
+                    return $id;
+                } else {
+                    $data['owl_prefix'] = $prefix;
+                    $data['owl_title'] = $prefix;
+                    $data['spaceName'] = $prefix;
+                    $data['owl_status'] = 1;
+                    $data['endpoint'] = $url;
+                    $data['owl_url'] = $url;
+                    $id = $this->set($data)->insert();
                     return $id;
                 }
             /******** ERRO */

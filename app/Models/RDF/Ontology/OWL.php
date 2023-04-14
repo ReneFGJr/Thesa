@@ -122,6 +122,9 @@ class OWL extends Model
         echo h($url, 4) . '<br>';
 
         $txt = read_link($url);
+        echo $txt;
+        exit;
+
 
         /*************************************** XML Prepare */
         if (substr($txt, 0, 1) == '@') {
@@ -158,7 +161,13 @@ class OWL extends Model
 
     function identify_ontology($xml, $id)
     {
+        $sx = '';
         $Vocabulary = new \App\Models\RDF\Ontology\Vocabulary();
+        if (!isset($xml['Ontology']))
+            {
+                $sx .= bsmessage('Erro de leitura',3);
+                return $sx;
+            }
         $data = (array)$xml['Ontology'];
         if (isset($data['title'])) {
             $dt['owl_title'] = $data['title'];

@@ -32,7 +32,7 @@ class Admin extends BaseController
         return view('Theme/Standard/Foot', $data);
     }
 
-    public function index($d1 = '',$d2 = '',$d3 = '',$d4 = '',$d5='')
+    public function index($d1 = '', $d2 = '', $d3 = '', $d4 = '', $d5 = '')
     {
         $Thesa = new \App\Models\Thesa\Thesa();
 
@@ -44,13 +44,13 @@ class Admin extends BaseController
             case 'collaborators':
                 $Collaborators = new \App\Models\Thesa\Collaborators();
                 $sx = $this->cab();
-                $sx .= $Collaborators->index($d2,$d3,$d4,$d5);
+                $sx .= $Collaborators->index($d2, $d3, $d4, $d5);
                 return $sx;
                 break;
             case 'notes':
                 $ThNotes = new \App\Models\RDF\ThNotes();
                 $sx = $this->cab();
-                $sx .= $ThNotes->form($d2,$d3,$d4,$d5);
+                $sx .= $ThNotes->form($d2, $d3, $d4, $d5);
                 break;
             case 'icone':
                 $Icone = new \App\Models\Thesa\Icone();
@@ -67,7 +67,7 @@ class Admin extends BaseController
             case 'ajax_exclude':
                 $sx = $this->cab();
                 $Terms = new \App\Models\Thesa\Terms\Index();
-                $sx .= $Terms->exclude($d2,$d3,$d4,$d5);
+                $sx .= $Terms->exclude($d2, $d3, $d4, $d5);
                 break;
             case 'popup_prefLabel':
                 $sx = $this->cab();
@@ -102,15 +102,14 @@ class Admin extends BaseController
                 $Midia = new \App\Models\Thesa\Midias();
                 $Socials = new \App\Models\Socials();
                 $user = $Socials->getUser();
-                if ($user > 0)
-                    {
-                        $sx = $this->cab();
-                        $sx .= $Midia->upload($d1,$d2);
-                    } else {
-                        echo "Acesso negado";
-                        exit;
-                    }
-                    echo $sx;
+                if ($user > 0) {
+                    $sx = $this->cab();
+                    $sx .= $Midia->upload($d1, $d2);
+                } else {
+                    echo "Acesso negado";
+                    exit;
+                }
+                echo $sx;
                 exit;
                 break;
             case 'ajax_concept_reference':
@@ -119,7 +118,7 @@ class Admin extends BaseController
                 $concept = get("id");
                 $ref = get("ref");
                 $set = get("set");
-                $ReferenceConcept->register($concept,$ref,$set);
+                $ReferenceConcept->register($concept, $ref, $set);
                 echo $Reference->list_reference($concept);
                 exit;
             case 'ajax_reference_list':
@@ -130,7 +129,7 @@ class Admin extends BaseController
                 break;
             case 'ajax_form_reference_save':
                 $Reference = new \App\Models\Thesa\Reference();
-                $Reference->register($d2,$d3,$d4);
+                $Reference->register($d2, $d3, $d4);
                 $id = get("term");
                 echo $Reference->list_reference($id);
                 exit;
@@ -152,7 +151,7 @@ class Admin extends BaseController
                 $ThNotes = new \App\Models\RDF\ThNotes();
                 $sx = $this->cab();
                 $sx .= $ThNotes->delete_note($d2, $d3, $d4, $d5);
-                return bs(bsc($sx,12,'p-4'));
+                return bs(bsc($sx, 12, 'p-4'));
                 exit;
             case 'ajax_form_text_save':
                 $ThNotes = new \App\Models\RDF\ThNotes();
@@ -171,7 +170,7 @@ class Admin extends BaseController
                 exit;
             case 'ajax_form_field_save':
                 $Description = new \App\Models\Thesa\Descriptions();
-                $Description->ajax_field_save($d2,$d3,$d4);
+                $Description->ajax_field_save($d2, $d3, $d4);
                 exit;
             case 'ajax_term_delete':
                 $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
@@ -181,11 +180,10 @@ class Admin extends BaseController
                 $id = get("id");
                 $prop = get("prop");
                 $vlr = get("vlr");
-                $qualy = round('0'.get("qualy"));
+                $qualy = round('0' . get("qualy"));
 
                 $ThConcept = new \App\Models\RDF\ThConcept();
-                if ($vlr != '')
-                {
+                if ($vlr != '') {
                     echo $ThConcept->ajax_save($id, $prop, $vlr, $qualy);
                 }
                 echo $ThConcept->list_concepts_terms($id, $prop);
@@ -197,24 +195,21 @@ class Admin extends BaseController
                 $th = get("th");
                 $idioma = get("lang");
                 $act = get("act");
-                if ($idioma != '')
-                    {
-                        $lang = new \App\Models\Language\Index();
-                        $language = new \App\Models\Thesa\Language();
+                if ($idioma != '') {
+                    $lang = new \App\Models\Language\Index();
+                    $language = new \App\Models\Thesa\Language();
 
-                        $dl = $lang->where('lg_code',$idioma)->first();
-                        if ($dl != '')
-                        {
+                    $dl = $lang->where('lg_code', $idioma)->first();
+                    if ($dl != '') {
                         $id_lg = $dl['id_lg'];
 
-                        if ($act == '')
-                            {
-                                $language->register($th, $id_lg);
-                            } else {
-                                $language->remove($th, $id_lg);
-                            }
+                        if ($act == '') {
+                            $language->register($th, $id_lg);
+                        } else {
+                            $language->remove($th, $id_lg);
                         }
                     }
+                }
 
                 echo $Config->form_language($th);
                 exit;
@@ -225,7 +220,7 @@ class Admin extends BaseController
                 $prop = get("prop");
 
                 $ThConcept = new \App\Models\RDF\ThConcept();
-                echo $ThConcept->ajax_edit($id,$prop);
+                echo $ThConcept->ajax_edit($id, $prop);
                 exit;
             case 'ajax_docs':
                 $txt = get("txt");
@@ -233,8 +228,8 @@ class Admin extends BaseController
                 $class = get("class");
 
                 $Config = new \App\Models\Thesa\Config();
-                $sx = $Config->ajax_save($th,$class,$txt);
-                echo "SAVED AT ".date("H:i:s");
+                $sx = $Config->ajax_save($th, $class, $txt);
+                echo "SAVED AT " . date("H:i:s");
                 echo $sx;
                 exit;
                 break;
@@ -254,7 +249,7 @@ class Admin extends BaseController
                 return $sx;
             case 'terms':
                 $ThTerm = new \App\Models\RDF\ThTerm();
-                $sx .= $ThTerm->index($d2,$d3,$d4,$d5);
+                $sx .= $ThTerm->index($d2, $d3, $d4, $d5);
                 return $sx;
             case 'proprity':
                 $ThProprity = new \App\Models\RDF\ThProprity();
@@ -262,89 +257,117 @@ class Admin extends BaseController
                 return $sx;
                 break;
             case 'import':
-                $sx .= $this->import();
+                $sx .= $this->import($d2, $d3, $d4, $d5);
                 break;
             default:
-                $sx .= bs(bsc("$d1 / $d2 / $d3 / $d4 / $d5",12));
-                $sx .= bs(bsc('Admin'),12);
-            break;
+                $sx .= bs(bsc("$d1 / $d2 / $d3 / $d4 / $d5", 12));
+                $sx .= bs(bsc('Admin'), 12);
+                break;
         }
         $sx .= $footer;
         return $sx;
     }
 
-    function import()
-        {
-            $sx = '';
-            $value = get("url");
+    function import($d2, $d3, $d4, $d5)
+    {
+        $sx = '';
 
-            if (($value != '') and (substr($value,0,4) == 'http'))
-                {
+        $tp = ['thesa', 'thematres', 'skosmos'];
+        $sa = '';
+        foreach ($tp as $tps) {
+            $link = anchor(PATH. '/admin/import/'.$tps, lang('thesa.'.$tps),['class'=>'btn btn-outline-primary full']);
+            $sa .= bsc($link,2);
+        }
+
+        $form = false;
+
+        switch ($d2) {
+            case 'thematres':
+                $value = get("url");
+
+                if (($value != '') and (substr($value, 0, 4) == 'http')) {
+                    $ThemaTres = new \App\Models\Thesa\Tools\ImportThemaTres();
+                    $sx .= $ThemaTres->import($value);
+                }
+                $form = true;
+
+                $sx .= $ThemaTres->reload();
+                break;
+
+            case 'thesa':
+                $value = get("url");
+
+                if (($value != '') and (substr($value, 0, 4) == 'http')) {
                     $ThesaImport = new \App\Models\Thesa\Tools\ImportThesa();
                     $sx .= $ThesaImport->import($value);
                 }
+                $form = true;
 
-            $sx .= form_open();
-            $sx .= form_label(lang('thesa.url'));
-            $sx .= form_input(array('name'=>'url','value'=>$value,'class'=>'form-control full'));
-            $sx .= form_submit('action',lang('thesa.save'));
-            $sx .= form_close();
-
-            $sx = bs(bsc($sx));
-            return $sx;
+                break;
         }
 
-    function tools($d1,$d2,$d3)
-        {
-            $sx = '';
-            $sa = anchor(PATH.'/admin/import/',bsicone('import',64));
-            $sa .= anchor(PATH . '/admin/ontology/', bsicone('import', 64)) . 'ontology';
-            $sx .= bs(bsc($sa,12));
-            return $sx;
+        if ($form == true)
+            {
+                $sx .= form_open();
+                $sx .= form_label(lang('thesa.url'));
+                $sx .= form_input(array('name' => 'url', 'value' => $value, 'class' => 'form-control full'));
+                $sx .= form_submit('action', lang('thesa.save'));
+                $sx .= form_close();
+            }
+
+        $sx = bs($sa.bsc($sx));
+        return $sx;
+    }
+
+    function tools($d1, $d2, $d3)
+    {
+        $sx = '';
+        $sa = anchor(PATH . '/admin/import/', bsicone('import', 64));
+        $sa .= anchor(PATH . '/admin/ontology/', bsicone('import', 64)) . 'ontology';
+        $sx .= bs(bsc($sa, 12));
+        return $sx;
+    }
+
+    function config($d1, $d2, $d3)
+    {
+        $Thesa = new \App\Models\Thesa\Index();
+        $th = $Thesa->setThesa();
+
+        if (($th == '') or ($th == 0)) {
+            echo "OPS - ADMIN";
+            exit;
         }
 
-    function config($d1,$d2,$d3)
-        {
-            $Thesa = new \App\Models\Thesa\Index();
-            $th = $Thesa->setThesa();
+        $Config = new \App\Models\Thesa\Config();
+        $Description = new \App\Models\Thesa\Descriptions();
+        $Collaborators = new \App\Models\Thesa\Collaborators();
 
-            if (($th == '') or ($th == 0))
-                {
-                    echo "OPS - ADMIN";
-                    exit;
-                }
+        $sx = '';
+        $sx .= bs(bsc('Configurações'), 12);
 
-            $Config = new \App\Models\Thesa\Config();
-            $Description = new \App\Models\Thesa\Descriptions();
-            $Collaborators = new \App\Models\Thesa\Collaborators();
+        $data = array();
+        $data['link'] = array();
 
-            $sx = '';
-            $sx .= bs(bsc('Configurações'),12);
+        $sa = '';
 
-            $data = array();
-            $data['link'] = array();
+        /******************************************* Collarations */
+        array_push($data['link'], '<a href="#_" class="nav-link">Colaboradores</a>');
+        $sa .= '<h1>' . lang("thesa.Collaborators") . '</h1>';
+        $sa .= $Collaborators->list($th);
+        $sa .= $Collaborators->management($th);
 
-            $sa = '';
-
-            /******************************************* Collarations */
-            array_push($data['link'], '<a href="#_" class="nav-link">Colaboradores</a>');
-            $sa .= '<h1>'.lang("thesa.Collaborators").'</h1>';
-            $sa .= $Collaborators->list($th);
-            $sa .= $Collaborators->management($th);
-
-            $class = $Description->classes();
-            foreach($class as $id=>$name)
-                {
-                    array_push($data['link'], '<a href="#'.$name.'" class="nav-link">'.lang("thesa.$name").'</a>');
-                    $sa .= $Config->control($name);
-                }
-
-
-            $data['body'] = $sa;
-            $sx .= view('Admin/body',$data);
-            $sx .= view('Admin/environment', $data);
-            $sx .= $this->foot();
-
-            return $sx;
+        $class = $Description->classes();
+        foreach ($class as $id => $name) {
+            array_push($data['link'], '<a href="#' . $name . '" class="nav-link">' . lang("thesa.$name") . '</a>');
+            $sa .= $Config->control($name);
         }
+
+
+        $data['body'] = $sa;
+        $sx .= view('Admin/body', $data);
+        $sx .= view('Admin/environment', $data);
+        $sx .= $this->foot();
+
+        return $sx;
+    }
 }
