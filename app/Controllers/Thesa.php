@@ -63,6 +63,11 @@ class Thesa extends BaseController
         $sx .= $this->navbar();
         $footer = view("Thesa/Foot");
         switch ($act) {
+            case 'search':
+                $Search = new \App\Models\Thesa\Terms\Search();
+                $sx .= $Search->search($id);
+                return $sx;
+                break;
             case 'a':
                 $Concept = new \App\Models\Thesa\Concepts\Index();
                 $dt = $Concept->le($id);

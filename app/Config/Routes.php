@@ -46,6 +46,10 @@ $routes->get('/admin/(:any)/(:any)', 'Admin::index/$1/$2');
 
 $routes->get('/tools', 'Thesa::index/tools');
 $routes->get('/tools/(:any)', 'Thesa::index/tools/$1');
+
+$routes->get('/search', 'Thesa::index/search');
+$routes->post('/search', 'Thesa::index/search');
+
 //$routes->post('/tools/(:any)', 'Thesa::index/$1');
 //$routes->post('/tools/(:any)/(:any)', 'Thesa::index/$1/$2');
 //$routes->get('/tools/(:any)/(:any)', 'Thesa::index/tools/$1/$2');

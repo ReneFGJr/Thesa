@@ -8,7 +8,9 @@ require("acesso.php");
     <div class="container-fluid">
         <!-- Toggle button -->
         <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-bars"></i>
+            <a href="<?=PATH;?>">
+            <img src="<?= URL . '/img/logo/logo_thesa.svg'; ?>" height="25" alt="Thesa Logo" loading="lazy" />
+            </a>
         </button>
 
         <!-- Collapsible wrapper -->
@@ -34,22 +36,21 @@ require("acesso.php");
             $Thesa = new \App\Models\Thesa\Index();
             $th = $Thesa->getThesa();
             $Collaborators = new \App\Models\Thesa\Collaborators();
-            if ($Collaborators->own($th))
-                {
-                    echo '<a class="text-reset me-3" href="' . PATH . '/admin/tools' . '">
+            if ($Collaborators->own($th)) {
+                echo '<a class="text-reset me-3" href="' . PATH . '/admin/tools' . '">
                     ' . bsicone('process') . '</a>';
 
-                    echo '<a class="text-reset me-3" href="'.PATH. '/admin/config'.'">
-                    '.bsicone('gear').'</a>';
-                } else {
-                    echo '[[[[th:'.$th.']]]]' ;
-                }
+                echo '<a class="text-reset me-3" href="' . PATH . '/admin/config' . '">
+                    ' . bsicone('gear') . '</a>';
+            } else {
+                echo '[[[[th:' . $th . ']]]]';
+            }
             ?>
             <!-- Socials -->
             <?php echo $acesso; ?>
-            </div>
         </div>
-        <!-- Right elements -->
+    </div>
+    <!-- Right elements -->
     </div>
     <!-- Container wrapper -->
 </nav>

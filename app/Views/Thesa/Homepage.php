@@ -1,14 +1,15 @@
 <div class="container">
     <div class="row">
-        <div class="col-4 p-4 text-end" style="margin-top: 15%; margin-bottom: 15%;">
-            <img src="<?= PATH . '/img/logo/logo_thesa.svg'; ?>" class="img-fluid">
+        <div class="col-5 col-md-4 p-4 text-end" style="margin-top: 15%; margin-bottom: 15%;">
+            <img src="<?= PATH . '/img/logo/logo_thesa.svg'; ?>" class="img-fluid anim-text-flow">
             <br />
             <span class="awesome anim-text-flow"><?= lang("thesa.tsa"); ?></span>
         </div>
-        <div class="col-2 p-4">
+
+        <div class="col-1 col-md-2">
         </div>
 
-        <div class="col-6 p-4">
+        <div class="col-6 col-md-6 p-4">
             <?= $content; ?>
         </div>
     </div>
