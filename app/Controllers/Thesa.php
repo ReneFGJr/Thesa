@@ -177,6 +177,7 @@ class Thesa extends BaseController
                 $data['bg'] = $bg;
                 $data['content'] = $ThesaHome->resume();
                 $sx .= view('Thesa/Homepage', $data);
+                $sx .= view('Thesa/_about');
                 break;
         }
         $sx .= $footer;
