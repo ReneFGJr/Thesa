@@ -134,7 +134,7 @@ class Collaborators extends Model
             return $sx;
         }
 
-    function add($user,$th,$perfil)
+    function add($user,$th,$perfil=1)
         {
             $dt = $this
                 ->where('th_us_th',$th)

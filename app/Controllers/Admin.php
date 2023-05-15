@@ -38,7 +38,7 @@ class Admin extends BaseController
 
         $sx = $this->cab();
         $sx .= view('header/navbar');
-        $footer = view('Thesa/Foot');
+        $footer = view('header/foot');
 
         switch ($d1) {
             case 'collaborators':
@@ -51,6 +51,7 @@ class Admin extends BaseController
                 $ThNotes = new \App\Models\RDF\ThNotes();
                 $sx = $this->cab();
                 $sx .= $ThNotes->form($d2, $d3, $d4, $d5);
+                $footer = '';
                 break;
             case 'icone':
                 $Icone = new \App\Models\Thesa\Icone();
@@ -83,6 +84,7 @@ class Admin extends BaseController
                 $sx = $this->cab();
                 $HiddenLabel = new \App\Models\Thesa\Terms\HiddenLabel();
                 $sx .= $HiddenLabel->form($d2);
+                $footer = '';
                 break;
             case 'popup_midia_exclude':
                 $Midia = new \App\Models\Thesa\Midias();
@@ -260,13 +262,44 @@ class Admin extends BaseController
                 $sx .= $this->import($d2, $d3, $d4, $d5);
                 break;
             default:
+                $Thesa = new \App\Models\Thesa\Index();
+                $th = round('0' . $Thesa->getThesa());
+                if ($th == 0)
+                    {
+                        $sx = redirect('Thesa::index');
+                        return $sx;
+                    }
+
                 $sx .= bs(bsc("$d1 / $d2 / $d3 / $d4 / $d5", 12));
                 $sx .= bs(bsc('Admin'), 12);
+                $sx .= bs($this->painel($th));
                 break;
         }
         $sx .= $footer;
         return $sx;
     }
+
+    function painel($th)
+        {
+            $sx = '';
+            $sx .= bsc(h('Painel Admin', 2));
+
+
+
+            pre($_SESSION);
+
+            if ($th > 0)
+                {
+                    $sx .= 'OL';
+                }
+
+            $menu = [];
+            $menu[PATH.'/admin/import/'] = lang('thesa.import');
+            $sx .= bsc(menu($menu));
+
+
+            return $sx;
+        }
 
     function import($d2, $d3, $d4, $d5)
     {

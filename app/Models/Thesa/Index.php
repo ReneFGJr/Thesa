@@ -42,7 +42,19 @@ class Index extends Model
 
     function getThesa($th=0)
     {
-        return $this->setThesa($th);
+        if ($th > 0)
+            {
+                return $this->setThesa($th);
+            } else {
+                if (isset($_SESSION['th']))
+                    {
+                        return $_SESSION['th'];
+                    } else {
+                        return 0;
+                    }
+
+            }
+
     }
 
     function le($id)
@@ -69,6 +81,7 @@ class Index extends Model
     function setThesa($th = '')
     {
         if ($th != '') {
+            $th = round('0'.$th);
             $_SESSION['th'] = $th;
             return $th;
         } else {

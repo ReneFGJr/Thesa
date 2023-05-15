@@ -242,7 +242,8 @@ class ThNotes extends Model
         $this
             ->join('thesa_property', 'id_p = nt_prop', 'left')
             ->where('nt_concept', $concept);
-        if (round($prop) > 0) {
+        $sn = sonumero($prop);
+        if ($sn != '') {
             $this->where('nt_prop', $prop);
         } else {
             $this->where('p_name', $prop);

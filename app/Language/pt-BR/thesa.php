@@ -119,9 +119,10 @@ return [
     'Image' => 'Imagem da Capa',
     'select_icone' => 'Alterar para um incone já existente',
     'upload_icone' => 'Fazer upload de uma imagem',
-    '' => '',
-    '' => '',
-    '' => '',
-    '' => '',
+    'about' => 'Sobre',
+    'contact' => 'Contato',
+    'term' => 'descritor',
+    'terms' => 'descritores',
+    'term_empty' => 'Lista de descritores vazia',
 
 ];

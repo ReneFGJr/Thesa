@@ -78,7 +78,7 @@ class Thesa extends Model
                     'th_description'  => $request->getVar('th_description')
                 ];
 
-                $id_th = $request->getVar('id_th');
+                $id_th = round('0'.$request->getVar('id_th'));
                 $Social = new \App\Models\Socials();
                 $user = $Social->getUser();
 
@@ -157,6 +157,7 @@ class Thesa extends Model
 
     function setThesa($th = '')
     {
+        echo '=z=z=>' . $th;
         $Thesa = new \App\Models\Thesa\Index();
         return $Thesa->setThesa($th);
     }

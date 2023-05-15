@@ -28,7 +28,7 @@ class Thesa extends BaseController
 
     public function navbar($data = array())
     {
-        return view('header/navbar');
+        return view('header/navbar',$data);
     }
 
     public function footer($data = array())
@@ -56,12 +56,14 @@ class Thesa extends BaseController
         $PDF->index();
     }
 
-    public function index($act = '', $id = '', $tp = '', $id2 = '')
+    public function index($act = '', $idth = '', $tp = '', $id2 = '')
     {
+
         $sx = '';
         $sx .= $this->cab();
         $sx .= $this->navbar();
-        $footer = view("Thesa/Foot");
+        $footer = view("header/foot");
+
         switch ($act) {
             case 'search':
                 $Search = new \App\Models\Thesa\Terms\Search();
@@ -70,11 +72,11 @@ class Thesa extends BaseController
                 break;
             case 'a':
                 $Concept = new \App\Models\Thesa\Concepts\Index();
-                $dt = $Concept->le($id);
+                $dt = $Concept->le($idth);
                 if (isset($dt[0])) {
                     $th = $dt[0]['c_th'];
                 } else {
-                    $sx = metarefresh(PATH . '/v/' . $id);
+                    $sx = metarefresh(PATH . '/v/' . $idth);
                     echo $sx;
                     exit;
                 }
@@ -83,10 +85,10 @@ class Thesa extends BaseController
                     $Collaborators = new \App\Models\Thesa\Collaborators();
                     if ($Collaborators->own($th)) {
                         $ConceptForm = new \App\Models\Thesa\Concepts\Form();
-                        $sx .= $ConceptForm->form($id);
+                        $sx .= $ConceptForm->form($idth);
                         //return $sx;
                     } else {
-                        $sx = metarefresh(PATH . '/v/' . $id);
+                        $sx = metarefresh(PATH . '/v/' . $idth);
                         echo $sx;
                         exit;
                     }
@@ -96,7 +98,7 @@ class Thesa extends BaseController
                 $ConceptForm = new \App\Models\Thesa\Concepts\Index();
                 $Language = new \App\Models\Thesa\Language();
                 $Terms = new \App\Models\Thesa\Terms\Index();
-                $dt = $ConceptForm->find($id);
+                $dt = $ConceptForm->find($idth);
                 $th = $dt['c_th'];
 
                 $Thesa = new \App\Models\Thesa\Index();
@@ -108,13 +110,13 @@ class Thesa extends BaseController
                 $lang = $Language->getLang();
 
                 $ConceptList = new \App\Models\Thesa\Concepts\Lists();
-                $Other = $Terms->show($id, false);
+                $Other = $Terms->show($idth, false);
                 $sx .= $ConceptList->terms_alphabetic($th, $lang, $Other);
                 break;
             case 't':
                 $sx = '';
                 $Terms = new \App\Models\Thesa\Terms\Index();
-                $sx .= $Terms->show($id);
+                $sx .= $Terms->show($idth);
                 return $sx;
                 break;
             case 'ts':
@@ -129,18 +131,17 @@ class Thesa extends BaseController
                 $Language = new \App\Models\Thesa\Language();
                 $Terms = new \App\Models\Thesa\Terms\Index();
                 $Description = new \App\Models\Thesa\Descriptions();
+                $Thesa->setThesa($idth);
 
-                $Thesa->setThesa($id);
-
-                $dt = $Thesa->le($id);
+                $dt = $Thesa->le($idth);
                 $sx .= view('Theme/Standard/headerTh', $dt);
 
-                $Other = $Description->resume($id, false);
-                $Other .= $Description->show($id);
+                $Other = $Description->resume($idth, false);
+                $Other .= $Description->show($idth);
                 $lang = $Language->getLang();
 
                 $ConceptList = new \App\Models\Thesa\Concepts\Lists();
-                $sx .= $ConceptList->terms_alphabetic($id, $lang, $Other);
+                $sx .= $ConceptList->terms_alphabetic($idth, $lang, $Other);
 
                 break;
 
@@ -161,11 +162,9 @@ class Thesa extends BaseController
 
                 $ConceptList = new \App\Models\Thesa\Concepts\Lists();
                 $sx .= $ConceptList->terms_systematic($id, $lang, $Other);
-
                 break;
 
-
-                /******* TH OPEN */
+            /******* TH OPEN */
             case 'thopen':
                 $sx .= bs(bsc(h(lang('thesa.ThOpen'), 1)));
                 $Thesa = new \App\Models\Thesa\Thesa();
