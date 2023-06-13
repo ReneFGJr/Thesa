@@ -390,7 +390,7 @@ function form_fields($typ, $fld, $vlr, $th = array(), $obg = 0, $pre = '')
             for ($r = $opc[0]; $r <= $opc[1]; $r++) {
                 $sel = '';
                 $vll = strzero($r, 2);
-                if (round($vlr) == $r) {
+                if (round('0'.$vlr) == $r) {
                     $sel = 'selected';
                 }
                 $sg .= '<option value="' . $vll . '" ' . strzero($r, 2) . ' ' . $sel . '>' . $vll .'</option>' . cr();

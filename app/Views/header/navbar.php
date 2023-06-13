@@ -35,16 +35,27 @@ require("acesso.php");
             <!-- Icon -->
             <?php
             $Thesa = new \App\Models\Thesa\Index();
-            if (!isset($th)) { $th = 0; }
-            $Collaborators = new \App\Models\Thesa\Collaborators();
-            if ($Collaborators->own($th)) {
-                echo '<a class="text-reset me-3" href="' . PATH . '/admin/tools' . '">
-                    ' . bsicone('process') . '</a>';
+            if (!isset($th)) {
+                $th = 0;
+                if (isset($_SESSION['th']))
+                    {
+                        $th = $_SESSION['th'];
+                    }
+            }
 
-                echo '<a class="text-reset me-3" href="' . PATH . '/admin/config' . '">
-                    ' . bsicone('gear') . '</a>';
-            } else {
-                //echo '[[[[th:' . $th . ']]]]';
+            if ($th > 0)
+            {
+                $Collaborators = new \App\Models\Thesa\Collaborators();
+                $Admin = $Collaborators->own($th);
+                if ($Admin > 0) {
+                    echo '<a class="text-reset me-3" href="' . PATH . '/admin/tools' . '">
+                        ' . bsicone('process') . '</a>';
+
+                    echo '<a class="text-reset me-3" href="' . PATH . '/admin/config' . '">
+                        ' . bsicone('gear') . '</a>';
+                } else {
+                    //echo '[[[[th:' . $th . ']]]]';
+                }
             }
             ?>
             <!-- Socials -->

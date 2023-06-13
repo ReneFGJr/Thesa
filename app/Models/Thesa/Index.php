@@ -98,11 +98,18 @@ class Index extends Model
 
     function user_total_tesauros($id_us)
         {
-            $sql = "select count(*) as total, th_us_user from thesa_users group by th_us_user";
+            $total = 0;
+            $sql = "select count(*) as total, th_us_user
+                    from thesa_users
+                    where th_us_user = $id_us
+                    group by th_us_user";
             $rlt = $this->db->query($sql);
             $rlt = (array)$rlt->getResult();
-            $rlt = (array)$rlt[0];
-            $total = $rlt['total'];
+            if (isset($rlt[0]))
+                {
+                    $rlt = (array)$rlt[0];
+                    $total = $rlt['total'];
+                }
             return $total;
         }
 

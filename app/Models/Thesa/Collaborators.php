@@ -155,20 +155,21 @@ class Collaborators extends Model
 
     function own($th)
     {
-        if (isset($_SESSION['id'])) {
-            $user = $_SESSION['id'];
+        $Socials = new \App\Models\Socials();
+        $user = $Socials->getUser();
+        if ($user > 0) {
 
             $dt =
                 $this
                 ->where('th_us_th', $th)
                 ->where('th_us_user', $user)
-                ->first();
+                ->FindAll();
 
-            if ($dt != "")
+            if (count($dt) > 0)
                 {
-                    return true;
+                    return 1;
                 } else {
-                    return false;
+                    return 0;
                 }
 
         }
@@ -180,6 +181,7 @@ class Collaborators extends Model
             $dt = $this
                 ->join('users','id_us = th_us_user')
                 ->join('thesa_users_perfil', 'th_us_perfil = id_pf')
+                ->where('th_us_th',$th)
                 ->orderBy('id_pf, id_th_us')
                 ->findAll();
             $sx = '';

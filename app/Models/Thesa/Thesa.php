@@ -50,10 +50,23 @@ class Thesa extends Model
     {
         $Collaborators = new \App\Models\Thesa\Collaborators();
         $Language = new \App\Models\Thesa\Language();
+        $Thesa = new \App\Models\Thesa\Index();
+        $Socials = new \App\Models\Socials();
 
         $request = \Config\Services::request();
         $validation =  \Config\Services::validation();
         $data = array();
+
+        $id_us = $Socials->getUser();
+        $total = $Thesa->user_total_tesauros($id_us);
+
+        if (($total > 0) and ($Socials->getAccess("#ADM#FEE")) and ($id_us > 0))
+            {
+                $sx = bsmessage(lang('thesa.can_not_create').'<hr>'.lang('thesa.limit_exceeded'),3);
+                $sx = bs(bsc($sx));
+                return $sx;
+            }
+
 
         if (isset($_POST)) {
 

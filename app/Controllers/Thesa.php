@@ -168,7 +168,7 @@ class Thesa extends BaseController
             case 'thopen':
                 $sx .= bs(bsc(h(lang('thesa.ThOpen'), 1)));
                 $Thesa = new \App\Models\Thesa\Thesa();
-                $sx .= $Thesa->index($id, $id, $id);
+                $sx .= $Thesa->index($idth, $idth, $idth);
                 break;
             default:
                 $ThesaHome = new \App\Models\Thesa\Content\Resume();

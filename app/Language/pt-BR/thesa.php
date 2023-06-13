@@ -124,5 +124,14 @@ return [
     'term' => 'descritor',
     'terms' => 'descritores',
     'term_empty' => 'Lista de descritores vazia',
+    'limit_exceeded'=> 'Limite de vocabulários excedido',
+    'can_not_create'=>'Erro na criação de vocabulário',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+
 
 ];
