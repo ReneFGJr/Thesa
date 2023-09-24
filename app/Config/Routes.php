@@ -36,6 +36,11 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 
+$routes->get('/api', 'Api::index/');
+$routes->post('/api', 'Api::index/');
+$routes->get('/api/(:any)', 'Api::index/$1');
+$routes->post('/api/(:any)', 'Api::index/$1');
+
 $routes->get('/admin', 'Admin::index');
 $routes->get('/admin/(:any)', 'Admin::index/$1');
 $routes->get('/thesa/admin/(:any)', 'Admin::index/$1');
