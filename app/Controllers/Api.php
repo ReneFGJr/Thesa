@@ -23,8 +23,21 @@ class Api extends BaseController
         $RSP = [];
 
         if ($arg1 == 'conecpt') { $arg1 = 'c'; }
+        if ($arg1 == 'term') { $arg1 = 't';
+        }
         switch($arg1)
             {
+                case 'thopen':
+                    $Thesa = new \App\Models\Thesa\Index();
+                    $RSP['th'] = $Thesa->thopen();
+                    break;
+                case 'resume':
+                    $Thesa = new \App\Models\Thesa\Index();
+                    $RSP = $Thesa->summary();
+                    break;
+                case 't':
+                    $RSP = $this->t($arg2, $RSP);
+                    break;
                 case 'c':
                     $RSP = $this->c($arg2,$RSP);
                     break;
@@ -49,6 +62,11 @@ class Api extends BaseController
         return $RSP;
     }
 
+    function t($id,$RSP)
+        {
+
+        }
+
     function c($id,$RSP)
         {
             $Concept = new \App\Models\Thesa\Concepts\Index();
@@ -57,6 +75,7 @@ class Api extends BaseController
             $Notes = new \App\Models\Thesa\Notes\Index();
             $dt = $Concept->le($id);
             $RSP = $dt[0];
+            $RSP['uri'] = URL.'/c/'.$id;
 
             $RSP['broader'] = $Broader->le_broader($id);
             $RSP['narrow'] = $Broader->le_narrow($id);

@@ -13,6 +13,11 @@ import { ThesaurosComponent } from './page/thesauros/thesauros.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TermComponent } from './page/term/term.component';
+import { AddComponent } from './page/term/add/add.component';
+import { EditComponent } from './page/term/edit/edit.component';
+import { SearchComponent } from './page/search/search.component';
+import { ThesaMainComponent } from './page/main/main.component';
+import { ThSelectComponent } from './page/th-select/th-select.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +28,11 @@ import { TermComponent } from './page/term/term.component';
     ThemeNavbarComponent,
     ThesaurosComponent,
     TermComponent,
+    AddComponent,
+    EditComponent,
+    SearchComponent,
+    ThesaMainComponent,
+    ThSelectComponent,
   ],
   imports: [
     BrowserModule,

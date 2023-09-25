@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./theme.component.css']
 })
 export class ThemeNavbarComponent {
-
+  public logo = '/assets/img/logo/logo_thesa.svg';
 }

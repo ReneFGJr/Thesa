@@ -1,0 +1,28 @@
+<div class="container" *ngIf="resume">
+<div class="row">
+<div class="col-lg-6 col-12">
+  <img [src]="logo" class="img-fluid">
+</div>
+<div class="col-lg-6 col-12">
+<div class="handle text-center mb-3 box ms-5 me-5">
+<span translate>nr_thesaurus</span><br>
+<span  class="thesa_h2">{{resume.nr_thesaurus}}</span>
+</div>
+
+<div class="handle text-center mb-3 box ms-5 me-5">
+<span translate>nr_concepts</span><br>
+<span  class="thesa_h2">{{resume.nr_concepts}}</span>
+</div>
+
+<div class="handle text-center mb-3 box ms-5 me-5">
+<span translate>nr_terms</span><br>
+<span  class="thesa_h2">{{resume.nr_terms}}</span>
+</div>
+
+<div class="handle text-center mb-3 box ms-5 me-5">
+<span translate>nr_terms_candidates</span><br>
+<span class="thesa_h2">{{resume.nr_terms_candidates}}</span>
+</div>
+</div>
+</div>
+</div>

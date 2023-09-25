@@ -1,10 +1,8 @@
 <thesa-thesauros [thesa]="thesa"></thesa-thesauros>
 <div class="container">
-<div class="row">
-<div class="col-12">
-<h1>Data</h1>
-{{data | json}}
-<thesa-term [data]="data"></thesa-term>
-</div>
-</div>
+  <div class="row">
+    <div class="col-12">
+      <thesa-term [data]="data"></thesa-term>
+    </div>
+  </div>
 </div>

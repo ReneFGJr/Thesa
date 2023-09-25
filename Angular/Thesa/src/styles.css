@@ -5,7 +5,67 @@
     padding: 0px;
     margin: 0px;
     line-height: 1.4rem;
-  }/* You can add global styles to this file, and also import other style files */
+  }
+
+  .thesa_h2
+  {
+    font-size: 1.3rem;
+    font-weight: bold;
+    padding: 0px;
+    margin: 0px;
+    line-height: 1.3rem;
+  }
+
+.bold
+  {
+    font-weight: bold;
+  }
+
+.handle
+  {
+    cursor: pointer;
+  }
+
+.over
+  {
+    opacity: 0.8;
+  }
+
+.over:hover
+  {
+    opacity: 1;
+  }
+.box
+  {
+    border: 2px solid #000080;
+    background-color: #fff;
+    opacity: 0.7;
+    border-radius: 10px;
+    margin: 10px;
+  }
+
+  .box2
+  {
+    background-color: #fff;
+    opacity: 0.7;
+    border-radius: 10px;
+    margin: 10px;
+    box-shadow: #fff 10px 10px 10px;
+  }
+
+  .box2:hover
+  {
+    background-color: #fff;
+    opacity: 1;
+    box-shadow: #888 10px 10px 10px;
+  }
+
+  .box:hover
+  {
+    background-color: #ddf;
+  }
+
+
 
 .thesa_label
   {
@@ -34,4 +94,26 @@
 .full
   {
     width: 100%;
+  }
+
+  .small
+    {
+      font-size: 0.8rem;
+    }
+
+  .label_notes
+    {
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+  .p_notes
+    {
+      font-size: 0.8rem;
+      text-align: left;
+      line-height: 0.8rem;
+    }
+.logo_mini
+  {
+    height: 25px;
   }

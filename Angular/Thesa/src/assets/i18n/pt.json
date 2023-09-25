@@ -2,5 +2,14 @@
   "mainPhrase": "Essa é a frase principal.",
   "subPhrase": "Essa é a subfrase.",
   "buttonPhrase": "pt",
-  "label_type_thesauros": "Tesauro/Vocabulário"
+  "label_type_thesauros": "Tesauro/Vocabulário",
+  "definition": "Notas de definição",
+  "thesa_open": "Tesauros Abertos",
+  "thesa_my": "Meus Tesauros",
+  "nr_thesaurus": "Tesauros",
+  "nr_concepts":"Conceitos",
+  "nr_terms": "Termos",
+  "nr_terms_candidates": "Termos candidatos",
+  "navbar_about": "sobre",
+  "navbar_contact": "contato"
 }

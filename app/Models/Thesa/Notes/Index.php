@@ -43,7 +43,9 @@ class Index extends Model
     function le($id)
         {
             $ThNotes = new \App\Models\RDF\ThNotes();
-            $dt = $ThNotes->where('nt_concept',$id)->findAll();
+            $dt = $ThNotes
+                ->join('thesa_property', 'id_p = nt_prop')
+                ->where('nt_concept',$id)->findAll();
             return $dt;
 
         }

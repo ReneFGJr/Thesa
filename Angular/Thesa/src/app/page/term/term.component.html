@@ -1,8 +1,22 @@
 <div class="full" *ngIf="data">
-<div class="label" translate>{{data | json}}</div>
+  <div class="thesa_h1">
+    {{ data.label }} <sup>({{ data.lg_code }})</sup>
+  </div>
+  <div class="thesa_a small">
+    URI:
+    <a
+      class="small"
+      [routerLink]="['/c/' + data.id_c]"
+      routerLinkActive="router-link-active"
+      >{{ data.uri }}</a
+    >
+  </div>
 
-<div class="thesa_h1">{{data.label}} <sup>({{data.lg_code}})</sup></div>
-<div class="thesa_a">URI: <a [routerLink]="['/c/' + data.id_c]" routerLinkActive="router-link-active">{{data.id_ct}}</a></div>
-
-
+  <div *ngFor="let nota of data.notes">
+    <span translate class="label_notes">{{ nota.p_name }}</span>
+    <p class="p_notes">{{ nota.nt_content }}</p>
+    <hr />
+  </div>
 </div>
+
+{{ data | json}}

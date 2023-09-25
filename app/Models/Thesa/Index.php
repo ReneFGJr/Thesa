@@ -40,21 +40,40 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function getThesa($th=0)
+    function thopen($user = 0)
     {
-        if ($th > 0)
+        $Icone = new \App\Models\Thesa\Icone();
+        if ($user > 0) {
+            $dt = $this
+                ->join('thesa_users', 'th_us_th = id_th')
+                ->join('thesa_users_perfil', 'th_us_perfil = id_pf')
+                ->where('th_us_user', $user)
+                ->findAll();
+        } else {
+            $dt = $this
+                ->where('th_status', 1)
+                ->orderBy('th_name', 'ASC')
+                ->findAll();
+        }
+
+        foreach($dt as $id=>$da)
             {
-                return $this->setThesa($th);
-            } else {
-                if (isset($_SESSION['th']))
-                    {
-                        return $_SESSION['th'];
-                    } else {
-                        return 0;
-                    }
-
+                $dt[$id]['th_cover'] = $Icone->icone($da);
             }
+        return $dt;
+    }
 
+    function getThesa($th = 0)
+    {
+        if ($th > 0) {
+            return $this->setThesa($th);
+        } else {
+            if (isset($_SESSION['th'])) {
+                return $_SESSION['th'];
+            } else {
+                return 0;
+            }
+        }
     }
 
     function le($id)
@@ -66,10 +85,10 @@ class Index extends Model
     }
 
     function show_header($th)
-        {
-            $dt = $this->le($th);
-            return $this->header($dt);
-        }
+    {
+        $dt = $this->le($th);
+        return $this->header($dt);
+    }
 
     function header($dt)
     {
@@ -81,7 +100,7 @@ class Index extends Model
     function setThesa($th = '')
     {
         if ($th != '') {
-            $th = round('0'.$th);
+            $th = round('0' . $th);
             $_SESSION['th'] = $th;
             return $th;
         } else {
@@ -97,21 +116,20 @@ class Index extends Model
     }
 
     function user_total_tesauros($id_us)
-        {
-            $total = 0;
-            $sql = "select count(*) as total, th_us_user
+    {
+        $total = 0;
+        $sql = "select count(*) as total, th_us_user
                     from thesa_users
                     where th_us_user = $id_us
                     group by th_us_user";
-            $rlt = $this->db->query($sql);
-            $rlt = (array)$rlt->getResult();
-            if (isset($rlt[0]))
-                {
-                    $rlt = (array)$rlt[0];
-                    $total = $rlt['total'];
-                }
-            return $total;
+        $rlt = $this->db->query($sql);
+        $rlt = (array)$rlt->getResult();
+        if (isset($rlt[0])) {
+            $rlt = (array)$rlt[0];
+            $total = $rlt['total'];
         }
+        return $total;
+    }
 
     function summary($id = '')
     {
@@ -150,7 +168,7 @@ class Index extends Model
             $dt = $ThTerm
                 ->select('count(*) as total')
                 ->where('term_th_thesa', $id)
-                ->where('term_th_concept',0)
+                ->where('term_th_concept', 0)
                 ->findAll();
             $data['nr_terms_candidates'] = $dt[0]['total'];
         }
