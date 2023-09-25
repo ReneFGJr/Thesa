@@ -51,6 +51,18 @@ class Broader extends Model
         return $sx;
     }
 
+    function le_broader($id)
+        {
+            $dt = $this->where('b_concept_narrow',$id)->findAll();
+           return $dt;
+        }
+
+    function le_narrow($id)
+    {
+        $dt = $this->where('b_concept_narrow', $id)->findAll();
+        return $dt;
+    }
+
     function broader($id,$edit=false)
     {
         $dt = $this

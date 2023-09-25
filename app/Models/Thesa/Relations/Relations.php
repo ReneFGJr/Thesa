@@ -40,5 +40,10 @@ class Relations extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function le_relations($id)
+        {
+            return [];
+        }
+
 
 }

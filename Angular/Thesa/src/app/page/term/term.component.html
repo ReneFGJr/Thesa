@@ -1,0 +1,8 @@
+<div class="full" *ngIf="data">
+<div class="label" translate>{{data | json}}</div>
+
+<div class="thesa_h1">{{data.label}} <sup>({{data.lg_code}})</sup></div>
+<div class="thesa_a">URI: <a [routerLink]="['/c/' + data.id_c]" routerLinkActive="router-link-active">{{data.id_ct}}</a></div>
+
+
+</div>

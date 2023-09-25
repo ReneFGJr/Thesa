@@ -1,0 +1,17 @@
+<div class="container" *ngIf="thesa">
+  <div class="row">
+    <div class="col-3 col-md-2 col-lg-1">
+      <img [src]="thesa.icone" class="img-fluid" />
+    </div>
+    <div class="col-9 col-md-10 col-lg-11 m-0 ps-2">
+      <div translate class="thesa_label full">label_type_thesauros</div>
+      <div class="thesa_title full">{{ thesa.th_name }}</div>
+      <div class="thesa_achronic full">{{ thesa.th_achronic }}</div>
+    </div>
+  </div>
+</div>
+<style>
+  div {
+    border: 1px solid #000;
+  }
+</style>

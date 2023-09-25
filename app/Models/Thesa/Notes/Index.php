@@ -40,6 +40,14 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function le($id)
+        {
+            $ThNotes = new \App\Models\RDF\ThNotes();
+            $dt = $ThNotes->where('nt_concept',$id)->findAll();
+            return $dt;
+
+        }
+
     function recover($id=0,$edit=0)
         {
             $ThNotes = new \App\Models\RDF\ThNotes();

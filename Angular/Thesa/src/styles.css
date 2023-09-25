@@ -1,1 +1,37 @@
-/* You can add global styles to this file, and also import other style files */
+.thesa_h1
+  {
+    font-size: 1.4rem;
+    font-weight: bold;
+    padding: 0px;
+    margin: 0px;
+    line-height: 1.4rem;
+  }/* You can add global styles to this file, and also import other style files */
+
+.thesa_label
+  {
+    font-size: 0.7rem;
+    padding: 0px;
+    margin: 0px;
+    line-height: 0.5rem;
+  }
+.thesa_title
+  {
+    font-size: 2rem;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0px;
+    margin: 0px;
+    line-height: 1.8rem;
+  }
+.thesa_achronic
+  {
+    font-size: 1rem;
+    padding: 0px;
+    margin: 0px;
+    line-height: 0.8rem;
+  }
+
+.full
+  {
+    width: 100%;
+  }
