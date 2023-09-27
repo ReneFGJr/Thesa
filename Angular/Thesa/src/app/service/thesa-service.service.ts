@@ -6,6 +6,7 @@ import { catchError, map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
+
 export class ThesaServiceService {
   http: any;
   //private url: string = 'https://cip.brapci.inf.br/api/';

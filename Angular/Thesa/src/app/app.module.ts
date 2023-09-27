@@ -18,6 +18,7 @@ import { EditComponent } from './page/term/edit/edit.component';
 import { SearchComponent } from './page/search/search.component';
 import { ThesaMainComponent } from './page/main/main.component';
 import { ThSelectComponent } from './page/th-select/th-select.component';
+import { ThComponent } from './page/th/th.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { ThSelectComponent } from './page/th-select/th-select.component';
     SearchComponent,
     ThesaMainComponent,
     ThSelectComponent,
+    ThComponent,
   ],
   imports: [
     BrowserModule,
