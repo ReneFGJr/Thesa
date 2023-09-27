@@ -24,7 +24,6 @@ export class ThComponent {
       this.thesaServiceService.getId(this.id, 'th').subscribe(
         (res) => {
           this.thesa = res;
-          console.log(this.thesa);
         },
         (error) => error
       );
