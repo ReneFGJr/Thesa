@@ -6,7 +6,6 @@ import { catchError, map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
-
 export class ThesaServiceService {
   http: any;
   //private url: string = 'https://cip.brapci.inf.br/api/';
@@ -32,6 +31,21 @@ export class ThesaServiceService {
         map((response) => response),
         catchError(() => throwError(() => 'Problem with IP info'))
       );
+  }
+
+  public generic(type: string, dt: Array<any>) {
+    let url = `${this.url}/${type}`;
+    console.log(`Generic: ${url}`);
+    var formData: any = new FormData();
+
+    for (const key in dt) {
+      formData.append(key, dt[key]);
+    }
+
+    return this.HttpClient.post<Array<any>>(url, formData).pipe(
+      (res) => res,
+      (error) => error
+    );
   }
 
   public getId(id: number, type: string): Observable<Array<any>> {

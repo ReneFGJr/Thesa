@@ -8,6 +8,7 @@ import { ThesaServiceService } from 'src/app/service/thesa-service.service';
 })
 export class ThComponent {
   public thesa: Array<any> | any;
+  public terms: Array<any> | any;
   public data: Array<any> | any;
   public id: number = 0;
   public sub: Array<any> | any;
@@ -24,6 +25,14 @@ export class ThComponent {
       this.thesaServiceService.getId(this.id, 'th').subscribe(
         (res) => {
           this.thesa = res;
+        },
+        (error) => error
+      );
+      /************** Terms */
+      let dt: Array<any> = [{ name: '1' }];
+      this.thesaServiceService.generic('term', dt).subscribe(
+        (res) => {
+          this.terms = res;
         },
         (error) => error
       );

@@ -76,6 +76,22 @@ class Index extends Model
         }
     }
 
+    function terms($th,$lt='')
+        {
+            $Concept = new \App\Models\Thesa\Concepts\Index();
+            $cp = 'term_name as Term,c_concept as Concept,term_lang as Lang, vc_label as Propriety, ct_th as Th';
+            //$cp = '*';
+            $dt = $Concept
+                ->select($cp)
+                ->join('thesa_concept_term', 'ct_concept = c_concept')
+                ->join('thesa_terms', 'ct_literal = id_term')
+                ->join('owl_vocabulary_vc', 'ct_propriety = id_vc')
+                ->where('c_th',$th)
+                ->orderby('term_name')
+                ->findAll(100);
+            return $dt;
+        }
+
     function le($id)
     {
         $ThIcone = new \App\Models\Thesa\Icone();
@@ -172,7 +188,6 @@ class Index extends Model
                 ->findAll();
             $data['nr_terms_candidates'] = $dt[0]['total'];
         }
-
         return $data;
     }
 }

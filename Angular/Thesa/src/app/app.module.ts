@@ -19,6 +19,7 @@ import { SearchComponent } from './page/search/search.component';
 import { ThesaMainComponent } from './page/main/main.component';
 import { ThSelectComponent } from './page/th-select/th-select.component';
 import { ThComponent } from './page/th/th.component';
+import { ListComponent } from './page/term/list/list.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ThComponent } from './page/th/th.component';
     ThesaMainComponent,
     ThSelectComponent,
     ThComponent,
+    ListComponent,
   ],
   imports: [
     BrowserModule,

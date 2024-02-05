@@ -1,1 +1,10 @@
-<thesa-thesauros [thesa]="thesa">/thesa-thesauros>
+<thesa-thesauros [thesa]="thesa"></thesa-thesauros>
+<div class="container">
+  <div class="row">
+    <div class="col-3">
+      <app-term-list></app-term-list>
+    </div>
+  </div>
+</div>
+
+{{ thesa | json }}

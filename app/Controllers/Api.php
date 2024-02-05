@@ -27,6 +27,10 @@ class Api extends BaseController
         }
         switch($arg1)
             {
+                case 'terms':
+                    $Thesa = new \App\Models\Thesa\Index();
+                    $RSP['terms'] = $Thesa->terms($arg2,$arg3);
+                    break;
                 case 'thopen':
                     $Thesa = new \App\Models\Thesa\Index();
                     $RSP['th'] = $Thesa->thopen();
