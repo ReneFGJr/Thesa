@@ -27,6 +27,11 @@ class Api extends BaseController
         }
         switch($arg1)
             {
+                case 'status':
+                    $RSP['status'] = '200';
+                    $RSP['messagem'] = 'The system is healthy';
+                    $RSP['situation'] = 'GREEN';
+                    break;
                 case 'terms':
                     $Thesa = new \App\Models\Thesa\Index();
                     $RSP['terms'] = $Thesa->terms($arg2,$arg3);

@@ -37,7 +37,7 @@
   }
 .box
   {
-    border: 2px solid #000080;
+    border: 2px solid #000000;
     background-color: #fff;
     opacity: 0.7;
     border-radius: 10px;
@@ -62,7 +62,7 @@
 
   .box:hover
   {
-    background-color: #ddf;
+    background-color: #ddd;
   }
 
 

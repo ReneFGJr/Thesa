@@ -5,8 +5,7 @@ import { ThesaServiceService } from 'src/app/service/thesa-service.service';
 
 @Component({
   selector: 'thesa-main',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.css'],
+  templateUrl: './main.component.html'
 })
 export class ThesaMainComponent {
   public logo = '/assets/img/logo/logo_thesa.svg';
