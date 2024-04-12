@@ -25,14 +25,17 @@ export class ThComponent {
       this.thesaServiceService.getId(this.id, 'th').subscribe(
         (res) => {
           this.thesa = res;
-        },
-        (error) => error
-      );
-      /************** Terms */
-      let dt: Array<any> = [{ name: '1' }];
-      this.thesaServiceService.generic('term', dt).subscribe(
-        (res) => {
-          this.terms = res;
+          console.log(res);
+
+          /************** Terms */
+          console.log(this.thesa.id_th);
+          let dt: Array<any> = [{}];
+          this.thesaServiceService.generic('terms/' + this.thesa.id_th,dt).subscribe(
+            (res) => {
+              this.terms = res;
+            },
+            (error) => error
+          );
         },
         (error) => error
       );

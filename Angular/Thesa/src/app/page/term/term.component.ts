@@ -6,4 +6,11 @@ import { Component, Input } from '@angular/core';
 })
 export class TermComponent {
   @Input() public data: Array<any> | any;
+
+  ngOnInit()
+    {
+      console.log("+++++++++++++++")
+      console.log(this.data);
+    }
+
 }

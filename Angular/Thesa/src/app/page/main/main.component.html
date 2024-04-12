@@ -1,28 +1,48 @@
 <div class="container" *ngIf="resume">
-<div class="row">
-<div class="col-lg-3 col-12">
-  <img [src]="logo" class="img-fluid">
-</div>
-<div class="col-lg-7 col-12">
-<div class="handle text-center mb-3 box ms-5 me-5">
-<span translate>nr_thesaurus</span><br>
-<span  class="thesa_h2">{{resume.nr_thesaurus}}</span>
-</div>
+  <div class="row">
+    <div class="col-lg-3 col-12 col-lg-3">
+      <img [src]="logo" class="img-fluid" />
+    </div>
+    <div class="col-lg-2 col-12 text-center">
+      <div class="thesa_bloop text-center mb-3 box ms-5 me-5 link" (click)="openTh()">
+        <span translate class="box_subtitle">nr_thesaurus</span><br />
+        <span class="box_h2">{{ resume.nr_thesaurus }}</span>
+      </div>
 
-<div class="handle text-center mb-3 box ms-5 me-5">
-<span translate>nr_concepts</span><br>
-<span  class="thesa_h2">{{resume.nr_concepts}}</span>
-</div>
+      <div class="thesa_bloop text-center mb-3 box ms-5 me-5">
+        <span translate class="box_subtitle">nr_concepts</span><br />
+        <span class="box_h2">{{ resume.nr_concepts }}</span>
+      </div>
 
-<div class="handle text-center mb-3 box ms-5 me-5">
-<span translate>nr_terms</span><br>
-<span  class="thesa_h2">{{resume.nr_terms}}</span>
-</div>
+      <div class="thesa_bloop text-center mb-3 box ms-5 me-5">
+        <span translate class="box_subtitle">nr_terms</span><br />
+        <span class="box_h2">{{ resume.nr_terms }}</span>
+      </div>
 
-<div class="handle text-center mb-3 box ms-5 me-5">
-<span translate>nr_terms_candidates</span><br>
-<span class="thesa_h2">{{resume.nr_terms_candidates}}</span>
-</div>
-</div>
-</div>
+      <div class="thesa_bloop text-center mb-3 box ms-5 me-5">
+        <span translate class="box_subtitle">nr_terms_candidates</span><br />
+        <span class="box_h2">{{ resume.nr_terms_candidates }}</span>
+      </div>
+    </div>
+
+    <div class="col-lg-5 col-12">
+      <h1>{{ "thesa_about" | translate }}</h1>
+      <div translate class="mb-3">thesa_about_frs1</div>
+      <div translate class="mb-3">thesa_about_frs2</div>
+      <div translate class="mb-3">thesa_about_frs3</div>
+      <div translate class="mb-1">thesa_about_frs4</div>
+      <div class="mt-2"
+        >GABRIEL JUNIOR, R. F.; LAIPELT, R. C. Thesa: ferramenta para construção
+        de tesauro semântico aplicado interoperável.
+        <b>Revista P2P & Inovação</b>, Rio de Janeiro, v. 3, n. 2, p.124-145,
+        Mar./Set. 2017.</div
+      >
+      <div class="mt-2"
+        >GABRIEL JUNIOR, R. F.; LAIPELT, R. C. Descrição das relações semânticas
+        para aplicação em kos: uso do tesauro semântico aplicado (thesa).
+        <b>Revista P2P e Inovação</b>, v. 6, n. 1, p. 117-135, 2019. DOI:
+        10.21721/p2p.2019v6n1.p117-135</div
+      >
+    </div>
+  </div>
 </div>
