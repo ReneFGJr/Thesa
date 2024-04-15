@@ -167,7 +167,11 @@ class Index extends Model
             ->where('id_c', $id)
             ->where('lgt_th',$th)
             ->orderBy('vc1.vc_label desc, lgt_order')
-            ->findAll();
+            ->first();
+
+            $ThesaMidias = new \App\Models\Thesa\Medias\Index();
+            $dt['medias'] = $ThesaMidias->le($id);
+
         return $dt;
     }
 }

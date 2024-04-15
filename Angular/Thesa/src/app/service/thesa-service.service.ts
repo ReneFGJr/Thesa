@@ -33,7 +33,7 @@ export class ThesaServiceService {
       );
   }
 
-  public generic(type: string, dt: Array<any>) {
+  public api_post(type: string, dt: Array<any>) {
     let url = `${this.url}/${type}`;
     console.log(`Generic: ${url}`);
     var formData: any = new FormData();

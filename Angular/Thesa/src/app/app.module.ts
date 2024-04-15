@@ -20,6 +20,9 @@ import { ThesaMainComponent } from './page/main/main.component';
 import { ThSelectComponent } from './page/th-select/th-select.component';
 import { ThComponent } from './page/th/th.component';
 import { ListComponent } from './page/term/list/list.component';
+import { AboutComponent } from './page/about/about.component';
+import { ConceptComponent } from './page/concept/concept.component';
+import { VideoComponent } from './widgat/video/video.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +40,9 @@ import { ListComponent } from './page/term/list/list.component';
     ThSelectComponent,
     ThComponent,
     ListComponent,
+    AboutComponent,
+    ConceptComponent,
+    VideoComponent,
   ],
   imports: [
     BrowserModule,

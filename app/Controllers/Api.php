@@ -23,8 +23,7 @@ class Api extends BaseController
         $RSP = [];
 
         if ($arg1 == 'conecpt') { $arg1 = 'c'; }
-        if ($arg1 == 'term') { $arg1 = 't';
-        }
+        if ($arg1 == 'term') { $arg1 = 't'; }
         switch($arg1)
             {
                 case 'status':
@@ -73,7 +72,10 @@ class Api extends BaseController
 
     function t($id,$RSP)
         {
-
+        $Terms = new \App\Models\Thesa\Terms\Index();
+            $dt = $Terms->le($id);
+            $RSP = array_merge($RSP,$dt);
+            return $RSP;
         }
 
     function c($id,$RSP)
@@ -82,8 +84,8 @@ class Api extends BaseController
             $Broader = new \App\Models\Thesa\Relations\Broader();
             $Relations = new \App\Models\Thesa\Relations\Relations();
             $Notes = new \App\Models\Thesa\Notes\Index();
-            $dt = $Concept->le($id);
-            $RSP = $dt[0];
+            $RSP = $Concept->le($id);
+
             $RSP['uri'] = URL.'/c/'.$id;
 
             $RSP['broader'] = $Broader->le_broader($id);

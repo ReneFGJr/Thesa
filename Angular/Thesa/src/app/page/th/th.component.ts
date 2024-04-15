@@ -12,6 +12,7 @@ export class ThComponent {
   public data: Array<any> | any;
   public id: number = 0;
   public sub: Array<any> | any;
+  public idT: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,15 +31,22 @@ export class ThComponent {
           /************** Terms */
           console.log(this.thesa.id_th);
           let dt: Array<any> = [{}];
-          this.thesaServiceService.generic('terms/' + this.thesa.id_th,dt).subscribe(
-            (res) => {
-              this.terms = res;
-            },
-            (error) => error
-          );
+          this.thesaServiceService
+            .api_post('terms/' + this.thesa.id_th, dt)
+            .subscribe(
+              (res) => {
+                this.terms = res;
+              },
+              (error) => error
+            );
         },
         (error) => error
       );
     });
   }
+
+  updateTerm(ID:number)
+    {
+      this.idT = ID
+    }
 }

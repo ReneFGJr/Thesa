@@ -1,22 +1,19 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-term-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css'],
+  templateUrl: './list.component.html'
 })
 export class ListComponent {
   @Input() public data: Array<any> | any;
+  @Output() public IDEvent = new EventEmitter<number>();
 
-  constructor(
-    private router:Router
-  ) {}
+  constructor(private router: Router) {}
 
   NgOnInit() {}
 
-  viewTerm(ID:string = '')
-    {
-      this.router.navigate(['term/'+ID])
-    }
+  viewTerm(ID: number = 0) {
+    this.IDEvent.emit(ID);
+  }
 }

@@ -1,0 +1,34 @@
+<div class="container-fluid" *ngIf="data">
+  <div class="row">
+    <div class="thesa_h1">
+      {{ data.label }} <sup>({{ data.lg_code }})</sup>
+    </div>
+
+    <div class="thesa_a small col-12">
+      URI:
+      <a
+        class="small"
+        [routerLink]="['/c/' + data.id_c]"
+        routerLinkActive="router-link-active"
+        >{{ data.uri }}</a
+      >
+
+      <i class="bi bi-copy ms-2 link" (click)="copyToClipboard(data.uri)"></i>
+
+    </div>
+    <div class="col-lg-5 col-12">
+    </div>
+    <div class="col-lg-7 col-12">
+      <div *ngIf="data.medias">
+        <app-media-video [video]="data.medias.video"></app-media-video>
+      </div>
+
+      <div *ngFor="let nota of data.notes">
+        <span translate class="label_notes">{{ nota.p_name }}</span>
+        <p class="p_notes">{{ nota.nt_content }}</p>
+        <hr />
+      </div>
+    </div>
+  </div>
+</div>
+{{ data | json }}
