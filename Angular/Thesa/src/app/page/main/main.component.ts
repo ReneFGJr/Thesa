@@ -9,6 +9,7 @@ import { ThesaServiceService } from 'src/app/service/thesa-service.service';
 })
 export class ThesaMainComponent {
   public logo = '/assets/img/logo/logo_thesa.svg';
+  public logoTXT = '/assets/img/logo/logo_thesa_txt.svg';
   public resume: Array<any> | any;
 
   public thesa_about: string = 'thesa_about';

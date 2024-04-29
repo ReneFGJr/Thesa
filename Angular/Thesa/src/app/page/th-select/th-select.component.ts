@@ -5,8 +5,7 @@ import { LocalStorageService } from 'src/app/service/local-storage.service';
 
 @Component({
   selector: 'thesa-th-select',
-  templateUrl: './th-select.component.html',
-  styleUrls: ['./th-select.component.css'],
+  templateUrl: './th-select.component.html'
 })
 export class ThSelectComponent {
   public thesa: Array<any> | any;

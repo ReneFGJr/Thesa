@@ -1,0 +1,27 @@
+<form>
+  <mat-form-field appearance="fill" class="full">
+    <mat-label>Search</mat-label>
+    <input class="thema" type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete" style="display: none">
+
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
+
+<div
+  class="overflow-auto  bg-body-tertiary"
+  style="max-width: 100%; max-height: 500px"
+>
+  <div *ngFor="let item of filteredOptions | async" class="thema">
+    <span
+      *ngIf="item.Propriety == 'prefLabel'"
+      class="link"
+      (click)="viewTerm(item.Concept)"
+    >
+      {{ item.Term }} <sup>{{item.Lang}}</sup>
+    </span>
+    <span *ngIf="item.Propriety == 'altLabel'" class="fst-italic ps-2 text-remissive">{{
+      item.Term
+    }}</span>
+  </div>
+</div>

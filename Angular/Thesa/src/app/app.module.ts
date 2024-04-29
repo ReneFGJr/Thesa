@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
@@ -19,10 +19,15 @@ import { SearchComponent } from './page/search/search.component';
 import { ThesaMainComponent } from './page/main/main.component';
 import { ThSelectComponent } from './page/th-select/th-select.component';
 import { ThComponent } from './page/th/th.component';
-import { ListComponent } from './page/term/list/list.component';
 import { AboutComponent } from './page/about/about.component';
 import { ConceptComponent } from './page/concept/concept.component';
 import { VideoComponent } from './widgat/video/video.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { SearchTermComponent } from './widgat/search-term/search-term.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -39,10 +44,11 @@ import { VideoComponent } from './widgat/video/video.component';
     ThesaMainComponent,
     ThSelectComponent,
     ThComponent,
-    ListComponent,
     AboutComponent,
     ConceptComponent,
     VideoComponent,
+    SearchComponent,
+    SearchTermComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,9 +62,15 @@ import { VideoComponent } from './widgat/video/video.component';
         deps: [HttpClient],
       },
     }),
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {}
 

@@ -1,144 +1,148 @@
-.thesa_h1
+body,.thema, input {
+  background-color: #000000;
+  color: white;
+}
+
+.link {
+  cursor: pointer;
+  color: #fff;
+  text-decoration: none;
+}
+
+.link:hover {
+  cursor: pointer;
+  color: #bbb;
+}
+
+
+.text-remissive
   {
-    font-size: 1.4rem;
-    font-weight: bold;
-    padding: 0px;
-    margin: 0px;
-    line-height: 1.4rem;
+    color:#888
   }
 
-  .thesa_h2
-  {
-    font-size: 1.3rem;
-    font-weight: bold;
-    padding: 0px;
-    margin: 0px;
-    line-height: 1.3rem;
-  }
+.thesa_h1 {
+  font-size: 1.4rem;
+  font-weight: bold;
+  padding: 0px;
+  margin: 0px;
+  line-height: 1.4rem;
+}
 
-.bold
-  {
-    font-weight: bold;
-  }
+.thesa_h2 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  padding: 0px;
+  margin: 0px;
+  line-height: 1.3rem;
+}
 
-.handle
-  {
-    cursor: pointer;
-  }
+.bold {
+  font-weight: bold;
+}
 
-.over
-  {
-    opacity: 0.8;
-  }
-
-.over:hover
-  {
-    opacity: 1;
-  }
-.box
-  {
-    border: 4px solid #000000;
-    border-radius: 75px;
-    padding: 10px;
-    margin: 20px;
-    background-color: #888;
-    color: white;
-    background-image: url("/assets/img/logo/logo_thesa.svg");
-  }
-
-  .box:hover
-  {
-    background-color: #777;
-  }
-
-  .box_subtitle {
-    font-size: 1rem;
-  }
-  .box_h2 {
-    font-size: 3.5rem;
-    font-weight: bolder;
-    color: white;
-    padding: 0px;
-    margin: 0px;
-    line-height: 5rem;
-  }
-
-  .thesa_bloop
-  {
-
-    height: 150px;
-    width: 150px;
-    border-radius: 100px;
-  }
-
-  .box2
-  {
-    background-color: #fff;
-    opacity: 0.7;
-    border-radius: 10px;
-    margin: 10px;
-    box-shadow: #fff 10px 10px 10px;
-  }
-
-  .box2:hover
-  {
-    background-color: #fff;
-    opacity: 1;
-    box-shadow: #888 10px 10px 10px;
-  }
-
-.link
-{
+.handle {
   cursor: pointer;
 }
 
-.thesa_label
-  {
-    font-size: 0.7rem;
-    padding: 0px;
-    margin: 0px;
-    line-height: 0.5rem;
-  }
-.thesa_title
-  {
-    font-size: 2rem;
-    font-weight: bold;
-    font-style: italic;
-    padding: 0px;
-    margin: 0px;
-    line-height: 1.8rem;
-  }
-.thesa_achronic
-  {
-    font-size: 1rem;
-    padding: 0px;
-    margin: 0px;
-    line-height: 0.8rem;
-  }
+.over {
+  opacity: 0.8;
+}
 
-.full
-  {
-    width: 100%;
-  }
+.over:hover {
+  opacity: 1;
+}
+.box {
+  border: 4px solid #000000;
+  border-radius: 75px;
+  padding: 10px;
+  margin: 20px;
+  background-color: #888;
+  color: white;
+  background-image: url("/assets/img/logo/logo_thesa_mini.svg");
+}
 
-  .small
-    {
-      font-size: 0.8rem;
-    }
+.box:hover {
+  background-color: #777;
+}
 
-  .label_notes
-    {
-      font-size: 0.8rem;
-      font-weight: bold;
-    }
+.box_subtitle {
+  font-size: 1rem;
+}
+.box_h2 {
+  font-size: 3.5rem;
+  font-weight: bolder;
+  color: white;
+  padding: 0px;
+  margin: 0px;
+  line-height: 5rem;
+}
 
-  .p_notes
-    {
-      font-size: 0.8rem;
-      text-align: left;
-      line-height: 0.8rem;
-    }
-.logo_mini
-  {
-    height: 25px;
-  }
+.thesa_bloop {
+  height: 150px;
+  width: 150px;
+  border-radius: 100px;
+}
+
+.box2 {
+  opacity: 0.7;
+  border-radius: 10px;
+  margin: 10px;
+  box-shadow: #fff 10px 10px 10px;
+}
+
+.box2:hover {
+  opacity: 1;
+  box-shadow: #888 10px 10px 10px;
+}
+
+.thesa_label {
+  font-size: 0.7rem;
+  padding: 0px;
+  margin: 0px;
+  line-height: 0.5rem;
+}
+.thesa_title {
+  font-size: 2rem;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0px;
+  margin: 0px;
+  line-height: 1.8rem;
+}
+.thesa_achronic {
+  font-size: 1rem;
+  padding: 0px;
+  margin: 0px;
+  line-height: 0.8rem;
+}
+
+.full {
+  width: 100%;
+}
+
+.small {
+  font-size: 0.8rem;
+}
+
+.label_notes {
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.p_notes {
+  font-size: 0.8rem;
+  text-align: left;
+  line-height: 0.8rem;
+}
+.logo_mini {
+  height: 25px;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ThesaServiceService } from 'src/app/service/thesa-service.service';
 
 @Component({
@@ -16,7 +16,8 @@ export class ThComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private thesaServiceService: ThesaServiceService
+    private thesaServiceService: ThesaServiceService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -29,7 +30,6 @@ export class ThComponent {
           console.log(res);
 
           /************** Terms */
-          console.log(this.thesa.id_th);
           let dt: Array<any> = [{}];
           this.thesaServiceService
             .api_post('terms/' + this.thesa.id_th, dt)
@@ -45,8 +45,7 @@ export class ThComponent {
     });
   }
 
-  updateTerm(ID:number)
-    {
-      this.idT = ID
-    }
+  updateTerm(ID: number) {
+    this.idT = ID;
+  }
 }
