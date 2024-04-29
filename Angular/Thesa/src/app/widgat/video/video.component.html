@@ -1,5 +1,6 @@
-<div>
-  <video
+<div *ngFor="let item of video">
+  {{ item.mid_content_type}}
+  <video *ngIf="item.mid_content_type == 'video/mp4'"
     height="320"
     controls=""
     autoplay=""
@@ -7,7 +8,7 @@
     class="img-fluid img-thumbnail ms-2"
   >
     <source
-      src="https://www.ufrgs.br/thesa/public/_acervo/_images/thesa/th_00002/b2958582b069ee0cd4faf31f9ad047f5.mp4"
+      src="https://www.ufrgs.br/thesa/public/{{item.mid_directory}}/{{item.mid_file}}"
       type="video/mp4"
     />
     Your browser does not support the video tag.

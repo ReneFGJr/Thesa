@@ -1,16 +1,21 @@
 <form>
-  <mat-form-field appearance="fill" class="full">
+  <mat-form-field appearance="fill" class="full" >
     <mat-label>Search</mat-label>
-    <input class="thema" type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
-    <mat-autocomplete #auto="matAutocomplete" style="display: none">
-
-    </mat-autocomplete>
+    <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete" style="display: none"></mat-autocomplete>
   </mat-form-field>
 </form>
 
+<div *ngIf="isEmpty"
+  class="overflow-auto thema mb-5"
+  style="max-width: 100%; max-height: {{max}}; height: {{max}}"
+>
+  VAZIO
+</div>
+
 <div
-  class="overflow-auto  bg-body-tertiary"
-  style="max-width: 100%; max-height: 500px"
+  class="overflow-auto thema mb-5 elemento"
+  style="max-width: 100%; max-height: {{max}}; height: {{max}}"
 >
   <div *ngFor="let item of filteredOptions | async" class="thema">
     <span
@@ -20,8 +25,9 @@
     >
       {{ item.Term }} <sup>{{item.Lang}}</sup>
     </span>
-    <span *ngIf="item.Propriety == 'altLabel'" class="fst-italic ps-2 text-remissive">{{
-      item.Term
-    }}</span>
+    <span *ngIf="item.Propriety == 'altLabel'"
+    class="link fst-italic ps-2 text-remissive"
+    (click)="viewTerm(item.Concept)">
+      {{ item.Term }}</span>
   </div>
 </div>

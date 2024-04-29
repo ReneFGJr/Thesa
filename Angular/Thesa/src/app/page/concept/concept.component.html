@@ -19,9 +19,10 @@
     <div class="col-lg-5 col-12">
     </div>
     <div class="col-lg-7 col-12">
-      <div *ngIf="data.medias">
+      <div *ngIf="data.medias.video.length > 0">
         <app-media-video [video]="data.medias.video"></app-media-video>
       </div>
+      {{data.medias | json}}
 
       <div *ngFor="let nota of data.notes">
         <span translate class="label_notes">{{ nota.p_name }}</span>
@@ -31,4 +32,3 @@
     </div>
   </div>
 </div>
-{{ data | json }}

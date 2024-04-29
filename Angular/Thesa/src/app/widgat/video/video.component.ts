@@ -9,6 +9,6 @@ export class VideoComponent {
 
   ngOnInit()
     {
-      console.log(this.video)
+
     }
 }
