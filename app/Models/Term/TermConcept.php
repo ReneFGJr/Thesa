@@ -4,19 +4,17 @@ namespace App\Models\Term;
 
 use CodeIgniter\Model;
 
-class Index extends Model
+class TermConcept extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'thesa_terms';
-    protected $primaryKey       = 'id_term';
+    protected $table            = 'thesa_concept_term';
+    protected $primaryKey       = 'id_ct';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [
-        'id_term', 'term_name', 'term_lang'
-    ];
+    protected $allowedFields    = [];
 
     // Dates
     protected $useTimestamps = false;
@@ -42,28 +40,18 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function register($term,$lang)
+    function le($id, $prop='')
         {
-            $dt = $this
-                ->where('term_name',$term)
-                ->where('term_lang', $lang)
-                ->first();
-            if ($dt == [])
+            $this->select('term_name as Term, p_name as Prop, ct_th as th, lg_code as Lang, lg_language as Language, lg_cod_short as LangCode');
+            $this->join('thesa_property', 'id_p = ct_propriety');
+            $this->join('thesa_terms', 'ct_literal = id_term');
+            $this->join('language', 'term_lang = id_lg');
+            $this->where('ct_concept',$id);
+            if ($prop != '')
                 {
-                    $dd['term_name'] = $term;
-                    $dd['term_lang'] = $lang;
-                    $id = $this->set($dd)->insert();
-                } else {
-                    $id = $dt['id_term'];
+                    $this->where('p_name', $prop);
                 }
-            return $id;
-        }
-
-    function le($id,$type='')
-        {
-            $TermConcept = new \App\Models\Term\TermConcept();
-            $dt = $TermConcept->le($id,$type);
-            pre($dt,false);
-
+            $dt = $this->findAll();
+            return $dt;
         }
 }

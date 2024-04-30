@@ -83,13 +83,19 @@ class Api extends BaseController
 
     function c($id,$RSP)
         {
+            $Term = new \App\Models\Term\Index();
             $Concept = new \App\Models\Thesa\Concepts\Index();
             $Broader = new \App\Models\Thesa\Relations\Broader();
             $Relations = new \App\Models\Thesa\Relations\Relations();
-            $Notes = new \App\Models\Propriety\Notes();
+
+            $Notes = new \App\Models\Property\Notes();
             $RSP = $Concept->le($id);
 
             $RSP['uri'] = URL.'/c/'.$id;
+
+            $RSP['prefLabel'] = $Term->le($id,'prefTerm');
+            $RSP['altLabel'] = $Term->le($id, 'altLabel');
+            $RSP['hiddenLabel'] = $Term->le($id, 'hiddenLabel');
 
             $RSP['broader'] = $Broader->le_broader($id);
             $RSP['narrow'] = $Broader->le_narrow($id);
