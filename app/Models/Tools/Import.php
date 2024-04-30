@@ -44,10 +44,11 @@ class Import extends Model
     {
         $th = 3;
         $Term = new \App\Models\Term\Index();
-        $Notes = new \App\Models\Propriety\Notes();
+        $Notes = new \App\Models\Property\Notes();
         $Concept = new \App\Models\Concept\Index();
+        $Boarder = new \App\Models\Property\Boarder();
         $Language = new \App\Models\Language\Index();
-        $Propriety = new \App\Models\Propriety\Index();
+        $Propriety = new \App\Models\Property\Index();
 
         $file = '.tmp/thesa_0374_20240429.xml';
         $xml = simplexml_load_file($file);
@@ -81,6 +82,13 @@ class Import extends Model
                             $lang = $Language->search($value['@attributes']['lang']);
                             $term = $value[0];
                             $Term->register($term, $lang);
+                            break;
+                        /************************************** narrower */
+                        case 'narrower':
+                            $broader = $value['@attributes']['resource'];
+                            $IDB = $Concept->findAgent($broader,$th);
+                            $Boarder->register($IDB,$IDC,$th);
+                            pre($broader);
                             break;
                         /************************************** altLabel */
                         case 'scopeNote':

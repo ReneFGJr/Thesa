@@ -1,21 +1,23 @@
 <?php
 
-namespace App\Models\Concept;
+namespace App\Models\Property;
 
 use CodeIgniter\Model;
 
-class Index extends Model
+class Boarder extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'thesa_concept';
-    protected $primaryKey       = 'id_c';
+    protected $table            = 'thesa_broader';
+    protected $primaryKey       = 'id_b';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_c','c_concept','c_th','c_ativo','c_agency'
+        'id_b', 'b_th', 'b_concept_boader',
+        'b_concept_narrow', 'b_concept_master', 'b_property',
+        'updated_at'
     ];
 
     // Dates
@@ -42,36 +44,27 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function findAgent($agent,$th)
+    function register($broader,$narrow,$th,$qualis=0)
         {
-            $this->where('c_agency',$agent);
-            $this->where('c_th', $th);
+            $this->where('b_concept_boader',$broader);
+            $this->where('b_concept_narrow', $narrow);
+            $this->where('b_th', $th);
             $dt = $this->first();
-            return($dt['id_c']);
-        }
 
-    function registerInport($ag,$th)
-        {
-            $ag = troca($ag,'#','');
-            $ag = mb_strtolower($ag);
-
-            $dt = $this
-            ->where('c_agency',$ag)
-            ->where('c_th', $th)
-            ->first();
             if ($dt == [])
                 {
-                    $dd = [];
-                    $dd['c_th'] = $th;
-                    $dd['c_agency'] = $ag;
-                    $dd['c_concept'] = 0;
-                    $dd['c_ativo'] = 1;
-                    $id  = $this->set($dd)->insert();
-                    $dd['c_concept'] = $id;
-                    $this->set($dd)->where('id_c',$id)->update();
-                } else {
-                    $id = $dt['id_c'];
+                    $this->where('b_concept_boader', $narrow);
+                    $this->where('b_concept_narrow', $broader);
+                    $this->where('b_th', $th);
+                    $dt = $this->first();
                 }
-            return $id;
+
+            if ($dt == [])
+                {
+
+                }
+
+            pre($dt);
+
         }
 }
