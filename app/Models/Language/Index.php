@@ -15,7 +15,7 @@ class Index extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_lg','lg_code','lg_language','lg_order','lg_active','lg_cod_marc'
+        'id_lg','lg_code','lg_language','lg_order','lg_active','lg_cod_marc', 'lg_cod_short'
     ];
 
     // Dates
@@ -41,6 +41,18 @@ class Index extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    function langagueCodeShort()
+        {
+            $dt = $this->findALl();
+            $dd = [];
+            foreach($dt as $id=>$line)
+                {
+                    $cod = $line['lg_cod_short'];
+                    $dd[$cod] = $line['id_lg'];
+                }
+            return $dd;
+        }
 
     function radio($th,$name)
         {

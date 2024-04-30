@@ -88,7 +88,7 @@ class Index extends Model
                 ->join('owl_vocabulary_vc', 'ct_propriety = id_vc')
                 ->where('c_th',$th)
                 ->orderby('term_name')
-                ->findAll(100);
+                ->findAll();
             return $dt;
         }
 
