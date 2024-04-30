@@ -104,7 +104,10 @@ class Index extends Model
                 break;
         }
 
-        $dt = $this->where('lg_code', $lang)->findAll();
+        $dt = $this
+            ->where('lg_code', $lang)
+            ->orWhere('lg_cod_short',$lang)
+            ->findAll();
         if (count($dt) > 0) {
             return ($dt[0]['id_lg']);
         } else {

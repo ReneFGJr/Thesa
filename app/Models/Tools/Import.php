@@ -40,14 +40,14 @@ class Import extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function inport()
+    function import()
     {
         $th = 3;
         $Term = new \App\Models\Term\Index();
+        $Notes = new \App\Models\Propriety\Notes();
         $Concept = new \App\Models\Concept\Index();
-
         $Language = new \App\Models\Language\Index();
-        $language = $Language->langagueCodeShort();
+        $Propriety = new \App\Models\Propriety\Index();
 
         $file = '.tmp/thesa_0374_20240429.xml';
         $xml = simplexml_load_file($file);
@@ -66,42 +66,32 @@ class Import extends Model
                     $value = (array)$value;
                     switch ($element) {
                         case 'prefLabel':
-                            $lang = $value['@attributes']['lang'];
-                            if (isset($language[$lang]))
-                                {
-                                    $langId = $language[$lang];
-                                    $term = $value[0];
-                                    $Term->register($term,$langId);
-                                } else {
-                                    echo $lang .  " - ERRO";
-                                    exit;
-                                }
-                                echo $term.'<br>';
+                            $lang = $Language->search($value['@attributes']['lang']);
+                            $term = $value[0];
+                            $Term->register($term,$lang);
                             break;
                         /************************************** altLabel */
                         case 'altLabel':
-                            $lang = $value['@attributes']['lang'];
-                            if (isset($language[$lang])) {
-                                $langId = $language[$lang];
-                                $term = $value[0];
-                                $Term->register($term, $langId);
-                            } else {
-                                echo $lang .  " - ERRO";
-                                exit;
-                            }
+                            $lang = $Language->search($value['@attributes']['lang']);
+                            $term = $value[0];
+                            $Term->register($term, $lang);
                             break;
-
                         /************************************** altLabel */
                         case 'hiddenLabel':
-                            $lang = $value['@attributes']['lang'];
-                            if (isset($language[$lang])) {
-                                $langId = $language[$lang];
-                                $term = $value[0];
-                                $Term->register($term, $langId);
-                            } else {
-                                echo $lang .  " - ERRO";
-                                exit;
-                            }
+                            $lang = $Language->search($value['@attributes']['lang']);
+                            $term = $value[0];
+                            $Term->register($term, $lang);
+                            break;
+                        /************************************** altLabel */
+                        case 'scopeNote':
+                            $type = $value['@attributes']['type'];
+                            $prop = $Propriety->findPropriety($type);
+                            $lang = $Language->search($value['@attributes']['lang']);
+                            if (isset($value[0]))
+                                {
+                                    $term = $value[0];
+                                    $Notes->register($IDC, $prop, $term, $lang, $th);
+                                }
                             break;
 
                         default:

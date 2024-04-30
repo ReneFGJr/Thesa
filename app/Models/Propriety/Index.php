@@ -1,20 +1,24 @@
 <?php
 
-namespace App\Models\Thesa\Notes;
+namespace App\Models\Propriety;
 
 use CodeIgniter\Model;
 
 class Index extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'indices';
-    protected $primaryKey       = 'id';
+    protected $table            = 'thesa_property';
+    protected $primaryKey       = 'id_p';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = [
+        'id_p','p_name', 'p_reverse',
+        'p_equivalente', 'p_range', 'p_group',
+        'p_description','p_th','p_global'
+    ];
 
     // Dates
     protected $useTimestamps = false;
@@ -40,26 +44,16 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function le($id)
+    function findPropriety($prop,$th=0)
         {
-            $ThNotes = new \App\Models\RDF\ThNotes();
-            $dt = $ThNotes
-                ->join('thesa_property', 'id_p = nt_prop')
-                ->where('nt_concept',$id)->findAll();
-            return $dt;
-
-        }
-
-    function recover($id=0,$edit=0)
-        {
-            $ThNotes = new \App\Models\RDF\ThNotes();
-            $nt = ['definition','scopeNote', 'notation', 'note', 'changeNote', 'editorialNote', 'example', 'historyNote'];
-            $dt = [];
-            foreach($nt as $note)
+            $dt = $this
+                ->where('p_name',$prop)
+                ->where('(p_th = '.$th.' or p_global = 1)')
+                ->first();
+            if ($dt == [])
                 {
-                    $dt[$note] = $ThNotes->list($id,$note,$edit);
+                    echo "Propriety OPS $prop";
                 }
-            return $dt;
-
+            return $dt['id_p'];
         }
 }

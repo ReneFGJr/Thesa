@@ -26,9 +26,9 @@ class Api extends BaseController
         if ($arg1 == 'term') { $arg1 = 't'; }
         switch($arg1)
             {
-                case 'inport':
+                case 'import':
                     $tools = new \App\Models\Tools\Import();
-                    $RSP = $tools->inport();
+                    $RSP = $tools->import();
                 case 'status':
                     $RSP['status'] = '200';
                     $RSP['messagem'] = 'The system is healthy';
@@ -86,7 +86,7 @@ class Api extends BaseController
             $Concept = new \App\Models\Thesa\Concepts\Index();
             $Broader = new \App\Models\Thesa\Relations\Broader();
             $Relations = new \App\Models\Thesa\Relations\Relations();
-            $Notes = new \App\Models\Thesa\Notes\Index();
+            $Notes = new \App\Models\Propriety\Notes();
             $RSP = $Concept->le($id);
 
             $RSP['uri'] = URL.'/c/'.$id;
