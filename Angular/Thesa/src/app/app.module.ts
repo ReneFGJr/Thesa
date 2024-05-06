@@ -32,6 +32,9 @@ import { ModalCitedRefComponent } from './widgat/modal-cited-ref/modal-cited-ref
 import { NgxGraphModule } from '@swimlane/ngx-graph';
 import { NetworkVisComponent } from './widgat/network-vis/network-vis.component';
 import { AboutFormComponent } from './page/about-form/about-form.component';
+import { TermNewComponent } from './page/admin/term-new/term-new.component';
+import { ConceptNewComponent } from './page/admin/concept-new/concept-new.component';
+import { MenuComponent } from './page/admin/menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +59,9 @@ import { AboutFormComponent } from './page/about-form/about-form.component';
     ModalCitedRefComponent,
     NetworkVisComponent,
     AboutFormComponent,
+    TermNewComponent,
+    ConceptNewComponent,
+    MenuComponent,
   ],
   imports: [
     BrowserModule,

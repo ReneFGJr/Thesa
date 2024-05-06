@@ -1,9 +1,6 @@
-  <mat-form-field appearance="fill" class="full" >
-    <mat-label>Search</mat-label>
-    <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
-    <mat-autocomplete #auto="matAutocomplete" style="display: none"></mat-autocomplete>
-  </mat-form-field>
-
+<label translate>Term search</label>
+<input data-bs-theme="dark" type="text" class="full form-control" matInput [formControl]="myControl">
+<br/>
 <div *ngIf="isEmpty"
   class="overflow-auto thema mb-5"
   style="max-width: 100%; max-height: {{max}}; height: {{max}}"

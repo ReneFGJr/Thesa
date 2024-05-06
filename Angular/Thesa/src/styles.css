@@ -1,6 +1,8 @@
 /* Thema */
 
-body,.thema, input {
+body,
+.thema,
+input {
   background-color: #000000;
   color: white;
 }
@@ -16,11 +18,9 @@ body,.thema, input {
   color: #bbb;
 }
 
-
-.text-remissive
-  {
-    color:#888
-  }
+.text-remissive {
+  color: #888;
+}
 
 .thesa_h1 {
   font-size: 1.4rem;
@@ -149,5 +149,34 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/************************* Barra de Rolagem */
+/* width */
+div::-webkit-scrollbar {
+  width: 20px;
+}
+
+/* Track */
+div::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+div::-webkit-scrollbar-thumb {
+  background: #212529;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+div::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

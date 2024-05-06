@@ -1,0 +1,44 @@
+<form [formGroup]="myForm" (ngSubmit)="submitForm()">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-8">
+        <Label translate>term_list_input</Label>
+        <textarea
+          data-bs-theme="dark"
+          formControlName="terms"
+          rows="10"
+          cols="40"
+          class="form-control full"
+        ></textarea>
+        <button
+          type="submit"
+          class="mt-2 btn btn-outline-secondary"
+          translate=""
+        >
+          Send
+        </button>
+      </div>
+      <div class="col-lg-6 col-4">
+        <Label translate class="fw-bold">language</Label>
+        <div *ngFor="let item of langs">
+          <input type="radio" formControlName="lang" value="{{ item.Code }}" />
+          {{ item.Language }}
+        </div>
+
+        <div class="mt-2" *ngIf="data">
+          <div *ngIf="data.status == '200'">
+            <span  class="fw-bold" translate>Terms</span> <span translate>Adds</span>
+            <li *ngFor="let item of data.terms">
+              {{ item }}
+            </li>
+          </div>
+        </div>
+
+        <br />
+      </div>
+    </div>
+    <div class="col-12">
+      {{ myForm.value | json }}
+    </div>
+  </div>
+</form>

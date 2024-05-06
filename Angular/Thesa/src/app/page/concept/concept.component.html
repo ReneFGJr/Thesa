@@ -73,7 +73,6 @@
       <div *ngIf="data.medias.video.length > 0">
         <app-media-video [video]="data.medias.video"></app-media-video>
       </div>
-      {{ data.medias | json }}
 
       <div *ngFor="let nota of data.notes">
         <span translate class="label_notes">{{ nota.p_name }}</span>

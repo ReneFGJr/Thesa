@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { DataSet, Network } from 'vis-network/standalone/esm/vis-network';
 
 @Component({
@@ -7,6 +7,8 @@ import { DataSet, Network } from 'vis-network/standalone/esm/vis-network';
   //template: '<div #visNetwork style="width: 600px; height: 400px;"></div>',
 })
 export class NetworkVisComponent {
+  @Input() public nodes:Array<any> | any
+  @Input() public edges:Array<any> | any
   @ViewChild('visNetwork', { static: true }) container!: ElementRef;
 
   networkInstance!: Network;

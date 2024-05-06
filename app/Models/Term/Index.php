@@ -48,6 +48,7 @@ class Index extends Model
                 ->where('term_name',$term)
                 ->where('term_lang', $lang)
                 ->first();
+
             if ($dt == [])
                 {
                     $dd['term_name'] = $term;
@@ -57,6 +58,48 @@ class Index extends Model
                     $id = $dt['id_term'];
                 }
             return $id;
+        }
+
+    function appendTerm()
+        {
+            $RSP = [];
+            $RSP['status'] = '200';
+            $Language = new \App\Models\Language\Index();
+            $TermsTh = new \App\Models\Term\TermsTh();
+
+            $th = get("th");
+            if ($th == '')
+                {
+                    $RSP['status'] = '500';
+                    $RSP['message'] = 'Thesaurus ID not informed';
+                    return $RSP;
+                }
+
+            $lang = $Language->getCode(get("lang"));
+            $langID = $lang['id_lg'];
+            $RSP['language'] = $lang['lg_code'];
+
+            $terms = get("terms");
+            $terms = troca($terms, chr(13), ';');
+            $terms = troca($terms, chr(10), ';');
+            $t = explode(';',$terms);
+
+            $terms = [];
+            foreach($t as $name)
+                {
+                    $name = trim($name);
+                    if ($name != '')
+                        {
+                            array_push($terms, $name);
+                            /* Registra */
+                            $id = $this->register($name, $langID);
+                            $TermsTh->register($id,$th);
+                        }
+
+                }
+            $RSP['terms'] = $terms;
+
+            return $RSP;
         }
 
     function le($id,$type='')

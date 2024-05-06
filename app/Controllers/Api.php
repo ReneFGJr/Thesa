@@ -26,6 +26,10 @@ class Api extends BaseController
         if ($arg1 == 'term') { $arg1 = 't'; }
         switch($arg1)
             {
+                case 'term_add':
+                    $Term = new \App\Models\Term\Index();
+                    $RSP = $Term->appendTerm();
+                    break;
                 case 'import':
                     $tools = new \App\Models\Tools\Import();
                     $RSP = $tools->import();

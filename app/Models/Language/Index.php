@@ -42,6 +42,15 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function getCode($n)
+        {
+            $dt = $this->where('lg_code',$n)
+            ->OrWhere('lg_language',$n)
+            ->OrWhere('lg_cod_short',$n)
+            ->first();
+            return $dt;
+        }
+
     function langagueCodeShort()
         {
             $dt = $this->findALl();
