@@ -53,14 +53,62 @@ class Broader extends Model
 
     function le_broader($id)
         {
-            $dt = $this->where('b_concept_narrow',$id)->findAll();
-           return $dt;
+            $prop = 'prefLabel';
+            $dt = $this
+                ->join('thesa_concept_term', 'b_concept_boader = ct_concept')
+                ->join('thesa_terms_th', 'b_concept_boader = term_th_concept')
+                ->join('thesa_terms', 'term_th_term = id_term')
+                ->join('language', 'id_lg = term_lang')
+                //->where('p_name', $prop)
+                ->where('b_concept_narrow', $id)
+                ->findAll();
+
+            $dd = [];
+            $di = [];
+            foreach($dt as $id=>$line)
+                {
+                    $idN = $line['b_concept_boader'];
+                    $da = [];
+                    if (!isset($di[$idN]))
+                        {
+                        $da['id'] = $idN;
+                        $da['Term'] = $line['term_name'];
+                        $da['Lang'] = $line['lg_code'];
+                        $da['Prop'] = $line['term_lang'];
+                        array_push($dd,$da);
+                        $di[$idN] = 1;
+                        }
+                    }
+           return $dd;
         }
 
     function le_narrow($id)
     {
-        $dt = $this->where('b_concept_narrow', $id)->findAll();
-        return $dt;
+        $prop = 'prefLabel';
+        $dt = $this
+            ->join('thesa_concept_term', 'b_concept_narrow = ct_concept')
+            ->join('thesa_terms_th', 'b_concept_narrow = term_th_concept')
+            ->join('thesa_terms', 'term_th_term = id_term')
+            ->join('language', 'id_lg = term_lang')
+            //->where('p_name', $prop)
+            ->where('b_concept_boader', $id)
+            ->findAll();
+
+        $dd = [];
+        $di = [];
+        foreach ($dt as $id => $line) {
+            $idN = $line['b_concept_narrow'];
+            $da = [];
+            if (!isset($di[$idN])) {
+                $da['id'] = $idN;
+                $da['Term'] = $line['term_name'];
+                $da['Lang'] = $line['lg_code'];
+                $da['Prop'] = $line['term_lang'];
+                array_push($dd, $da);
+                $di[$idN] = 1;
+            }
+        }
+        return $dd;
     }
 
     function broader($id,$edit=false)

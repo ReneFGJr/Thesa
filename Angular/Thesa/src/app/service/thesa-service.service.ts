@@ -36,6 +36,7 @@ export class ThesaServiceService {
   public api_post(type: string, dt: Array<any>) {
     let url = `${this.url}/${type}`;
     console.log(`Generic: ${url}`);
+
     var formData: any = new FormData();
 
     for (const key in dt) {
@@ -43,20 +44,20 @@ export class ThesaServiceService {
     }
 
     return this.HttpClient.post<Array<any>>(url, formData).pipe(
-      (res) => res,
-      (error) => error
+      map((res) => res),
+      catchError((error) => throwError(() => new Error('An error occurred')))
     );
   }
 
   public getId(id: number, type: string): Observable<Array<any>> {
     let url = `${this.url}/${type}/${id}`;
     console.log(`Buscador: ${url}`);
-    var formData: any = new FormData();
-    //formData.append('q', id);
 
-    return this.HttpClient.post<Array<any>>(url, formData).pipe(
-      (res) => res,
-      (error) => error
+    return this.HttpClient.get<Array<any>>(url).pipe(
+      map((res) => res),
+      catchError((error) =>
+        throwError(() => new Error('An error occurred while fetching data'))
+      )
     );
   }
 }

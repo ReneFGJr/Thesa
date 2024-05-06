@@ -1,0 +1,73 @@
+<!-- app.component.html -->
+<ngx-graph
+  class="chart-container"
+  [links]="links"
+  [nodes]="nodes"
+  [enableZoom]="false"
+  [autoZoom]="false"
+>
+  <!-- Template for nodes -->
+  <ng-template #nodeTemplate let-node>
+    <svg:g>
+      <!-- Add rx and ry to round the corners of the rectangles -->
+      <svg:rect
+        width="100"
+        height="25"
+        style="
+          fill: #ddefff;
+          stroke: #000;
+          stroke-width: 1px;
+          background-color: black;
+        "
+        rx="10"
+        ry="10"
+      ></svg:rect>
+      <svg:text
+        alignment-baseline="middle"
+        text-anchor="middle"
+        x="50"
+        y="12"
+        style="fill: black"
+      >
+        {{ node.label }}
+      </svg:text>
+    </svg:g>
+  </ng-template>
+  <!-- Template for links -->
+  <ng-template #linkTemplate let-link>
+    <svg:g>
+      <!-- Define the path with a unique id and set stroke color to grey -->
+      <svg:path
+        class="edge"
+        [attr.d]="link.line"
+        [attr.id]="link.id"
+        stroke="#808080"
+        stroke-width="2"
+      ></svg:path>
+      <!-- Place the label along the path using textPath -->
+      <svg:text>
+        <textPath
+          alignment-baseline="middle"
+          text-anchor="end"
+          [attr.href]="'#' + link.id"
+          startOffset="25%"
+          style="fill: #eee; text-align: center"
+        >
+          {{ link.label }}
+        </textPath>
+      </svg:text>
+    </svg:g>
+  </ng-template>
+</ngx-graph>
+
+<style>
+  .edge {
+    color: green;
+    background-color: red;
+  }
+  .chart-container {
+    display: block;
+    height: 800px; /* Altura do gráfico */
+    width: 800px; /* Largura do gráfico */
+  }
+</style>

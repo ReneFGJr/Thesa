@@ -4,6 +4,7 @@ import { ViewConceptComponent } from './page/view/view.component';
 import { ThesaMainComponent } from './page/main/main.component';
 import { ThSelectComponent } from './page/th-select/th-select.component';
 import { ThComponent } from './page/th/th.component';
+import { AboutFormComponent } from './page/about-form/about-form.component';
 
 const routes: Routes = [
   { path: '', component: ThesaMainComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 't/:id', component: ViewConceptComponent },
   { path: 'term/:id', component: ViewConceptComponent },
   { path: 'th/:id', component: ThComponent },
+  { path: 'about/edit' ,component: AboutFormComponent },
 ];
 
 @NgModule({

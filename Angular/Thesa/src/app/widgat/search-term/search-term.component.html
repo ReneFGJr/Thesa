@@ -1,10 +1,8 @@
-<form>
   <mat-form-field appearance="fill" class="full" >
     <mat-label>Search</mat-label>
     <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
     <mat-autocomplete #auto="matAutocomplete" style="display: none"></mat-autocomplete>
   </mat-form-field>
-</form>
 
 <div *ngIf="isEmpty"
   class="overflow-auto thema mb-5"

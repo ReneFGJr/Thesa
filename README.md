@@ -32,3 +32,17 @@ php spark migrate
 
 # Usuário padrão: admin
 # Senha padrão: admin
+
+
+npm install @swimlane/ngx-graph @angular/cdk
+npm install @types/d3-dispatch --save-dev
+npm i --save-dev @types/d3-dispatch
+npm i --save-dev @types/d3-timer
+npm install d3
+npm i --save-dev @types/d3
+npm install dagre d3
+
+------------------
+npm install vis-network
+npm install --save-dev @types/vis-network
+npm install vis-data

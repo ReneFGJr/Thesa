@@ -28,6 +28,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SearchTermComponent } from './widgat/search-term/search-term.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ModalCitedRefComponent } from './widgat/modal-cited-ref/modal-cited-ref.component';
+import { NgxGraphModule } from '@swimlane/ngx-graph';
+import { NetworkVisComponent } from './widgat/network-vis/network-vis.component';
+import { AboutFormComponent } from './page/about-form/about-form.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +53,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     VideoComponent,
     SearchComponent,
     SearchTermComponent,
+    ModalCitedRefComponent,
+    NetworkVisComponent,
+    AboutFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,6 +74,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatInputModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
+    NgxGraphModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent],

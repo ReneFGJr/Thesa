@@ -1,5 +1,13 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { SimpleChanges } from '@angular/core';
 import { ThesaServiceService } from 'src/app/service/thesa-service.service';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from '@angular/animations';
 
 @Component({
   selector: 'app-concept',
@@ -8,7 +16,9 @@ import { ThesaServiceService } from 'src/app/service/thesa-service.service';
 export class ConceptComponent {
   @Input() public th: number = 0;
   @Input() public idT: number = 0;
+  @Output() public IDEvent = new EventEmitter<number>();
   public data: Array<any> | any;
+  public isVisible: boolean = false;
 
   constructor(private thesaServiceService: ThesaServiceService) {}
 
@@ -19,6 +29,10 @@ export class ConceptComponent {
       console.log(res);
       this.data = res;
     });
+  }
+
+  hiddenDIV() {
+    this.isVisible = !this.isVisible;
   }
 
   copyToClipboard(val: string) {
@@ -33,6 +47,10 @@ export class ConceptComponent {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+  }
+
+  selectConcept(idT: number) {
+    this.IDEvent.emit(idT);
   }
 
   ngOnChanges(changes: SimpleChanges) {

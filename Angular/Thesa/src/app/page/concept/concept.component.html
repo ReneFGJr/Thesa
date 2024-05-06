@@ -14,21 +14,73 @@
       >
 
       <i class="bi bi-copy ms-2 link" (click)="copyToClipboard(data.uri)"></i>
-
     </div>
     <div class="col-lg-5 col-12">
+      <hr />
+
+      <!--------------------------------- prefLabel-->
+      <label *ngIf="data.prefLabel.length > 0" class="fw-bold" translate>prefLabel</label>
+      <ul class="unstyled" *ngIf="data.prefLabel">
+        <li *ngFor="let term of data.prefLabel">
+          {{ term.Term }} <sup>{{ term.Lang }}</sup>
+        </li>
+      </ul>
+
+      <!--------------------------------- altLabel-->
+      <label *ngIf="data.altLabel.length > 0" class="fw-bold" translate>altLabel</label>
+      <ul class="unstyled">
+        <li *ngFor="let term of data.altLabel">
+          {{ term.Term }} <sup>{{ term.Lang }}</sup>
+        </li>
+      </ul>
+
+      <!--------------------------------- PrefTerm-->
+      <label *ngIf="data.hiddenLabel.length > 0" class="fw-bold" translate>hiddenLabel
+        <i [ngClass]="{'bi bi-eye-slash-fill': isVisible,' bi bi-eye-fill': !isVisible}" class="ms-2 link" (click)="hiddenDIV()"></i>
+        </label
+      >
+      <div *ngIf="isVisible">
+        <ul class="unstyled">
+          <li *ngFor="let term of data.hiddenLabel">
+            {{ term.Term }} <sup>{{ term.Lang }}</sup>
+          </li>
+        </ul>
+      </div>
+      <br *ngIf="!isVisible"/>
+
+      <!--------------------------------- Broader-->
+      <label *ngIf="data.broader.length > 0" class="fw-bold" translate>broader</label>
+      <ul class="unstyled">
+        <li class="link" *ngFor="let term of data.broader" (click)="selectConcept(term.id)">
+          {{ term.Term }} <sup>{{ term.Lang }}</sup>
+        </li>
+      </ul>
+
+      <!--------------------------------- Narrow-->
+      <label *ngIf="data.narrow.length > 0" class="fw-bold" translate>narrow</label>
+      <ul class="unstyled">
+        <li class="link" *ngFor="let term of data.narrow" (click)="selectConcept(term.id)">
+          {{ term.Term }} <sup>{{ term.Lang }}</sup>
+        </li>
+      </ul>
+
+      <div>
+      <app-modal-cited-ref></app-modal-cited-ref>
+      </div>
+
     </div>
     <div class="col-lg-7 col-12">
       <div *ngIf="data.medias.video.length > 0">
         <app-media-video [video]="data.medias.video"></app-media-video>
       </div>
-      {{data.medias | json}}
+      {{ data.medias | json }}
 
       <div *ngFor="let nota of data.notes">
         <span translate class="label_notes">{{ nota.p_name }}</span>
         <p class="p_notes">{{ nota.nt_content }}</p>
         <hr />
       </div>
+      <app-network-vis></app-network-vis>
     </div>
   </div>
 </div>

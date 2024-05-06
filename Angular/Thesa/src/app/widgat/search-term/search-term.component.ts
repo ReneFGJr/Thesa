@@ -14,26 +14,31 @@ export class SearchTermComponent {
   //options: string[] = ['One', 'Two', 'Three'];
   myControl = new FormControl();
   filteredOptions: Observable<any[]> | any;
-  isEmpty:boolean = false
-  max: string = '350px'
+  isEmpty: boolean = false;
+  max: string = '350px';
 
   ngOnInit() {
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map((value) => this.filter(value || '')),
-      tap(filtered => this.isEmpty = filtered.length === 0)
+      tap((filtered) => (this.isEmpty = filtered.length === 0))
     );
   }
 
   private filter(value: string): any[] {
     const filterValue = value.toLowerCase();
-    let rsp = this.options.filter(
-      (option) => option.Term.toLowerCase().includes(filterValue),
+    let rsp = this.options.filter((option) =>
+      option.Term.toLowerCase().includes(filterValue)
     );
-    return rsp
+    return rsp;
   }
 
   viewTerm(ID: number = 0) {
     this.IDEvent.emit(ID);
   }
+
+  search()
+    {
+
+    }
 }

@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label translate for="th_name">th_name:</label>
+          <input
+            class="form-control full"
+            type="text"
+            id="th_name"
+            formControlName="th_name"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label translate for="th_achronic">th_achronic:</label>
+          <input
+            class="form-control full"
+            type="text"
+            id="th_achronic"
+            formControlName="th_achronic"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label translate for="th_description">th_description:</label>
+          <textarea
+            class="form-control full"
+            id="th_description"
+            formControlName="th_description"
+          ></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label translate for="email">th_type:</label>
+          <select
+            id="th_type"
+            formControlName="th_type"
+            class="form-control full"
+          >
+            <option value="1">Glossário</option>
+            <option value="1">Tesauro</option>
+            <option value="1">Tesauro Semântico</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-outline-primary">Salvar</button>
+      </form>
+    </div>
+  </div>
+</div>
