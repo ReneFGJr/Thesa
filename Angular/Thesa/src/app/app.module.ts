@@ -35,6 +35,7 @@ import { AboutFormComponent } from './page/about-form/about-form.component';
 import { TermNewComponent } from './page/admin/term-new/term-new.component';
 import { ConceptNewComponent } from './page/admin/concept-new/concept-new.component';
 import { MenuComponent } from './page/admin/menu/menu.component';
+import { TermListComponent } from './page/admin/term-list/term-list.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { MenuComponent } from './page/admin/menu/menu.component';
     TermNewComponent,
     ConceptNewComponent,
     MenuComponent,
+    TermListComponent,
   ],
   imports: [
     BrowserModule,

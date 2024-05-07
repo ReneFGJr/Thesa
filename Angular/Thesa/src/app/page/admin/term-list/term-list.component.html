@@ -1,0 +1,15 @@
+<div *ngIf="data">
+<h2>Select itens</h2>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div *ngFor="let item of data.Terms">
+      <input (change)="checkBox(this,item.id)" type="checkbox" id="T{{ item.id }}" />
+      {{ item.term }}
+    </div>
+
+    <div class="mb-4"></div>
+
+    <button type="submit" translate>Create concept</button>
+  </form>
+
+  {{ items | json }}
+</div>

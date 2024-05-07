@@ -32,5 +32,6 @@
   "term_list_input": "Informe a lista de termos (um por linha)",
   "language": "Idioma",
   "terms": "Termos",
-  "Add": "Adicionado(s)"
+  "Add": "Adicionado(s)",
+  "Create concept":"Criar conceito"
 }

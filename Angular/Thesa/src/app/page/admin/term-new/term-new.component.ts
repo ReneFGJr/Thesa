@@ -5,8 +5,7 @@ import { LocalStorageService } from 'src/app/service/local-storage.service';
 
 @Component({
   selector: 'app-term-new',
-  templateUrl: './term-new.component.html',
-  styleUrls: ['./term-new.component.css'],
+  templateUrl: './term-new.component.html'
 })
 export class TermNewComponent {
   public form: boolean = true;
@@ -32,8 +31,6 @@ export class TermNewComponent {
       lang: ['', Validators.required],
       th: [this.th, Validators.required],
     });
-
-
   }
 
   submitForm() {

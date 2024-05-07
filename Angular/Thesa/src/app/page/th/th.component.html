@@ -9,7 +9,7 @@
     <div class="col-12 col-lg-9">
         <!-- Sobre -->
         <app-about *ngIf="(idT == 0) && (action === '')" [th]="id" [data]="thesa"></app-about>
-        <app-about *ngIf="(idT == 0) && (action === 'listTerm')" [th]="id" [data]="thesa"></app-about>
+        <app-term-list *ngIf="(idT == 0) && (action === 'listTerm')" [th]="id" [data]="thesa"></app-term-list>
         <app-term-new *ngIf="(idT == 0) && (action === 'newTerm')" [th]="id" [data]="thesa"></app-term-new>
         <!-- Concept Show -->
         <app-concept *ngIf="(idT > 0)" [th]="id" [idT]="idT" (IDEvent)="updateTerm($event)"></app-concept>

@@ -42,6 +42,11 @@ class ThProprity extends Model
 
     var $quali = 0;
 
+    function getClass($class)
+        {
+            return $this->class($class);
+        }
+
     function class($term)
         {
             if (strpos($term,':'))

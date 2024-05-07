@@ -42,6 +42,59 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function createConcept($id,$th)
+        {
+            $RSP = [];
+            return $RSP;
+            $TermsTh = new \App\Models\Term\TermsTh();
+            $RDFclass = new \App\Models\RDF\ThProprity();
+
+            $classID = $RDFclass->getClass('prefLabel');
+            $RSP['class'] = $classID;
+            return $RSP;
+
+            $dt = $TermsTh
+                    ->where('term_th_thesa',$th)
+                    ->where('term_th_term', $id)
+                    ->first();
+            if ($dt['term_th_concept'] == 0)
+                {
+                    $prop = $RDFclass->getClass('prefLabel');
+                    $RSP['prop'] = $prop;
+                    return $RSP;
+
+                    $dc = [];
+                    $dc['c_th'] = $th;
+                    $dc['c_ativo'] = 1;
+                    $dc['c_agency'] = '';
+                    $idC = $this->set($dc)->insert();
+
+                    /*********** PrefLabel */
+
+
+                    $dd = [];
+                    $dd['term_th_concept'] = $idC;
+                    $TermsTh->set($dd)->where('term_th_id',$dt['term_th_id '])->update();
+                }
+
+            pre($dt);
+        }
+
+    function createConceptAPI($dt)
+        {
+            $RSP['result'] = '';
+            $itens = $dt['it'];
+            $th = $dt['th'];
+            $RSP = [];
+            $RSP['terms'] = explode(',',$itens);
+
+            foreach($RSP['terms'] as $id=>$item)
+                {
+                    $RSP['result'] .= $this->createConcept($item,$th).'<br>';
+                }
+            return $RSP;
+        }
+
     function findAgent($agent,$th)
         {
             $this->where('c_agency',$agent);
