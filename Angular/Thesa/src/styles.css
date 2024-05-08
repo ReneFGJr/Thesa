@@ -180,3 +180,9 @@ div::-webkit-scrollbar-thumb {
 div::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+
+.superbig
+  {
+    font-size: 2rem;
+  }
