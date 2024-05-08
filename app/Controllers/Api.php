@@ -26,6 +26,10 @@ class Api extends BaseController
         if ($arg1 == 'term') { $arg1 = 't'; }
         switch($arg1)
             {
+                case 'tools':
+                    $Tools = new \App\Models\Tools\Index();
+                    $RSP = $Tools->index($arg2,$arg3);
+                    break;
                 case 'concept_create_term':
                     $Term = new \App\Models\Concept\Index();
                     $RSP = $Term->createConceptAPI($_POST);
