@@ -40,7 +40,28 @@ class Wordcount extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    public $SW = [];
+
     //https://wordcount.com/pt/
+
+    function stop_words()
+        {
+            $dd = [];
+            $dd['pt'] = ['ln','de','e','a','da','do','para','o','que','-','as','com','dos','um',
+                    'uma','na','das','os','no','por','ao','pela','como','sua','meio',
+                    'mais','aos','pelo','em','p','v','se','n','i','nao','sao','seus',
+                    'ou','tem','nas','for','sido','j','seu','s','outra','outras','qual',
+                    'esse','este','isso','aquilo','m','b','l','ate','g','f','novo',
+                    'entre','alem','todos','essa','esta','mas','ja','fig','vez','estao',
+                    'assim','essas','estas','esses','estes', 'quanto', 'dessas', 'dessa',
+                    'destas', 'desta', 'quais', 'disso', 'disto','ele','ela','nosso','vosso',
+                    'amplo','deste','vem','sem','pelos','nova','novo','novos','novas', 'possa',
+                    'h','r','ainda', 'dentro', 'tais','x', 'outro', 'aqui', 'aquelas', 'desde',
+                    'pois','c', 'apenas','so', 'cujo', 'tambem'
+                    ];
+                    $this->SW = $dd['pt'];
+            return $dd;
+        }
 
     function process($txt)
     {
@@ -49,8 +70,124 @@ class Wordcount extends Model
         $txt = $this->phrase($txt);
         $txtA = $this->line($txt);
         $txtB = $this->BibliographicLegend($txtA);
-        pre($txt);
+        $txtC = $this->convertTXT($txtB);
+
+        $RSP = [];
+        $RSP['wordsTotal'] = str_word_count($txtC);
+
+        /* */
+        // Extrai as palavras do texto
+        $palavras = str_word_count(strtolower(ascii($txtC)), 1);
+
+        // Conta a frequência de cada palavra
+        $frequencias = array_count_values($palavras);
+
+        // Ordena o array pela frequência em ordem decrescente
+        arsort($frequencias);
+
+        // Exibe as top 10 palavras mais frequentes
+        $top_palavras = array_slice($frequencias, 0, 1000, true);
+        /* StopWords */
+        $W = [];
+        $SW = [];
+        $sp = $this->stop_words();
+        foreach($top_palavras as $word=>$total)
+            {
+                foreach($sp['pt'] as $wsp)
+                    {
+                        if ($word == $wsp)
+                            {
+                                $dd = ['word'=>$word,'total'=>$total];
+                                array_push($SW,$dd);
+                                unset($top_palavras[$word]);
+                            }
+                    }
+            }
+        $top_palavras = array_slice($top_palavras, 0, 100, true);
+        foreach($top_palavras as $word=>$total)
+            {
+                $dd = ['word' => $word, 'total' => $total];
+                array_push($W, $dd);
+            }
+        $RSP['words'] = $W;
+        $RSP['stopWords'] = $SW;
+        $txtD = ascii($txtC);
+        $RSP['bigramas'] =$this->extractNGrams($txtD,2);
+        $RSP['trigrama'] = $this->extractNGrams($txtD, 3);
+        $RSP['quadrigrama'] = $this->extractNGrams($txtD, 4);
+
+        return $RSP;
     }
+
+    function remove_stopwords($txt)
+        {
+            $SW = $this->SW;
+            foreach($SW as $word)
+                {
+                    $WB = $word;
+                    $WBI = substr($txt,0,strlen($WB)+1);
+                    $WBE = substr($txt, 0, (-1) * (strlen($WB)));
+                    //echo '['.$WBI.'] - '.$WB.'-['.$word.']<br>';
+
+                    if ($WBI == ($WB.' '))
+                        {
+                            $txt = str_replace($WB.' ','',$txt);
+                        }
+                    if ($WBE == (' '.$WB)) {
+                        $txt = str_replace(' '.$WB, '', $txt);
+                    }
+                }
+            return $txt;
+        }
+
+    function extractNGrams($text, $n = 2)
+    {
+        // Limpa o texto e divide em palavras
+        $words = preg_split('/\s+/', preg_replace('/[^\w\s]/', '', strtolower($text)));
+
+        $ngrams = array();
+        $len = count($words);
+
+        $GRAM = [];
+
+        // Extrai os n-gramas
+        for ($i = 0; $i <= $len - $n; $i++) {
+            $ngram = array_slice($words, $i, $n);
+            $term = implode(' ', $ngram);
+
+            if (isset($GRAM[$term]))
+                {
+                    $GRAM[$term] = $GRAM[$term] + 1;
+                } else {
+                    $GRAM[$term] = 1;
+                }
+        }
+        // Ordena o array pela frequência em ordem decrescente
+        arsort($GRAM);
+        foreach($GRAM as $term=>$total)
+            {
+                $xterm = $term;
+                $term = $this->remove_stopwords($term);
+                if ($term == $xterm)
+                    {
+                        echo $term . '=' . $total . '<br>';
+                        exit;
+                    }
+            }
+        $GRAM = array_slice($GRAM, 0, 100, true);
+        pre($GRAM);
+        return $ngrams;
+    }
+
+    function convertTXT($ln)
+        {
+            $txt = '';
+            foreach($ln as $id=>$linha)
+                {
+                    $txt .= $linha.cr();
+                }
+            return $txt;
+        }
 
     ############## Remove duplicates
     function BibliographicLegend($ln)
@@ -82,10 +219,7 @@ class Wordcount extends Model
                         unset($ln[$r]);
                     }
                 }
-
-                echo "========";
-                //pre($erase,false);
-                pre($ln);
+            return $ln;
         }
 
     function removeNumber($t)

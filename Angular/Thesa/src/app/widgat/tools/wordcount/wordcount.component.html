@@ -21,7 +21,7 @@
         >Send</button>
       </div>
       <div class="col-4 border border-second rounded">
-        <div class="container-full">
+        <div class="container-full" *ngIf="data">
           <div class="row">
             <div
               class="col-3 border-end border-secondary border-bottom p-2 text-center"
@@ -33,9 +33,9 @@
             <div
               class="col-3 border-end border-secondary border-bottom p-2 text-center"
             >
-              <span class="superbig fw-bold">{{ words }}</span>
+              <span class="superbig fw-bold">{{ data.stopWords.length }}</span>
               <br />
-              <span translate>Words</span>
+              <span translate>StopWords</span>
             </div>
 
             <div
@@ -54,6 +54,18 @@
               <span translate>Words</span>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="col-3 col-lg-3" *ngIf="data">
+        <h4 translate>Words</h4>
+        <div *ngFor="let item of data.words">
+            {{item.word}} ({{item.total}})
+        </div>
+      </div>
+      <div class="col-3 col-lg-3" *ngIf="data">
+        <h4 translate>Stopwords</h4>
+        <div *ngFor="let item of data.stopWords">
+            {{item.word}} ({{item.total}})
         </div>
       </div>
     </div>
