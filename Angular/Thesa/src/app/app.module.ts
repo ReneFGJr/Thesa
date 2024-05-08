@@ -36,6 +36,7 @@ import { TermNewComponent } from './page/admin/term-new/term-new.component';
 import { ConceptNewComponent } from './page/admin/concept-new/concept-new.component';
 import { MenuComponent } from './page/admin/menu/menu.component';
 import { TermListComponent } from './page/admin/term-list/term-list.component';
+import { WordcountComponent } from './widgat/tools/wordcount/wordcount.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { TermListComponent } from './page/admin/term-list/term-list.component';
     ConceptNewComponent,
     MenuComponent,
     TermListComponent,
+    WordcountComponent,
   ],
   imports: [
     BrowserModule,
