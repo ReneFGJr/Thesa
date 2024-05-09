@@ -45,27 +45,33 @@ class Wordcount extends Model
     //https://wordcount.com/pt/
 
     function stop_words()
-        {
-            $dd = [];
-            $dd['pt'] = ['ln','de','e','a','da','do','para','o','que','-','as','com','dos','um',
-                    'uma','na','das','os','no','por','ao','pela','como','sua','meio',
-                    'mais','aos','pelo','em','p','v','se','n','i','nao','sao','seus',
-                    'ou','tem','nas','for','sido','j','seu','s','outra','outras','qual',
-                    'esse','este','isso','aquilo','m','b','l','ate','g','f','novo',
-                    'entre','alem','todos','essa','esta','mas','ja','fig','vez','estao',
-                    'assim','essas','estas','esses','estes', 'quanto', 'dessas', 'dessa',
-                    'destas', 'desta', 'quais', 'disso', 'disto','ele','ela','nosso','vosso',
-                    'amplo','deste','vem','sem','pelos','nova','novo','novos','novas', 'possa',
-                    'h','r','ainda', 'dentro', 'tais','x', 'outro', 'aqui', 'aquelas', 'desde',
-                    'pois','c', 'apenas','so', 'cujo', 'tambem'
-                    ];
-                    $this->SW = $dd['pt'];
-            return $dd;
-        }
+    {
+        $dd = [];
+        $dd['pt'] = [
+            'ln', 'de', 'e', 'a', 'da', 'do', 'para', 'o', 'que', '-', 'as', 'com', 'dos', 'um',
+            'uma', 'na', 'das', 'os', 'no', 'por', 'ao', 'pela', 'como', 'sua', 'meio',
+            'mais', 'aos', 'pelo', 'em', 'p', 'v', 'se', 'n', 'i', 'nao', 'sao', 'seus',
+            'ou', 'tem', 'nas', 'for', 'sido', 'j', 'seu', 's', 'outra', 'outras', 'qual',
+            'esse', 'este', 'isso', 'aquilo', 'm', 'b', 'l', 'ate', 'g', 'f', 'novo',
+            'entre', 'alem', 'todos', 'essa', 'esta', 'mas', 'ja', 'fig', 'vez', 'estao',
+            'assim', 'essas', 'estas', 'esses', 'estes', 'quanto', 'dessas', 'dessa',
+            'destas', 'desta', 'quais', 'disso', 'disto', 'ele', 'ela', 'nosso', 'vosso',
+            'amplo', 'deste', 'vem', 'sem', 'pelos', 'nova', 'novo', 'novos', 'novas', 'possa',
+            'h', 'r', 'ainda', 'dentro', 'tais', 'x', 'outro', 'aqui', 'aquelas', 'desde',
+            'pois', 'c', 'apenas', 'so', 'cujo', 'tambem', 'foram', 'desse', 'desses','pode',
+            'foi', 'quando','p','em','seja','suas','outros','neste','sobre','atraves',
+            'ser','sendo',
+            'd',
+
+            'in', 'the', 'for', 'to', 'an', 'this' . 'these','and','of'
+        ];
+        $this->SW = $dd['pt'];
+        return $dd;
+    }
 
     function process($txt)
     {
-        $txt = $this->sample02();
+        # $txt = $this->sample02();
         # Identifica fim de frases
         $txt = $this->phrase($txt);
         $txtA = $this->line($txt);
@@ -91,57 +97,60 @@ class Wordcount extends Model
         $W = [];
         $SW = [];
         $sp = $this->stop_words();
-        foreach($top_palavras as $word=>$total)
-            {
-                foreach($sp['pt'] as $wsp)
-                    {
-                        if ($word == $wsp)
-                            {
-                                $dd = ['word'=>$word,'total'=>$total];
-                                array_push($SW,$dd);
-                                unset($top_palavras[$word]);
-                            }
-                    }
+        foreach ($top_palavras as $word => $total) {
+            foreach ($sp['pt'] as $wsp) {
+                if ($word == $wsp) {
+                    $dd = ['word' => $word, 'total' => $total];
+                    array_push($SW, $dd);
+                    unset($top_palavras[$word]);
+                }
             }
+        }
         $top_palavras = array_slice($top_palavras, 0, 100, true);
-        foreach($top_palavras as $word=>$total)
-            {
-                $dd = ['word' => $word, 'total' => $total];
-                array_push($W, $dd);
-            }
+        foreach ($top_palavras as $word => $total) {
+            $dd = ['word' => $word, 'total' => $total];
+            array_push($W, $dd);
+        }
         $RSP['words'] = $W;
         $RSP['stopWords'] = $SW;
         $txtD = ascii($txtC);
-        $RSP['bigramas'] =$this->extractNGrams($txtD,2);
+        $RSP['bigramas'] = $this->extractNGrams($txtD, 2);
         $RSP['trigrama'] = $this->extractNGrams($txtD, 3);
         $RSP['quadrigrama'] = $this->extractNGrams($txtD, 4);
+        $RSP['pentagrama'] = $this->extractNGrams($txtD, 5);
+        $RSP['hexagrama'] = $this->extractNGrams($txtD, 6);
 
         return $RSP;
     }
 
     function remove_stopwords($txt)
-        {
-            $SW = $this->SW;
-            foreach($SW as $word)
-                {
-                    $WB = $word;
-                    $WBI = substr($txt,0,strlen($WB)+1);
-                    $WBE = substr($txt, 0, (-1) * (strlen($WB)));
-                    //echo '['.$WBI.'] - '.$WB.'-['.$word.']<br>';
+    {
+        $SW = $this->SW;
+        foreach ($SW as $word) {
+            $WB = $word;
+            $WBI = substr($txt, 0, strlen($WB) + 1);
+            $WBE = substr($txt, (-1) * (strlen($WB) + 1), strlen($WB) + 1);
+            //echo '[' . $WBE . '] - ' . $WB . '-[' . $word . ']<br>';
 
-                    if ($WBI == ($WB.' '))
-                        {
-                            $txt = str_replace($WB.' ','',$txt);
-                        }
-                    if ($WBE == (' '.$WB)) {
-                        $txt = str_replace(' '.$WB, '', $txt);
-                    }
-                }
-            return $txt;
+            if ($WBI == ($WB . ' ')) {
+                $txt = str_replace($WB . ' ', '', $txt);
+            }
+
+            if ($WBE == (' ' . $WB)) {
+                $txt = str_replace(' ' . $WB, '', $txt);
+            }
+
+            if (strpos($txt, ' ' . $WB . ' ') > 0) {
+                $txt = str_replace(' ' . $WB . ' ', '', $txt);
+            }
         }
+        return $txt;
+    }
 
     function extractNGrams($text, $n = 2)
     {
+        $text = str_replace('[ln]', ' ', $text);
+        $text = $this->removeNumber($text);
         // Limpa o texto e divide em palavras
         $words = preg_split('/\s+/', preg_replace('/[^\w\s]/', '', strtolower($text)));
 
@@ -155,79 +164,81 @@ class Wordcount extends Model
             $ngram = array_slice($words, $i, $n);
             $term = implode(' ', $ngram);
 
-            if (isset($GRAM[$term]))
-                {
-                    $GRAM[$term] = $GRAM[$term] + 1;
-                } else {
-                    $GRAM[$term] = 1;
-                }
+            if (isset($GRAM[$term])) {
+                $GRAM[$term] = $GRAM[$term] + 1;
+            } else {
+                $GRAM[$term] = 1;
+            }
         }
         // Ordena o array pela frequência em ordem decrescente
         arsort($GRAM);
-        foreach($GRAM as $term=>$total)
-            {
-                $xterm = $term;
+        foreach ($GRAM as $term => $total) {
+            $xterm = $term;
+            if ($total > 1) {
                 $term = $this->remove_stopwords($term);
-                if ($term == $xterm)
-                    {
-                        echo $term . '=' . $total . '<br>';
-                        exit;
-                    }
+
+                if ($term != $xterm) {
+                    unset($GRAM[$xterm]);
+                }
+            } else {
+                unset($GRAM[$xterm]);
             }
+        }
         $GRAM = array_slice($GRAM, 0, 100, true);
-        pre($GRAM);
-        return $ngrams;
+
+        $RSP = [];
+        foreach ($GRAM as $term => $total) {
+            $dd = [];
+            $dd['word'] = $term;
+            $dd['total'] = $total;
+            array_push($RSP,$dd);
+        }
+        return $RSP;
     }
 
     function convertTXT($ln)
-        {
-            $txt = '';
-            foreach($ln as $id=>$linha)
-                {
-                    $txt .= $linha.cr();
-                }
-            return $txt;
+    {
+        $txt = '';
+        foreach ($ln as $id => $linha) {
+            $txt .= $linha . cr();
         }
+        return $txt;
+    }
 
     ############## Remove duplicates
     function BibliographicLegend($ln)
-        {
-            $lns = [];
-            $erase = [];
-            for($r=0;$r < count($ln);$r++)
-                {
-                    $lorg = trim($ln[$r]);
-                    $l = $lorg;
-                    if ($l != '')
-                    {
-                    $l = $this->removeNumber($l);
-                    $hash = md5($l);
-                    if (isset($lns[$hash]))
-                        {
-                            if (strlen($l) > 5)
-                                {
-                                    $erase[$lorg] = 1;
-                                    $ln[$r] = '[ELIMINADO]';
-                                    unset($ln[$r]);
-                                }
-
-                        } else {
-                            $lns[$hash] = 1;
-                        }
-                    } else {
+    {
+        $lns = [];
+        $erase = [];
+        for ($r = 0; $r < count($ln); $r++) {
+            $lorg = trim($ln[$r]);
+            $l = $lorg;
+            if ($l != '') {
+                $l = $this->removeNumber($l);
+                $hash = md5($l);
+                if (isset($lns[$hash])) {
+                    if (strlen($l) > 5) {
+                        $erase[$lorg] = 1;
                         $ln[$r] = '[ELIMINADO]';
                         unset($ln[$r]);
                     }
+                } else {
+                    $lns[$hash] = 1;
                 }
-            return $ln;
+            } else {
+                $ln[$r] = '[ELIMINADO]';
+                unset($ln[$r]);
+            }
         }
+        return $ln;
+    }
 
     function removeNumber($t)
-        {
-            $ch = ['0','1','2','3','4','5','6','7','8','9'];
-            $t = str_replace($ch,'',$t);
-            return $t;
-        }
+    {
+        $ch = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        $t = str_replace($ch, '', $t);
+        return $t;
+    }
 
     ############## Convert Line
     function line($txt)
@@ -247,7 +258,7 @@ class Wordcount extends Model
                 /* Primeiro caracter número */
                 //(($firstChar >= '0') and ($firstChar <= '9'))
                 /* Termina com ponto e virgula */
-                or (substr($ln[$iact], -1) ==';')
+                or (substr($ln[$iact], -1) == ';')
             ) {
                 $ln[$iact] .= '[ln]' . $ln[$r];
                 $ln[$r] = '';

@@ -41,18 +41,43 @@
             <div
               class="col-3 border-end border-secondary border-bottom p-2 text-center"
             >
-              <span class="superbig fw-bold">{{ words }}</span>
+              <span class="superbig fw-bold">{{ data.bigramas.length }}</span>
               <br />
-              <span translate>Words</span>
+              <span translate>Bigrama</span>
             </div>
 
             <div
               class="col-3 border-end border-secondary border-bottom p-2 text-center"
             >
-              <span class="superbig fw-bold">{{ words }}</span>
+              <span class="superbig fw-bold">{{ data.trigrama.length }}</span>
               <br />
-              <span translate>Words</span>
+              <span translate>Trigrama</span>
             </div>
+
+            <div
+              class="col-3 border-end border-secondary border-bottom p-2 text-center"
+            >
+              <span class="superbig fw-bold">{{ data.quadrigrama.length }}</span>
+              <br />
+              <span translate>Quadrigrama</span>
+            </div>
+
+            <div
+              class="col-3 border-end border-secondary border-bottom p-2 text-center"
+            >
+              <span class="superbig fw-bold">{{ data.pentagrama.length }}</span>
+              <br />
+              <span translate>Pentagrama</span>
+            </div>
+
+            <div
+              class="col-3 border-end border-secondary border-bottom p-2 text-center"
+            >
+              <span class="superbig fw-bold">{{ data.hexagrama.length }}</span>
+              <br />
+              <span translate>Hexagrama</span>
+            </div>
+
           </div>
         </div>
       </div>
@@ -65,6 +90,40 @@
       <div class="col-3 col-lg-3" *ngIf="data">
         <h4 translate>Stopwords</h4>
         <div *ngFor="let item of data.stopWords">
+            {{item.word}} ({{item.total}})
+        </div>
+      </div>
+      <!-- BIGRAMA-->
+      <div class="col-3 col-lg-3" *ngIf="data">
+        <h4 translate>Bigrama</h4>
+        <div *ngFor="let item of data.bigramas">
+            {{item.word}} ({{item.total}})
+        </div>
+      </div>
+
+      <!-- TRIGRAMA-->
+      <div class="col-3 col-lg-3" *ngIf="data">
+        <h4 translate>Trigrama</h4>
+        <div *ngFor="let item of data.trigrama">
+            {{item.word}} ({{item.total}})
+        </div>
+
+
+      <!-- Quadrigrama-->
+        <h4 translate>Quadrigrama</h4>
+        <div *ngFor="let item of data.quadrigrama">
+            {{item.word}} ({{item.total}})
+        </div>
+
+      <!-- Quadrigrama-->
+        <h4 translate><P></P>Pentagrama</h4>
+        <div *ngFor="let item of data.pentagrama">
+            {{item.word}} ({{item.total}})
+        </div>
+
+      <!-- Quadrigrama-->
+        <h4 translate><P></P>Hexagrama</h4>
+        <div *ngFor="let item of data.hexagrama">
             {{item.word}} ({{item.total}})
         </div>
       </div>
