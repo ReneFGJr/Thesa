@@ -60,8 +60,8 @@ class Wordcount extends Model
             'h', 'r', 'ainda', 'dentro', 'tais', 'x', 'outro', 'aqui', 'aquelas', 'desde',
             'pois', 'c', 'apenas', 'so', 'cujo', 'tambem', 'foram', 'desse', 'desses','pode',
             'foi', 'quando','p','em','seja','suas','outros','neste','sobre','atraves',
-            'ser','sendo',
-            'd',
+            'ser','sendo','todo','todos','todas',
+            'd','apos','antes',
 
             'in', 'the', 'for', 'to', 'an', 'this' . 'these','and','of'
         ];
