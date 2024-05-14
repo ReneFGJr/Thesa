@@ -38,6 +38,10 @@ import { MenuComponent } from './page/admin/menu/menu.component';
 import { TermListComponent } from './page/admin/term-list/term-list.component';
 import { WordcountComponent } from './widgat/tools/wordcount/WordcountComponent';
 
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -92,7 +96,3 @@ import { WordcountComponent } from './widgat/tools/wordcount/WordcountComponent'
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {}
-
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http);
-}
