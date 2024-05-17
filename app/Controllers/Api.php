@@ -32,7 +32,9 @@ class Api extends BaseController
                     break;
                 case 'concept_create_term':
                     $Term = new \App\Models\Concept\Index();
-                    $RSP = $Term->createConceptAPI($_POST);
+                    $DT = $_GET;
+                    $DT = array_merge($DT,$_POST);
+                    $RSP = $Term->createConceptAPI($DT);
                     break;
                 case 'term_list':
                     $Term = new \App\Models\Term\Index();

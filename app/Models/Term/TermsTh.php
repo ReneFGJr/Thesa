@@ -15,7 +15,7 @@ class TermsTh extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'term_th_thesa', 'term_th_term', 'term_th_concept'
+        'term_th_thesa', 'term_th_term', 'term_th_concept', 'term_th_id'
     ];
 
     // Dates

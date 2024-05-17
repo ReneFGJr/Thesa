@@ -45,36 +45,43 @@ class Index extends Model
     function createConcept($id,$th)
         {
             $RSP = [];
-            return $RSP;
             $TermsTh = new \App\Models\Term\TermsTh();
             $RDFclass = new \App\Models\RDF\ThProprity();
 
             $classID = $RDFclass->getClass('prefLabel');
             $RSP['class'] = $classID;
-            return $RSP;
 
             $dt = $TermsTh
                     ->where('term_th_thesa',$th)
                     ->where('term_th_term', $id)
                     ->first();
+
             if ($dt['term_th_concept'] == 0)
                 {
                     $prop = $RDFclass->getClass('prefLabel');
                     $RSP['prop'] = $prop;
-                    return $RSP;
+                    $RSP['term'] = $id;
 
                     $dc = [];
                     $dc['c_th'] = $th;
                     $dc['c_ativo'] = 1;
-                    $dc['c_agency'] = '';
-                    $idC = $this->set($dc)->insert();
+                    $dc['c_agency'] = 'th'.$th.':'.$id;
+
+                    $dd = $this->where('c_agency',$dc['c_agency'])->first();
+                    if ($dd == [])
+                        {
+                            $idC = $this->set($dc)->insert();
+                        } else {
+                            $idC = $dd['id_c'];
+                        }
+
+                    $RSP['concept'] = $idC;
 
                     /*********** PrefLabel */
-
-
                     $dd = [];
                     $dd['term_th_concept'] = $idC;
-                    $TermsTh->set($dd)->where('term_th_id',$dt['term_th_id '])->update();
+                    $TermsTh->set($dd)->where('term_th_id',$dt['term_th_id'])->update();
+                    echo "OK";
                 }
 
             pre($dt);
@@ -83,6 +90,14 @@ class Index extends Model
     function createConceptAPI($dt)
         {
             $RSP['result'] = '';
+            if (!isset($dt['it']))
+                {
+                    $RSP['message'] = 'Termos não foram informados';
+                    $RSP['status'] = '500';
+                    return $RSP;
+                } else {
+                    ### OK
+                }
             $itens = $dt['it'];
             $th = $dt['th'];
             $RSP = [];
@@ -90,8 +105,13 @@ class Index extends Model
 
             foreach($RSP['terms'] as $id=>$item)
                 {
-                    $RSP['result'] .= $this->createConcept($item,$th).'<br>';
+
+                    foreach($RSP['terms'] as $id=>$item)
+                        {
+                            $RSP['result'] .= $this->createConcept($item, $th) . '<br>';
+                        }
                 }
+            pre($RSP);
             return $RSP;
         }
 
