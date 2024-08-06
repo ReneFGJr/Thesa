@@ -102,7 +102,7 @@ function nbr_author($xa,$xp)
             }
 
         /****************************************** PREPOSICOES **************/
-        $er2 = array('DE','DA','DO','DOS');
+        $er2 = array('DE','DA','DO','DOS','E','EM','DAS');
         $NM2 = $NM;
         for($nq=0;$nq < count($NM2);$nq++)
             {
@@ -168,13 +168,31 @@ function nbr_author($xa,$xp)
                     /* Sobrenome e Nome CURTO*/
                     case '2':
                         $TOT = count($NM2);
+                        $nt = 1;
                         foreach ($NM2 as $id=>$xname)
                             {
                                 $Fname = $xname;
-                                $name .= substr($xname, 0, 1) . '. ';
+
+                                if ($nt < $TOT)
+                                    {
+                                        $name .= substr($xname, 0, 1) . '. ';
+                                    }
+                                $nt++;
+
                             }
                         $Fname .= ', ';
                         $name = $Fname.$name;
+                        break;
+
+                    /* Sobrenome e Nome CURTO sem ponto*/
+                    case '3':
+                        $TOT = count($NM2);
+                        foreach ($NM2 as $id => $xname) {
+                            $Fname = $xname;
+                            $name .= substr($xname, 0, 1);
+                        }
+                        $Fname .= ' ';
+                        $name = $Fname . $name;
                         break;
 
                     /* Nome e Sobrenome */

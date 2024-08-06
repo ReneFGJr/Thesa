@@ -42,6 +42,21 @@ class Collaborators extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function authorizedSave($th, $user)
+        {
+            $dt = $this
+                ->join('thesa_users_perfil', 'id_pf = th_us_perfil')
+                ->where('th_us_user',$user)
+                ->where('th_us_th', $th)
+                ->where('substr(pf_nivel,1,1)','1')
+                ->first();
+            if ($dt == [])
+                {
+                    return 0;
+                }
+            return 1;
+        }
+
     function management($th)
         {
             $sx = '';

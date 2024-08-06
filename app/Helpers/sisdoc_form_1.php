@@ -62,6 +62,35 @@ function bt_cancel($url)
     return $sx;
 }
 
+function validaCPF($cpf) {
+
+    // Extrai somente os números
+    $cpf = preg_replace( '/[^0-9]/is', '', $cpf );
+
+    // Verifica se foi informado todos os digitos corretamente
+    if (strlen($cpf) != 11) {
+        return false;
+    }
+
+    // Verifica se foi informada uma sequência de digitos repetidos. Ex: 111.111.111-11
+    if (preg_match('/(\d)\1{10}/', $cpf)) {
+        return false;
+    }
+
+    // Faz o calculo para validar o CPF
+    for ($t = 9; $t < 11; $t++) {
+        for ($d = 0, $c = 0; $c < $t; $c++) {
+            $d += $cpf[$c] * (($t + 1) - $c);
+        }
+        $d = ((10 * $d) % 11) % 10;
+        if ($cpf[$c] != $d) {
+            return false;
+        }
+    }
+    return true;
+
+}
+
 function bt_submit($t = 'save')
 {
     $sx = '<input type="submit" value="' . $t . '" class="btn btn-outline-primary">';
@@ -76,6 +105,8 @@ function form($th)
     $fl = $th->allowedFields;
     $tp = $th->typeFields;
 
+    $th->id = sonumero($th->id);
+    if ($th->id == '') { $th->id = 0; }
     $id = round($th->id);
 
     /* Sem PATH */
@@ -442,15 +473,15 @@ function form_fields($typ, $fld, $vlr, $th = array(), $obg = 0, $pre = '')
             $op = array(1, 0);
             $opt = substr($typ, strpos($typ, ':') + 1, strlen($typ));
             $opc = explode(':', $opt);
-            $sg = '<select id="' . $fld . '" name="' . $fld . '" value="' . $vlr . '" class="form-control-lg mb-3 ' . $class_mandatory . '">' . cr();
+            $sg = '<select id="' . $fld . '" name="' . $fld . '" class="form-control-lg mb-3 ' . $class_mandatory . '">' . cr();
             $sg .= '<option value="">:: options ::</option>' . cr();
             for ($r = 0; $r < count($opc); $r++) {
                 $sel = '';
                 $opx = explode('&', $opc[$r]);
-                if ($opx[0] == $vlr) {
+                if (trim($opx[0]) == trim($vlr)) {
                     $sel = 'selected';
                 }
-                $sg .= '<option class="' . $class_mandatory . ' value="' . $opx[0] . '" ' . $sel . '>' . $opx[1] . '</option>' . cr();
+                $sg .= '<option class="' . $class_mandatory . '" value="' . trim($opx[0]) . '" ' . $sel . '>' . $opx[1] . '</option>' . cr();
             }
             $sg .= '</select>' . cr();
             $sx .= $sg;

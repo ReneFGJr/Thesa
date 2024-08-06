@@ -8,8 +8,8 @@ import { catchError, map } from 'rxjs/operators';
 })
 export class ThesaServiceService {
   http: any;
-  //private url: string = 'https://ufrgs.br/thesa/api/';
-  private url: string = 'http://thesa/api';
+  private url: string = 'https://ufrgs.br/thesa/api/';
+  //private url: string = 'http://thesa/api';
 
   httpOptions = {
     headers: new HttpHeaders({

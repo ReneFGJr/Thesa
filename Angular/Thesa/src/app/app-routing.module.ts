@@ -7,6 +7,7 @@ import { ThComponent } from './page/th/th.component';
 import { AboutFormComponent } from './page/about-form/about-form.component';
 import { TermNewComponent } from './page/admin/term-new/term-new.component';
 import { WordcountComponent } from './widgat/tools/wordcount/WordcountComponent';
+import { HomeDocummentComponent } from './documment/home/home.component';
 
 const routes: Routes = [
   { path: '', component: ThesaMainComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'th/:id', component: ThComponent },
   { path: 'about/edit', component: AboutFormComponent },
   { path: 'tools/wordcount', component: WordcountComponent },
+  { path: 'docs', component: HomeDocummentComponent },
 ];
 
 @NgModule({

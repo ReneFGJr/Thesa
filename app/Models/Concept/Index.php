@@ -100,6 +100,7 @@ class Index extends Model
                 }
             $itens = $dt['it'];
             $th = $dt['th'];
+            $APIKEY = get("apikey");
             $RSP = [];
             $RSP['terms'] = explode(',',$itens);
 

@@ -18,9 +18,24 @@ define('BG_COLOR', 'bg-primary');
 
 class Api extends BaseController
 {
+    public function apiError()
+        {
+            $RSP['status'] = '500';
+            $RSP['messagem'] = 'APIKEY Error';
+            return $RSP;
+
+        }
     public function index($arg1='',$arg2='',$arg3='')
     {
         $RSP = [];
+
+        $user = 0;
+        $apikey = get("APIKEY").get("apikey");
+        if ($apikey != '')
+            {
+                $Socials = new \App\Models\Socials();
+                $user = $Socials->validaAPIKEY($apikey);
+            }
 
         if ($arg1 == 'conecpt') { $arg1 = 'c'; }
         if ($arg1 == 'term') { $arg1 = 't'; }
@@ -41,8 +56,13 @@ class Api extends BaseController
                     $RSP = $Term->listTerm($arg2);
                     break;
                 case 'term_add':
-                    $Term = new \App\Models\Term\Index();
-                    $RSP = $Term->appendTerm();
+                    if ($user == 0)
+                        {
+                            $RSP = $this->apiError();
+                        } else {
+                            $Term = new \App\Models\Term\Index();
+                            $RSP = $Term->appendTerm();
+                        }
                     break;
                 case 'import':
                     $tools = new \App\Models\Tools\Import();
@@ -76,6 +96,7 @@ class Api extends BaseController
                 default:
                     $RSP['status'] = '400';
                     $RSP['message'] = 'Verb not informed';
+                    $RSP['args'] = [$arg1,$arg2,$arg3];
             }
         $RSP['time'] = date("Y-m-dTH:i:s");
         header('Access-Control-Allow-Origin: *');

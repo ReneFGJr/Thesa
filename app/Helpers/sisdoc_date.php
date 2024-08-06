@@ -22,6 +22,17 @@ function mes_extenso($xmes)
             }
     }
 
+function mes_abreviado($xmes)
+{
+    $xmes = round($xmes);
+    $mes = array('jan.', 'fev.', 'mar.', 'abr.', 'maio', 'jun.', 'jul.', 'ago.', 'set.', 'out.', 'nov.', 'dez.');
+    if (($xmes > 0) and ($xmes < 13)) {
+        return $mes[$xmes - 1];
+    } else {
+        return 'ERRO MES:' . $xmes;
+    }
+}
+
 function mes_dia($data)
     {
         $dia = sonumero($data);

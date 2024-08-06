@@ -82,14 +82,55 @@ class Index extends Model
         $Language = new \App\Models\Language\Index();
         $TermsTh = new \App\Models\Term\TermsTh();
 
+        $apikey = get("APIKEY");
+
+        $Socials = new \App\Models\Socials();
+        if ($apikey == '') {
+            $RSP['status'] = '500';
+            $RSP['message'] = 'APIKEY not informed';
+            return $RSP;
+        }
+
+        /*********************** Thesauro */
         $th = get("th");
         if ($th == '') {
             $RSP['status'] = '500';
             $RSP['message'] = 'Thesaurus ID not informed';
             return $RSP;
         }
+        $Thesa = new \App\Models\Thesa\Index();
+        $dtTh = $Thesa->le($th);
+
+        if (! isset($dtTh['id_th'])) {
+            $RSP['status'] = '500';
+            $RSP['message'] = 'Thesaurus ID invalid';
+            return $RSP;
+        }
+
+        /********************* Acesso Autorizado */
+        $user = $Socials->validaAPIKEY($apikey);
+        if ($user <= 0)
+            {
+                $RSP['status'] = '500';
+                $RSP['message'] = 'Usuer invalid';
+                return $RSP;
+            }
+
+        $Collaborators = new \App\Models\Thesa\Collaborators();
+        $Auth = $Collaborators->authorizedSave($th,$user);
+        if ($Auth <= 0) {
+            $RSP['status'] = '500';
+            $RSP['message'] = 'Usuer not authorized to save';
+            return $RSP;
+        }
 
         $lang = $Language->getCode(get("lang"));
+        if (!isset($lang['id_lg']))
+            {
+            $RSP['status'] = '500';
+            $RSP['message'] = 'Language not informed (lang)';
+            return $RSP;
+            }
         $langID = $lang['id_lg'];
         $RSP['language'] = $lang['lg_code'];
 
@@ -98,14 +139,20 @@ class Index extends Model
         $terms = troca($terms, chr(10), ';');
         $t = explode(';', $terms);
 
+        if ($terms == '')
+            {
+                $RSP['status'] = '500';
+                $RSP['message'] = 'Terms not informed (terms)';
+                return $RSP;
+            }
         $terms = [];
         foreach ($t as $name) {
             $name = trim($name);
             if ($name != '') {
-                array_push($terms, $name);
                 /* Registra */
                 $id = $this->register($name, $langID);
                 $TermsTh->register($id, $th);
+                array_push($terms, [$id,$name]);
             }
         }
         $RSP['terms'] = $terms;

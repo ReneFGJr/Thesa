@@ -30,6 +30,16 @@ function clog($msg)
     echo $tela;
 }
 
+function sn($v)
+    {
+        if ($v == 0)
+            {
+                return lang("brapci.NO");
+            } else {
+                return lang("brapci.YES");
+            }
+    }
+
 function msg($var)
 {
     return lang($var);

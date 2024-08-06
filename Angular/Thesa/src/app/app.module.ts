@@ -37,6 +37,7 @@ import { ConceptNewComponent } from './page/admin/concept-new/concept-new.compon
 import { MenuComponent } from './page/admin/menu/menu.component';
 import { TermListComponent } from './page/admin/term-list/term-list.component';
 import { WordcountComponent } from './widgat/tools/wordcount/WordcountComponent';
+import { HomeDocummentComponent } from './documment/home/home.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -70,6 +71,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MenuComponent,
     TermListComponent,
     WordcountComponent,
+    HomeDocummentComponent,
   ],
   imports: [
     BrowserModule,
@@ -89,7 +91,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatAutocompleteModule,
     ReactiveFormsModule,
     NgxGraphModule,
-
   ],
   providers: [],
   bootstrap: [AppComponent],

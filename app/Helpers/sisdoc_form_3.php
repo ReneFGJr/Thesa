@@ -31,7 +31,7 @@ function textClipboard($id, $class = '')
     return ($sx);
 }
 
-function read_link($url, $read = 'CURL',$force=false)
+function read_link($url, $read = 'CURL',$force=false, $headers=[])
 {
     $cached = false;
     dircheck('../.tmp/');
@@ -70,8 +70,13 @@ function read_link($url, $read = 'CURL',$force=false)
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($curl, CURLOPT_HEADER, false);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            if ($headers != [])
+                {
+                    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+                } else {
+                    curl_setopt($curl, CURLOPT_HEADER, false);
+                }
+
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
             $data = curl_exec($curl);
@@ -83,6 +88,11 @@ function read_link($url, $read = 'CURL',$force=false)
                 } else {
                     echo "ERRO CURL: " . $erro;
                     echo '<br>'.$url;
+                    $txt = file_get_contents($url);
+                    if (strlen($txt) > 100)
+                        {
+                            $data = $txt;
+                        }
                 }
 
             return ($data);
@@ -110,7 +120,6 @@ function menu($menu)
 
 function check_email($email)
 {
-    $emailArray = explode("@", $email);
     $emailArray = explode("@", $email);
     if (count($emailArray) != 2) {
         return false;
@@ -214,3 +223,14 @@ function df($N, $pre = '', $pos = '')
     }
     return '';
 }
+
+function  ground($v)
+    {
+        $v = sonumero($v);
+        if ($v == '')
+            {
+                return 0;
+            } else {
+                return (int)$v;
+            }
+    }

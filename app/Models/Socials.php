@@ -10,7 +10,7 @@ use function App\Models\AI\Authority\check;
 
 class Socials extends Model
 {
-	protected $DBGroup              = 'default';
+	var $DBGroup              		= 'default';
 	var $table                		= 'users';
 	var $primaryKey          		 = 'id_us';
 	protected $useAutoIncrement     = true;
@@ -23,7 +23,7 @@ class Socials extends Model
 		'id_us', 'us_nome', 'us_email', 'us_affiliation',
 		'us_image', 'us_genero', 'us_verificado',
 		'us_login', 'us_password', 'us_autenticador',
-		'us_oauth2', 'us_lastaccess'
+		'us_oauth2', 'us_lastaccess', 'us_apikey_active', 'us_apikey', 'us_recover'
 	];
 
 	var $typeFields        = [
@@ -61,6 +61,81 @@ class Socials extends Model
 	var $path;
 	var $path_back;
 	var $id = 0;
+	var $error = 0;
+	var $site = 'https://brapci.inf.br/#/';
+
+	function generateApiKey($id)
+	{
+		$length = 32;
+		// Generate random bytes
+		$randomBytes = random_bytes($length / 2);
+		// Convert the bytes to a hexadecimal string
+		$apiKey = bin2hex($randomBytes);
+		$data = date("Y-m-d H:i:s");
+		$qu = "update users set us_apikey = '$apiKey', us_apikey_active = 1, us_apikey_date = '$data' where id_us = $id";
+		$this->db->query($qu);
+		return $apiKey;
+	}
+
+	function validaAPIKEY($apiKey)
+		{
+			$builder = $this->db->table('users');
+			$builder->where('us_apikey',$apiKey);
+			$query = $builder->get();
+			foreach ($query->getResult() as $row) {
+				return $row->id_us;
+			}
+			return 0;
+		}
+
+	function le($id=0)
+		{
+			$dt = $this
+			->join('thesa_users', 'th_us_perfil = id_pe')
+			->join('users', 'th_us_user = id_us')
+			->where('id_us',$id)
+			->first();
+			return $dt;
+		}
+
+	function api_key($id)
+		{
+			$sx = '';
+			$dt = $this->le($id);
+			if (isset($dt['us_apikey']))
+				{
+					$sx .= '<tt>APIKEY: '.$dt['us_apikey'].'</tt>';
+				} else {
+					$sx .= '<tt>APIKEY: ';
+					$sx .= $this->generateApiKey($id);
+					$sx .= '</tt>';
+				}
+			return $sx;
+
+		}
+
+	function createAPIKEY_user($id)
+		{
+			$dt = $this->le($id);
+			pre($dt);
+		}
+
+	function chagePassword($apikey,$pass)
+		{
+			$dt = $this->where('us_recover',$apikey)->first();
+			$password = md5($pass);
+			if ($dt != [])
+				{
+					$this
+					->set('us_password', $password)
+					->set('us_recover', '')
+					->where('id_us', $dt['id_us'])
+					->update();
+					return True;
+				} else {
+					return false;
+				}
+		}
 
 	function user()
 	{
@@ -383,7 +458,7 @@ class Socials extends Model
 	function getID($t = '')
 	{
 		if (isset($_SESSION['id'])) {
-			$id = round($_SESSION['id']);
+			$id = ground($_SESSION['id']);
 		} else {
 			$id = 0;
 		}
@@ -560,6 +635,7 @@ class Socials extends Model
 
 	function setPerfilDb()
 	{
+		$this->DBGroup = 'default';
 		$this->table = "users_perfil";
 		$this->primaryKey = "id_pe";
 		$this->allowedFields = ['id_pe', 'pe_abrev', 'pe_descricao', 'pe_nivel'];
@@ -708,7 +784,7 @@ class Socials extends Model
 	function perfil($id = 0)
 	{
 		$sx = '';
-		$id = round($id);
+		$id = ground($id);
 		if ($id == 0) {
 			$id = $this->getID();
 		}
@@ -720,6 +796,7 @@ class Socials extends Model
 
 	function perfil_show($id = 0)
 	{
+		$this->setPerfilDb();
 		$sx = '';
 		if ($id > 0) {
 			$dt = $this->Find($id);
@@ -953,6 +1030,7 @@ class Socials extends Model
 						<h6 class="text-uppercase text-body text-xs font-weight-bolder">' . lang('social.my_settings') . '</h6>
 						<ul class="list-group">';
 		$sx .= '<li class="list-group-item border-0 px-0">' . lang('social.my_settings_info') . '</li>';
+		$sx .= $this->api_key($id);
 		$sx .= $this->change_password($id);
 		$sx .= '
 						</ul>
@@ -1023,6 +1101,10 @@ class Socials extends Model
 
 	function perfil_show_header($dt)
 	{
+		if (!isset($dt['id_us']))
+			{
+				return "perfil_show_header - void";
+			}
 		$sx = '
 			<div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
 			<div class="row gx-4">
@@ -1089,6 +1171,75 @@ class Socials extends Model
 		return $sx;
 	}
 
+	function validGroups($ID)
+		{
+			$sql = "select * from users_group
+							LEFT JOIN users_group_members ON id_gr = grm_group
+							LEFT JOIN users ON grm_user = id_us
+							where grm_user = " . $ID . "
+							order by gr_name, us_nome";
+			$db = $this->db->query($sql);
+			$dt = $db->getResult();
+			$perfil = '';
+			foreach($dt as $id=>$line)
+				{
+					$perfil .= $line->gr_hash;
+				}
+			return $perfil;
+		}
+
+	function validToken()
+		{
+			$RSP = [];
+			$token = get("token");
+			if ($token != '') {
+				$dt = $this->where('us_apikey', $token)->First();
+				if ($dt != '')
+					{
+						$RSP['status'] = '200';
+						$RSP['user'] = $dt['us_nome'];
+						$RSP['ID'] = $dt['id_us'];
+						$RSP['email'] = $dt['us_email'];
+						$RSP['message'] = 'Success';
+						$RSP['perfil'] = $this->validGroups($RSP['ID']);
+					} else {
+						$RSP['status'] = '200';
+						$RSP['message'] = 'APIKEY is invalid!';
+					}
+			} else {
+				$RSP['status'] = '500';
+				$RSP['message'] = 'Token is empty';
+			}
+			return $RSP;
+		}
+
+	function token()
+		{
+			$sx = '';
+			$token = get("token");
+
+			if ($token != '')
+				{
+					$dt = $this->where('us_apikey',$token)->FindAll();
+					if ($dt != '')
+						{
+							$_SESSION['id'] = $dt[0]['id_us'];
+							$_SESSION['user'] = $dt[0]['us_nome'];
+							$_SESSION['email'] = $dt[0]['us_email'];
+							$_SESSION['apikey'] = $dt[0]['us_apikey'];
+							$_SESSION['access'] = substr(md5('#ADMIN'), 6, 6);
+							$_SESSION['check'] = substr($_SESSION['id'] . $_SESSION['id'], 0, 10);
+							$sx .= metarefresh('/',0);
+						}
+				}
+
+			$sx .= form_open();
+			$sx .= form_password('token',$token,'full');
+			$sx .= form_submit('action','send');
+			$sx .= form_close();
+			return $sx;
+		}
+
 	function signin()
 	{
 		$sx = '';
@@ -1097,10 +1248,21 @@ class Socials extends Model
 		$dt = $this->user_exists($user);
 
 		if (isset($dt[0])) {
+
 			if ($dt[0]['us_password'] == md5($pwd)) {
+				if(($dt[0]['us_apikey'] == '') or ($dt[0]['us_apikey'] == null))
+					{
+						$apikey = md5($dt[0]['us_password'] . $dt[0]['us_login']);
+						$dq = [];
+						$dq['us_apikey'] = $apikey;
+						$dq['us_apikey_active'] = 1;
+						$this->set($dq)->where('id_us',$dt[0]['id_us'])->update();
+						$dt[0]['us_apikey'] = $apikey;
+					}
 				$_SESSION['id'] = $dt[0]['id_us'];
 				$_SESSION['user'] = $dt[0]['us_nome'];
 				$_SESSION['email'] = $dt[0]['us_email'];
+				$_SESSION['apikey'] = $dt[0]['us_apikey'];
 				$_SESSION['access'] = substr(md5('#ADMIN'), 6, 6);
 				$_SESSION['check'] = substr($_SESSION['id'] . $_SESSION['id'], 0, 10);
 
@@ -1110,6 +1272,8 @@ class Socials extends Model
 
 				/* Atualiza último acesso */
 				$id = $dt[0]['id_us'];
+				$token = $dt[0]['us_password'];
+
 				$data = array('us_lastaccess'=>date("Y-m-d H:i:s"));
 				$this
 					->set($data)
@@ -1126,27 +1290,35 @@ class Socials extends Model
 		return $sx;
 	}
 
+	function getRecoverKey($email)
+		{
+			$key =  md5(date("Ymd") . $email);
+			return $key;
+		}
+
+
 	function forgout()
 	{
 		$email = get("email");
 		$dt = $this->where('us_email', $email)->findAll();
 
 		if (count($dt) == 0) {
-			$sx = '<h2>' . lang('social.email_not_found') . '</h2>';
-			$sx .= '<span class="psw" onclick="showForgotPassword()">Voltar</span>';
-			echo $sx;
+			$sx = lang('social.email_not_found');
+			return $sx;
 			exit;
+		} else {
+			$user = $dt[0];
+			$email = $user['us_email'];
+			$key = $this->getRecoverKey($email);
+			$dd['us_recover'] = $key;
+			$this->set($dd)->where('id_us',$user['id_us'])->update();
 		}
-		$sx = '<h2>' . lang('social.email_send_your_account') . '</h2>';
+		$sx = '<b>' . lang('social.email_send_your_account') . '</b><br>';
 		$sx .= '<span class="small">' . lang('social.forgout_info') . '</span>';
-		$sx .= '<span class="psw" onclick="showLogin()()">' . lang('social.return_login') . '</span>';
 
-		$user = $dt[0];
-		$email = $user['us_email'];
 
-		$key =  md5(date("YmdHis") . $email);
 		$_SESSION['forgout'] = $key;
-		$link = PATH . '/social/forgout/' . $user['id_us'] . '?key=' . $key;
+		$link = $this->site .'social/pass/' . $key;
 		$link_html = '<a href="' . $link . '">' . lang('social.forgout_email_link') . '</a>';
 
 		/*********************************/
@@ -1177,11 +1349,31 @@ class Socials extends Model
 		return $sx;
 	}
 
+	function validRecover($key)
+	{
+		if ($key != '') {
+			$cp = 'us_nome as fullname, id_us as ID, us_email as email, us_recover as apikey';
+			$dt = $this->select($cp)->where('us_recover', $key)->first();
+			if ($dt == []) {
+				$dt['status'] = '500';
+				$dt['messagem'] = 'API Inválida';
+			} else {
+				$key = $this->getRecoverKey($dt['email']);
+				$dt['status'] = '200';
+			}
+		} else {
+			$dt['status'] = '500';
+			$dt['messagem'] = 'API não informada';
+		}
+		return $dt;
+	}
+
 	function forgout_form($d1 = '', $d2 = '')
 	{
 		$sx = '';
 		if (!isset($_SESSION['forgout'])) {
 			$sx = '<h2>' . lang('social.link_expired') . '</h2>';
+			$sx .= bsmessage('Abra o link no mesmo navegador da solicitação do e-mail', 3);
 			return $sx;
 		}
 
@@ -1191,7 +1383,7 @@ class Socials extends Model
 
 		if ($keys != $keyf) {
 			$sx = '<h2>' . lang('social.link_expired') . '</h2>';
-			$sx .= bsmessage('Abra o link no mesmo navegador da solicitação do e-mail',3);
+			$sx .= bsmessage('Abra o link no mesmo navegador da solicitação do e-mail', 3);
 			return $sx;
 		}
 
@@ -1268,6 +1460,7 @@ class Socials extends Model
 		if (!check_email($user)) {
 			$sx .= '<h2>' . lang('social.email_invalid') . '<h2>';
 			$sx .= '<span class="singin" onclick="showLogin()">' . lang('social.return') . '</span>';
+			$this->error = 510;
 			return $sx;
 		}
 
@@ -1281,12 +1474,11 @@ class Socials extends Model
 			$sx .= '<span class="singin" onclick="showLogin()">' . lang('social.return') . '</span>';
 		} else {
 			$sx .= '<h2>' . lang('social.user_already') . '<h2>';
-			$sx .= '<span class="singin" onclick="showLogin()">' . lang('social.return') . '</span>';
-		}
+			$sx .= '<span class="singin" onclick="showLogin()">' . lang('social.return') . '</span>';		}
 		return $sx;
 	}
 
-	function user_add($user, $name, $inst)
+	function user_add($user='', $name='', $inst='')
 	{
 		$pw1 = substr(md5($user), 0, 6);
 		$data = [
