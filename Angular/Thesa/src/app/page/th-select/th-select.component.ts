@@ -23,7 +23,7 @@ export class ThSelectComponent {
   }
 
   ngOnInit() {
-    this.thesaServiceService.getId(0, 'thopen').subscribe(
+    this.thesaServiceService.api_post('thopen',[]).subscribe(
       (res) => {
         this.thesa = res;
       },
