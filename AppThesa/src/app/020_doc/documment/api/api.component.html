@@ -1,0 +1,47 @@
+<div class="doc-container">
+  <aside class="doc-menu">
+    <ul>
+      <li *ngFor="let section of sections"
+          [class.active]="section.id === selectedSection"
+          (click)="selectSection(section.id)">
+        {{ section.title }}
+      </li>
+    </ul>
+  </aside>
+
+  <section class="doc-content">
+    <ng-container [ngSwitch]="selectedSection">
+      <div *ngSwitchCase="'intro'">
+        <h2>Introdução</h2>
+        <p>Bem-vindo à API do nosso sistema. Esta documentação apresenta os principais recursos.</p>
+      </div>
+
+      <div *ngSwitchCase="'auth'">
+        <h2>Autenticação</h2>
+        <p>Use um token JWT para autenticar suas requisições.</p>
+      </div>
+
+      <div *ngSwitchCase="'endpoints'">
+        <h2>Endpoints</h2>
+        <ul>
+          <li>GET /users</li>
+          <li>POST /login</li>
+          <li>DELETE /users/:id</li>
+        </ul>
+      </div>
+
+      <div *ngSwitchCase="'examples'">
+        <h2>Exemplos de Uso</h2>
+        <pre>
+curl -X GET https://api.meusistema.com/users \
+  -H "Authorization: Bearer seu_token_aqui"
+        </pre>
+      </div>
+
+      <div *ngSwitchCase="'errors'">
+        <h2>Tratamento de Erros</h2>
+        <p>Erros seguem o formato padrão HTTP com mensagens descritivas.</p>
+      </div>
+    </ng-container>
+  </section>
+</div>
