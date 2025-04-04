@@ -46,43 +46,134 @@ curl -X GET https://api.meusistema.com/users \
       <div *ngSwitchCase="'api'" class="fade-in">
         <h2>Uso das API</h2>
         <table class="table table-bordered">
+            <tr>
+            <th colspan="3" class="text-center bg-dark text-white">API abertas</th>
+            </tr>
+
           <thead>
             <tr>
               <th width="20%">Endpoint</th>
-              <th width="10%">Método</th>
-              <th width="70%">Descrição</th>
+              <th width="5%" class="text-center">Método</th>
+              <th width="75%">Descrição</th>
             </tr>
           </thead>
+
           <tbody>
             <tr>
               <td><a href="{{url}}/thopen" target="_blank">/api/thopen</a></td>
-              <td>GET</td>
+              <td class="text-center">GET</td>
               <td>Lista todos os tesauros publicos.</td>
             </tr>
             <tr>
               <td><a href="{{url}}/th/:th" target="_blank">/api/th/:th</a></td>
-              <td>GET</td>
+              <td class="text-center">GET</td>
               <td>Dados detalhados de um tesauro.
               <ul><li>:th - Número (ID) do tesauros (Thesa) </li></ul></td>
             </tr>
 
             <tr>
               <td><a href="{{url}}/terms/:th" target="_blank">/api/terms/:th</a></td>
-              <td>GET</td>
+              <td class="text-center">GET</td>
               <td>Conceitos do tesauro.
               <ul>
               <li>:th - Número (ID) do tesauros (Thesa) </li>
               </ul></td>
             </tr>
 
+            <tr>
+              <td><a href="{{url}}/t/:idT" target="_blank">/api/t/:idT</a></td>
+              <td class="text-center">GET</td>
+              <td>Termo dentro dos tesauros.
+              <ul>
+              <li>:idT - Número (ID) do termo</li>
+              </ul></td>
+            </tr>
+
+            <tr>
+              <td><a href="{{url}}/c/:idC" target="_blank">/api/c/:idC</a></td>
+              <td class="text-center">GET</td>
+              <td>Conceitos do tesauro.
+              <ul>
+              <li>:idC - Número (ID) do conceito</li>
+              </ul></td>
+            </tr>
+
+            <!-- API com token -->
+            <tr>
+            <th colspan="3" class="text-center bg-dark text-white">API de manutenção do tesauro</th>
+            </tr>
+
+            <tr>
+              <td><a href="{{url}}/term_add" target="_blank">/api/term_add</a></td>
+              <td class="text-center">POST</td>
+              <td>
+                <ul>
+                  <li>:apikey - API key do usuário</li>
+                </ul>
+              </td>
+            </tr>
+
+            <tr>
+              <td><a href="{{url}}/concept_create_term" target="_blank">/api/concept_create_term</a></td>
+              <td class="text-center">POST</td>
+              <td>
+                <ul>
+                  <li>:apikey - API key do usuário</li>
+                </ul>
+              </td>
+            </tr>
+
+            <tr>
+              <td><a href="{{url}}/term_list" target="_blank">/api/term_list</a></td>
+              <td class="text-center">POST</td>
+              <td>
+                <ul>
+                  <li>:apikey - API key do usuário</li>
+                </ul>
+              </td>
+            </tr>
+
+            <tr>
+              <td><a href="{{url}}/tools" target="_blank">/api/tools</a></td>
+              <td class="text-center">POST</td>
+              <td>
+                <ul>
+                  <li>:apikey - API key do usuário</li>
+                </ul>
+              </td>
+            </tr>
+
+            <tr>
+              <td><a href="{{url}}/import" target="_blank">/api/import</a></td>
+              <td class="text-center">POST</td>
+              <td>
+                <ul>
+                  <li>:apikey - API key do usuário</li>
+                </ul>
+              </td>
+            </tr>
+
+
+
+
+
+
+
+
             <!-- Estatistica API -->
             <tr>
-            <th colspan="3">API estatíticas</th>
+            <th colspan="3" class="text-center bg-dark text-white">API estatíticas</th>
+            </tr>
+
+            <tr>
+              <td><a href="{{url}}/status" target="_blank">/api/status</a></td>
+              <td class="text-center">GET</td>
+              <td>Saude do sistema.</td>
             </tr>
 
             <tr>
               <td><a href="{{url}}/resume" target="_blank">/api/resume</a></td>
-              <td>GET</td>
+              <td class="text-center">GET</td>
               <td>Dados resumidos de todos os tesauros.</td>
             </tr>
           </tbody>
