@@ -1,10 +1,19 @@
+<!-- Campo de busca -->
+<input
+  type="text"
+  class="form-control mb-2"
+  placeholder="Buscar termo..."
+  [(ngModel)]="filterText"
+/>
+
 <select
   size="20"
   class="form-control term-select"
 >
   <option
-    *ngFor="let term of terms.terms"
+    *ngFor="let term of filteredTerms()"
     [ngValue]="term.Concept"
+    (click)="onSelectTerm(term.Concept)"
   >
     {{ term.Term }}
   </option>

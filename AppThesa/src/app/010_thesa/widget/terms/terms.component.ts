@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
 import { ActivatedRoute } from '@angular/router';
@@ -10,7 +10,10 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class TermsComponent {
   @Input() thesa: number = 0;
+  @Output() termChange = new EventEmitter<any>();
   terms: any;
+  filterText: string = '';
+  selectedTerm: any = null;
 
   constructor(
     private serviceThesa: ServiceThesaService,
@@ -28,8 +31,17 @@ export class TermsComponent {
     );
   }
 
+  filteredTerms(): any[] {
+    if (!this.terms?.terms) return [];
+
+    return this.terms.terms.filter((term: any) =>
+      term.Term.toLowerCase().includes(this.filterText.toLowerCase())
+    );
+  }
+
   onSelectTerm(term: any) {
     console.log('Selecionado:', term);
     // faça algo com o termo selecionado...
+    this.termChange.emit(term);
   }
 }
