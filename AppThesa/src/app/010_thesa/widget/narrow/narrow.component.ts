@@ -6,5 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrl: './narrow.component.scss'
 })
 export class NarrowComponent {
- @Input() term: Array<any> | any;
+ @Input() terms: Array<any> | any;
 }

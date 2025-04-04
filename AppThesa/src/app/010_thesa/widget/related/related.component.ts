@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-related',
@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrl: './related.component.scss'
 })
 export class RelatedComponent {
-
+ @Input() terms: Array<any> | any;
 }

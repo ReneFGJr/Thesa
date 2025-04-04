@@ -6,6 +6,6 @@ import { Component, Input } from '@angular/core';
   styleUrl: './broader.component.scss'
 })
 export class BroaderComponent {
-  @Input() term: Array<any> | any;
+  @Input() terms: Array<any> | any;
 
 }
