@@ -1,0 +1,11 @@
+<select
+  size="20"
+  class="form-control term-select"
+>
+  <option
+    *ngFor="let term of terms.terms"
+    [ngValue]="term.Concept"
+  >
+    {{ term.Term }}
+  </option>
+</select>

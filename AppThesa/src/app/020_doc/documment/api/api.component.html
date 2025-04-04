@@ -60,10 +60,19 @@ curl -X GET https://api.meusistema.com/users \
               <td>Lista todos os tesauros publicos.</td>
             </tr>
             <tr>
-              <td><a href="{{url}}/th/:id" target="_blank">/api/th/:id</a></td>
+              <td><a href="{{url}}/th/:th" target="_blank">/api/th/:th</a></td>
               <td>GET</td>
               <td>Dados detalhados de um tesauro.
-              <ul><li>:id - Número (ID) do tesauros (Thesa) </li></ul></td>
+              <ul><li>:th - Número (ID) do tesauros (Thesa) </li></ul></td>
+            </tr>
+
+            <tr>
+              <td><a href="{{url}}/terms/:th" target="_blank">/api/terms/:th</a></td>
+              <td>GET</td>
+              <td>Conceitos do tesauro.
+              <ul>
+              <li>:th - Número (ID) do tesauros (Thesa) </li>
+              </ul></td>
             </tr>
 
             <!-- Estatistica API -->

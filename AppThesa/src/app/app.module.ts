@@ -19,6 +19,11 @@ import { ForgoutComponent } from './010_thesa/social/forgout/forgout.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ThesaComponent } from './010_thesa/page/thesa/thesa.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ThShowComponent } from './010_thesa/widget/th-show/th-show.component';
+import { ConceptComponent } from './010_thesa/widget/concept/concept.component';
+import { TermComponent } from './010_thesa/widget/term/term.component';
+import { TermsComponent } from './010_thesa/widget/terms/terms.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -36,6 +41,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     LogoutComponent,
     ForgoutComponent,
     ThesaComponent,
+    ThShowComponent,
+    ConceptComponent,
+    TermComponent,
+    TermsComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +52,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     NgbModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -19,7 +19,6 @@ export class ThesaComponent {
   ) {}
 
   ngOnInit() {
-    console.log("=====================")
     this.data = this.router.params.subscribe((params) => {
       this.id = +params['id']; // (+) converts string 'id' to a number
 

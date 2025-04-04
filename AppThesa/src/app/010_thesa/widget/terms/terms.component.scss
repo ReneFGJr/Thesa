@@ -1,0 +1,19 @@
+.term-select {
+  font-size: 0.95rem;
+  height: auto;
+  border: 1px solid #ccc;
+}
+
+.term-select option {
+  padding: 1px;
+}
+
+.term-select option:checked {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+option {
+  font-family: Cabin+Condensed, sans-serif;
+}
