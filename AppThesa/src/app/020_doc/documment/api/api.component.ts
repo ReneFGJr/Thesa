@@ -6,12 +6,14 @@ import { Component } from '@angular/core';
   styleUrl: './api.component.scss',
 })
 export class ApiDocComponent {
+  url = 'https://www.ufrgs.br/thesa/v2/index.php/api'
   sections = [
     { id: 'intro', title: 'Introdução' },
     { id: 'auth', title: 'Autenticação' },
     { id: 'endpoints', title: 'Endpoints' },
     { id: 'examples', title: 'Exemplos de Uso' },
     { id: 'errors', title: 'Tratamento de Erros' },
+    { id: 'api', title: 'Uso das API' },
   ];
 
   selectedSection = 'intro';

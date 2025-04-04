@@ -27,11 +27,48 @@
 .doc-menu li.active {
   background-color: #007bff;
   color: white;
-  font-weight: bold;
+  //font-weight: bold;
 }
 
 .doc-content {
   flex: 1;
   padding: 2rem;
   overflow-y: auto;
+}
+
+.doc-menu li.active {
+  //font-weight: bold;
+  background-color: #333;
+  border-left: 4px solid #007bff;
+}
+
+.doc-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.doc-menu {
+  width: 200px;
+  flex-shrink: 0;
+  font-size: 1rem;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+ul
+{
+  list-style-type: none;
+  padding-right: 10px;
 }

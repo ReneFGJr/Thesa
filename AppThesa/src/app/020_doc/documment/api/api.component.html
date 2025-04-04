@@ -11,17 +11,17 @@
 
   <section class="doc-content">
     <ng-container [ngSwitch]="selectedSection">
-      <div *ngSwitchCase="'intro'">
+      <div *ngSwitchCase="'intro'"  class="fade-in">
         <h2>Introdução</h2>
         <p>Bem-vindo à API do nosso sistema. Esta documentação apresenta os principais recursos.</p>
       </div>
 
-      <div *ngSwitchCase="'auth'">
+      <div *ngSwitchCase="'auth'" class="fade-in">
         <h2>Autenticação</h2>
         <p>Use um token JWT para autenticar suas requisições.</p>
       </div>
 
-      <div *ngSwitchCase="'endpoints'">
+      <div *ngSwitchCase="'endpoints'" class="fade-in">
         <h2>Endpoints</h2>
         <ul>
           <li>GET /users</li>
@@ -30,7 +30,7 @@
         </ul>
       </div>
 
-      <div *ngSwitchCase="'examples'">
+      <div *ngSwitchCase="'examples'" class="fade-in">
         <h2>Exemplos de Uso</h2>
         <pre>
 curl -X GET https://api.meusistema.com/users \
@@ -41,6 +41,43 @@ curl -X GET https://api.meusistema.com/users \
       <div *ngSwitchCase="'errors'">
         <h2>Tratamento de Erros</h2>
         <p>Erros seguem o formato padrão HTTP com mensagens descritivas.</p>
+      </div>
+
+      <div *ngSwitchCase="'api'" class="fade-in">
+        <h2>Uso das API</h2>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th width="20%">Endpoint</th>
+              <th width="10%">Método</th>
+              <th width="70%">Descrição</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="{{url}}/thopen" target="_blank">/api/thopen</a></td>
+              <td>GET</td>
+              <td>Lista todos os tesauros publicos.</td>
+            </tr>
+            <tr>
+              <td><a href="{{url}}/th/:id" target="_blank">/api/th/:id</a></td>
+              <td>GET</td>
+              <td>Dados detalhados de um tesauro.
+              <ul><li>:id - Número (ID) do tesauros (Thesa) </li></ul></td>
+            </tr>
+
+            <!-- Estatistica API -->
+            <tr>
+            <th colspan="3">API estatíticas</th>
+            </tr>
+
+            <tr>
+              <td><a href="{{url}}/resume" target="_blank">/api/resume</a></td>
+              <td>GET</td>
+              <td>Dados resumidos de todos os tesauros.</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </ng-container>
   </section>

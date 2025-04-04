@@ -76,7 +76,7 @@ class Api extends BaseController
                     $Thesa = new \App\Models\Thesa\Index();
                     $RSP['terms'] = $Thesa->terms($arg2,$arg3);
                     break;
-                case 'thopen':
+                case 'thopen': /* Thesaurus aberto */
                     $Thesa = new \App\Models\Thesa\Index();
                     $RSP['th'] = $Thesa->thopen();
                     break;
@@ -90,7 +90,7 @@ class Api extends BaseController
                 case 'c':
                     $RSP = $this->c($arg2,$RSP);
                     break;
-                case 'th':
+                case 'th': /* Dados do Thesaurus */
                     $RSP = $this->th($arg2, $RSP);
                     break;
                 default:

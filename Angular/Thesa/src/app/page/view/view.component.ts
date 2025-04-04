@@ -2,6 +2,7 @@ import { ThesaServiceService } from './../../service/thesa-service.service';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+
 @Component({
   selector: 'app-concept-view',
   templateUrl: './view.component.html',
