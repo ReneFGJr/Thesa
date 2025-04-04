@@ -26,6 +26,13 @@ import { TermsComponent } from './010_thesa/widget/terms/terms.component';
 import { FormsModule } from '@angular/forms';
 import { ConceptLinkComponent } from './010_thesa/widget/concept-link/concept-link.component';
 import { ConceptTHComponent } from './010_thesa/page/concept-th/concept-th.component';
+import { AltLabelComponent } from './010_thesa/widget/alt-label/alt-label.component';
+import { PrefLabelComponent } from './010_thesa/widget/pref-label/pref-label.component';
+import { HiddenLabelComponent } from './010_thesa/widget/hidden-label/hidden-label.component';
+import { VideoPlayComponent } from './010_thesa/widget/video-play/video-play.component';
+import { NarrowComponent } from './010_thesa/widget/narrow/narrow.component';
+import { BroaderComponent } from './010_thesa/widget/broader/broader.component';
+import { RelatedComponent } from './010_thesa/widget/related/related.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +56,13 @@ import { ConceptTHComponent } from './010_thesa/page/concept-th/concept-th.compo
     TermsComponent,
     ConceptLinkComponent,
     ConceptTHComponent,
+    AltLabelComponent,
+    PrefLabelComponent,
+    HiddenLabelComponent,
+    VideoPlayComponent,
+    NarrowComponent,
+    BroaderComponent,
+    RelatedComponent,
   ],
   imports: [
     BrowserModule,

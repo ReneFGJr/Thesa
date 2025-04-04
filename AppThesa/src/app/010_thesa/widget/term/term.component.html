@@ -1,7 +1,39 @@
-<div *ngIf="data">
-  <h2>{{data.term_name}} <sup>({{data.lg_code}})</sup></h2>
-  <app-concept-link [conceptLink]="term"></app-concept-link>
-  <p>Term Description: {{data.term_description}}</p>
-  <p>Term Type: {{data.term_type}}</p>
-  <p>Term Language: {{data.term_language}}</p>
+<div *ngIf="data" class="container">
+  <div class="row">
+    <div class="col-10 col-lg-11 col-md-11 col-sm-10">
+      <h2>
+        {{ data.label }} <sup>({{ data.lg_code }})</sup>
+      </h2>
+    </div>
+    <div class="col-12 col-lg-1 col-md-1 col-sm-2">
+      <app-concept-link [conceptLink]="term"></app-concept-link>
+    </div>
+
+    <div class="col-12 col-lg-6 col-md-6 col-sm-12">
+      <!-- PrefLabel-->
+      <app-pref-label [terms]="data.prefLabel"></app-pref-label>
+
+      <!-- Video -->
+      <app-video-play [medias]="data.medias"></app-video-play>
+
+    </div>
+    <div class="col-12 col-lg-6 col-md-6 col-sm-12">
+      <!-- AltLabel-->
+      <app-alt-label [terms]="data.altLabel"></app-alt-label>
+
+      <!-- HiddenLabel-->
+      <app-hidden-label [terms]="data.hiddenLabel"></app-hidden-label>
+
+      <!-- Broader -->
+      <app-broader [terms]="data.broader"></app-broader>
+
+      <app-narrow [terms]="data.narrow"></app-narrow>
+
+      <!-- PrefLabel-->
+      <pre>{{ data | json }}</pre>
+    </div>
+
+    <div class="col-12 col-lg-6 col-md-6 col-sm-12">
+
+  </div>
 </div>

@@ -1,0 +1,12 @@
+<div *ngIf="terms && terms.length > 0" class="mt-2">
+  <h6>Termos ocultos (hidden)</h6>
+
+  <div
+    *ngFor="let term of terms"
+    class="italic"
+    style="margin-left: 20px; margin-bottom: 5px;"
+  >
+    {{ term.Term }}
+    <sup>{{ term.Lang }}</sup>
+  </div>
+</div>

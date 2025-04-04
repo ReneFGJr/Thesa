@@ -19,9 +19,10 @@ export class TermComponent {
   ) {}
 
   ngOnChanges() {
-      this.serviceThesa.api_post('term/' + this.term, []).subscribe(
+      this.serviceThesa.api_post('c/' + this.term, []).subscribe(
         (res) => {
           this.data = res;
+          console.log(this.data);
         },
         (error) => error
       );

@@ -14,6 +14,7 @@ export class TermsComponent {
   terms: any;
   filterText: string = '';
   selectedTerm: any = null;
+  selectedConcept: any = null;
 
   constructor(
     private serviceThesa: ServiceThesaService,

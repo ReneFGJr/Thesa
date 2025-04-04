@@ -210,6 +210,7 @@ class Index extends Model
         $sv = '';
 
         $prop = [];
+
         foreach ($dt as $idx => $line) {
             $pn = $line['property'];
             if (!isset($prop[$pn])) {

@@ -6,15 +6,18 @@
   [(ngModel)]="filterText"
 />
 
-<select
-  size="20"
+<!-- Lista de termos com DIVs -->
+<div
   class="form-control term-select"
+  style="max-height: 400px; overflow-y: auto;"
 >
-  <option
+  <div
     *ngFor="let term of filteredTerms()"
-    [ngValue]="term.Concept"
     (click)="onSelectTerm(term.Concept)"
+    [class]="term.Propriety"
+    [class.selected]="term.Concept === selectedConcept"
+    class="link option_select"
   >
     {{ term.Term }}
-  </option>
-</select>
+  </div>
+</div>

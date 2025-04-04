@@ -5,7 +5,7 @@
       <app-terms [thesa]="id" (termChange)="changeTerm($event)"></app-terms>
     </div>
     <div class="col-8 col-lg-8 col-md-8 col-sm-12">
-      <app-term [term]="termID"></app-term>
+      <app-term *ngIf="termID > 0" [term]="termID"></app-term>
     </div>
   </div>
 </div>

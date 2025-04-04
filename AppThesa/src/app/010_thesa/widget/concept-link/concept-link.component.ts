@@ -12,8 +12,7 @@ export class ConceptLinkComponent {
   icon: string = '';
   link: string = '';
 
-  ngOnInit() {
-    console.log('conceptLink', this.conceptLink);
+  ngOnChanges() {
     if (this.conceptLink) {
       this.text = 'thesa:' + this.conceptLink;
       this.link = environment.Url+'/c/' + this.conceptLink;

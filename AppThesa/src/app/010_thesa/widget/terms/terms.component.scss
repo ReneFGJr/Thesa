@@ -1,7 +1,7 @@
 .term-select {
   font-size: 0.95rem;
   height: auto;
-  border: 1px solid #ccc;
+  border: 0px solid #ccc;
 }
 
 .term-select option {
@@ -16,4 +16,23 @@
 
 option {
   font-family: Cabin+Condensed, sans-serif;
+}
+
+.altLabel
+  {
+  padding: 0px 0px 0px 15px;
+  font-size: 0.8rem;
+  font-style: italic;
+  }
+
+.selected {
+  background-color: #007bff;
+  color: white;
+}
+.option_select {
+  margin-right: 10px;
+}
+.option_select:hover{
+  background-color: #ccc;
+  color: #000000;
 }
