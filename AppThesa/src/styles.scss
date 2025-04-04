@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Importing Bootstrap SCSS file. */
-@import 'bootstrap/scss/bootstrap';
+@import "bootstrap/scss/bootstrap";
 @import url("https://fonts.googleapis.com/css2?family=Actor&family=Arsenal&family=Cabin+Condensed&family=Lora:ital@1&family=Roboto+Slab:wght@300&family=Roboto:wght@100&family=Titillium+Web:wght@200&display=swap");
 
 .logo {
@@ -10,34 +10,36 @@
   color: #fff;
   font-weight: bold;
 }
-.logo_phrase
-  {
-    font-family: "Actor", sans-serif;
-    font-size: 1rem;
-    color: #fff;
-    font-weight: bold;
-  }
+.logo_phrase {
+  font-family: "Actor", sans-serif;
+  font-size: 1rem;
+  color: #fff;
+  font-weight: bold;
+}
 
+.small {
+  font-size: 0.8rem;
+}
+.big {
+  font-size: 1.5rem;
+}
 .superbig {
   font-size: 2rem;
 }
 
+h5 {
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
 
-h5
-  {
-    font-size: 0.8rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
+.link {
+  color: #000;
+  text-decoration: none;
+  opacity: 0.8;
+  cursor: pointer;
+  transition: opacity 0.3s;
+  &:hover {
+    opacity: 1;
   }
-
-  .link
-  {
-    color: #000;
-    text-decoration: none;
-    opacity: 0.8;
-    cursor: pointer;
-    transition: opacity 0.3s;
-    &:hover {
-      opacity: 1;
-    }
-  }
+}

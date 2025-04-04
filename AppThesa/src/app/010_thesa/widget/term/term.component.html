@@ -1,10 +1,7 @@
 <div *ngIf="data">
-  <h2>{{data.term_name}}</h2>
-  <p>Term ID: {{data.term_id}}</p>
-  <p>Term Name: {{data.term_name}}</p>
+  <h2>{{data.term_name}} <sup>({{data.lg_code}})</sup></h2>
+  <app-concept-link [conceptLink]="term"></app-concept-link>
   <p>Term Description: {{data.term_description}}</p>
   <p>Term Type: {{data.term_type}}</p>
   <p>Term Language: {{data.term_language}}</p>
-  <p>Term URI: {{data.term_uri}}</p>
 </div>
-<pre>{{data | json}}</pre>

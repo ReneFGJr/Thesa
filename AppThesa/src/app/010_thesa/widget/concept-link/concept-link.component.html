@@ -1,0 +1,17 @@
+<div class="d-flex align-items-center gap-2">
+  <!-- Link para o conceito -->
+  <a href="{{ link }}" target="_blank" class="btn btn-outline-secondary link small" alt="Link do conceito">
+    <div class="concept-link__content">
+      <ng-container *ngIf="icon">
+        <img [src]="icon" alt="Icon" class="concept-link__icon" />
+      </ng-container>
+      <span class="concept-link__text">{{ text }}</span>
+    </div>
+  </a>
+
+  <!-- Botão de copiar -->
+  <i class="bi bi-copy link"
+  (click)="copyToClipboard(link)"
+  title="Copiar link"
+  ></i>
+</div>

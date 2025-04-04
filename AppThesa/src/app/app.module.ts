@@ -24,6 +24,8 @@ import { ConceptComponent } from './010_thesa/widget/concept/concept.component';
 import { TermComponent } from './010_thesa/widget/term/term.component';
 import { TermsComponent } from './010_thesa/widget/terms/terms.component';
 import { FormsModule } from '@angular/forms';
+import { ConceptLinkComponent } from './010_thesa/widget/concept-link/concept-link.component';
+import { ConceptTHComponent } from './010_thesa/page/concept-th/concept-th.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,8 @@ import { FormsModule } from '@angular/forms';
     ConceptComponent,
     TermComponent,
     TermsComponent,
+    ConceptLinkComponent,
+    ConceptTHComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -8,7 +9,8 @@ import { catchError, map, Observable, throwError } from 'rxjs';
 export class ServiceThesaService {
   http: any;
   //private url: string = 'https://ufrgs.br/thesa/api';
-  private url: string = 'http://thesa/api';
+  //private url: string = 'http://thesa/api';
+  private url: string = environment.apiUrl;
 
   httpOptions = {
     headers: new HttpHeaders({
