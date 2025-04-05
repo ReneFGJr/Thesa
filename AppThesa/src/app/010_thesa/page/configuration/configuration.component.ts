@@ -3,9 +3,6 @@ import { Component } from '@angular/core';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
 import { ActivatedRoute } from '@angular/router';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
-
-
 
 @Component({
   selector: 'app-configuration',

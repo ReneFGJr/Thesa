@@ -18,46 +18,18 @@
         <section class="doc-content">
           <ng-container [ngSwitch]="selectedSection">
             <div *ngSwitchCase="'title'" class="fade-in">
-              <h2>Tesauros</h2>
-              <p>
-                Bem-vindo à API do nosso sistema. Esta documentação apresenta os
-                principais recursos.
-              </p>
-              <app-config-introdution [thesaID]="id"></app-config-introdution>
+            <h1>Titulo</h1>
             </div>
-
-            <div *ngSwitchCase="'auth'" class="fade-in">
-              <h2>Autenticação</h2>
-              <p>Use um token JWT para autenticar suas requisições.</p>
-            </div>
-
-            <div *ngSwitchCase="'endpoints'" class="fade-in">
-              <h2>Endpoints</h2>
-              <ul>
-                <li>GET /users</li>
-                <li>POST /login</li>
-                <li>DELETE /users/:id</li>
-              </ul>
-            </div>
-
-            <div *ngSwitchCase="'examples'" class="fade-in">
-              <h2>Exemplos de Uso</h2>
-              <pre>
-curl -X GET https://api.meusistema.com/users \
-  -H "Authorization: Bearer seu_token_aqui"
-        </pre
-              >
-            </div>
-
-            <div *ngSwitchCase="'errors'">
-              <h2>Tratamento de Erros</h2>
-              <p>
-                Erros seguem o formato padrão HTTP com mensagens descritivas.
-              </p>
-            </div>
-
-
           </ng-container>
+
+
+          <ng-container [ngSwitch]="selectedSection">
+            <div *ngSwitchCase="'descript'" class="fade-in">
+            descript
+            <app-form-textarea></app-form-textarea>
+            </div>
+          </ng-container>
+
         </section>
       </div>
     </div>

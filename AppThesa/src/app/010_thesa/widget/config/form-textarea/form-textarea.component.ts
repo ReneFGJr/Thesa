@@ -4,12 +4,12 @@ import { ServiceThesaService } from '../../../../000_core/service/service-thesa.
 import { ServiceStorageService } from '../../../../000_core/service/service-storage.service';
 
 @Component({
-  selector: 'app-config-introdution',
-  templateUrl: './config-introdution.component.html',
-  styleUrl: './config-introdution.component.scss',
+  selector: 'app-form-textarea',
+  templateUrl: './form-textarea.component.html',
+  styleUrl: './form-textarea.component.scss'
 })
-export class ConfigIntrodutionComponent {
-  @Input() thesaID: number = 0;
+export class FormTextareaComponent {
+@Input() thesaID: number = 0;
   formAction: FormGroup;
   data: any = [];
 

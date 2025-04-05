@@ -45,6 +45,7 @@ import { ConfigVisibilityComponent } from './010_thesa/widget/config/config-visi
 import { ConfigIconeComponent } from './010_thesa/widget/config/config-icone/config-icone.component';
 import { ConfigMembersComponent } from './010_thesa/widget/config/config-members/config-members.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { FormTextareaComponent } from './010_thesa/widget/config/form-textarea/form-textarea.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     ConfigVisibilityComponent,
     ConfigIconeComponent,
     ConfigMembersComponent,
+    FormTextareaComponent,
   ],
   imports: [
     BrowserModule,
