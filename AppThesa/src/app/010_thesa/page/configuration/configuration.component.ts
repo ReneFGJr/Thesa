@@ -5,8 +5,9 @@ import { ServiceStorageService } from '../../../000_core/service/service-storage
 import { ActivatedRoute } from '@angular/router';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 
+
+
 @Component({
-  standalone: false,
   selector: 'app-configuration',
   templateUrl: './configuration.component.html',
   styleUrl: './configuration.component.scss',
