@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 export class ConceptTHComponent {
   data: any;
   dataTH: any;
-  thesa: any;
+  thesa: any = {};
   termID: number = 0;
   constructor(
     private serviceThesa: ServiceThesaService,
@@ -25,9 +25,7 @@ export class ConceptTHComponent {
 
       this.serviceThesa.api_post('c/' + this.termID, []).subscribe((res) => {
         this.data = res;
-        console.log(this.data);
         this.thesa = this.data.c_th;
-        console.log("thesa", this.thesa);
 
         /* Dados do Thesauro */
         this.serviceThesa.api_post('th/' + this.thesa, []).subscribe((res) => {

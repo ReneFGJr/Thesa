@@ -5,6 +5,8 @@ import { ApiDocComponent } from './020_doc/documment/api/api.component';
 import { ThOpenComponent } from './010_thesa/widget/th-open/th-open.component';
 import { ThesaComponent } from './010_thesa/page/thesa/thesa.component';
 import { ConceptTHComponent } from './010_thesa/page/concept-th/concept-th.component';
+import { AboutThComponent } from './010_thesa/page/about-th/about-th.component';
+import { ConfigurationComponent } from './010_thesa/page/configuration/configuration.component';
 
 
 const routes: Routes = [
@@ -12,6 +14,8 @@ const routes: Routes = [
   { path: 'documentation', component: ApiDocComponent },
   { path: 'thopen', component: ThOpenComponent },
   { path: 'thesa/:id', component: ThesaComponent },
+  { path: 'about/:id', component: AboutThComponent },
+  { path: 'configuration/:id', component: ConfigurationComponent },
   { path: 'c/:id', component: ConceptTHComponent },
 ];
 

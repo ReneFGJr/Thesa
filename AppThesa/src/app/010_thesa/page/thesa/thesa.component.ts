@@ -26,7 +26,6 @@ export class ThesaComponent {
       this.serviceThesa.api_post('th/' + this.id, []).subscribe(
         (res) => {
           this.data = res;
-          console.log(this.data);
         },
         (error) => error
       );

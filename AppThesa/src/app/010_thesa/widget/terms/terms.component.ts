@@ -22,11 +22,10 @@ export class TermsComponent {
     private router: ActivatedRoute
   ) {}
 
-  ngOnInit() {
+  ngOnChanges() {
     this.serviceThesa.api_post('terms/' + this.thesa, []).subscribe(
       (res) => {
         this.terms = res;
-        console.log(this.terms);
       },
       (error) => error
     );

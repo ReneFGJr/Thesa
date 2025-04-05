@@ -44,7 +44,6 @@ export class TermListComponent {
   }
 
   onSubmit() {
-    console.log(this.form.value);
     this.thesaServiceService
       .api_post('concept_create_term', this.form.value)
       .subscribe((res) => {

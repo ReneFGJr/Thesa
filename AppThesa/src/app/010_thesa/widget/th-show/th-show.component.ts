@@ -7,4 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class ThShowComponent {
   @Input() thesa: any;
+  @Input() tab: string='';
 }

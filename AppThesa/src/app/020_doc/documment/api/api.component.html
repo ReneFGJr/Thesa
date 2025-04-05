@@ -103,6 +103,20 @@ curl -X GET https://api.meusistema.com/users \
             <th colspan="3" class="text-center bg-dark text-white">API de manutenção do tesauro</th>
             </tr>
 
+
+            <tr>
+              <td><a href="{{url}}/saveDescription" target="_blank">/api/saveDescription</a></td>
+              <td class="text-center">POST</td>
+              <td>
+                <ul>
+                  <li>:apikey - API key do usuário</li>
+                  <li>:field - Nome do campo da descrição (title, achronic, introduction, Methodology, Audience, License)</li>
+                  <li>:thesaurus - Número (ID) do tesauro</li>
+                  <li>:description - Conteúdo a ser salvo dentro do campo de descrição</li>
+                </ul>
+              </td>
+            </tr>
+
             <tr>
               <td><a href="{{url}}/term_add" target="_blank">/api/term_add</a></td>
               <td class="text-center">POST</td>

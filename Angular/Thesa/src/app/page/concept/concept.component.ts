@@ -26,8 +26,6 @@ export class ConceptComponent {
     let dt = [{}];
     let IDt = this.idT.toString();
     this.thesaServiceService.api_post('c/' + IDt, dt).subscribe((res) => {
-      console.log(res);
-      console.log("=======================")
       this.data = res;
     });
   }

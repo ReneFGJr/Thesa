@@ -40,6 +40,52 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function getDescription($d1,$d2)
+        {
+            $Descriptions = new \App\Models\Thesa\Descriptions();
+            $dt = $Descriptions
+                ->where('ds_prop', $d2)
+                ->where('ds_th', $d1)
+                ->first();
+            return $dt;
+        }
+
+    function saveDescription($dt = array())
+    {
+        $Descriptions = new \App\Models\Thesa\Descriptions();
+        $dt = array_merge($dt, $_GET);
+        if ((!isset($dt['field'])) or (!isset($dt['thesaurus'])))
+        {
+            $dd = [];
+            $dd['status'] = '500';
+            $dd['message'] = 'Field, Thesaurus ou Description not informed';
+            $dd['data'] = $dt;
+            return $dd;
+        }
+
+        $dd = [];
+        $dd['ds_prop'] = $dt['field'];
+        $dd['ds_descrition'] = $dt['description'];
+        $dd['ds_th'] = $dt['thesaurus'];
+
+
+        $dr = $Descriptions
+            ->where('ds_prop', $dd['ds_prop'])
+            ->where('ds_th', $dd['ds_th'])
+            ->first();
+
+        if ($dr == null) {
+            $Descriptions->insert($dd);
+            $dd['status'] = '200';
+            $dd['message'] = 'Description created';
+        } else {
+            $Descriptions->update($dr['id_ds'], $dd);
+            $dd['status'] = '200';
+            $dd['message'] = 'Description updated';
+        }
+        return $dd;
+    }
+
     function thopen($user = 0)
     {
         $Icone = new \App\Models\Thesa\Icone();

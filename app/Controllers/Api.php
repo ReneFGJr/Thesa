@@ -41,6 +41,16 @@ class Api extends BaseController
         if ($arg1 == 'term') { $arg1 = 't'; }
         switch($arg1)
             {
+                case 'saveDescription':
+                    $Thesa = new \App\Models\Thesa\Index();
+                    $dt = $_POST;
+                    $RSP = $Thesa->saveDescription($dt);
+                    break;
+                case 'getDescription':
+                    $Thesa = new \App\Models\Thesa\Index();
+                    $dt = $_POST;
+                    $RSP = $Thesa->getDescription($arg2, $arg3);
+                    break;
                 case 'tools':
                     $Tools = new \App\Models\Tools\Index();
                     $RSP = $Tools->index($arg2,$arg3);

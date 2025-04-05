@@ -23,7 +23,7 @@ import { ThShowComponent } from './010_thesa/widget/th-show/th-show.component';
 import { ConceptComponent } from './010_thesa/widget/concept/concept.component';
 import { TermComponent } from './010_thesa/widget/term/term.component';
 import { TermsComponent } from './010_thesa/widget/terms/terms.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConceptLinkComponent } from './010_thesa/widget/concept-link/concept-link.component';
 import { ConceptTHComponent } from './010_thesa/page/concept-th/concept-th.component';
 import { AltLabelComponent } from './010_thesa/widget/alt-label/alt-label.component';
@@ -33,6 +33,18 @@ import { VideoPlayComponent } from './010_thesa/widget/video-play/video-play.com
 import { NarrowComponent } from './010_thesa/widget/narrow/narrow.component';
 import { BroaderComponent } from './010_thesa/widget/broader/broader.component';
 import { RelatedComponent } from './010_thesa/widget/related/related.component';
+import { NotesComponent } from './010_thesa/widget/notes/notes.component';
+import { AboutThComponent } from './010_thesa/page/about-th/about-th.component';
+import { ConfigurationComponent } from './010_thesa/page/configuration/configuration.component';
+import { ConfigIntrodutionComponent } from './010_thesa/widget/config/config-introdution/config-introdution.component';
+import { ConfigMethodologyComponent } from './010_thesa/widget/config/config-methodology/config-methodology.component';
+import { ConfigDescriptComponent } from './010_thesa/widget/config/config-descript/config-descript.component';
+import { ConfigPublicComponent } from './010_thesa/widget/config/config-public/config-public.component';
+import { ConfigTypeComponent } from './010_thesa/widget/config/config-type/config-type.component';
+import { ConfigVisibilityComponent } from './010_thesa/widget/config/config-visibility/config-visibility.component';
+import { ConfigIconeComponent } from './010_thesa/widget/config/config-icone/config-icone.component';
+import { ConfigMembersComponent } from './010_thesa/widget/config/config-members/config-members.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
   declarations: [
@@ -63,6 +75,17 @@ import { RelatedComponent } from './010_thesa/widget/related/related.component';
     NarrowComponent,
     BroaderComponent,
     RelatedComponent,
+    NotesComponent,
+    AboutThComponent,
+    ConfigurationComponent,
+    ConfigIntrodutionComponent,
+    ConfigMethodologyComponent,
+    ConfigDescriptComponent,
+    ConfigPublicComponent,
+    ConfigTypeComponent,
+    ConfigVisibilityComponent,
+    ConfigIconeComponent,
+    ConfigMembersComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,6 +94,8 @@ import { RelatedComponent } from './010_thesa/widget/related/related.component';
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
+    AngularEditorModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,8 +1,8 @@
 <app-th-show [thesa]="thesa"></app-th-show>
 <div class="container">
   <div class="row">
-    <div class="col-4 col-lg-4 col-md-4 col-sm-12">
-      <app-terms [thesa]="thesa" (termChange)="changeTerm($event)"></app-terms>
+    <div class="col-4 col-lg-4 col-md-4 col-sm-12" *ngIf="thesa?.id_th">
+      <app-terms [thesa]="thesa.id_th" (termChange)="changeTerm($event)"></app-terms>
     </div>
     <div class="col-8 col-lg-8 col-md-8 col-sm-12">
       <app-term [term]="termID"></app-term>

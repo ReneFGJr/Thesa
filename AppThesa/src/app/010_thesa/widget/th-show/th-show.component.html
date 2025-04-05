@@ -6,6 +6,34 @@
     <div class="col-lg-10 col-8">
       <h4>{{ thesa.th_name }}</h4>
       <h5>{{ thesa.th_achronic }}</h5>
+
+      <!-- MENU -->
+        <ul class="nav  mt-5 mb-2 small">
+          <li class="nav-item">
+            <a class="nav-link link"
+            [routerLink]="['/thesa/', thesa.id_th]"
+            [ngClass]="{ active: tab === '1' }"
+            routerLinkActive="active">conceitos</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link link" [routerLink]="['/about/', thesa.id_th]"
+            [ngClass]="{ active: tab === '2' }"
+            routerLinkActive="active">sobre</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link link" [routerLink]="['/export/', thesa.id_th]"
+            [ngClass]="{ active: tab === '3' }"
+            routerLinkActive="active">exportação</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link link" [routerLink]="['/configuration/', thesa.id_th]"
+            [ngClass]="{ active: tab === '4' }"
+            routerLinkActive="active">configurações</a>
+          </li>
+        </ul>
     </div>
   </div>
 </div>

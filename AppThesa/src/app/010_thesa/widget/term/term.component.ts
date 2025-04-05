@@ -22,7 +22,6 @@ export class TermComponent {
       this.serviceThesa.api_post('c/' + this.term, []).subscribe(
         (res) => {
           this.data = res;
-          console.log(this.data);
         },
         (error) => error
       );

@@ -9,6 +9,6 @@ export class VideoPlayComponent {
   @Input() medias: Array<any> | any;
 
   ngOnChanges() {
-    console.log(this.medias);
+
   }
 }
