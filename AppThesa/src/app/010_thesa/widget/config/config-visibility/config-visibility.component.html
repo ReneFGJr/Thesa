@@ -1,1 +1,14 @@
-<p>config-visibility works!</p>
+<div class="container mt-4">
+  <div class="form-check" *ngFor="let option of radioOptions">
+    <input
+      class="form-check-input"
+      type="radio"
+      [value]="option.value"
+      formControlName="classification"
+      [id]="option.value"
+    />
+    <label class="form-check-label" [for]="option.value">
+      {{ option.label }}
+    </label>
+  </div>
+</div>

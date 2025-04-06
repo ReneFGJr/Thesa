@@ -36,16 +36,14 @@ import { RelatedComponent } from './010_thesa/widget/related/related.component';
 import { NotesComponent } from './010_thesa/widget/notes/notes.component';
 import { AboutThComponent } from './010_thesa/page/about-th/about-th.component';
 import { ConfigurationComponent } from './010_thesa/page/configuration/configuration.component';
-import { ConfigIntrodutionComponent } from './010_thesa/widget/config/config-introdution/config-introdution.component';
-import { ConfigMethodologyComponent } from './010_thesa/widget/config/config-methodology/config-methodology.component';
-import { ConfigDescriptComponent } from './010_thesa/widget/config/config-descript/config-descript.component';
-import { ConfigPublicComponent } from './010_thesa/widget/config/config-public/config-public.component';
 import { ConfigTypeComponent } from './010_thesa/widget/config/config-type/config-type.component';
 import { ConfigVisibilityComponent } from './010_thesa/widget/config/config-visibility/config-visibility.component';
 import { ConfigIconeComponent } from './010_thesa/widget/config/config-icone/config-icone.component';
 import { ConfigMembersComponent } from './010_thesa/widget/config/config-members/config-members.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { FormTextareaComponent } from './010_thesa/widget/config/form-textarea/form-textarea.component';
+import { ConfigTitleComponent } from './010_thesa/widget/config/config-title/config-title.component';
+import { ConfigLicenseComponent } from './010_thesa/widget/config/config-license/config-license.component';
 
 @NgModule({
   declarations: [
@@ -79,15 +77,13 @@ import { FormTextareaComponent } from './010_thesa/widget/config/form-textarea/f
     NotesComponent,
     AboutThComponent,
     ConfigurationComponent,
-    ConfigIntrodutionComponent,
-    ConfigMethodologyComponent,
-    ConfigDescriptComponent,
-    ConfigPublicComponent,
     ConfigTypeComponent,
     ConfigVisibilityComponent,
     ConfigIconeComponent,
     ConfigMembersComponent,
     FormTextareaComponent,
+    ConfigTitleComponent,
+    ConfigLicenseComponent,
   ],
   imports: [
     BrowserModule,

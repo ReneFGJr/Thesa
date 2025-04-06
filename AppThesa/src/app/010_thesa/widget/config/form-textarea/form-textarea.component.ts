@@ -6,11 +6,15 @@ import { ServiceStorageService } from '../../../../000_core/service/service-stor
 @Component({
   selector: 'app-form-textarea',
   templateUrl: './form-textarea.component.html',
-  styleUrl: './form-textarea.component.scss'
+  styleUrl: './form-textarea.component.scss',
 })
 export class FormTextareaComponent {
-@Input() thesaID: number = 0;
+  @Input() thesaID: number = 0;
+  @Input() field: string = 'Introduction';
+  orign: string = '';
+
   formAction: FormGroup;
+
   data: any = [];
 
   constructor(
@@ -20,7 +24,7 @@ export class FormTextareaComponent {
   ) {
     this.formAction = this.fb.group({
       description: [''],
-      field: ['Introduction'],
+      field: [],
       thesaurus: [-1],
       apikey: [this.serviceStorage.get('apikey')],
     });
@@ -29,6 +33,7 @@ export class FormTextareaComponent {
   // ⛳ Este método é chamado automaticamente quando @Input() muda
   ngOnChanges(): void {
     this.formAction.patchValue({ thesaurus: this.thesaID });
+    this.formAction.patchValue({ field: this.field });
 
     this.serviceThesa
       .api_post(
@@ -38,8 +43,13 @@ export class FormTextareaComponent {
       .subscribe((res) => {
         this.data = res;
         this.formAction.patchValue({ description: this.data.ds_descrition });
+        this.orign = this.data.ds_descrition;
         console.log(this.data);
       });
+  }
+
+  loadOrigin() {
+    this.formAction.patchValue({ description: this.orign });
   }
 
   onSubmit(): void {

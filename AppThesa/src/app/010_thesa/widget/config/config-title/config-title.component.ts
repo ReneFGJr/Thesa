@@ -4,13 +4,17 @@ import { ServiceThesaService } from '../../../../000_core/service/service-thesa.
 import { ServiceStorageService } from '../../../../000_core/service/service-storage.service';
 
 @Component({
-  selector: 'app-config-introdution',
-  templateUrl: './config-introdution.component.html',
-  styleUrl: './config-introdution.component.scss',
+  selector: 'app-config-title',
+  templateUrl: './config-title.component.html',
+  styleUrl: './config-title.component.scss',
 })
-export class ConfigIntrodutionComponent {
+export class ConfigTitleComponent {
   @Input() thesaID: number = 0;
+
   formAction: FormGroup;
+  orign_title: string = '';
+  orign_achronic: string = '';
+
   data: any = [];
 
   constructor(
@@ -19,33 +23,36 @@ export class ConfigIntrodutionComponent {
     private serviceStorage: ServiceStorageService
   ) {
     this.formAction = this.fb.group({
-      description: [''],
-      field: ['Introduction'],
+      title: [''],
+      acronic: [''],
       thesaurus: [-1],
       apikey: [this.serviceStorage.get('apikey')],
     });
   }
 
+  loadOrigin() {
+    this.formAction.patchValue({ title: this.orign_title });
+    this.formAction.patchValue({ acronic: this.orign_achronic });
+  }
+
   // ⛳ Este método é chamado automaticamente quando @Input() muda
   ngOnChanges(): void {
-    this.formAction.patchValue({ thesaurus: this.thesaID });
-
     this.serviceThesa
-      .api_post(
-        'getDescription/' + this.thesaID + '/' + this.formAction.value.field,
-        []
-      )
+      .api_post('th/' + this.thesaID + '/' + this.formAction.value.field, [])
       .subscribe((res) => {
         this.data = res;
-        this.formAction.patchValue({ description: this.data.ds_descrition });
-        console.log(this.data);
+        this.formAction.patchValue({ title: this.data.th_name });
+        this.formAction.patchValue({ acronic: this.data.th_achronic });
+        this.formAction.patchValue({ thesaurus: this.thesaID });
+        this.orign_title = this.data.th_name;
+        this.orign_achronic = this.data.th_achronic;
       });
   }
 
   onSubmit(): void {
     console.log('Valor enviado:', this.formAction.value);
     this.serviceThesa
-      .api_post('saveDescription', this.formAction.value)
+      .api_post('saveTh', this.formAction.value)
       .subscribe((res) => {
         this.data = res;
       });

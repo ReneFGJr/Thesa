@@ -18,15 +18,18 @@ export class ConfigurationComponent {
   constructor(
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService,
-    private router: ActivatedRoute,
+    private router: ActivatedRoute
   ) {}
 
   sections = [
     { id: 'title', title: 'Tesauro' },
     { id: 'descript', title: 'Descrição' },
     { id: 'methodology', title: 'Metodologia' },
+    { id: 'audience', title: 'Público Alvo' },
+    { id: 'license', title: 'Licença' },
+    { id: 'visibility', title: 'Visibilidade' },
     { id: 'icon', title: 'Thema e Incones' },
-    { id: 'members', title: 'membros' },
+    { id: 'members', title: 'Membros' },
   ];
 
   selectedSection = 'title';

@@ -19,14 +19,46 @@
           <ng-container [ngSwitch]="selectedSection">
             <div *ngSwitchCase="'title'" class="fade-in">
             <h1>Titulo</h1>
+
+            <app-config-title [thesaID]="id"></app-config-title>
             </div>
           </ng-container>
 
-
+<!----------------------------------------- Introduction-->
           <ng-container [ngSwitch]="selectedSection">
             <div *ngSwitchCase="'descript'" class="fade-in">
-            descript
-            <app-form-textarea></app-form-textarea>
+            <h4>Descrição do vocabulário / tesauro</h4>
+            <app-form-textarea [thesaID]="id" [field]="'Introduction'"></app-form-textarea>
+            </div>
+          </ng-container>
+<!----------------------------------------- Methodology-->
+          <ng-container [ngSwitch]="selectedSection">
+            <div *ngSwitchCase="'methodology'" class="fade-in">
+            <h4>Metodologia</h4>
+            <app-form-textarea [thesaID]="id" [field]="'methodology'"></app-form-textarea>
+            </div>
+          </ng-container>
+<!----------------------------------------- Audience-->
+          <ng-container [ngSwitch]="selectedSection">
+            <div *ngSwitchCase="'audience'" class="fade-in">
+            <h4>Público Alvo</h4>
+            <app-form-textarea [thesaID]="id" [field]="'audience'"></app-form-textarea>
+            </div>
+          </ng-container>
+<!----------------------------------------- audience-->
+<!----------------------------------------- License-->
+
+          <ng-container [ngSwitch]="selectedSection">
+            <div *ngSwitchCase="'license'" class="fade-in">
+            <h4>Licença</h4>
+              <app-config-license [thesaID]="id"></app-config-license>
+            </div>
+          </ng-container>
+<!----------------------------------------- visibility-->
+          <ng-container [ngSwitch]="selectedSection">
+            <div *ngSwitchCase="'visibility'" class="fade-in">
+            <h4>Visibilidade</h4>
+            <app-config-visibility [thesaID]="id"></app-config-visibility>
             </div>
           </ng-container>
 
@@ -35,3 +67,14 @@
     </div>
   </div>
 </div>
+
+<!--
+    { id: 'title', title: 'Tesauro' },
+    { id: 'descript', title: 'Descrição' },
+    { id: 'ethodology', title: 'Metodologia' },
+    { id: 'audience', title: 'Público Alvo' },
+    { id: 'License', title: 'Licença' },
+    { id: 'visibility', title: 'Visibilidade' },
+    { id: 'icon', title: 'Thema e Incones' },
+    { id: 'members', title: 'membros' },
+-->

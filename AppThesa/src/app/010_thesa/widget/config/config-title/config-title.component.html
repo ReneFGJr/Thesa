@@ -1,0 +1,27 @@
+<div class="container mt-4">
+  <form [formGroup]="formAction" (ngSubmit)="onSubmit()">
+    <label>Título do tesauro</label>
+    <div class="mb-3">
+      <input
+        id="title"
+        type="text"
+        class="form-control"
+        formControlName="title"
+      />
+    </div>
+
+    <label>Acrônico</label>
+    <div class="mb-3">
+      <input
+        id="acronic"
+        type="text"
+        class="form-control half"
+        formControlName="acronic"
+      />
+    </div>
+
+    <button type="submit" class="btn btn-outline-primary">Salvar</button>
+    <span class="btn btn-outline-warning ms-2" (click)="loadOrigin()"
+      >Cancelar</span>
+  </form>
+</div>
