@@ -7,6 +7,7 @@ import { ThesaComponent } from './010_thesa/page/thesa/thesa.component';
 import { ConceptTHComponent } from './010_thesa/page/concept-th/concept-th.component';
 import { AboutThComponent } from './010_thesa/page/about-th/about-th.component';
 import { ConfigurationComponent } from './010_thesa/page/configuration/configuration.component';
+import { ThesaCreateComponent } from './010_thesa/page/thesa-create/thesa-create.component';
 
 
 const routes: Routes = [
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'about/:id', component: AboutThComponent },
   { path: 'configuration/:id', component: ConfigurationComponent },
   { path: 'c/:id', component: ConceptTHComponent },
+  { path: 'create', component: ThesaCreateComponent },
 ];
 
 @NgModule({

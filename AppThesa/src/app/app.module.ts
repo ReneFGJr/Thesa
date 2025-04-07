@@ -44,6 +44,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { FormTextareaComponent } from './010_thesa/widget/config/form-textarea/form-textarea.component';
 import { ConfigTitleComponent } from './010_thesa/widget/config/config-title/config-title.component';
 import { ConfigLicenseComponent } from './010_thesa/widget/config/config-license/config-license.component';
+import { ThesaCreateComponent } from './010_thesa/page/thesa-create/thesa-create.component';
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import { ConfigLicenseComponent } from './010_thesa/widget/config/config-license
     FormTextareaComponent,
     ConfigTitleComponent,
     ConfigLicenseComponent,
+    ThesaCreateComponent,
   ],
   imports: [
     BrowserModule,

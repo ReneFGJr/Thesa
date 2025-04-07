@@ -1,0 +1,105 @@
+<div class="container">
+  <div class="row">
+    <div class="col-6 col-lg-3"><app-logo-big></app-logo-big>></div>
+    <div class="col-6 col-lg-9">
+      <h2>Criação de novo tesauro</h2>
+      <div class="container mt-4">
+        <form [formGroup]="formAction" (ngSubmit)="onSubmit()">
+          <label>Título do tesauro</label>
+          <!-- Título -->
+          <label>Título do tesauro</label>
+          <div class="mb-3">
+            <input
+              id="title"
+              type="text"
+              class="form-control"
+              formControlName="title"
+            />
+            <div
+              *ngIf="
+                formAction.get('title')?.touched &&
+                formAction.get('title')?.invalid
+              "
+              class="text-danger mt-1"
+            >
+              <small *ngIf="formAction.get('title')?.errors?.['required']">
+                O título é obrigatório.
+              </small>
+              <small *ngIf="formAction.get('title')?.errors?.['minlength']">
+                O título deve ter pelo menos 10 caracteres.
+              </small>
+            </div>
+          </div>
+
+          <!-- Acrônico -->
+          <label>Acrônico</label>
+          <div class="mb-3">
+            <input
+              id="acronic"
+              type="text"
+              class="form-control half"
+              formControlName="acronic"
+            />
+            <div
+              *ngIf="
+                formAction.get('acronic')?.touched &&
+                formAction.get('acronic')?.invalid
+              "
+              class="text-danger mt-1"
+            >
+              <small *ngIf="formAction.get('acronic')?.errors?.['required']">
+                O acrônimo é obrigatório.
+              </small>
+              <small *ngIf="formAction.get('acronic')?.errors?.['minlength']">
+                O acrônimo deve ter pelo menos 4 caracteres.
+              </small>
+            </div>
+          </div>
+
+          <label>Tipo <sup style="color: red" *ngIf="formAction.value.type == 0">*Obrigatório</sup></label>
+          <div class="mb-3">
+            <input type="radio" formControlName="type" value="1" />
+            Glossário<br />
+            <input type="radio" formControlName="type" value="2" /> Vocabulário
+            controlado<br />
+            <input type="radio" formControlName="type" value="3" />
+            Taxonomia<br />
+            <input type="radio" formControlName="type" value="4" /> Tesauro
+            (tradicional)<br />
+            <input type="radio" formControlName="type" value="5" /> Tesauro
+            (semântico)
+          </div>
+
+          <label>Visibilidade <sup style="color: red" *ngIf="formAction.value.visibility == 0">*Obrigatório</sup></label>
+          <div class="mb-3">
+            <input type="radio" formControlName="visibility" value="1" />
+            Restrito<br />
+            <input type="radio" formControlName="visibility" value="2" />
+            Público
+          </div>
+
+          <label>Finalidade <sup style="color: red" *ngIf="formAction.value.finality == 0">*Obrigatório</sup></label>
+          <div class="mb-3">
+            <input type="radio" formControlName="finality" value="1" /> Testar a
+            ferramenta<br />
+            <input type="radio" formControlName="finality" value="2" />
+            Atividade de ensino/pesquisa<br />
+            <input type="radio" formControlName="finality" value="3" /> Produção
+            de Glossário/Vocabulário/Taxonomia/Tesauro
+          </div>
+
+          <button type="submit" class="btn btn-outline-primary">Salvar</button>
+          <a routerLink="['/']"  class="btn btn-outline-warning ms-2">Cancelar</a>
+        </form>
+
+        <div *ngIf="showSuccess" class="alert alert-success mt-4" role="alert">
+          Dados salvos com sucesso!
+        </div>
+
+        <div *ngIf="showError" class="alert alert-danger mt-4" role="alert">
+          Dados obrigatórios não preenchidos ou inválidos!<br />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

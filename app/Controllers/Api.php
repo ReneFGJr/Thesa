@@ -39,8 +39,49 @@ class Api extends BaseController
 
         if ($arg1 == 'conecpt') { $arg1 = 'c'; }
         if ($arg1 == 'term') { $arg1 = 't'; }
+
         switch($arg1)
             {
+                case 'createThesa':
+                    $userID = 1;
+                    $Thesa = new \App\Models\Thesa\Index();
+
+
+                    $Thesa->where('th_achronic', get('acronic'))->first();
+                    if ($Thesa->th_achronic != '') {
+                        $RSP['status'] = '400';
+                        $RSP['message'] = 'Thesaurus already exists';
+                        echo json_encode($RSP); exit;
+                    }
+                    /*
+                    if (!isset($_POST['acronic'])) {
+                        $RSP['status'] = '400';
+                        $RSP['message'] = 'Thesaurus title not informed';
+                        echo json_encode($RSP);
+                        exit;
+                    }
+                    */
+
+                    $dt = [];
+                    $dt['th_name'] = get('title');
+                    $dt['th_achronic'] = get('acronic');
+                    $dt['th_description'] = '';
+                    $dt['th_status '] = get('visibility');
+                    $dt['th_terms'] = 0;
+                    $dt['th_version'] = '0';
+                    $dt['th_icone'] = 1;
+                    $dt['th_icone_custom'] = '';
+                    $dt['th_type'] = get('type');
+                    $dt['th_finality'] = get('finality');
+                    $dt['th_own '] = $userID;
+
+                    $dt = $Thesa->set($dt)->insert();
+                    $RSP['status'] = '200';
+                    $RSP['message'] = 'Thesaurus created';
+                    echo json_encode($RSP);
+                    exit;
+
+                break;
                 case 'saveDescription':
                     $Thesa = new \App\Models\Thesa\Index();
                     $dt = $_POST;

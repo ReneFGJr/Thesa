@@ -14,7 +14,24 @@ class Index extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = [
+        'id_th',
+        'th_name',
+        'th_achronic',
+        'th_status',
+        'th_cover',
+        'th_description',
+        'th_type',
+        'th_icone',
+        'th_icone_custom',
+        'th_visibility',
+        'th_user_create',
+        'th_user_update',
+        'th_date_create',
+        'th_date_update'
+        ,'th_terms',
+
+    ];
 
     // Dates
     protected $useTimestamps = false;
