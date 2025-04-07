@@ -54,6 +54,22 @@ class Index extends Model
     {
         $Descriptions = new \App\Models\Thesa\Descriptions();
         $dt = array_merge($dt, $_GET);
+
+        if (isset($dt['title']) and (isset($dt['acronic'])) and (isset($dt['thesaurus'])))
+        {
+            $Thesa = new \App\Models\Thesa\Thesa();
+            $dd = [];
+            $dd['th_name'] = $dt['title'];
+            $dd['th_achronic'] = $dt['acronic'];
+            $Thesa->set($dd)->where('id_th', $dt['thesaurus'])->update();
+
+            $dd = [];
+            $dd['status'] = '500';
+            $dd['message'] = 'Title and Acronic saved';
+            $dd['data'] = $dt;
+            return $dd;
+        }
+
         if ((!isset($dt['field'])) or (!isset($dt['thesaurus'])))
         {
             $dd = [];

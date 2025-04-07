@@ -14,6 +14,7 @@ export class ConfigTitleComponent {
   formAction: FormGroup;
   orign_title: string = '';
   orign_achronic: string = '';
+  showSuccess: boolean = false;
 
   data: any = [];
 
@@ -50,11 +51,17 @@ export class ConfigTitleComponent {
   }
 
   onSubmit(): void {
-    console.log('Valor enviado:', this.formAction.value);
     this.serviceThesa
-      .api_post('saveTh', this.formAction.value)
+      .api_post('saveDescription', this.formAction.value)
       .subscribe((res) => {
         this.data = res;
+        // Exibe a mensagem de sucesso
+        this.showSuccess = true;
+
+        // Oculta após 5 segundos
+        setTimeout(() => {
+          this.showSuccess = false;
+        }, 5000);
       });
   }
 }

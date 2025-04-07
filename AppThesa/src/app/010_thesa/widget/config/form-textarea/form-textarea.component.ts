@@ -12,6 +12,7 @@ export class FormTextareaComponent {
   @Input() thesaID: number = 0;
   @Input() field: string = 'Introduction';
   orign: string = '';
+  showSuccess: boolean = false;
 
   formAction: FormGroup;
 
@@ -58,6 +59,14 @@ export class FormTextareaComponent {
       .api_post('saveDescription', this.formAction.value)
       .subscribe((res) => {
         this.data = res;
+
+        // Exibe a mensagem de sucesso
+        this.showSuccess = true;
+
+        // Oculta após 5 segundos
+        setTimeout(() => {
+          this.showSuccess = false;
+        }, 5000);
       });
   }
 }

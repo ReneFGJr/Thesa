@@ -24,4 +24,9 @@
     <span class="btn btn-outline-warning ms-2" (click)="loadOrigin()"
       >Cancelar</span>
   </form>
+
+  <div *ngIf="showSuccess" class="alert alert-success mt-4" role="alert">
+    Dados salvos com sucesso!
+  </div>
+
 </div>
