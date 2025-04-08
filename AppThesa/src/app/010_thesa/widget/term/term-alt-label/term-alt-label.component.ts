@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-term-alt-label',
@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   styleUrl: './term-alt-label.component.scss'
 })
 export class TermAltLabelComponent {
-
+  @Input() termID:number = 0;
+  @Input() thesaID:number = 0;
+  @Input() property:string = '';
 }

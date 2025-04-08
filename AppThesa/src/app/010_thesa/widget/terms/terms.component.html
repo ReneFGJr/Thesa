@@ -124,7 +124,7 @@
   </div>
   <div class="offcanvas-body">
     <!-- Conteúdo do painel -->
-    <app-concept-create [thesaID]="thesa"></app-concept-create>
+    <app-term-alt-label [termID]="termID" [thesaID]="thesa" [property]="'altLabel'"></app-term-alt-label>
   </div>
 </div>
 
@@ -142,6 +142,6 @@
   </div>
   <div class="offcanvas-body">
     <!-- Conteúdo do painel -->
-    <app-concept-create [thesaID]="thesa"></app-concept-create>
+    <app-term-alt-label [termID]="termID" [thesaID]="thesa" [property]="'hiddenLabel'"></app-term-alt-label>
   </div>
 </div>
