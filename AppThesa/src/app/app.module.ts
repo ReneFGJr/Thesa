@@ -47,6 +47,8 @@ import { ConfigLicenseComponent } from './010_thesa/widget/config/config-license
 import { ThesaCreateComponent } from './010_thesa/page/thesa-create/thesa-create.component';
 import { TermInputComponent } from './010_thesa/widget/term-input/term-input.component';
 import { ConceptCreateComponent } from './010_thesa/widget/concept-create/concept-create.component';
+import { TermPrefLabelComponent } from './010_thesa/widget/term/term-pref-label/term-pref-label.component';
+import { TermAltLabelComponent } from './010_thesa/widget/term/term-alt-label/term-alt-label.component';
 
 @NgModule({
   declarations: [
@@ -90,6 +92,8 @@ import { ConceptCreateComponent } from './010_thesa/widget/concept-create/concep
     ThesaCreateComponent,
     TermInputComponent,
     ConceptCreateComponent,
+    TermPrefLabelComponent,
+    TermAltLabelComponent,
   ],
   imports: [
     BrowserModule,

@@ -18,6 +18,7 @@ export class TermsComponent {
   selectedConcept: any = null;
   editMode = true;
   termTotal = 0;
+  termID = 0;
 
   constructor(
     private serviceThesa: ServiceThesaService,
@@ -55,8 +56,7 @@ export class TermsComponent {
   }
 
   onSelectTerm(term: any) {
-    console.log('Selecionado:', term);
-    // faça algo com o termo selecionado...
     this.termChange.emit(term);
+    this.termID = term;
   }
 }
