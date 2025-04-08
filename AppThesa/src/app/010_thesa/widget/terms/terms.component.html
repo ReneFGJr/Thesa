@@ -1,10 +1,78 @@
-<!-- Campo de busca -->
-<input
-  type="text"
-  class="form-control mb-2"
-  placeholder="Buscar termo..."
-  [(ngModel)]="filterText"
-/>
+<!-- Caixa de input com botão "plus" embutido -->
+<div class="input-group mb-2">
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Buscar termo..."
+    [(ngModel)]="filterText"
+  />
+
+  <span *ngIf="editMode && termTotal > 0"
+    class="input-group-text"
+    role="button"
+    title="Termos não associados"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#termPainel"
+    aria-controls="termPainel"
+    style="background-color: #CCf; color: #000"
+  >
+    {{termTotal}}
+  </span>
+
+  <span *ngIf="editMode"
+    class="input-group-text"
+    role="button"
+    title="Incluir novos termos"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#novoPainel"
+    aria-controls="novoPainel"
+  >
+    <i class="bi bi-plus-circle"></i>
+  </span>
+
+
+</div>
+
+<!-- Offcanvas (painel lateral tipo PANEL) -->
+<div
+  class="offcanvas offcanvas-end"
+  tabindex="-1"
+  id="novoPainel"
+  aria-labelledby="novoPainelLabel"
+>
+  <div class="offcanvas-header">
+    <h5 id="novoPainelLabel">Novo Item</h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Fechar"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    <!-- Conteúdo do painel -->
+    <app-term-input [thesaID]="thesa"></app-term-input>
+  </div>
+</div>
+
+
+<!-- Offcanvas (Painel lateral tipo PANEL) -->
+<div
+  class="offcanvas offcanvas-end"
+  tabindex="-1"
+  id="termPainel"
+  aria-labelledby="termPainelLabel"
+>
+  <div class="offcanvas-header">
+    <h5 id="termPainelLabel">Novo Item</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+  </div>
+  <div class="offcanvas-body">
+    <!-- Conteúdo do painel -->
+    Aqui você pode colocar o conteúdo da nova tela.
+  </div>
+</div>
+
 
 <!-- Lista de termos com DIVs -->
 <div

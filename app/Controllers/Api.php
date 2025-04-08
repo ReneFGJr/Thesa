@@ -22,15 +22,19 @@ class Api extends BaseController
         {
             $RSP['status'] = '500';
             $RSP['messagem'] = 'APIKEY Error';
+            $RSP['situation'] = 'PRE';
+            $RSP['apikey'] = get("APIKEY").get("apikey");
             return $RSP;
 
         }
     public function index($arg1='',$arg2='',$arg3='')
     {
+        global $user;
         $RSP = [];
 
         $user = 0;
-        $apikey = get("APIKEY").get("apikey");
+        $apikey = get("APIKEY") . get("apikey");
+        $RSP['key'] = $apikey;
         if ($apikey != '')
             {
                 $Socials = new \App\Models\Socials();
@@ -43,10 +47,8 @@ class Api extends BaseController
         switch($arg1)
             {
                 case 'createThesa':
-                    $userID = 1;
+                    $userID = $user;
                     $Thesa = new \App\Models\Thesa\Index();
-
-
                     $Thesa->where('th_achronic', get('acronic'))->first();
                     if ($Thesa->th_achronic != '') {
                         $RSP['status'] = '400';
@@ -112,7 +114,7 @@ class Api extends BaseController
                             $RSP = $this->apiError();
                         } else {
                             $Term = new \App\Models\Term\Index();
-                            $RSP = $Term->appendTerm();
+                            $RSP = $Term->appendTerm($user);
                         }
                     break;
                 case 'import':

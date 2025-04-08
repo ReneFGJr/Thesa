@@ -75,24 +75,15 @@ class Index extends Model
         return $RSP;
     }
 
-    function appendTerm()
+    function appendTerm($user)
     {
         $RSP = [];
         $RSP['status'] = '200';
         $Language = new \App\Models\Language\Index();
         $TermsTh = new \App\Models\Term\TermsTh();
 
-        $apikey = get("APIKEY");
-
-        $Socials = new \App\Models\Socials();
-        if ($apikey == '') {
-            $RSP['status'] = '500';
-            $RSP['message'] = 'APIKEY not informed';
-            return $RSP;
-        }
-
         /*********************** Thesauro */
-        $th = get("th");
+        $th = get("thesaID");
         if ($th == '') {
             $RSP['status'] = '500';
             $RSP['message'] = 'Thesaurus ID not informed';
@@ -107,14 +98,6 @@ class Index extends Model
             return $RSP;
         }
 
-        /********************* Acesso Autorizado */
-        $user = $Socials->validaAPIKEY($apikey);
-        if ($user <= 0)
-            {
-                $RSP['status'] = '500';
-                $RSP['message'] = 'Usuer invalid';
-                return $RSP;
-            }
 
         $Collaborators = new \App\Models\Thesa\Collaborators();
         $Auth = $Collaborators->authorizedSave($th,$user);
@@ -128,7 +111,7 @@ class Index extends Model
         if (!isset($lang['id_lg']))
             {
             $RSP['status'] = '500';
-            $RSP['message'] = 'Language not informed (lang)';
+            $RSP['message'] = 'Language not informed ('.$lang.')';
             return $RSP;
             }
         $langID = $lang['id_lg'];

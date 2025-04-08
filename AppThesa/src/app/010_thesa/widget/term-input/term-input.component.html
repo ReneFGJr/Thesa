@@ -1,0 +1,26 @@
+<div class="container mt-4">
+  <form [formGroup]="formAction" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <textarea id="desc" class="form-control" rows="10" formControlName="terms"></textarea>
+    </div>
+
+  <div *ngIf="showError" class="alert alert-warning mt-4" role="alert">
+    {{messageError}}
+  </div>
+
+
+    <div class="mb-3">
+      <label for="desc" class="form-label">Selecione o idioma do termo</label>
+      <br><input type="radio" id="lang" formControlName="lang" value="por" /> Português
+      <br><input type="radio" id="lang" formControlName="lang" value="eng" /> Inglês
+      <br><input type="radio" id="lang" formControlName="lang" value="esp" /> Espanhol
+    </div>
+
+    <button type="submit" class="btn btn-outline-primary">Salvar</button>
+    <span class="btn btn-outline-warning ms-2" (click)="loadOrigin()">Cancelar</span>
+  </form>
+
+  <div *ngIf="showSuccess" class="alert alert-success mt-4" role="alert">
+    Dados salvos com sucesso!
+  </div>
+</div>

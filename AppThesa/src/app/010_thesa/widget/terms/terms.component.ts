@@ -11,10 +11,13 @@ import { ActivatedRoute } from '@angular/router';
 export class TermsComponent {
   @Input() thesa: number = 0;
   @Output() termChange = new EventEmitter<any>();
+  termsList: any;
   terms: any;
   filterText: string = '';
   selectedTerm: any = null;
   selectedConcept: any = null;
+  editMode = true;
+  termTotal = 0;
 
   constructor(
     private serviceThesa: ServiceThesaService,
@@ -26,6 +29,20 @@ export class TermsComponent {
     this.serviceThesa.api_post('terms/' + this.thesa, []).subscribe(
       (res) => {
         this.terms = res;
+      },
+      (error) => error
+    );
+    this.updateTermosList()
+
+  }
+
+  updateTermosList() {
+        this.serviceThesa.api_post('term_list/' + this.thesa, []).subscribe(
+      (res) => {
+        this.termsList = res;
+        this.termTotal = this.termsList.Terms.length;
+        console.log('Termos:', this.termsList.Terms);
+        console.log('Total de termos:', this.termTotal);
       },
       (error) => error
     );

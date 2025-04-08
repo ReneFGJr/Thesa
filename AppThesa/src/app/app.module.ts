@@ -45,6 +45,7 @@ import { FormTextareaComponent } from './010_thesa/widget/config/form-textarea/f
 import { ConfigTitleComponent } from './010_thesa/widget/config/config-title/config-title.component';
 import { ConfigLicenseComponent } from './010_thesa/widget/config/config-license/config-license.component';
 import { ThesaCreateComponent } from './010_thesa/page/thesa-create/thesa-create.component';
+import { TermInputComponent } from './010_thesa/widget/term-input/term-input.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { ThesaCreateComponent } from './010_thesa/page/thesa-create/thesa-create
     ConfigTitleComponent,
     ConfigLicenseComponent,
     ThesaCreateComponent,
+    TermInputComponent,
   ],
   imports: [
     BrowserModule,
