@@ -125,8 +125,8 @@ class Index extends Model
                     ### OK
                 }
             $itens = $dt['terms'];
-            $th = $dt['th'];
-            $APIKEY = get("apikey");
+            $RSP['xterms'] = $itens;
+            $th = $dt['thesaID'];
             $RSP['terms'] = explode(',',$itens);
 
             foreach($RSP['terms'] as $id=>$item)
