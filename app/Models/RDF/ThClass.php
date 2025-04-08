@@ -4,11 +4,11 @@ namespace App\Models\RDF;
 
 use CodeIgniter\Model;
 
-class ThProprity extends Model
+class ThClass extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'thesa_property';
-    protected $primaryKey       = 'id_p';
+    protected $table            = 'owl_vocabulary_vc';
+    protected $primaryKey       = 'id_vc';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
@@ -55,10 +55,10 @@ class ThProprity extends Model
                 } else {
                     $t = ['',$term];
                 }
-            $dt = $this->where('p_name',$t[1])->first();
+            $dt = $this->where('vc_label',$t[1])->first();
             if ($dt != '')
                 {
-                    return($dt['id_p']);
+                    return($dt['id_vc']);
                 } else {
                     echo "OPS CLASS/PROPRIETIES NOT FOUND - ".$term;
                     exit;

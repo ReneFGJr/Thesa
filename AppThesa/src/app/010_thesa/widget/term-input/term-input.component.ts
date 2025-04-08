@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output, output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
@@ -10,6 +10,7 @@ import { ServiceStorageService } from '../../../000_core/service/service-storage
 })
 export class TermInputComponent {
   @Input() thesaID: number = 0;
+  @Output() saved = new EventEmitter<string>();
   field: string = 'ds_term';
   orign: string = '';
   showSuccess: boolean = false;
@@ -35,18 +36,7 @@ export class TermInputComponent {
 
   // ⛳ Este método é chamado automaticamente quando @Input() muda
   ngOnChanges(): void {
-    this.formAction.patchValue({ thesaurus: this.thesaID });
-
-    this.serviceThesa
-      .api_post(
-        'getDescription/' + this.thesaID + '/' + this.formAction.value.field,
-        []
-      )
-
-      .subscribe((res) => {
-        this.data = res;
-        this.formAction.patchValue({ thesaID: this.thesaID });
-      });
+      this.formAction.patchValue({ thesaID: this.thesaID });
   }
 
   loadOrigin() {
@@ -64,6 +54,8 @@ export class TermInputComponent {
           // Exibe a mensagem de sucesso
           this.showSuccess = true;
           this.formAction.patchValue({ terms: '' });
+
+          this.saved.emit('1');
 
           // Oculta após 5 segundos
           setTimeout(() => {

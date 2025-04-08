@@ -168,6 +168,8 @@ class Index extends Model
                 ->where('c_th',$th)
                 ->orderby('term_name')
                 ->findAll();
+                echo $Concept->getlastquery();
+                exit;
             return $dt;
         }
 

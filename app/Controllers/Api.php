@@ -21,7 +21,7 @@ class Api extends BaseController
     public function apiError()
         {
             $RSP['status'] = '500';
-            $RSP['messagem'] = 'APIKEY Error';
+            $RSP['message'] = 'APIKEY Error';
             $RSP['situation'] = 'PRE';
             $RSP['apikey'] = get("APIKEY").get("apikey");
             return $RSP;

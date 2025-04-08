@@ -46,7 +46,8 @@ class Index extends Model
         {
             $RSP = [];
             $TermsTh = new \App\Models\Term\TermsTh();
-            $RDFclass = new \App\Models\RDF\ThProprity();
+            $RDFproprity = new \App\Models\RDF\ThProprity();
+            $RDFclass = new \App\Models\RDF\ThClass();
 
             $classID = $RDFclass->getClass('prefLabel');
             $RSP['class'] = $classID;
@@ -58,19 +59,21 @@ class Index extends Model
 
             if ($dt['term_th_concept'] == 0)
                 {
-                    $prop = $RDFclass->getClass('prefLabel');
+                    $prop = $RDFclass->getClass('Concept');
                     $RSP['prop'] = $prop;
                     $RSP['term'] = $id;
 
                     $dc = [];
                     $dc['c_th'] = $th;
                     $dc['c_ativo'] = 1;
-                    $dc['c_agency'] = 'th'.$th.':'.$id;
+                    $dc['c_agency'] = 'thesa2:'.$id;
 
                     $dd = $this->where('c_agency',$dc['c_agency'])->first();
                     if ($dd == [])
                         {
                             $idC = $this->set($dc)->insert();
+                            $dd = $this->where('c_agency', $dc['c_agency'])->first();
+                            $this->set('c_concept',$idC)->where('id_c',$idC)->update();
                         } else {
                             $idC = $dd['id_c'];
                         }
@@ -78,19 +81,42 @@ class Index extends Model
                     $RSP['concept'] = $idC;
 
                     /*********** PrefLabel */
+                    $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
+                    $da = $ThConceptPropriety
+                        ->where('ct_th',$th)
+                        ->where('ct_concept',$idC)
+                        ->where('ct_propriety',$prop)
+                        ->first();
+
+                    if ($da == [])
+                        {
+                            $prop = $RDFclass->getClass('prefLabel');
+                            $dd = [];
+                            $dd['ct_th'] = $th;
+                            $dd['ct_concept'] = $idC;
+                            $dd['ct_concept_2'] = 0;
+                            $dd['ct_propriety'] = $prop;
+                            $dd['ct_use'] = 0;
+                            $dd['ct_literal'] = $id;
+                            $dd['ct_resource'] = 0;
+                            $ThConceptPropriety->set($dd)->insert();
+                        } else {
+                            $ThConceptPropriety->set('ct_value',$id)->where('id_ct',$da['id_ct'])->update();
+                        }
+
                     $dd = [];
                     $dd['term_th_concept'] = $idC;
                     $TermsTh->set($dd)->where('term_th_id',$dt['term_th_id'])->update();
-                    echo "OK";
+                    return("Termo criado com sucesso: ".$idC);
+                } else {
+                    return('Termo já existe');
                 }
-
-            pre($dt);
         }
 
     function createConceptAPI($dt)
         {
             $RSP['result'] = '';
-            if (!isset($dt['it']))
+            if (!isset($dt['terms']))
                 {
                     $RSP['message'] = 'Termos não foram informados';
                     $RSP['status'] = '500';
@@ -98,21 +124,18 @@ class Index extends Model
                 } else {
                     ### OK
                 }
-            $itens = $dt['it'];
+            $itens = $dt['terms'];
             $th = $dt['th'];
             $APIKEY = get("apikey");
-            $RSP = [];
             $RSP['terms'] = explode(',',$itens);
 
             foreach($RSP['terms'] as $id=>$item)
                 {
-
                     foreach($RSP['terms'] as $id=>$item)
                         {
-                            $RSP['result'] .= $this->createConcept($item, $th) . '<br>';
+                            $RSP['result'] .= $this->createConcept($item, $th);
                         }
                 }
-            pre($RSP);
             return $RSP;
         }
 

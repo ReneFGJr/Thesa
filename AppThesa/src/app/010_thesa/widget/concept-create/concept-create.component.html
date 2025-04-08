@@ -4,9 +4,14 @@
       {{ messageError }}
     </div>
 
-    <div *ngFor="let nterm of data.Terms">
-      <input type="checkbox" value="{{ nterm.id }}" formControlName="term" /> {{ nterm.term }}
-    </div>
+<div *ngFor="let nterm of data.Terms">
+  <input
+    type="checkbox"
+    [value]="nterm.id"
+    (change)="onCheckboxChange($event)"
+  />
+  {{ nterm.term }}
+</div>
 
     <button type="submit" class="btn btn-outline-primary">Salvar</button>
     <span class="btn btn-outline-warning ms-2" (click)="loadOrigin()"
