@@ -42,6 +42,7 @@ export class TermInputComponent {
         'getDescription/' + this.thesaID + '/' + this.formAction.value.field,
         []
       )
+
       .subscribe((res) => {
         this.data = res;
         this.formAction.patchValue({ thesaID: this.thesaID });
