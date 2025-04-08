@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 export class TermComponent {
   @Input() term: number = 0;
   data: any;
+  editMode: boolean = true;
 
   constructor(
     private serviceThesa: ServiceThesaService,

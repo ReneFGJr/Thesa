@@ -7,4 +7,10 @@ import { Component, Input } from '@angular/core';
 })
 export class AltLabelComponent {
   @Input() terms: Array<any> | any;
+  @Input() editMode: boolean = false;
+
+  newAltLabel()
+    {
+      alert("AltLabelComponent: newAltLabel() is not implemented yet")
+    }
 }

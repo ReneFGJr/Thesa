@@ -7,5 +7,6 @@ import { Component, Input } from '@angular/core';
 })
 export class HiddenLabelComponent {
   @Input() terms: Array<any> | any;
+  @Input() editMode: boolean = false;
 
 }

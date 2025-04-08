@@ -10,11 +10,11 @@
     [value]="nterm.id"
     (change)="onCheckboxChange($event)"
   />
-  {{ nterm.term }}
+  {{ nterm.term }} <sup>{{nterm.lang}}</sup>
 </div>
 
-    <button type="submit" class="btn btn-outline-primary">Salvar</button>
-    <span class="btn btn-outline-warning ms-2" (click)="loadOrigin()"
+    <button type="submit" class="btn btn-outline-primary mt-4">Salvar</button>
+    <span class="btn btn-outline-warning ms-2 mt-4" (click)="loadOrigin()"
       >Cancelar</span
     >
   </form>

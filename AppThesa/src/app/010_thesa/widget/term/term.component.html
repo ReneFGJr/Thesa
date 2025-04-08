@@ -71,7 +71,6 @@
             Administrativo
           </button>
         </li>
-
       </ul>
 
       <!------------------------ TAB 1-->
@@ -84,32 +83,53 @@
         >
           <div class="container">
             <div class="row">
-          <div class="col-12 col-lg-6 col-md-6 col-sm-12">
-            <!-- PrefLabel-->
-            <app-pref-label [terms]="data.prefLabel"></app-pref-label>
-
-            <!-- Video -->
-            <app-video-play [medias]="data.medias"></app-video-play>
-          </div>
-
               <div class="col-12 col-lg-6 col-md-6 col-sm-12">
+                <!-- PrefLabel-->
+                <app-pref-label
+                  [terms]="data.prefLabel"
+                  [editMode]="editMode"
+                ></app-pref-label>
+
                 <!-- AltLabel-->
-                <app-alt-label [terms]="data.altLabel"></app-alt-label>
+                <app-alt-label
+                  [terms]="data.altLabel"
+                  [editMode]="editMode"
+                ></app-alt-label>
 
                 <!-- HiddenLabel-->
-                <app-hidden-label [terms]="data.hiddenLabel"></app-hidden-label>
+                <app-hidden-label
+                  [terms]="data.hiddenLabel"
+                  [editMode]="editMode"
+                ></app-hidden-label>
 
                 <!-- Broader -->
-                <app-broader [terms]="data.broader"></app-broader>
+                <app-broader
+                  [terms]="data.broader"
+                  [editMode]="editMode"
+                ></app-broader>
 
                 <!-- Narrow -->
-                <app-narrow [terms]="data.narrow"></app-narrow>
+                <app-narrow
+                  [terms]="data.narrow"
+                  [editMode]="editMode"
+                ></app-narrow>
 
                 <!-- Related -->
-                <app-related [terms]="data.related"></app-related>
+                <app-related
+                  [terms]="data.related"
+                  [editMode]="editMode"
+                ></app-related>
 
                 <!-- Notes-->
-                <app-notes [notes]="data.notes"></app-notes>
+                <app-notes
+                  [notes]="data.notes"
+                  [editMode]="editMode"
+                ></app-notes>
+              </div>
+
+              <div class="col-12 col-lg-6 col-md-6 col-sm-12">
+                <!-- Video -->
+                <app-video-play [medias]="data.medias"></app-video-play>
               </div>
             </div>
           </div>
@@ -121,7 +141,7 @@
           aria-labelledby="profile-tab"
         >
           <h2 class="mb-3">RDF</h2>
-          <pre class="lead">{{data | json}}</pre>
+          <pre class="lead">{{ data | json }}</pre>
         </div>
         <div
           class="tab-pane fade"
@@ -134,15 +154,15 @@
         </div>
       </div>
 
-        <div
-          class="tab-pane fade"
-          id="manager"
-          role="tabpanel"
-          aria-labelledby="profile-tab"
-        >
-          <h2 class="mb-3">Dados Administrativos</h2>
-          <pre class="lead">{{data | json}}</pre>
-        </div>
+      <div
+        class="tab-pane fade"
+        id="manager"
+        role="tabpanel"
+        aria-labelledby="profile-tab"
+      >
+        <h2 class="mb-3">Dados Administrativos</h2>
+        <pre class="lead">{{ data | json }}</pre>
+      </div>
     </div>
 
     <!-- -->

@@ -6,7 +6,7 @@
     placeholder="Buscar termo..."
     [(ngModel)]="filterText"
   />
-
+  <!------- Termos não associados-->
   <span *ngIf="editMode && termTotal > 0"
     class="input-group-text"
     role="button"
@@ -41,7 +41,7 @@
   aria-labelledby="novoPainelLabel"
 >
   <div class="offcanvas-header">
-    <h5 id="novoPainelLabel">Novo Item</h5>
+    <h5 id="novoPainelLabel">Novos termos</h5>
     <button
       type="button"
       class="btn-close"
@@ -65,7 +65,7 @@
   aria-labelledby="termPainelLabel"
 >
   <div class="offcanvas-header">
-    <h5 id="termPainelLabel">Novo Item</h5>
+    <h5 id="termPainelLabel">Termos para candidatos a conceito</h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
   </div>
   <div class="offcanvas-body">
@@ -88,5 +88,59 @@
     class="link option_select"
   >
     {{ term.Term }}
+  </div>
+</div>
+
+<!-- Offcanvas (Painel lateral tipo PANEL) -->
+<!-------------------------------------------------------------------------- Concept-->
+<div
+  class="offcanvas offcanvas-end"
+  tabindex="-1"
+  id="termPrefLabel"
+  aria-labelledby="termPrefLabel"
+>
+  <div class="offcanvas-header">
+    <h5 id="termPrefLabel">Termos Prefrenciais</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+  </div>
+  <div class="offcanvas-body">
+    <!-- Conteúdo do painel -->
+    <app-concept-create [thesaID]="thesa"></app-concept-create>
+  </div>
+</div>
+
+<!-- Offcanvas (Painel lateral tipo PANEL) -->
+<!-------------------------------------------------------------------------- Concept-->
+<div
+  class="offcanvas offcanvas-end"
+  tabindex="-1"
+  id="termAltLabel"
+  aria-labelledby="termAltLabel"
+>
+  <div class="offcanvas-header">
+    <h5 id="termAltLabel">Termos Alternativo</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+  </div>
+  <div class="offcanvas-body">
+    <!-- Conteúdo do painel -->
+    <app-concept-create [thesaID]="thesa"></app-concept-create>
+  </div>
+</div>
+
+<!-- Offcanvas (Painel lateral tipo PANEL) -->
+<!-------------------------------------------------------------------------- Concept-->
+<div
+  class="offcanvas offcanvas-end"
+  tabindex="-1"
+  id="termHiddenLabel"
+  aria-labelledby="termHiddenLabel"
+>
+  <div class="offcanvas-header">
+    <h5 id="termHiddenLabel">Termos Ocultos</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+  </div>
+  <div class="offcanvas-body">
+    <!-- Conteúdo do painel -->
+    <app-concept-create [thesaID]="thesa"></app-concept-create>
   </div>
 </div>

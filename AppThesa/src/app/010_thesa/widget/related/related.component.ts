@@ -3,8 +3,14 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'app-related',
   templateUrl: './related.component.html',
-  styleUrl: './related.component.scss'
+  styleUrl: './related.component.scss',
 })
 export class RelatedComponent {
- @Input() terms: Array<any> | any;
+  @Input() terms: Array<any> | any;
+  @Input() editMode: boolean = false;
+
+  newRelated()
+    {
+      alert("RelatedComponent: newRelated() is not implemented yet")
+    }
 }

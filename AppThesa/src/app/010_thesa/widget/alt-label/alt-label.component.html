@@ -1,5 +1,14 @@
-<div *ngIf="terms && terms.length > 0" class="mt-2">
-  <h6>Termos alternativos</h6>
+<div *ngIf="(terms && terms.length > 0) || (editMode)" class="mt-2">
+  <h6>Termos alternativos
+    <span *ngIf="editMode"
+    class="bi bi-plus-circle link"
+    role="button"
+    title="Termos não associados"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#termAltLabel"
+    aria-controls="termAltLabel"
+  ></span>
+  </h6>
 
   <div
     *ngFor="let term of terms"

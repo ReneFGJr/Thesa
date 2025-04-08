@@ -1,5 +1,5 @@
-<div *ngIf="terms && terms.length > 0" class="mt-2">
-  <h6>Relacionado (TR)</h6>
+<div *ngIf="(terms && terms.length > 0) || (editMode)" class="mt-2">
+  <h6>Relacionado (TR) <i *ngIf="editMode" class="bi bi-plus-circle link" (click)="newRelated()"></i></h6>
   <div
     *ngFor="let term of terms"
     class="bold"

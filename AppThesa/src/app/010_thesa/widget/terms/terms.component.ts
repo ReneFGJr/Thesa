@@ -41,8 +41,6 @@ export class TermsComponent {
       (res) => {
         this.termsList = res;
         this.termTotal = this.termsList.Terms.length;
-        console.log('Termos:', this.termsList.Terms);
-        console.log('Total de termos:', this.termTotal);
       },
       (error) => error
     );

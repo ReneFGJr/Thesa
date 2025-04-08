@@ -62,8 +62,9 @@ class TermsTh extends Model
         }
 
         $dt = $this
-            ->select('id_term as id, term_name as term')
+            ->select('id_term as id, term_name as term, lg_code as lang')
             ->join('thesa_terms', 'term_th_term = id_term')
+            ->join('language', 'term_lang = id_lg', 'LEFT')
             ->where('term_th_thesa', $th)
             ->where('term_th_concept', 0)
             ->orderBy('term_name')
