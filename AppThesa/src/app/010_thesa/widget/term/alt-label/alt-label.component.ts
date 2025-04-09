@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-alt-label',
+  selector: 'app-term-alt-label',
   templateUrl: './alt-label.component.html',
   styleUrl: './alt-label.component.scss',
 })
@@ -10,8 +10,7 @@ export class AltLabelComponent {
   @Input() editMode: boolean = false;
   @Input() termID: number = 0;
 
-  newAltLabel()
-    {
-      alert("AltLabelComponent: newAltLabel() is not implemented yet")
-    }
+
+
+
 }

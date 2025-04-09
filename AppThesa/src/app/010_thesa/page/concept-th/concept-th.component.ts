@@ -12,6 +12,7 @@ export class ConceptTHComponent {
   data: any;
   dataTH: any;
   thesa: any = {};
+  thesaID: number = 0;
   termID: number = 0;
   constructor(
     private serviceThesa: ServiceThesaService,
@@ -20,22 +21,26 @@ export class ConceptTHComponent {
   ) {}
 
   ngOnInit() {
+    console.log('#1-initTerm');
     this.data = this.router.params.subscribe((params) => {
       this.termID = +params['id']; // (+) converts string 'id' to a number
 
       this.serviceThesa.api_post('c/' + this.termID, []).subscribe((res) => {
         this.data = res;
-        this.thesa = this.data.c_th;
+        this.thesaID = this.data.c_th;
 
         /* Dados do Thesauro */
-        this.serviceThesa.api_post('th/' + this.thesa, []).subscribe((res) => {
-          this.thesa = res;
-        });
+        this.serviceThesa
+          .api_post('th/' + this.thesaID, [])
+          .subscribe((res) => {
+            this.thesa = res;
+          });
       });
     });
   }
 
   changeTerm(term: any) {
+    console.log('#21-changeTerm', term);
     const id = Number(term);
     if (!isNaN(id)) {
       this.termID = id;

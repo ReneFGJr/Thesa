@@ -11,8 +11,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ThesaComponent {
   data: any;
   thesa: any;
-  id: number = 0;
   termID: number = 0;
+  thesaID: number = 0;
   constructor(
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService,
@@ -21,9 +21,9 @@ export class ThesaComponent {
 
   ngOnInit() {
     this.data = this.router.params.subscribe((params) => {
-      this.id = +params['id']; // (+) converts string 'id' to a number
+      this.thesaID = +params['id']; // (+) converts string 'id' to a number
 
-      this.serviceThesa.api_post('th/' + this.id, []).subscribe(
+      this.serviceThesa.api_post('th/' + this.thesaID, []).subscribe(
         (res) => {
           this.data = res;
         },

@@ -11,9 +11,11 @@ import { Offcanvas } from 'bootstrap';
 export class ConceptShowComponent {
   @ViewChild('offcanvasNovo') offcanvasNovo!: ElementRef;
   @Input() conceptID: number = 0;
-  @Output() actionAC: EventEmitter<any> = new EventEmitter<any>();
+  actionAC: string = '';
   data: any;
+  @Input() thesaID: number = 0;
   editMode: boolean = true;
+  terms: Array<any> = [];
 
   tabs: Array<any> = [
     {
@@ -31,7 +33,21 @@ export class ConceptShowComponent {
     private router: ActivatedRoute
   ) {}
 
+  updateTerms() {
+    let url = 'term_list/' + this.thesaID;
+    console.log('URL:', url);
+    this.serviceThesa.api_post(url, []).subscribe(
+      (res) => {
+        this.terms = res;
+        console.log(this.terms);
+      },
+      (error) => error
+    );
+  }
+
   action(ev: Event) {
+    this.updateTerms();
+    this.actionAC = ev.toString();
     this.openConceptPanel('popupConcept');
   }
 

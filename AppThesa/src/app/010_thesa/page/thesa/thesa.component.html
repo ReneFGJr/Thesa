@@ -2,10 +2,10 @@
 <div class="container">
   <div class="row">
     <div class="col-4 col-lg-4 col-md-4 col-sm-12">
-      <app-terms [thesa]="id" (termChange)="changeTerm($event)"></app-terms>
+      <app-terms [thesa]="thesaID" (termChange)="changeTerm($event)"></app-terms>
     </div>
     <div class="col-8 col-lg-8 col-md-8 col-sm-12">
-      <app-concept-show *ngIf="termID > 0" [conceptID]="termID"></app-concept-show>
+      <app-concept-show *ngIf="termID > 0" [conceptID]="termID" [thesaID]="thesaID"></app-concept-show>
     </div>
   </div>
 </div>
