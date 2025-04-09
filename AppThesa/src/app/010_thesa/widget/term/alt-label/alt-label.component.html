@@ -14,4 +14,8 @@
     {{ term.term }}
     <sup>{{ term.lang }}</sup>
   </div>
+
+  <button class="btn btn-primary btn-sm" (click)="addLabel()" [disabled]="!formAction.valid">
+    <i class="bi bi-plus-circle"></i> Adicionar
+  </button>
 </div>

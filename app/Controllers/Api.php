@@ -46,6 +46,10 @@ class Api extends BaseController
 
         switch($arg1)
             {
+                case 'relateTerms':
+                    $Term = new \App\Models\Term\Index();
+                    $RSP = $Term->registerTerm($user);
+                    break;
                 case 'createThesa':
                     $userID = $user;
                     $Thesa = new \App\Models\Thesa\Index();
@@ -80,10 +84,7 @@ class Api extends BaseController
                     $dt = $Thesa->set($dt)->insert();
                     $RSP['status'] = '200';
                     $RSP['message'] = 'Thesaurus created';
-                    echo json_encode($RSP);
-                    exit;
-
-                break;
+                    break;
                 case 'saveDescription':
                     $Thesa = new \App\Models\Thesa\Index();
                     $dt = $_POST;

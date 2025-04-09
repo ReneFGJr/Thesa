@@ -14,7 +14,18 @@ class TermConcept extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = [
+        'id_ct',
+        'ct_propriety',
+        'ct_th',
+        'ct_concept',
+        'ct_literal',
+        'ct_use',
+        'ct_resource',
+        'ct_concept_2',
+        'ct_concept_2',
+        'ct_concept_2_qualify'
+    ];
 
     // Dates
     protected $useTimestamps = false;
@@ -39,6 +50,45 @@ class TermConcept extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    function register_term_label($thesaID, $conceptID, $termID, $prop)
+        {
+            $ThProprity = new \App\Models\RDF\ThProprity();
+            $propID = $ThProprity->getClass($prop);
+
+            $dd = [];
+            $dt = $this->where('ct_th', $thesaID)
+            ->where('ct_concept', $conceptID)
+            ->where('ct_literal', $termID)
+            ->findAll();
+            /* Checa se o termo já existe */
+            if ($dt == [])
+                {
+                    if ($propID == 0) {
+                        $RSP['status'] = '500';
+                        $RSP['message'] = 'Property not found';
+                        return $RSP;
+                    }
+                    $dd['ct_propriety'] = $propID;
+                    $dd['ct_th'] = $thesaID;
+                    $dd['ct_concept'] = $conceptID;
+                    $dd['ct_literal'] = $termID;
+                    $dd['ct_use'] = 1;
+                    $dd['ct_resoult'] = 0;
+                    $dd['ct_concept_2'] = 0;
+                    $dd['ct_concept_2_qualify'] = 0;
+                    $idp = $this->set($dd)->insert();
+                    $RSP['status'] = '200';
+                    $RSP['message'] = 'Term registered in thesaurus '.$idp;
+
+                } else {
+                    $RSP['status'] = '500';
+                    $RSP['message'] = 'Term already registered in thesaurus';
+                    return $RSP;
+                }
+
+
+        }
 
     function le($id, $prop='')
         {

@@ -76,11 +76,17 @@
     ></button>
   </div>
   <div class="offcanvas-body">
-    <!-- Conteúdo do painel -->
-    <ng-container *ngIf="actionAC==='altLabel'">
-      <app-term-alt-label [editMode]="editMode" [terms]="terms?.Terms"></app-term-alt-label>
-    </ng-container>
-    <br>
+      <!-- Conteúdo do painel -->
+      <ng-container *ngIf="actionAC === 'altLabel' || actionAC === 'hiddenLabel'">
+        <app-term-alt-label
+          [editMode]="editMode"
+          [terms]="terms?.Terms"
+          [actionCV]="actionAC"
+          [conceptID]="conceptID"
+          [thesaID]="thesaID">
+        </app-term-alt-label>
+      </ng-container>
+
     ==>{{actionAC}}
     <br>
     ==>{{thesaID}}

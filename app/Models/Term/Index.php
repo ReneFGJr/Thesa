@@ -42,6 +42,57 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function registerTerm($user)
+        {
+            $RSP = [];
+            $RSP = $_POST;
+
+            $Term = new \App\Models\Term\Index();
+            $TermsTh = new \App\Models\Term\TermsTh();
+            $TermConcept = new \App\Models\Term\TermConcept();
+
+            $thesaID = get("thesaID");
+            if ($thesaID == '') {
+                $RSP['status'] = '500';
+                $RSP['message'] = 'Thesaurus ID not informed';
+                return $RSP;
+            }
+            $terms = get("terms");
+            $terms = explode(',', $terms);
+            $conceptID = get("conceptID");
+            $prop = get("verb");
+
+            foreach($terms as $id=>$idTerm)
+                {
+                /********************************* Localiza Termo */
+                $dt = $TermsTh->where('term_th_thesa', $thesaID)
+                ->where('term_th_term', $idTerm)
+                ->first();
+                if ($dt == []) {
+                    $RSP['status'] = '500';
+                    $RSP['message'] = 'Term not found in Thesaurus';
+                    return $RSP;
+                } else {
+                /* Cria o vinculo */
+                    $RSP['result'] = $TermConcept->register_term_label($thesaID, $conceptID, $idTerm, $prop);
+                    /* Vincula termo com o conceito */
+                    if ($dt['term_th_concept'] == 0) {
+                        $dd['term_th_concept'] = $conceptID;
+                    $TermsTh->set($dd)->where('term_th_id', $dt['term_th_id'])->update();
+                } else {
+                        $RSP['status'] = '500';
+                        $RSP['message'] = 'Term already related to a concept';
+                        return $RSP;
+                    }
+                }
+            }
+
+            $RSP['status'] = '200';
+            $RSP['message'] = 'Processado';
+            $RSP['terms'] = get("terms");
+            return $RSP;
+        }
+
     function listPrefTerm($termID)
         {
             $RSP = [];

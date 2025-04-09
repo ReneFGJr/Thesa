@@ -17,7 +17,6 @@ export class ConceptCreateComponent {
   messageError: string = '';
 
   formAction: FormGroup;
-
   data: any = [];
 
   constructor(

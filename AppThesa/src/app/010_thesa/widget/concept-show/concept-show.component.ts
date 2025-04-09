@@ -35,6 +35,7 @@ export class ConceptShowComponent {
 
   updateTerms() {
     let url = 'term_list/' + this.thesaID;
+
     console.log('URL:', url);
     this.serviceThesa.api_post(url, []).subscribe(
       (res) => {

@@ -177,6 +177,33 @@ curl -X GET https://api.meusistema.com/users \
               </td>
             </tr>
 
+
+
+            <tr>
+              <td>
+                <a href="{{ url }}/relateTerms" target="_blank"
+                  >/api/relateTerms</a
+                >
+              </td>
+              <td class="text-center">POST</td>
+              <td>
+                <ul>
+                  <li>:apikey - API key do usuário</li>
+                  <li>
+                    :terms - ID dos termos a serem relacionados
+                  </li>
+                  <li>:thesaID - Número (ID) do tesauro</li>
+                  <li>
+                    :verb - Verbo de relacionamento
+                    <ul>
+                      <li>altLabel: Termo alternativo</li>
+                      <li>hiddenLabel: Termo oculto</li>
+                    </ul>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+
             <tr>
               <td>
                 <a href="{{ url }}/saveDescription" target="_blank"
