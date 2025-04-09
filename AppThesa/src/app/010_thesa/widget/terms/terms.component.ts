@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
 import { ActivatedRoute } from '@angular/router';
+import { Offcanvas } from 'bootstrap';
 
 @Component({
   selector: 'app-terms',
@@ -9,8 +10,12 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './terms.component.scss',
 })
 export class TermsComponent {
+  @ViewChild('offcanvasNovo') offcanvasNovo!: ElementRef;
   @Input() thesa: number = 0;
-  @Output() termChange = new EventEmitter<any>();
+  @Input() actionVC: Array<any> = [];
+  @Output() termChange: EventEmitter<any> = new EventEmitter<any>();
+
+  action: string = '';
   termsList: any;
   terms: any;
   filterText: string = '';
@@ -19,12 +24,19 @@ export class TermsComponent {
   editMode = true;
   termTotal = 0;
   termID = 0;
+  isPanelOpen = false;
 
   constructor(
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService,
     private router: ActivatedRoute
   ) {}
+
+  //<!-------------- TooglePanel --------------->
+  togglePanel(action: string) {
+    const bsOffcanvas = new Offcanvas(this.offcanvasNovo.nativeElement);
+    bsOffcanvas.show();
+  }
 
   ngOnChanges() {
     this.serviceThesa.api_post('terms/' + this.thesa, []).subscribe(
@@ -33,12 +45,11 @@ export class TermsComponent {
       },
       (error) => error
     );
-    this.updateTermosList()
-
+    this.updateTermosList();
   }
 
   updateTermosList() {
-        this.serviceThesa.api_post('term_list/' + this.thesa, []).subscribe(
+    this.serviceThesa.api_post('term_list/' + this.thesa, []).subscribe(
       (res) => {
         this.termsList = res;
         this.termTotal = this.termsList.Terms.length;
@@ -56,7 +67,7 @@ export class TermsComponent {
   }
 
   onSelectTerm(term: any) {
-    this.termChange.emit(term);
     this.termID = term;
+    this.termChange.emit(term);
   }
 }

@@ -9,6 +9,13 @@ export class PrefLabelComponent {
   @Input() terms: Array<any> | any;
   @Input() editMode: boolean = false;
   @Input() thesa: number = 0;
+  @Input() termID: number = 0;
+
+  ngOnInit()
+    {
+      console.log("PrefLabelComponent: ngOnInit()")
+      console.log("PrefLabelComponent: terms", this.terms)
+    }
 
   newPrefLabel()
     {

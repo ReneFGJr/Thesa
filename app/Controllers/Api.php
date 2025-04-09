@@ -108,6 +108,10 @@ class Api extends BaseController
                     $Term = new \App\Models\Term\Index();
                     $RSP = $Term->listTerm($arg2);
                     break;
+                case 'listPrefTerm':
+                    $Term = new \App\Models\Term\Index();
+                    $RSP = $Term->listPrefTerm($arg2);
+                    break;
                 case 'term_add':
                     if ($user == 0)
                         {

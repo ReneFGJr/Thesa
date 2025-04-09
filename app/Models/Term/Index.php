@@ -42,6 +42,16 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function listPrefTerm($termID)
+        {
+            $RSP = [];
+            $RSP['status'] = '200';
+            $RSP['message'] = 'OK';
+            $RSP['terms'] = [];
+            $RSP['termID'] = $termID;
+            return $RSP;
+        }
+
     function register($term, $lang)
     {
         $dt = $this

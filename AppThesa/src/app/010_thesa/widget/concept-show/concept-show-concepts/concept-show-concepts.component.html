@@ -1,0 +1,6 @@
+
+<app-term-label (action)="action($event)" [termID]="data?.c_concept" [terms]="data?.broader" [label]="'broader'" [editMode]="editMode"></app-term-label>
+
+<app-term-label (action)="action($event)" [termID]="data?.c_concept" [terms]="data?.narrow" [label]="'narrow'" [editMode]="editMode"></app-term-label>
+
+<app-term-label (action)="action($event)" [termID]="data?.c_concept" [terms]="data?.relations" [label]="'related'" [editMode]="editMode"></app-term-label>

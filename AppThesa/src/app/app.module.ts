@@ -21,13 +21,12 @@ import { ThesaComponent } from './010_thesa/page/thesa/thesa.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ThShowComponent } from './010_thesa/widget/th-show/th-show.component';
 import { ConceptComponent } from './010_thesa/widget/concept/concept.component';
-import { TermComponent } from './010_thesa/widget/term/term.component';
 import { TermsComponent } from './010_thesa/widget/terms/terms.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConceptLinkComponent } from './010_thesa/widget/concept-link/concept-link.component';
 import { ConceptTHComponent } from './010_thesa/page/concept-th/concept-th.component';
-import { AltLabelComponent } from './010_thesa/widget/alt-label/alt-label.component';
-import { PrefLabelComponent } from './010_thesa/widget/pref-label/pref-label.component';
+import { AltLabelComponent } from './010_thesa/widget/_OLD/alt-label/alt-label.component';
+import { PrefLabelComponent } from './010_thesa/widget/_OLD/pref-label/pref-label.component';
 import { HiddenLabelComponent } from './010_thesa/widget/hidden-label/hidden-label.component';
 import { VideoPlayComponent } from './010_thesa/widget/video-play/video-play.component';
 import { NarrowComponent } from './010_thesa/widget/narrow/narrow.component';
@@ -45,10 +44,12 @@ import { FormTextareaComponent } from './010_thesa/widget/config/form-textarea/f
 import { ConfigTitleComponent } from './010_thesa/widget/config/config-title/config-title.component';
 import { ConfigLicenseComponent } from './010_thesa/widget/config/config-license/config-license.component';
 import { ThesaCreateComponent } from './010_thesa/page/thesa-create/thesa-create.component';
-import { TermInputComponent } from './010_thesa/widget/term-input/term-input.component';
+import { TermInputComponent } from './010_thesa/widget/_OLD/term-input/term-input.component';
 import { ConceptCreateComponent } from './010_thesa/widget/concept-create/concept-create.component';
-import { TermPrefLabelComponent } from './010_thesa/widget/term/term-pref-label/term-pref-label.component';
-import { TermAltLabelComponent } from './010_thesa/widget/term/term-alt-label/term-alt-label.component';
+import { ConceptShowComponent } from './010_thesa/widget/concept-show/concept-show.component';
+import { ConceptShowTermsComponent } from './010_thesa/widget/concept-show/concept-show-terms/concept-show-terms.component';
+import { ConceptShowConceptsComponent } from './010_thesa/widget/concept-show/concept-show-concepts/concept-show-concepts.component';
+import { TermLabelComponent } from './010_thesa/widget/term/term-label/term-label.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,6 @@ import { TermAltLabelComponent } from './010_thesa/widget/term/term-alt-label/te
     ThesaComponent,
     ThShowComponent,
     ConceptComponent,
-    TermComponent,
     TermsComponent,
     ConceptLinkComponent,
     ConceptTHComponent,
@@ -92,8 +92,10 @@ import { TermAltLabelComponent } from './010_thesa/widget/term/term-alt-label/te
     ThesaCreateComponent,
     TermInputComponent,
     ConceptCreateComponent,
-    TermPrefLabelComponent,
-    TermAltLabelComponent,
+    ConceptShowComponent,
+    ConceptShowTermsComponent,
+    ConceptShowConceptsComponent,
+    TermLabelComponent,
   ],
   imports: [
     BrowserModule,

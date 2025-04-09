@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, Output, output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
-import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
+import { ServiceThesaService } from '../../../../000_core/service/service-thesa.service';
+import { ServiceStorageService } from '../../../../000_core/service/service-storage.service';
+
 
 @Component({
   selector: 'app-term-input',

@@ -8,6 +8,7 @@ import { Component, Input } from '@angular/core';
 export class AltLabelComponent {
   @Input() terms: Array<any> | any;
   @Input() editMode: boolean = false;
+  @Input() termID: number = 0;
 
   newAltLabel()
     {

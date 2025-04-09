@@ -1,0 +1,83 @@
+<div *ngIf="data" class="container">
+  <div class="row">
+    <div class="col-10 col-lg-11 col-md-11 col-sm-10">
+      <h2>
+        <i class="bi bi-tag-fill"></i>
+        {{ data.label }} <sup>({{ data.lg_code }})</sup>
+      </h2>
+    </div>
+    <div class="col-12 col-lg-1 col-md-1 col-sm-2">
+      <app-concept-link [conceptLink]="conceptID"></app-concept-link>
+    </div>
+
+    <!-- TABS -->
+    <div class="container">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" *ngFor="let tab of tabs; let i = index" role="presentation">
+          <button
+            class="nav-link"
+            [class.active]="i === 0"
+            id="{{tab.id}}-tab"
+            data-bs-toggle="tab"
+            [attr.data-bs-target]="'#' + tab.id"
+            type="button"
+            role="tab"
+            [attr.aria-controls]="tab.id"
+            [attr.aria-selected]="i === 0 ? 'true' : 'false'"
+          >
+            {{ tab.name }}
+          </button>
+        </li>
+      </ul>
+
+      <!-- TAB CONTENT -->
+      <div class="tab-content" id="myTabContent">
+        <div
+          class="tab-pane fade"
+          [class.show]="i === 0"
+          [class.active]="i === 0"
+          *ngFor="let tab of tabs; let i = index"
+          [attr.id]="tab.id"
+          role="tabpanel"
+          [attr.aria-labelledby]="tab.id + '-tab'"
+        >
+          <!---------------------------------------- Information -->
+          <ng-container *ngIf="tab.content=='information'">
+              <!-- Terminology -->
+              <app-concept-show-terms (actionAC)="action($event)" [data]="data" [editMode]="editMode"></app-concept-show-terms>
+              <!-- Concepts Relations -->
+              <app-concept-show-concepts (actionAC)="action($event)" [data]="data" [editMode]="editMode"></app-concept-show-concepts>
+          </ng-container>
+          <!---------------------------------------- Information -->
+          <ng-container *ngIf="tab.content=='notas'">
+            <pre>{{data | json}}</pre>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button (click)="openConceptPanel('popupConceptLabel')">Abrir painel</button>
+
+<!-- Offcanvas (painel lateral tipo PANEL) -->
+<div
+  class="offcanvas offcanvas-end"
+  tabindex="-1"
+  id="popupConcept"
+  aria-labelledby="popupConceptLabel"
+>
+  <div class="offcanvas-header">
+    <h5 id="popupConceptLabel">Novos termos 2</h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Fechar"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    <!-- Conteúdo do painel -->
+    <app-term-input [thesaID]="data.id"></app-term-input>
+  </div>
+</div>

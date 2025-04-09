@@ -29,8 +29,6 @@
   >
     <i class="bi bi-plus-circle"></i>
   </span>
-
-
 </div>
 
 <!-- Offcanvas (painel lateral tipo PANEL) -->
@@ -88,60 +86,5 @@
     class="link option_select"
   >
     {{ term.Term }}
-  </div>
-</div>
-
-<!-- Offcanvas (Painel lateral tipo PANEL) -->
-<!-------------------------------------------------------------------------- Concept-->
-<div
-  class="offcanvas offcanvas-end"
-  tabindex="-1"
-  id="termPrefLabel"
-  aria-labelledby="termPrefLabel"
->
-  <div class="offcanvas-header">
-    <h5 id="termPrefLabel">Termos Prefrenciais</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
-  </div>
-  <div class="offcanvas-body">
-    <!-- Conteúdo do painel -->
-    <app-term-pref-label [termID]="termID" [thesaID]="thesa"></app-term-pref-label>
-
-  </div>
-</div>
-
-<!-- Offcanvas (Painel lateral tipo PANEL) -->
-<!-------------------------------------------------------------------------- Concept-->
-<div
-  class="offcanvas offcanvas-end"
-  tabindex="-1"
-  id="termAltLabel"
-  aria-labelledby="termAltLabel"
->
-  <div class="offcanvas-header">
-    <h5 id="termAltLabel">Termos Alternativo</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
-  </div>
-  <div class="offcanvas-body">
-    <!-- Conteúdo do painel -->
-    <app-term-alt-label [termID]="termID" [thesaID]="thesa" [property]="'altLabel'"></app-term-alt-label>
-  </div>
-</div>
-
-<!-- Offcanvas (Painel lateral tipo PANEL) -->
-<!-------------------------------------------------------------------------- Concept-->
-<div
-  class="offcanvas offcanvas-end"
-  tabindex="-1"
-  id="termHiddenLabel"
-  aria-labelledby="termHiddenLabel"
->
-  <div class="offcanvas-header">
-    <h5 id="termHiddenLabel">Termos Ocultos</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
-  </div>
-  <div class="offcanvas-body">
-    <!-- Conteúdo do painel -->
-    <app-term-alt-label [termID]="termID" [thesaID]="thesa" [property]="'hiddenLabel'"></app-term-alt-label>
   </div>
 </div>

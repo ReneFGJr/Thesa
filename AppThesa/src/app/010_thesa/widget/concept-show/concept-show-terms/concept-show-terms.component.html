@@ -1,0 +1,5 @@
+<app-term-label (action)="action($event)" [termID]="data?.c_concept" [terms]="data?.prefLabel" [label]="'prefLabel'" [editMode]="editMode"></app-term-label>
+
+<app-term-label (action)="action($event)" [termID]="data?.c_concept" [terms]="data?.altLabel" [label]="'altLabel'" [editMode]="editMode"></app-term-label>
+
+<app-term-label (action)="action($event)" [termID]="data?.c_concept" [terms]="data?.hiddenLabel" [label]="'hiddenLabel'" [editMode]="editMode"></app-term-label>
