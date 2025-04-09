@@ -6,7 +6,12 @@
     class="italic"
     style="margin-left: 20px; margin-bottom: 5px;"
   >
-    {{ term.Term }}
-    <sup>{{ term.Lang }}</sup>
+  <input
+    type="checkbox"
+    [value]="term.id"
+    (change)="onCheckboxChange($event)"
+  />
+    {{ term.term }}
+    <sup>{{ term.lang }}</sup>
   </div>
 </div>

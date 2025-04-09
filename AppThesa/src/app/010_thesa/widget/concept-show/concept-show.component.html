@@ -77,12 +77,14 @@
   </div>
   <div class="offcanvas-body">
     <!-- Conteúdo do painel -->
-    <ng-container *ngIf="actionAC=='altLabel'">
-      <app-term-alt-label [editMode]="editMode"></app-term-alt-label>
+    <ng-container *ngIf="actionAC==='altLabel'">
+      <app-term-alt-label [editMode]="editMode" [terms]="terms?.Terms"></app-term-alt-label>
     </ng-container>
-    =={{actionAC}}
+    <br>
+    ==>{{actionAC}}
+    <br>
     ==>{{thesaID}}
-
+    <br>
 
   </div>
 </div>

@@ -15,7 +15,7 @@ export class ConceptShowComponent {
   data: any;
   @Input() thesaID: number = 0;
   editMode: boolean = true;
-  terms: Array<any> = [];
+  terms: Array<any> | any;
 
   tabs: Array<any> = [
     {
@@ -39,7 +39,7 @@ export class ConceptShowComponent {
     this.serviceThesa.api_post(url, []).subscribe(
       (res) => {
         this.terms = res;
-        console.log(this.terms);
+        console.log("Termos",this.terms);
       },
       (error) => error
     );
