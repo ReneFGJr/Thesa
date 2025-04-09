@@ -158,13 +158,13 @@ class Index extends Model
     function terms($th,$lt='')
         {
             $Concept = new \App\Models\Thesa\Concepts\Index();
-            $cp = 'term_name as Term,c_concept as Concept,term_lang as Lang, vc_label as Propriety, ct_th as Th';
+            $cp = 'term_name as Term,c_concept as Concept,term_lang as Lang, p_name as Propriety, ct_th as Th';
             //$cp = '*';
             $dt = $Concept
                 ->select($cp)
                 ->join('thesa_concept_term', 'ct_concept = c_concept')
                 ->join('thesa_terms', 'ct_literal = id_term')
-                ->join('owl_vocabulary_vc', 'ct_propriety = id_vc')
+                ->join('thesa_property', 'ct_propriety = id_p')
                 ->where('c_th',$th)
                 ->orderby('term_name')
                 ->findAll();

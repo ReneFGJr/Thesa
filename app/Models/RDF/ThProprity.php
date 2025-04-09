@@ -161,7 +161,7 @@ class ThProprity extends Model
             $sx = '';
             $ThProprityCustom = new \App\Models\RDF\ThProprityCustom();
             $dt = $ThProprityCustom
-                    ->join('owl_vocabulary_vc', 'pcst_aplicable = id_vc', 'left')
+                    ->join('thesa_property', 'pcst_aplicable = id_vc', 'left')
                     ->findAll();
 
             $sx .= '<table class="table">';

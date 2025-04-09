@@ -207,20 +207,7 @@ class Index extends Model
     function le($id, $type = '')
     {
         $TermConcept = new \App\Models\Term\TermConcept();
-        $dt = $TermConcept->le($id, $type);
-        $dd = [];
-        foreach ($dt as $idx => $line) {
-            $class = $line['Prop'];
-            $Term = $line['Term'];
-            if (($class == $type) or ($type == '')) {
-                $dx = [];
-                $dx['Term'] = $Term;
-                $dx['Lang'] = $line['Lang'];
-                $dx['Language'] = $line['Language'];
-                $dx['LangCode'] = $line['LangCode'];
-                array_push($dd, $dx);
-            }
-        }
-        return $dd;
+        $dt = $TermConcept->le($id,$type);
+        return $dt;
     }
 }

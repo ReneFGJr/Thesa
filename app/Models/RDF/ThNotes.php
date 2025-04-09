@@ -46,7 +46,6 @@ class ThNotes extends Model
     {
         $dt = $this
             ->join('thesa_concept', 'nt_concept = c_concept')
-            //->join('owl_vocabulary_vc', 'nt_prop = id_vc')
             ->join('thesa_property', 'nt_prop = id_p')
             ->where('c_th', $th)
             ->findAll();

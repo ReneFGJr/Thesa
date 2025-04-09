@@ -193,6 +193,7 @@ class Api extends BaseController
             $RSP['prefLabel'] = $Term->le($id,'prefTerm');
             $RSP['altLabel'] = $Term->le($id, 'altLabel');
             $RSP['hiddenLabel'] = $Term->le($id, 'hiddenLabel');
+            return $RSP;
 
             $RSP['broader'] = $Broader->le_broader($id);
             $RSP['narrow'] = $Broader->le_narrow($id);

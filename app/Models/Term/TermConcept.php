@@ -90,18 +90,27 @@ class TermConcept extends Model
 
         }
 
-    function le($id, $prop='')
+    function le($id, $PropP='')
         {
-            $this->select('term_name as Term, p_name as Prop, ct_th as th, lg_code as Lang, lg_language as Language, lg_cod_short as LangCode');
-            $this->join('thesa_property', 'id_p = ct_propriety');
-            $this->join('thesa_terms', 'ct_literal = id_term');
-            $this->join('language', 'term_lang = id_lg');
-            $this->where('ct_concept',$id);
-            if ($prop != '')
+            $ThConcept = new \App\Models\Thesa\Concepts\Index();
+            $dt = $ThConcept->le($id);
+
+            $da = $this
+                    ->join('thesa_property', 'ct_propriety = id_p')
+                    ->join('thesa_terms', 'ct_literal = id_term','left')
+                    ->join('language', 'term_lang = id_lg','left')
+                    ->where('ct_concept', $id)
+                    ->where('p_name', $PropP)
+                    ->findAll();
+            $dd = [];
+            foreach($da as $id=>$line)
                 {
-                    $this->where('p_name', $prop);
+                    $daa = [];
+                    $daa['Term'] = $line['term_name'];
+                    $daa['Lang'] = $line['lg_code'];
+
+                    array_push($dd,$daa);
                 }
-            $dt = $this->findAll();
-            return $dt;
+            return $dd;
         }
 }

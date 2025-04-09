@@ -151,27 +151,23 @@ class Index extends Model
                 id_c, c_concept, c_th,
                 t1.id_ct as id_ct,
                 term_name as label,
-                vc2.vc_label as resource_name,
+                p_name as resource_name,
                 lg_code, lg_language,
                 t1.ct_resource as ct_resource,
-                t1.ct_concept_2 as ct_concept_2,
-                vc1.vc_label as property, spaceName')
+                t1.ct_concept_2 as ct_concept_2')
             /*  */
             ->join('thesa_concept_term as t1', 't1.ct_concept = id_c')
             ->join('thesa_terms', 'ct_literal = id_term', 'left')
-            ->join('owl_vocabulary_vc as vc1', 'ct_propriety = vc1.id_vc', 'left')
-            ->join('owl_vocabulary', 'vc1.vc_prefix = id_owl', 'left')
-            ->join('owl_vocabulary_vc as vc2', 'ct_resource = vc2.id_vc', 'left')
+            ->join('thesa_property as vc1', 'ct_propriety = vc1.id_p', 'left')
             ->join('language', 'term_lang = id_lg', 'left')
             ->join('thesa_language', 'lgt_language = id_lg')
             ->where('id_c', $id)
             ->where('lgt_th',$th)
-            ->orderBy('vc1.vc_label desc, lgt_order')
+            ->orderBy('p_name desc, lgt_order')
             ->first();
 
             $ThesaMidias = new \App\Models\Thesa\Medias\Index();
             $dt['medias'] = $ThesaMidias->le($id);
-
         return $dt;
     }
 }
