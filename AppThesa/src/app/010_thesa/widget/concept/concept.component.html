@@ -1,9 +1,26 @@
-<h4>{{title}}</h4>>
+<h4>{{title}}</h4>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <label for="termSelect">Selecione um termo:</label>
+  <select id="termSelect" formControlName="termId">
+    <option value="">-- Selecione --</option>
+    <option *ngFor="let item of terms" [value]="item.id">
+      {{ item.Term }}
+    </option>
+  </select>
+
+  <button type="submit">Enviar</button>
+</form>
+
+<p *ngIf="form.value.termId">Selecionado: {{ form.value.termId }}</p>
+
+
 {{actionCV}}
 {{thesaID}}
 {{conceptID}}
 {{editMode}}
 ---------------------
+<span class="btn btn-primary" (click)="close()">CLOSE</span>
 <pre>
 {{terms | json}}
 </pre>

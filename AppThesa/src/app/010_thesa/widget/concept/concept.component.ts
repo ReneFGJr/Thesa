@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
+import { PainelService } from '../../../000_core/service/painel.service';
 
 @Component({
   selector: 'app-concept-relation',
@@ -18,10 +19,15 @@ export class ConceptComponent {
   formAction: FormGroup;
   title: string = 'Termos';
 
+  form: FormGroup = this.fb.group({
+    termId: [''], // valor inicial
+    });
+
   constructor(
     private fb: FormBuilder,
     private serviceThesa: ServiceThesaService,
-    private serviceStorage: ServiceStorageService
+    private serviceStorage: ServiceStorageService,
+    private painelService: PainelService
   ) {
     this.formAction = this.fb.group({
       terms: this.fb.array([], Validators.required),
@@ -32,7 +38,19 @@ export class ConceptComponent {
     });
   }
 
+  close() {
+    this.painelService.closeConceptPanel('popupConcept');
+  }
+
+  onSubmit() {
+    console.log(this.form.value); // Aqui você acessa o ID selecionado
+  }
+
   ngOnChanges() {
+    this.form = this.fb.group({
+      termId: [''], // valor inicial
+    });
+
     setTimeout(() => {
       this.formAction.patchValue({
         thesaID: this.thesaID,

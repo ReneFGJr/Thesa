@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { ServiceThesaService } from '../../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../../000_core/service/service-storage.service';
+import { PainelService } from '../../../../000_core/service/painel.service';
 
 @Component({
   selector: 'app-term-attribut-label',
@@ -26,7 +27,8 @@ export class AltLabelComponent {
   constructor(
     private fb: FormBuilder,
     private serviceThesa: ServiceThesaService,
-    private serviceStorage: ServiceStorageService
+    private serviceStorage: ServiceStorageService,
+    private painelService: PainelService
   ) {
     this.formAction = this.fb.group({
       terms: this.fb.array([], Validators.required),
@@ -61,6 +63,7 @@ export class AltLabelComponent {
     this.serviceThesa.api_post(url, this.formAction.value).subscribe(
       (res) => {
         console.log('Resposta do servidor:', res);
+        this.painelService.closeConceptPanel('popupConcept');
       },
       (error) => {
         console.error('Erro ao enviar os dados:', error);

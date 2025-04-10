@@ -52,16 +52,28 @@
               <!-- Concepts Relations -->
               <app-concept-show-concepts (actionAC)="action($event)" [data]="data" [editMode]="editMode"></app-concept-show-concepts>
           </ng-container>
-          <!---------------------------------------- Information -->
+          <!---------------------------------------- Notas -->
           <ng-container *ngIf="tab.content=='notas'">
             <pre>{{data | json}}</pre>
           </ng-container>
+          <!---------------------------------------- Card -->
+          <ng-container *ngIf="tab.content=='card'">
+            <app-concept-card [data]="data"></app-concept-card>
+          </ng-container>
+          <!---------------------------------------- Graph -->
+          <ng-container *ngIf="tab.content=='graph'">
+            <app-concept-grafo></app-concept-grafo>
+          </ng-container>
+
         </div>
       </div>
     </div>
   </div>
 </div>
 
+<!---------------------------------------------------------------------------------------------->
+<!---------------------------------------------------------------------------------------------->
+<!----------------------------------------------------------------------- PAINEL popupConcept -->
 <!-- Offcanvas (painel lateral tipo PANEL) -->
 <div
   class="offcanvas offcanvas-end"

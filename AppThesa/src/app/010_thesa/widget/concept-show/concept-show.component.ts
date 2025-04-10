@@ -28,6 +28,8 @@ export class ConceptShowComponent {
       icon: 'fa-solid fa-book',
       content: 'information',
     },
+    { name: 'Grafo', id: 'graph', icon: 'fa-solid fa-book', content: 'graph' },
+    { name: 'Ficha', id: 'card', icon: 'fa-solid fa-book', content: 'card' },
     { name: 'Notas', id: 'notas', icon: 'fa-solid fa-book', content: 'notas' },
   ];
 

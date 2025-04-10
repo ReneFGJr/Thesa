@@ -49,6 +49,8 @@ import { ConceptShowComponent } from './010_thesa/widget/concept-show/concept-sh
 import { ConceptShowTermsComponent } from './010_thesa/widget/concept-show/concept-show-terms/concept-show-terms.component';
 import { ConceptShowConceptsComponent } from './010_thesa/widget/concept-show/concept-show-concepts/concept-show-concepts.component';
 import { TermLabelComponent } from './010_thesa/widget/term/term-label/term-label.component';
+import { ConceptCardComponent } from './010_thesa/widget/concept-show/concept-card/concept-card.component';
+import { ConceptGrafoComponent } from './010_thesa/widget/concept-show/concept-grafo/concept-grafo.component';
 
 @NgModule({
   declarations: [
@@ -94,6 +96,8 @@ import { TermLabelComponent } from './010_thesa/widget/term/term-label/term-labe
     ConceptShowTermsComponent,
     ConceptShowConceptsComponent,
     TermLabelComponent,
+    ConceptCardComponent,
+    ConceptGrafoComponent,
   ],
   imports: [
     BrowserModule,
