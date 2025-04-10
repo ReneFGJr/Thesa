@@ -5,7 +5,7 @@ import { LocalStorageService } from 'src/app/service/local-storage.service';
 
 @Component({
   selector: 'app-term-new',
-  templateUrl: './term-new.component.html'
+  templateUrl: './term-new.component.html',
 })
 export class TermNewComponent {
   public form: boolean = true;
@@ -13,7 +13,9 @@ export class TermNewComponent {
   public langs: Array<any> = [
     { Language: 'Portugues', Code: 'por' },
     { Language: 'Inglês', Code: 'eng' },
-    { Language: 'Espanhol', Code: 'esp' },
+    { Language: 'Espanhol', Code: 'spa' },
+    { Language: 'Frances', Code: 'fre' },
+    { Language: 'Alemão', Code: 'ger' }
   ];
   public myForm: FormGroup | any;
   public data: Array<any> | any;

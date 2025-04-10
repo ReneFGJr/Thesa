@@ -22,17 +22,17 @@ export class ConfigurationComponent {
   ) {}
 
   sections = [
-    { id: 'title', title: 'Tesauro' },
-    { id: 'descript', title: 'Descrição' },
-    { id: 'methodology', title: 'Metodologia' },
-    { id: 'audience', title: 'Público Alvo' },
-    { id: 'license', title: 'Licença' },
-    { id: 'visibility', title: 'Visibilidade' },
-    { id: 'icon', title: 'Thema e Incones' },
-    { id: 'members', title: 'Membros' },
+    { id: 'Title', title: 'Tesauro' },
+    { id: 'Descript', title: 'Descrição' },
+    { id: 'Methodology', title: 'Metodologia' },
+    { id: 'Audience', title: 'Público Alvo' },
+    { id: 'License', title: 'Licença' },
+    { id: 'Visibility', title: 'Visibilidade' },
+    { id: 'Icon', title: 'Thema e Incones' },
+    { id: 'Members', title: 'Membros' },
   ];
 
-  selectedSection = 'title';
+  selectedSection = 'Title';
 
   selectSection(id: string) {
     this.selectedSection = id;

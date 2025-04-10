@@ -3,6 +3,7 @@ import { ServiceThesaService } from '../../../000_core/service/service-thesa.ser
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
 import { ActivatedRoute } from '@angular/router';
 import { Offcanvas } from 'bootstrap';
+import { language } from '../../../../language/language_pt';
 
 @Component({
   selector: 'app-concept-show',
@@ -16,6 +17,9 @@ export class ConceptShowComponent {
   @Input() thesaID: number = 0;
   editMode: boolean = true;
   terms: Array<any> | any;
+
+  /* Messagems */
+  title = language.thesa.conceptShow.title;
 
   tabs: Array<any> = [
     {
@@ -34,21 +38,38 @@ export class ConceptShowComponent {
   ) {}
 
   updateTerms() {
-    let url = 'term_list/' + this.thesaID;
-
-    console.log('URL:', url);
-    this.serviceThesa.api_post(url, []).subscribe(
-      (res) => {
-        this.terms = res;
-        console.log("Termos",this.terms);
-      },
-      (error) => error
-    );
+    if (this.actionAC === 'altLabel' || this.actionAC === 'hiddenLabel') {
+      let url = 'term_list/' + this.thesaID;
+      this.serviceThesa.api_post(url, []).subscribe(
+        (res) => {
+          this.terms = res;
+        },
+        (error) => error
+      );
+    } else if (this.actionAC === 'prefLabel') {
+      let url = 'term_pref_list/' + this.thesaID + '/' + this.conceptID;
+      this.serviceThesa.api_post(url, []).subscribe(
+        (res) => {
+          this.terms = res;
+        },
+        (error) => error
+      );
+    } else if (this.actionAC === 'broader') {
+      let url = 'broader_candidate/' + this.thesaID + '/' + this.conceptID;
+      this.serviceThesa.api_post(url, []).subscribe(
+        (res) => {
+          this.terms = res;
+        },
+        (error) => error
+      );
+    } else {
+      console.log('Ação não definida: ' + this.actionAC);
+    }
   }
 
   action(ev: Event) {
-    this.updateTerms();
     this.actionAC = ev.toString();
+    this.updateTerms();
     this.openConceptPanel('popupConcept');
   }
 

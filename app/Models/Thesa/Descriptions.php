@@ -62,71 +62,7 @@ class Descriptions extends Model
             return $sx;
         }
 
-    function ajax_field_save()
-        {
-            $th = get("th");
-            $prop = get("form");
-            $vlr = get("vlr");
-
-            if($prop == 'achronic')
-                {
-                    $vlr = trim(ascii($vlr));
-                    $vlr = troca($vlr,' ','_');
-                }
-
-            $da = array();
-            $da['ds_th'] = $th;
-            $da['ds_prop'] = $prop;
-            $da['ds_descrition'] = $vlr;
-            $da['updated_at'] = date("Y-m-d H:i:s");
-
-            $dt = $this
-                ->where('ds_th',$th)
-                ->where('ds_prop', $prop)
-                ->findAll();
-
-            if (count($dt) == 0)
-                {
-                    $da['ds_th'] = $th;
-                    $da['ds_prop'] = $prop;
-                    $da['ds_descrition'] = $vlr;
-                    $da['updated_at'] = date("Y-m-d H:i:s");
-                    $this->insert($da);
-                } else {
-                    $this->set($da)
-                    ->where('ds_th', $th)
-                    ->where('ds_prop', $prop)
-                    ->update();
-                }
-
-            /* Title */
-            if ($prop == 'title')
-                {
-                    $Thesa = new \App\Models\Thesa\Thesa();
-                    $db['th_name'] = $vlr;
-                    $Thesa->set($db)->where('id_th',$th)->update();
-                }
-            /* Achronic */
-            if ($prop == 'achronic') {
-                $Thesa = new \App\Models\Thesa\Thesa();
-                $db['th_achronic'] = $vlr;
-                $Thesa->set($db)->where('id_th', $th)->update();
-            }
-
-            if ($prop == 'License') {
-                exit;
-            }
-
-            /* Link */
-            $lk = '<span class="ms-2" onclick="togglet(\'' . $prop . '\');">' . bsicone('edit', 16) . '</span>';
-
-            /* Label */
-            $label = $vlr;
-            $label .= $lk;
-            echo h($label,5);
-        }
-
-    function register($th, $class, $txt)
+   function register($th, $class, $txt)
         {
 
         $data['ds_descrition'] = $txt;
@@ -156,7 +92,13 @@ class Descriptions extends Model
             $this->orderBy('ds_prop', 'ASC');
             $data = $this->findAll();
 
+            /* Ordem o items a serem mostrados */
             $classes = $this->classes();
+            $RSP = [];
+            foreach($classes as $id=>$class)
+                {
+                    $RSP[$class] = [];
+                }
 
             foreach($classes as $id=>$class)
                 {
@@ -174,50 +116,48 @@ class Descriptions extends Model
                                 foreach($dt as $id=>$line)
                                     {
                                         $text .= $line['lg_language'].'. ';
+                                        array_push($RSP[$class], $line['lg_language']. '('.$line['lg_code'].')');
                                     }
-                                    $sx .= '<h3 class="lora">' . lang('thesa.' . $class) . '</h3>';
-                                    $ln = explode(chr(13),$text);
-                                    foreach($ln as $id=>$lns)
-                                        {
-                                            $sx .= '<div id="sp_' . $class . '" class="m-2 mb-3 p-2 paragrafo">' . $lns . '</div>';
-                                        }
-
                                 break;
                             case 'Title':
                                 $Thesa = new \App\Models\Thesa\Index();
                                 $dth = $Thesa->le($th);
-                                $text = $dth['th_name'];
-                                $sx .= '<h3 class="lora">' . lang('thesa.' . $class) . '</h3>';
-                                $sx .= '<div id="sp_' . $class . '" class="m-2 mb-3 p-2 paragrafo">' . $text . '</div>';
+                                array_push($RSP[$class], $dth['th_name']);
                                 break;
                             case 'Authors':
                                 $Collaborators = new \App\Models\Thesa\Collaborators();
                                 $text = $Collaborators->authors($th);
-                                $sx .= '<h3 class="lora">' . lang('thesa.' . $class) . '</h3>';
-                                $sx .= '<div id="sp_' . $class . '" class="m-2 mb-3 p-2 paragrafo">' . $text . '</div>';
+                                array_push($RSP[$class], $text);
                                 break;
                             default:
-                                foreach($data as $idx=>$line)
-                                {
-                                    if ($line['ds_prop'] == $class) {
-                                        $text = $line['ds_descrition'];
-                                        $text = troca($text, chr(10), '<br/>');
-                                    }
-                                }
-                                //if ((strlen($text) > 0) or ($edit == true))
-
-                                if ((strlen($text) > 0))
+                                foreach($data as $id=>$line)
                                     {
-                                        $sx .= '<h3 class="lora">' . lang('thesa.' . $class) . '</h3>';
-                                        $ln = explode('<br/>', $text);
-                                        foreach ($ln as $id => $lns) {
-                                            $sx .= '<div id="sp_' . $class . '" class="m-2 mb-3 p-2 paragrafo">' . $lns . '</div>';
-                                        }
+                                        $prop = $line['ds_prop'];
+                                        if ($prop == 'methodology')
+                                            {
+                                                $prop = 'Methodology';
+                                            }
+                                        if ($prop == $class)
+                                            {
+                                                $text = $line['ds_descrition'];
+                                                array_push($RSP[$class], $text);
+                                            }
                                     }
-                                break;
                         }
 
                 }
-            return $sx;
+            $dt = [];
+            foreach($RSP as $class=>$line)
+                {
+                    $dd = [];
+                    $dd['class'] = $class;
+                    if (isset($line[0]))
+                        {
+                            $dd['description'] = $line[0];
+                            array_push($dt, $dd);
+            }
+                }
+            $RSP = $dt;
+            return $RSP;
         }
 }

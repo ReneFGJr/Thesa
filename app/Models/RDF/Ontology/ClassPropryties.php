@@ -58,7 +58,6 @@ class ClassPropryties extends Model
 
     function findClass($name)
         {
-            echo '===>'.$name;
             $dt = $this
                 //->where('rs_namespace',$name)
                 ->findAll();

@@ -158,7 +158,8 @@ class Index extends Model
     function terms($th,$lt='')
         {
             $Concept = new \App\Models\Thesa\Concepts\Index();
-            $cp = 'term_name as Term,c_concept as Concept,term_lang as Lang, p_name as Propriety, ct_th as Th';
+            $cp = 'term_name as Term,c_concept as Concept, p_name as Propriety';
+            $cpg = 'Term, Concept, Propriety';
             //$cp = '*';
             $dt = $Concept
                 ->select($cp)
@@ -166,6 +167,7 @@ class Index extends Model
                 ->join('thesa_terms', 'ct_literal = id_term')
                 ->join('thesa_property', 'ct_propriety = id_p')
                 ->where('c_th',$th)
+                ->groupby($cpg)
                 ->orderby('term_name')
                 ->findAll();
             return $dt;

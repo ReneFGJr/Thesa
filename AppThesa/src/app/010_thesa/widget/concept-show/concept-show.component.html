@@ -1,4 +1,7 @@
-==>{{thesaID}}
+<div class="alert alert-danger" *ngIf="thesaID === 0">
+  ERRO ThesaID==>{{thesaID}}
+</div>
+
 <div *ngIf="data" class="container">
   <div class="row">
     <div class="col-10 col-lg-11 col-md-11 col-sm-10">
@@ -67,7 +70,7 @@
   aria-labelledby="popupConceptLabel"
 >
   <div class="offcanvas-header">
-    <h5 id="popupConceptLabel">Novos termos 2</h5>
+    <h5 id="popupConceptLabel">{{title}}</h5>
     <button
       type="button"
       class="btn-close"
@@ -76,17 +79,29 @@
     ></button>
   </div>
   <div class="offcanvas-body">
-      <!-- Conteúdo do painel -->
-      <ng-container *ngIf="actionAC === 'altLabel' || actionAC === 'hiddenLabel'">
-        <app-term-alt-label
+      <!-- Conteúdo do painel ------------------------ ALTLABEL E HIDDENLABEL-->
+      <ng-container *ngIf="actionAC === 'altLabel' || actionAC === 'hiddenLabel' || actionAC === 'prefLabel'">
+        <app-term-attribut-label
           [editMode]="editMode"
           [terms]="terms?.Terms"
           [actionCV]="actionAC"
           [conceptID]="conceptID"
           [thesaID]="thesaID">
-        </app-term-alt-label>
+        </app-term-attribut-label>
       </ng-container>
 
+      <!-- Conteúdo do painel ------------------------ broader, narrow and related -->
+      <ng-container *ngIf="actionAC === 'broader' || actionAC === 'narrow' || actionAC === 'related'">
+        <app-concept-relation
+          [editMode]="editMode"
+          [terms]="terms?.Terms"
+          [actionCV]="actionAC"
+          [conceptID]="conceptID"
+          [thesaID]="thesaID">
+        </app-concept-relation>
+      </ng-container>
+
+    <!-- REMOVER -->
     ==>{{actionAC}}
     <br>
     ==>{{thesaID}}

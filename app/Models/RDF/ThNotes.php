@@ -131,7 +131,7 @@ class ThNotes extends Model
 
         if ($dt != '') {
             $conf = get("confirm");
-            $sx .= confirm_form('');
+            //$sx .= confirm_form('');
             if ($conf!='')
                 {
                     $this->where('id_nt', $id);
@@ -208,14 +208,7 @@ class ThNotes extends Model
         $text = get('text');
         $lang = get("lg");
 
-        /*
-        echo "<br>ID==>".$id;
-        echo "<br>PROP==>".$prop;
-        echo "<br>REG==>".$reg;
-        echo "<br>TEXT==>".$text;
-        echo "<br>LANG==>" . $lang;
-        exit;
-        */
+
         $text = strip_tags($text);
 
         if ($reg == 'new') {

@@ -9,7 +9,7 @@ export class ApiDocComponent {
   url = 'https://www.ufrgs.br/thesa/v2/index.php/api'
   sections = [
     { id: 'intro', title: 'Introdução' },
-    { id: 'auth', title: 'Autenticação' },
+    { id: 'glossario', title: 'Glossário' },
     { id: 'endpoints', title: 'Endpoints' },
     { id: 'examples', title: 'Exemplos de Uso' },
     { id: 'errors', title: 'Tratamento de Erros' },

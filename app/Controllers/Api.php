@@ -46,6 +46,10 @@ class Api extends BaseController
 
         switch($arg1)
             {
+                case 'broader_candidate':
+                    $Broader = new \App\Models\Thesa\Relations\Broader();
+                    $RSP = $Broader->broader_candidate($arg2,$arg3);
+                    break;
                 case 'relateTerms':
                     $Term = new \App\Models\Term\Index();
                     $RSP = $Term->registerTerm($user);
@@ -109,6 +113,11 @@ class Api extends BaseController
                     $Term = new \App\Models\Term\Index();
                     $RSP = $Term->listTerm($arg2);
                     break;
+                case 'term_pref_list':
+                    $Term = new \App\Models\Term\Index();
+                    $RSP = $Term->listTermPref($arg2,$arg3);
+                    break;
+
                 case 'listPrefTerm':
                     $Term = new \App\Models\Term\Index();
                     $RSP = $Term->listPrefTerm($arg2);
@@ -190,10 +199,9 @@ class Api extends BaseController
 
             $RSP['uri'] = URL.'/c/'.$id;
 
-            $RSP['prefLabel'] = $Term->le($id,'prefTerm');
+            $RSP['prefLabel'] = $Term->le($id, 'prefLabel');
             $RSP['altLabel'] = $Term->le($id, 'altLabel');
             $RSP['hiddenLabel'] = $Term->le($id, 'hiddenLabel');
-            return $RSP;
 
             $RSP['broader'] = $Broader->le_broader($id);
             $RSP['narrow'] = $Broader->le_narrow($id);

@@ -1,11 +1,17 @@
 import { Component, Input } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ServiceThesaService } from '../../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../../000_core/service/service-storage.service';
 
 @Component({
-  selector: 'app-term-alt-label',
-  templateUrl: './alt-label.component.html',
+  selector: 'app-term-attribut-label',
+  templateUrl: './atribute-label.component.html',
 })
 export class AltLabelComponent {
   @Input() terms: Array<any> | any;
@@ -15,6 +21,7 @@ export class AltLabelComponent {
   @Input() thesaID: number = 0;
   @Input() conceptID: number = 0;
   formAction: FormGroup;
+  title: string = 'Termos';
 
   constructor(
     private fb: FormBuilder,
@@ -37,6 +44,14 @@ export class AltLabelComponent {
         conceptID: this.conceptID,
         verb: this.actionCV,
       });
+      /************ Titulo da Página */
+      if (this.actionCV === 'prefLabel') {
+        this.title = 'Termo Preferido';
+      } else if (this.actionCV === 'altLabel') {
+        this.title = 'Termos Alternativos';
+      } else if (this.actionCV === 'hiddenLabel') {
+        this.title = 'Termos Ocultos';
+      }
     });
   }
 

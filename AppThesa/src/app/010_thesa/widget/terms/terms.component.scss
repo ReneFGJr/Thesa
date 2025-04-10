@@ -25,6 +25,14 @@ option {
   font-style: italic;
   }
 
+.hiddenLabel
+  {
+  padding: 0px 0px 0px 15px;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: #999
+  }
+
 .selected {
   background-color: #007bff;
   color: white;

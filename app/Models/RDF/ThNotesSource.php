@@ -141,13 +141,6 @@ class ThNotes extends Model
         $reg = get('reg');
         $text = get('text');
 
-        /*
-        echo "<br>ID==>".$id;
-        echo "<br>PROP==>".$prop;
-        echo "<br>REG==>".$reg;
-        echo "<br>TEXT==>".$text;
-        */
-
         if ($reg == 'new')
             {
                 $ThProprity = new \App\Models\RDF\ThProprity();
@@ -169,7 +162,6 @@ class ThNotes extends Model
     function ajax_text_edit()
         {
             $id = get("id");
-            echo '==>'.$id;
             $dt = $this
                 ->join('thesa_property', 'id_p = nt_prop', 'left')
                 ->find($id);

@@ -163,10 +163,16 @@ class Thesa extends Model
     function le($id)
     {
         $ThIcone = new \App\Models\Thesa\Icone();
+        $Descriptions = new \App\Models\Thesa\Descriptions();
+
         $dt = $this->find($id);
         $dt['icone'] = $ThIcone->icone($dt);
+
+        $dt['info'] = $Descriptions->show($id);
         return $dt;
     }
+
+
 
     function setThesa($th = '')
     {

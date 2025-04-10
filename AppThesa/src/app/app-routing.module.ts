@@ -19,6 +19,7 @@ const routes: Routes = [
   { path: 'configuration/:id', component: ConfigurationComponent },
   { path: 'c/:id', component: ConceptTHComponent },
   { path: 'create', component: ThesaCreateComponent },
+  { path: 'export/:id', component: HomepageComponent },
 ];
 
 @NgModule({

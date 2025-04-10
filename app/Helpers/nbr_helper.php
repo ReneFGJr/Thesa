@@ -227,13 +227,11 @@ function nbr_author($xa,$xp)
 function nbr_author2($xa, $tp)
     {
         $xa = troca($xa,'ú','Ú');
-        echo '<br>===0==>'.$xa;
         if (mb_detect_encoding($xa) == 'UTF-8')
         {
             $xa = utf8_decode($xa);
         }
         $xa = troca($xa,', ,',',');
-        echo '<br>===1==>'.$xa;
         if (strpos($xa, ',') > 0)
         {
             $xb = trim(substr($xa, strpos($xa, ',') + 1, 100));
@@ -241,7 +239,6 @@ function nbr_author2($xa, $tp)
             $xa = trim(trim($xb) . ' ' . $xa);
         }
         $xa = $xa . ' ';
-        echo '<br>===2==>'.$xa;
         $xp = array();
         $xx = "";
         for ($qk = 0; $qk < strlen($xa); $qk++)

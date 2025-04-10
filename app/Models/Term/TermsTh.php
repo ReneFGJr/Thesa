@@ -45,28 +45,12 @@ class TermsTh extends Model
     function getTerms($th = 0)
     {
         $dt = $this
-            ->select('id_term as id, term_name as term, ct_concept as cncpt, term_th_id')
-            ->join('thesa_terms', 'term_th_term = id_term')
-            ->join('thesa_concept_term', 'ct_literal = id_term', 'LEFT')
-            ->where('term_th_thesa', $th)
-            ->where('term_th_concept', 0)
-            ->orderBy('term_name')
-            ->findAll();
-
-        foreach ($dt as $id => $line) {
-            $vlr = $line['cncpt'];
-            if ($vlr != '') {
-                $dd['term_th_concept'] = $vlr;
-                $this->set($dd)->where('term_th_id', $line['term_th_id'])->update();
-            }
-        }
-
-        $dt = $this
             ->select('id_term as id, term_name as term, lg_code as lang')
             ->join('thesa_terms', 'term_th_term = id_term')
             ->join('language', 'term_lang = id_lg', 'LEFT')
             ->where('term_th_thesa', $th)
             ->where('term_th_concept', 0)
+            ->groupby('term,id,lang')
             ->orderBy('term_name')
             ->findAll();
         return $dt;

@@ -1,5 +1,5 @@
 <div *ngIf="(terms && terms.length > 0) || (editMode)" class="mt-2">
-  <h6>Termos alternativos</h6>
+  <h6>{{title}}</h6>
 
   <div
     *ngFor="let term of terms"
@@ -15,7 +15,12 @@
     <sup>{{ term.lang }}</sup>
   </div>
 
-  <button class="btn btn-primary btn-sm" (click)="addLabel()" [disabled]="!formAction.valid">
-    <i class="bi bi-plus-circle"></i> Adicionar
+  <div *ngIf="terms.length == 0" class="alert alert-warning" role="alert">
+    Nenhum termo encontrado.
+  </div>
+
+  <button *ngIf="terms.length > 0" class="btn btn-primary btn-sm full" (click)="addLabel()" [disabled]="!formAction.valid">
+    <i class="bi bi-plus-circle"></i> Associar ao conceito
   </button>
+
 </div>

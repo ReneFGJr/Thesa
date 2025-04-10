@@ -21,9 +21,22 @@
         </p>
       </div>
 
-      <div *ngSwitchCase="'auth'" class="fade-in">
-        <h2>Autenticação</h2>
-        <p>Use um token JWT para autenticar suas requisições.</p>
+      <div *ngSwitchCase="'glossario'" class="fade-in">
+        <h2>Glossário do Thesa</h2>
+
+        <h4>Conceito</h4>
+        <p>Um <b>conceito</b> é uma ideia, noção ou representação mental que expressa o significado de algo.
+        <br>Ele é abstrato e independente da linguagem.
+        <br>Na organização do conhecimento, o conceito é a base que dá sentido aos termos usados para descrevê-lo.
+        <br>É por meio dos conceitos que se estruturam as relações entre informações em sistemas como tesauros, ontologias e classificações.
+        </p>
+
+        <h4>Termo</h4>
+        <p>Um <b>termo</b> é uma palavra ou expressão que representa um conceito específico em um determinado contexto.
+        <br>Os termos são usados para nomear e descrever conceitos, facilitando a comunicação e a compreensão entre pessoas que compartilham o mesmo domínio de conhecimento.
+        <br>Os termos podem variar de acordo com o idioma, a cultura e o contexto em que são utilizados.
+        <br>Em sistemas de organização do conhecimento, como tesauros e ontologias, os termos são associados a conceitos para garantir que a informação seja acessível e compreensível.
+
       </div>
 
       <div *ngSwitchCase="'endpoints'" class="fade-in">
@@ -255,12 +268,27 @@ curl -X GET https://api.meusistema.com/users \
 
             <tr>
               <td>
-                <a href="{{ url }}/term_list" target="_blank">/api/term_list</a>
+                <a href="{{ url }}/term_list/:idTh" target="_blank">/api/term_list/:idTh</a>
               </td>
               <td class="text-center">POST</td>
               <td>
                 <ul>
                   <li>:apikey - API key do usuário</li>
+                  <li>:idTh - ID do tesauro</li>
+                </ul>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <a href="{{ url }}/term_pref_list/:idTh/:idC" target="_blank">/api/term_pref_list/:idTh/:idC</a>
+              </td>
+              <td class="text-center">POST</td>
+              <td>
+                <ul>
+                  <li>:apikey - API key do usuário</li>
+                  <li>:idTh - ID do tesauro</li>
+                  <li>:idC - ID do conceito</li>
                 </ul>
               </td>
             </tr>

@@ -25,8 +25,7 @@ import { TermsComponent } from './010_thesa/widget/terms/terms.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConceptLinkComponent } from './010_thesa/widget/concept-link/concept-link.component';
 import { ConceptTHComponent } from './010_thesa/page/concept-th/concept-th.component';
-import { AltLabelComponent } from './010_thesa/widget/term/alt-label/alt-label.component';
-import { PrefLabelComponent } from './010_thesa/widget/term/pref-label/pref-label.component';
+import { AltLabelComponent } from './010_thesa/widget/term/atribute-label/atribute-label.component';
 import { HiddenLabelComponent } from './010_thesa/widget/hidden-label/hidden-label.component';
 import { VideoPlayComponent } from './010_thesa/widget/video-play/video-play.component';
 import { NarrowComponent } from './010_thesa/widget/narrow/narrow.component';
@@ -73,7 +72,6 @@ import { TermLabelComponent } from './010_thesa/widget/term/term-label/term-labe
     ConceptLinkComponent,
     ConceptTHComponent,
     AltLabelComponent,
-    PrefLabelComponent,
     HiddenLabelComponent,
     VideoPlayComponent,
     NarrowComponent,

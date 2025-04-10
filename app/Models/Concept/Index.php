@@ -47,9 +47,8 @@ class Index extends Model
             $RSP = [];
             $TermsTh = new \App\Models\Term\TermsTh();
             $RDFproprity = new \App\Models\RDF\ThProprity();
-            $RDFclass = new \App\Models\RDF\ThClass();
 
-            $classID = $RDFclass->getClass('prefLabel');
+            $classID = $RDFproprity->getClass('prefLabel');
             $RSP['class'] = $classID;
 
             $dt = $TermsTh
@@ -59,10 +58,6 @@ class Index extends Model
 
             if ($dt['term_th_concept'] == 0)
                 {
-                    $prop = $RDFclass->getClass('Concept');
-                    $RSP['prop'] = $prop;
-                    $RSP['term'] = $id;
-
                     $dc = [];
                     $dc['c_th'] = $th;
                     $dc['c_ativo'] = 1;
@@ -81,6 +76,7 @@ class Index extends Model
                     $RSP['concept'] = $idC;
 
                     /*********** PrefLabel */
+                    $prop = $RDFproprity->getClass('prefLabel');
                     $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
                     $da = $ThConceptPropriety
                         ->where('ct_th',$th)
@@ -90,7 +86,6 @@ class Index extends Model
 
                     if ($da == [])
                         {
-                            $prop = $RDFclass->getClass('prefLabel');
                             $dd = [];
                             $dd['ct_th'] = $th;
                             $dd['ct_concept'] = $idC;
@@ -121,8 +116,12 @@ class Index extends Model
                     $RSP['message'] = 'Termos não foram informados';
                     $RSP['status'] = '500';
                     return $RSP;
-                } else {
-                    ### OK
+                }
+            if (!isset($dt['thesaID']))
+                {
+                    $RSP['message'] = 'Thesaurus não foi informado';
+                    $RSP['status'] = '500';
+                    return $RSP;
                 }
             $itens = $dt['terms'];
             $RSP['xterms'] = $itens;

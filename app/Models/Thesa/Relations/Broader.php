@@ -206,72 +206,34 @@ class Broader extends Model
         return true;
         }
 
-    function form($d1, $d2, $d3, $d4)
+    function broader_candidate($th, $c)
     {
-        $Concept = new \App\Models\Thesa\Concepts\Index();
-        $dt = $Concept->le($d1);
-        $th = $dt[0]['c_th'];
-
-        $Collaborations = new \App\Models\Thesa\Collaborators();
-        $access = $Collaborations->own($th);
-
-        if ($access) {
-            if ($this->exist_broader($d1,$th))
+            if ($this->exist_broader($c,$th))
                 {
                     $sx = bsmessage(lang('thesa.already_broader'),3);
                     return $sx;
                 }
 
-            $dc = $this->canditates_broader($th, $d1);
-            $sx = '';
-            $sa = '<select id="concept" class="form-control" size=15">';
-            foreach ($dc as $id => $line) {
-                $sa .= '<option value="' . $line['c_concept'] . '">';
-                $sa .= $line['term_name'];
-                $sa .= '</option>';
-                $sa .= cr();
-            }
-            $sa .= '</select>';
+            $dc = $this->canditates_broader($th, $c);
+            $concepts = [];
+            foreach($dc as $id => $line)
+                {
+                    $dd = [];
+                    $dd['id'] = $line['c_concept'];
+                    $dd['Term'] = $line['term_name'];
+                    $dd['Lang'] = '';
+                    array_push($concepts,$dd);
 
-            $sa .= '<script>
-                        $( "select" )
-                        .change(function () {
-                            var str = "";
-                            $( "select option:selected" ).each(function() {
-                            str += $( this ).val();
-                            });
-                            if(str != "")
-                                {
-                                    url = "' . PATH . 'ts/" + str;
-                                    $("#desc").load(url);
-                                    $("#idc").val(str);
-                                    $("#confirm").show();
-                                }
-                        });
-                    </script>' . cr();
+                }
 
-            $act = get("action");
-            if ($act != '') {
-                $idc1 = get('idc');
-                $idc2 = get('idb');
-                $sx .= $this->register($th, $idc1, $idc2, 0);
-            }
-
-
-            $sb = '<div id="desc">Selecione o conceito</div>';
-            $sb .= '<div id="confirm" style="display: none;">';
-            $sb .= form_open();
-            $sb .= '<input type="text" value="" id="idc" name="idc">';
-            $sb .= form_hidden(array('th' => $th, 'idb' => $d1));
-            $sb .= form_submit('action', lang('thesa.save'));
-            $sb .= form_close();
-            $sb .= '</div>';
-
-            $sx .= bs(bsc($sa, 6) . bsc($sb, 6));
-        } else {
-            $sx = wclose();
-        }
-        return $sx;
+            $RSP = [];
+            $RSP['status'] = '200';
+            $RSP['message'] = 'OK';
+            $RSP['Terms'] = $concepts;
+            $RSP['th'] = $th;
+            $RSP['concept'] = $c;
+            $RSP['time'] = date("Y-m-dTH:i:s");
+            return $RSP;
     }
 
     function canditates_broader($th, $id)
@@ -289,7 +251,6 @@ class Broader extends Model
             ->where('b_concept_narrow', $id)
             ->where('c_th', $th)
             ->findAll();
-
         /********************************/
         $Concept = new \App\Models\Thesa\Concepts\Index();
         $Concept->select('term_name, c_concept, ct_th');
@@ -301,10 +262,11 @@ class Broader extends Model
         foreach ($tl2 as $idx => $xline) {
             $Concept->where('c_concept <> ' . $xline['idc']);
         }
+        $Concept->where('c_th', $th);
+        $Concept->where('c_concept <> ' . $id);
+
         $Concept->orderby('term_name');
         $dt = $Concept->findAll();
         return $dt;
-        pre($dt);
-
     }
 }

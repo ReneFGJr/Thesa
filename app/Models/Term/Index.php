@@ -120,6 +120,36 @@ class Index extends Model
         return $id;
     }
 
+    function listTermPref($th,$c)
+        {
+            $Term = new \App\Models\Term\Index();
+            $dt = $Term->le($c, 'prefLabel');
+
+            $langs = [];
+            foreach($dt as $id=>$line)
+                {
+                    $lang = $line['Lang'];
+                    if (!isset($langs[$lang]))
+                        {
+                            $langs[$lang] = True;
+                        }
+                }
+
+            $dt = [];
+            $terms = $this->listTerm($th);
+            foreach($terms['Terms'] as $id=>$line)
+                {
+                    $lang = $line['lang'];
+                    if (!isset($langs[$lang]))
+                        {
+                            $da = $line;
+                            array_push($dt, $da);
+                        }
+                }
+            $terms['Terms'] = $dt;
+            return $terms;
+        }
+
     function listTerm($th)
     {
         $TermsTh = new \App\Models\Term\TermsTh();
