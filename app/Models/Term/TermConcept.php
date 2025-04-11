@@ -108,6 +108,7 @@ class TermConcept extends Model
                     $daa = [];
                     $daa['Term'] = $line['term_name'];
                     $daa['Lang'] = $line['lg_code'];
+                    $daa['idReg'] = $line['id_ct'];
 
                     array_push($dd,$daa);
                 }

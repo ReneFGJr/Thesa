@@ -1,14 +1,31 @@
-<h5>{{ termLabel }} <i *ngIf="label!='narrow'" class="bi bi-plus-circle link" (click)="togglePanel(label)"></i></h5>
+<h5>
+  {{ termLabel }}
+  <i
+    *ngIf="label != 'narrow'"
+    class="bi bi-plus-circle link"
+    (click)="togglePanel(label)"
+  ></i>
+</h5>
 <ul>
   <li
     *ngFor="let term of terms"
     [class]="term.Propriety"
     class="option_select"
-    style="list-style-type: none; padding: 0; margin: 0;"
+    style="list-style-type: none; padding: 0; margin: 0"
   >
-  <span *ngIf="!term.id">{{ term.Term }} <sup style="color:#888;">{{term.Lang}}</sup></span>
-  <a *ngIf="term.id" [routerLink]="['/c', term.id]" class="link">
-    <i class="bi bi-tag-fill"></i> {{ term.Term }} <sup style="color:#888;">{{term.Lang}}</sup>
-  </a>
+    <span *ngIf="!term.id"
+      >{{ term.Term }}</span
+    >
+    <a *ngIf="term.id" [routerLink]="['/c', term.id]" class="link">
+      <i class="bi bi-tag-fill"></i> {{ term.Term }}
+    </a>
+    <!-- Lixeirra -->
+    <i *ngIf="editMode == true && ((label != 'prefLabel') || (label == 'prefLabel' && terms.length > 1))"
+            class="bi bi-trash ms-2 link"
+            (click)="deleteItem(term?.idReg,label)"
+            style="color: #fbb"></i>
+
+    <!-- Idioma-->
+    <sup style="color: #888" class="ms-2">{{ term.Lang }}</sup>
   </li>
 </ul>

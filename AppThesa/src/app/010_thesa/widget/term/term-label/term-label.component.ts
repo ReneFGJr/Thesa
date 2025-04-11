@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ServiceThesaService } from '../../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../../000_core/service/service-storage.service';
-import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'app-term-label',
@@ -12,8 +12,44 @@ export class TermLabelComponent {
   @Input() terms: Array<any> | any;
   @Input() label: string = '';
   @Input() editMode: boolean = false;
+  @Input() thesaID: string = '';
   @Output() action = new EventEmitter<any>();
   public termLabel = '';
+
+  constructor(
+    private serviceThesa: ServiceThesaService,
+    private serviceStorage: ServiceStorageService
+  ) {}
+
+  deleteItem(id: string = '', label: string) {
+    const confirmacao = confirm('Tem certeza que deseja excluir este item?');
+    if (confirmacao) {
+      // Executa a exclusão
+      console.log('Item excluído');
+      this.removeLabel(id, label);
+    } else {
+      // Cancela a exclusão
+      console.log('Exclusão cancelada');
+    }
+  }
+
+  removeLabel(id: string = '', label: string) {
+    let url = 'removeRelation';
+    let dt = {
+      terms: this.termID,
+      thesaID: this.serviceStorage.get('thesaID'),
+      idr: id,
+      type: label,
+    };
+    this.serviceThesa.api_post(url, dt).subscribe(
+      (res) => {
+        console.log('Resposta do servidor:', res);
+      },
+      (error) => {
+        console.error('Erro ao enviar os dados:', error);
+      }
+    );
+  }
 
   ngOnChages() {
     this.ngOnInit();

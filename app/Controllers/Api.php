@@ -46,6 +46,10 @@ class Api extends BaseController
 
         switch($arg1)
             {
+                case 'removeRelation':
+                    $Relations = new \App\Models\Thesa\Relations\Relations();
+                    $RSP = $Relations->removeRelation($arg2,$arg3);
+                    break;
                 case 'relateConcept':
                     $Broader = new \App\Models\Thesa\Relations\Broader();
                     $RSP = $Broader->relateConcept();

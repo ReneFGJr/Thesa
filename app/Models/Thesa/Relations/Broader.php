@@ -96,6 +96,7 @@ class Broader extends Model
                         $da['Term'] = $line['term_name'];
                         $da['Lang'] = $line['lg_code'];
                         $da['Prop'] = $line['term_lang'];
+                        $da['idReg'] = $line['id_b'];
                         array_push($dd,$da);
                         $di[$idN] = 1;
                         }
@@ -125,6 +126,7 @@ class Broader extends Model
                 $da['Term'] = $line['term_name'];
                 $da['Lang'] = $line['lg_code'];
                 $da['Prop'] = $line['term_lang'];
+                $da['idReg'] = $line['id_b'];
                 array_push($dd, $da);
                 $di[$idN] = 1;
             }
