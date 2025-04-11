@@ -45,7 +45,6 @@ export class TermInputComponent {
   }
 
   onSubmit(): void {
-    console.log('Valor enviado:', this.formAction.value);
     this.serviceThesa
       .api_post('term_add', this.formAction.value)
       .subscribe((res) => {

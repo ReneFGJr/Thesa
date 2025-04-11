@@ -240,6 +240,24 @@ curl -X GET https://api.meusistema.com/users \
               </td>
             </tr>
 
+
+
+            <tr>
+              <td>
+                <a href="{{ url }}/relateConcept" target="_blank">/api/relateConcept</a>
+              </td>
+              <td class="text-center">POST</td>
+              <td>
+                <ul>
+                  <li>:apikey - API key do usuário</li>
+                  <li>:thesaurus - Número (ID) do tesauro</li>
+                  <li>:property - Tipo de vinculo (broader, related)</li>
+                  <li>:c1 - Conceito principal</li>
+                  <li>:c2 - Conceito secundario</li>
+                </ul>
+              </td>
+            </tr>
+
             <tr>
               <td>
                 <a href="{{ url }}/term_add" target="_blank">/api/term_add</a>

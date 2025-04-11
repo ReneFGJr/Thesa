@@ -42,6 +42,11 @@ class ThProprity extends Model
 
     var $quali = 0;
 
+    function getProperty($class)
+        {
+            return $this->class($class);
+        }
+
     function getClass($class)
         {
             return $this->class($class);

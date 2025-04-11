@@ -6,8 +6,7 @@ import { PainelService } from '../../../000_core/service/painel.service';
 
 @Component({
   selector: 'app-concept-relation',
-  templateUrl: './concept.component.html',
-  styleUrl: './concept.component.scss',
+  templateUrl: './concept.component.html'
 })
 export class ConceptComponent {
   @Input() terms: Array<any> | any;
@@ -16,12 +15,21 @@ export class ConceptComponent {
   @Input() actionCV: string = '';
   @Input() thesaID: number = 0;
   @Input() conceptID: number = 0;
+  data:Array<any> = [];
   formAction: FormGroup;
   title: string = 'Termos';
 
-  form: FormGroup = this.fb.group({
-    termId: [''], // valor inicial
-    });
+  filterText: string = '';
+
+  filteredTerms(): any[] {
+    if (!this.terms) return [];
+    if (!this.filterText) return this.terms;
+
+    const filter = this.filterText.toLowerCase();
+    return this.terms.filter((term: any) =>
+      term.Term.toLowerCase().includes(filter)
+    );
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -43,11 +51,23 @@ export class ConceptComponent {
   }
 
   onSubmit() {
-    console.log(this.form.value); // Aqui você acessa o ID selecionado
+    console.log(this.formAction.value); // Aqui você acessa o ID selecionado
+    let data = {
+      c1: this.conceptID,
+      c2: this.formAction.value.termId,
+      property: this.actionCV,
+      thesaurus: this.thesaID,
+    };
+    console.log(data)
+    this.serviceThesa
+      .api_post('relateConcept', data)
+      .subscribe((res) => {
+          console.log(res)
+      });
   }
 
   ngOnChanges() {
-    this.form = this.fb.group({
+    this.formAction = this.fb.group({
       termId: [''], // valor inicial
     });
 

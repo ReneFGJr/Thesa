@@ -46,6 +46,10 @@ class Api extends BaseController
 
         switch($arg1)
             {
+                case 'relateConcept':
+                    $Broader = new \App\Models\Thesa\Relations\Broader();
+                    $RSP = $Broader->relateConcept();
+                    break;
                 case 'broader_candidate':
                     $Broader = new \App\Models\Thesa\Relations\Broader();
                     $RSP = $Broader->broader_candidate($arg2,$arg3);

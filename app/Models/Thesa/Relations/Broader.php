@@ -43,6 +43,27 @@ class Broader extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function relateConcept()
+    {
+        $ThProprity = new \App\Models\RDF\ThProprity();
+
+        $prop = get("property");
+        $prop = $ThProprity->getProperty($prop);
+
+        $RSP = [];
+        $dd['b_th'] = get("thesaurus");
+        $dd['b_concept_narrow'] = get("c1");
+        $dd['b_concept_boader'] = get("c2");
+        $dd['b_property'] = $prop;
+        $th = $dd['b_th'];
+        $c1 = $dd['b_concept_boader'];
+        $c2 = $dd['b_concept_narrow'];
+        $master = 0;
+
+        $RSP = $this->register($th, $c1, $c2, $master);
+        return $RSP;
+    }
+
     function show($id,$edit=false)
     {
         $sx = '';
@@ -185,12 +206,16 @@ class Broader extends Model
 
         if (count($dt) == 0) {
             $this->set($data)->insert();
-            $sx .= "SAVED";
-            $sx .= wclose();
+            $RSP = [];
+            $RSP['status'] = '200';
+            $RSP['message'] = 'OK';
         } else {
             $sx .= bsmessage("Já existe um TG", 3);
+            $RSP['status'] = '400';
+            $RSP['message'] = 'Already exists';
+            $RSP['id'] = $dt[0]['id_b'];
         }
-        return $sx;
+        return $RSP;
     }
 
     function exist_broader($id,$th)

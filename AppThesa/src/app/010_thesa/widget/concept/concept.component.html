@@ -1,26 +1,24 @@
-<h4>{{title}}</h4>
+<h4>{{ title }}</h4>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<!-- Campo de filtro -->
+<input
+  type="text"
+  placeholder="Filtrar termos..."
+  [(ngModel)]="filterText"
+  class="full"
+  style="margin-bottom: 10px;"
+/>
+
+<form [formGroup]="formAction" (ngSubmit)="onSubmit()">
   <label for="termSelect">Selecione um termo:</label>
-  <select id="termSelect" formControlName="termId">
-    <option value="">-- Selecione --</option>
-    <option *ngFor="let item of terms" [value]="item.id">
+  <select id="termSelect" formControlName="termId" class="full" size="12">
+    <option *ngFor="let item of filteredTerms()" [value]="item.id">
       {{ item.Term }}
     </option>
   </select>
 
-  <button type="submit">Enviar</button>
+  <button type="submit" class="btn btn-primary mt-3 full">Vincular conceito</button>
 </form>
 
-<p *ngIf="form.value.termId">Selecionado: {{ form.value.termId }}</p>
-
-
-{{actionCV}}
-{{thesaID}}
-{{conceptID}}
-{{editMode}}
----------------------
-<span class="btn btn-primary" (click)="close()">CLOSE</span>
-<pre>
-{{terms | json}}
-</pre>
+<!-- Botão de fechar -->
+<span class="btn btn-warning mt-3 full" (click)="close()">Fechar</span>

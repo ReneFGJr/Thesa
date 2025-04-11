@@ -1,4 +1,4 @@
-<h5>{{ termLabel }} <i class="bi bi-plus-circle link" (click)="togglePanel(label)"></i></h5>
+<h5>{{ termLabel }} <i *ngIf="label!='narrow'" class="bi bi-plus-circle link" (click)="togglePanel(label)"></i></h5>
 <ul>
   <li
     *ngFor="let term of terms"
