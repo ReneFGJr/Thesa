@@ -13,25 +13,37 @@
             <a class="nav-link link"
             [routerLink]="['/thesa/', thesa.id_th]"
             [ngClass]="{ active: tab === '1' }"
-            routerLinkActive="active">conceitos</a>
+            routerLinkActive="active">Conceitos</a>
           </li>
 
           <li class="nav-item">
             <a class="nav-link link" [routerLink]="['/about/', thesa.id_th]"
             [ngClass]="{ active: tab === '2' }"
-            routerLinkActive="active">sobre</a>
+            routerLinkActive="active">Sobre</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link link" [routerLink]="['/alphabetical/', thesa.id_th]"
+            [ngClass]="{ active: tab === '3' }"
+            routerLinkActive="active">Apresentação Alfabética</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link link" [routerLink]="['/sistematic/', thesa.id_th]"
+            [ngClass]="{ active: tab === '4' }"
+            routerLinkActive="active">Apresentação Sistemática</a>
           </li>
 
           <li class="nav-item">
             <a class="nav-link link" [routerLink]="['/export/', thesa.id_th]"
-            [ngClass]="{ active: tab === '3' }"
-            routerLinkActive="active">exportação</a>
+            [ngClass]="{ active: tab === '5' }"
+            routerLinkActive="active">Exportação</a>
           </li>
 
           <li class="nav-item">
             <a class="nav-link link" [routerLink]="['/configuration/', thesa.id_th]"
-            [ngClass]="{ active: tab === '4' }"
-            routerLinkActive="active">configurações</a>
+            [ngClass]="{ active: tab === '6' }"
+            routerLinkActive="active">Configurações</a>
           </li>
         </ul>
     </div>

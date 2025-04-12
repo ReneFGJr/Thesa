@@ -46,9 +46,13 @@ class Api extends BaseController
 
         switch($arg1)
             {
+                case 'relationsCustom':
+                    $ThProprityCustom = new \App\Models\RDF\ThProprityCustom();
+                    $RSP = $ThProprityCustom->le($arg2,$arg3);
+                    break;
                 case 'removeRelation':
                     $Relations = new \App\Models\Thesa\Relations\Relations();
-                    $RSP = $Relations->removeRelation($arg2,$arg3);
+                    $RSP = $this->removeRelation($arg2,$arg3);
                     break;
                 case 'relateConcept':
                     $Broader = new \App\Models\Thesa\Relations\Broader();
@@ -186,6 +190,38 @@ class Api extends BaseController
         $RSP = $Thesa->le($id);
         return $RSP;
     }
+
+    function removeRelation()
+        {
+            $verb = get("type");
+            if ($verb == 'narrow') { $verb = 'broader'; }
+        if ($verb == 'hiddenLabel') { $verb = 'altLabel'; }
+        if ($verb == 'prefLabel') { $verb = 'altLabel'; }
+            switch($verb)
+                {
+                    case 'altLabel':
+                        $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
+                        $ThConceptPropriety->where('id_ct', get('idr'))->delete();
+
+                        $RSP['status'] = '200';
+                        $RSP['message'] = 'Relation removed';
+                        break;
+                    case 'broader':
+                        $Broader = new \App\Models\Thesa\Relations\Broader();
+                        $dt = $Broader->where('id_b',get('idr'))->delete();
+                        $RSP['status'] = '200';
+                        $RSP['message'] = 'Relation removed';
+                        $RSP['situation'] = 'GREEN';
+                        break;
+                    default:
+                        $RSP['status'] = '400';
+                        $RSP['message'] = 'Verb not informed';
+                        $RSP['verb'] = $verb;
+                        $RSP['post'] = $_POST;
+                        break;
+                }
+            return $RSP;
+        }
 
     function t($id,$RSP)
         {
