@@ -51,10 +51,14 @@
               <app-concept-show-terms (actionAC)="action($event)" [data]="data" [editMode]="editMode"></app-concept-show-terms>
               <!-- Concepts Relations -->
               <app-concept-show-concepts (actionAC)="action($event)" [data]="data" [editMode]="editMode"></app-concept-show-concepts>
+              <!-- Notes -->
+              <app-notes [editMode]="editMode" [notes]="data.notes"></app-notes>
+
           </ng-container>
           <!---------------------------------------- Notas -->
           <ng-container *ngIf="tab.content=='notas'">
-            <pre>{{data | json}}</pre>
+            <!-- Notes -->
+              <app-notes [editMode]="editMode" [notes]="data.notes"></app-notes>
           </ng-container>
           <!---------------------------------------- Card -->
           <ng-container *ngIf="tab.content=='card'">

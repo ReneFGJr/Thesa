@@ -1,7 +1,7 @@
-<h5>
+<h5 *ngIf="editMode == true || terms?.length > 0">
   {{ termLabel }}
   <i
-    *ngIf="label != 'narrow'"
+    *ngIf="label != 'narrow' && editMode==true"
     class="bi bi-plus-circle link"
     (click)="togglePanel(label)"
   ></i>

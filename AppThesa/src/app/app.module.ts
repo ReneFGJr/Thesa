@@ -26,7 +26,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConceptLinkComponent } from './010_thesa/widget/concept-link/concept-link.component';
 import { ConceptTHComponent } from './010_thesa/page/concept-th/concept-th.component';
 import { AltLabelComponent } from './010_thesa/widget/term/atribute-label/atribute-label.component';
-import { HiddenLabelComponent } from './010_thesa/widget/hidden-label/hidden-label.component';
 import { VideoPlayComponent } from './010_thesa/widget/video-play/video-play.component';
 import { NarrowComponent } from './010_thesa/widget/narrow/narrow.component';
 import { BroaderComponent } from './010_thesa/widget/broader/broader.component';
@@ -43,7 +42,7 @@ import { FormTextareaComponent } from './010_thesa/widget/config/form-textarea/f
 import { ConfigTitleComponent } from './010_thesa/widget/config/config-title/config-title.component';
 import { ConfigLicenseComponent } from './010_thesa/widget/config/config-license/config-license.component';
 import { ThesaCreateComponent } from './010_thesa/page/thesa-create/thesa-create.component';
-import { TermInputComponent } from './010_thesa/widget/_OLD/term-input/term-input.component';
+import { TermInputComponent } from './010_thesa/widget/term/term-input/term-input.component';
 import { ConceptCreateComponent } from './010_thesa/widget/concept-create/concept-create.component';
 import { ConceptShowComponent } from './010_thesa/widget/concept-show/concept-show.component';
 import { ConceptShowTermsComponent } from './010_thesa/widget/concept-show/concept-show-terms/concept-show-terms.component';
@@ -51,6 +50,10 @@ import { ConceptShowConceptsComponent } from './010_thesa/widget/concept-show/co
 import { TermLabelComponent } from './010_thesa/widget/term/term-label/term-label.component';
 import { ConceptCardComponent } from './010_thesa/widget/concept-show/concept-card/concept-card.component';
 import { ConceptGrafoComponent } from './010_thesa/widget/concept-show/concept-grafo/concept-grafo.component';
+import { IndexSystemicComponent } from './010_thesa/page/index-systemic/index-systemic.component';
+import { IndexAlphabeticComponent } from './010_thesa/page/index-alphabetic/index-alphabetic.component';
+import { ExportPDFComponent } from './010_thesa/page/export/export.component';
+import { ConfigLanguageComponent } from './010_thesa/widget/config/config-language/config-language.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +77,6 @@ import { ConceptGrafoComponent } from './010_thesa/widget/concept-show/concept-g
     ConceptLinkComponent,
     ConceptTHComponent,
     AltLabelComponent,
-    HiddenLabelComponent,
     VideoPlayComponent,
     NarrowComponent,
     BroaderComponent,
@@ -98,6 +100,10 @@ import { ConceptGrafoComponent } from './010_thesa/widget/concept-show/concept-g
     TermLabelComponent,
     ConceptCardComponent,
     ConceptGrafoComponent,
+    IndexSystemicComponent,
+    IndexAlphabeticComponent,
+    ExportPDFComponent,
+    ConfigLanguageComponent,
   ],
   imports: [
     BrowserModule,

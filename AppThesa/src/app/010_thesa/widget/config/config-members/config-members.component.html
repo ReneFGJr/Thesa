@@ -1,1 +1,34 @@
-<p>config-members works!</p>
+<table class="table table-bordered table-striped table-hover w-100" *ngIf="members">
+  <thead class="table-light">
+    <tr>
+      <th scope="col">Nome</th>
+      <th scope="col">Instituição</th>
+      <th scope="col">Função</th>
+      <th scope="col">Ação</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let person of members.members">
+      <td>{{ person.fullname }}</td>
+      <td>{{ person.affiliation || '—' }}</td>
+      <td>{{ person.function || '—' }}</td>
+      <td class="text-center"><i class="link bi bi-trash" (click)="removeMember(person.idv)"></i></td>
+    </tr>
+  </tbody>
+</table>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="mb-4">
+  <label for="searchInput" class="form-label">Informe o E-mail</label>
+  <input id="searchInput" type="text" formControlName="search" class="form-control" placeholder="Digite o nome ou e-mail do usuário" />
+
+  <br><input type="radio" name="type" formControlName="type" value="1" id="type" class="form-check-input" /> Autor
+  <br><input type="radio" name="type" formControlName="type" value="2" id="type" class="form-check-input" /> Colaborador
+  <br><input type="radio" name="type" formControlName="type" value="3" id="type" class="form-check-input" /> Orientador
+
+  <button type="submit" class="btn btn-outline-primary mt-2">Registrar</button>
+
+</form>
+
+<div *ngIf="loading" class="alert alert-info">Registrando...</div>
+
+<div *ngIf="!loading && results.length === 0" class="alert alert-warning">Nenhum resultado encontrado.</div>

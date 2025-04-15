@@ -8,6 +8,9 @@ import { ConceptTHComponent } from './010_thesa/page/concept-th/concept-th.compo
 import { AboutThComponent } from './010_thesa/page/about-th/about-th.component';
 import { ConfigurationComponent } from './010_thesa/page/configuration/configuration.component';
 import { ThesaCreateComponent } from './010_thesa/page/thesa-create/thesa-create.component';
+import { IndexSystemicComponent } from './010_thesa/page/index-systemic/index-systemic.component';
+import { IndexAlphabeticComponent } from './010_thesa/page/index-alphabetic/index-alphabetic.component';
+import { ExportPDFComponent } from './010_thesa/page/export/export.component';
 
 
 const routes: Routes = [
@@ -20,6 +23,9 @@ const routes: Routes = [
   { path: 'c/:id', component: ConceptTHComponent },
   { path: 'create', component: ThesaCreateComponent },
   { path: 'export/:id', component: HomepageComponent },
+  { path: 'systemic_index/:id', component: IndexSystemicComponent },
+  { path: 'alphabetic_index/:id', component: IndexAlphabeticComponent },
+  { path: 'export/:id', component: ExportPDFComponent },
 ];
 
 @NgModule({

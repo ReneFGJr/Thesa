@@ -15,7 +15,7 @@ export class ConceptShowComponent {
   actionAC: string = '';
   data: any;
   @Input() thesaID: number = 0;
-  editMode: boolean = true;
+  @Input() editMode: boolean = false;
   terms: Array<any> | any;
 
   /* Messagems */
@@ -94,5 +94,6 @@ export class ConceptShowComponent {
       },
       (error) => error
     );
+    this.editMode = this.serviceThesa.getEditMode();
   }
 }

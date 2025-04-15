@@ -14,6 +14,7 @@ export class ConceptTHComponent {
   thesa: any = {};
   thesaID: number = 0;
   termID: number = 0;
+  editMode: boolean = false;
   constructor(
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService,
@@ -37,6 +38,7 @@ export class ConceptTHComponent {
           });
       });
     });
+    this.editMode = this.serviceThesa.getEditMode();
   }
 
   changeTerm(term: any) {

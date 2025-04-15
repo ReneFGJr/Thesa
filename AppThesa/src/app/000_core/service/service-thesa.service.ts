@@ -1,7 +1,8 @@
+import { environment } from './../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { environment } from '../../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,7 @@ export class ServiceThesaService {
 
   constructor(
     private HttpClient: HttpClient,
-    private httpService: HttpClient
+    private httpService: HttpClient,
   ) {}
 
   // Language i18n
@@ -33,6 +34,12 @@ export class ServiceThesaService {
         catchError(() => throwError(() => 'Problem with IP info'))
       );
   }
+
+  public getEditMode()
+    {
+
+      return environment.editMode
+    }
 
   public api_post(type: string, dt: Array<any> | any) {
     let url = `${this.url}/${type}`;

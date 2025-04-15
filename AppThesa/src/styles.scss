@@ -35,6 +35,9 @@ h5 {
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
+.bi-trash{
+  color: #fbb;
+}
 
 .link {
   color: #000;
@@ -45,6 +48,12 @@ h5 {
   &:hover {
     opacity: 1;
   }
+}
+.bold {
+  font-weight: bold;
+}
+.italic {
+  font-style: italic;
 }
 
 .full

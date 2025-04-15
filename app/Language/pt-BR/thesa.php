@@ -16,6 +16,7 @@ return [
     'Introduction' => 'Introdução',
     'Methodology' => 'Metodologia',
     'Audience' => 'Público alvo',
+    'Language' => 'Idiomas',
     'License' => 'Licença de uso',
     'Collaborators' => 'Colaboradores',
     'author' => 'Autor',

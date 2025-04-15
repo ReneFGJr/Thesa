@@ -1,6 +1,6 @@
 <div *ngIf="(notes && notes.length > 0) || (editMode)" class="mt-2">
-  <h6>Notas <i *ngIf="editMode" class="bi bi-plus-circle link" (click)="newNotes()"></i></h6>
+  <h6 *ngIf="editMode">Notas <i  class="bi bi-plus-circle link" (click)="newNotes()"></i></h6>
 <div *ngFor="let note of notes">
-  <h6>{{note.p_name}}</h6>
-  <p>{{note.nt_content}}</p>
+  <h5>Notas de {{note.p_name}}</h5>
+  <p class="small">{{note.nt_content}}</p>
 </div>

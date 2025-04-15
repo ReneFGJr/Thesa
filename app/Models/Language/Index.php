@@ -63,6 +63,52 @@ class Index extends Model
             return $dd;
         }
 
+    function existLanguage($th)
+        {
+        $dt = $this
+            ->join('thesa_language', '(id_lg = lgt_language) and (lgt_th = ' . $th . ')')
+            ->orderBy('lg_order')
+            ->findAll();
+        $total = count($dt);
+        return ($total > 0) ? 1 : 0;
+        }
+
+    function languages_set($th)
+        {
+            $Language = new \App\Models\Thesa\Language();
+            $Language->where('lgt_th',$th)->delete();
+            $lang = get('languages');
+            $lg = explode(',',$lang);
+            foreach($lg as $id=>$line)
+                {
+                    $data = [];
+                    $data['lgt_th'] = $th;
+                    $data['lgt_language'] = $line;
+                    $data['lgt_order'] = $id;
+                    $Language->insert($data);
+                }
+            $RSP['message'] = 'Idiomas atualizados com sucesso!';
+            return $RSP;
+        }
+
+    function languages($th,$type='left')
+        {
+            $dt = $this
+                    ->join('thesa_language', '(id_lg = lgt_language) and (lgt_th = '.$th.')',$type)
+                    ->orderBy('lg_order')
+                    ->findAll();
+            $RSP = [];
+            foreach($dt as $id=>$line)
+                {
+                    $dd = [];
+                    $dd['id_lg'] = $line['id_lg'];
+                    $dd['label'] = $line['lg_language'];
+                    $dd['checked'] = ($line['lgt_th'] === null) ? 0 : 1;
+                    array_push($RSP,$dd);
+                }
+            return $RSP;
+        }
+
     function radio($th,$name)
         {
             $dt = $this

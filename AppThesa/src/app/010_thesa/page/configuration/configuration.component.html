@@ -45,6 +45,13 @@
             <app-form-textarea [thesaID]="id" [field]="'Audience'"></app-form-textarea>
             </div>
           </ng-container>
+<!----------------------------------------- Methodology-->
+          <ng-container [ngSwitch]="selectedSection">
+            <div *ngSwitchCase="'Language'" class="fade-in">
+            <h4>Idiomas</h4>
+            <app-config-language [thesaID]="id"></app-config-language>
+            </div>
+          </ng-container>
 <!----------------------------------------- audience-->
 <!----------------------------------------- License-->
 
@@ -59,6 +66,13 @@
             <div *ngSwitchCase="'Visibility'" class="fade-in">
             <h4>Visibilidade</h4>
             <app-config-visibility [thesaID]="id"></app-config-visibility>
+            </div>
+          </ng-container>
+<!----------------------------------------- visibility-->
+          <ng-container [ngSwitch]="selectedSection">
+            <div *ngSwitchCase="'Members'" class="fade-in">
+            <h4>Membros do tesauro</h4>
+            <app-config-members [thesaID]="id"></app-config-members>
             </div>
           </ng-container>
 

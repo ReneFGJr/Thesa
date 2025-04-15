@@ -23,13 +23,13 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link link" [routerLink]="['/alphabetical/', thesa.id_th]"
+            <a class="nav-link link" [routerLink]="['/alphabetic_index/', thesa.id_th]"
             [ngClass]="{ active: tab === '3' }"
             routerLinkActive="active">Apresentação Alfabética</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link link" [routerLink]="['/sistematic/', thesa.id_th]"
+            <a class="nav-link link" [routerLink]="['/systemic_index/', thesa.id_th]"
             [ngClass]="{ active: tab === '4' }"
             routerLinkActive="active">Apresentação Sistemática</a>
           </li>
@@ -43,6 +43,7 @@
           <li class="nav-item">
             <a class="nav-link link" [routerLink]="['/configuration/', thesa.id_th]"
             [ngClass]="{ active: tab === '6' }"
+            *ngIf="editMode == true"
             routerLinkActive="active">Configurações</a>
           </li>
         </ul>

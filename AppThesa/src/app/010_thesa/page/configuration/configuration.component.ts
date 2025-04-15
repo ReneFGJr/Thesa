@@ -26,6 +26,7 @@ export class ConfigurationComponent {
     { id: 'Descript', title: 'Descrição' },
     { id: 'Methodology', title: 'Metodologia' },
     { id: 'Audience', title: 'Público Alvo' },
+    { id: 'Language', title: 'Idiomas' },
     { id: 'License', title: 'Licença' },
     { id: 'Visibility', title: 'Visibilidade' },
     { id: 'Icon', title: 'Thema e Incones' },

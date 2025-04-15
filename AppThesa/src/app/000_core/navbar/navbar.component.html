@@ -14,7 +14,7 @@
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['documentation']">documentation</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="!editMode">
         <a class="nav-link" [routerLink]="['create']">create</a>
       </li>
     </ul>

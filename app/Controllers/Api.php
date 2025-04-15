@@ -46,6 +46,28 @@ class Api extends BaseController
 
         switch($arg1)
             {
+                case 'members_search':
+                    $Collaborators = new \App\Models\Thesa\Collaborators();
+                    $RSP['names'] = $Collaborators->members_search();
+                    break;
+                case 'members':
+                $Collaborators = new \App\Models\Thesa\Collaborators();
+                    $RSP = $Collaborators->authors($arg2,$arg3);
+                    break;
+                case 'languages_set':
+                    $Language = new \App\Models\Language\Index();
+                    $RSP = $Language->languages_set($arg2);
+                    break;
+                case 'languages_get':
+                    $Language = new \App\Models\Language\Index();
+                    $RSP = [];
+                    $RSP['languages'] = $Language->languages($arg2,'');
+                    break;
+                case 'languages':
+                    $Language = new \App\Models\Language\Index();
+                    $RSP = [];
+                    $RSP['languages'] = $Language->languages($arg2);
+                    break;
                 case 'relationsCustom':
                     $ThProprityCustom = new \App\Models\RDF\ThProprityCustom();
                     $RSP = $ThProprityCustom->le($arg2,$arg3);

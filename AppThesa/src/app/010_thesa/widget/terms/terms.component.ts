@@ -13,6 +13,7 @@ export class TermsComponent {
   @ViewChild('offcanvasNovo') offcanvasNovo!: ElementRef;
   @Input() thesa: number = 0;
   @Input() actionVC: Array<any> = [];
+  @Input() editMode: boolean = false;
   @Output() termChange: EventEmitter<any> = new EventEmitter<any>();
 
   action: string = '';
@@ -21,7 +22,6 @@ export class TermsComponent {
   filterText: string = '';
   selectedTerm: any = null;
   selectedConcept: any = null;
-  editMode = true;
   termTotal = 0;
   termID = 0;
   isPanelOpen = false;
@@ -46,6 +46,7 @@ export class TermsComponent {
       (error) => error
     );
     this.updateTermosList();
+    this.editMode = this.serviceThesa.getEditMode();
   }
 
   updateTermosList() {
