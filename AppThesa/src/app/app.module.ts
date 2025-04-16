@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -11,11 +11,6 @@ import { HomepageComponent } from './010_thesa/page/homepage/homepage.component'
 import { LogoBigComponent } from './010_thesa/widget/logo-big/logo-big.component';
 import { ApiDocComponent } from './020_doc/documment/api/api.component';
 import { ThOpenComponent } from './010_thesa/widget/th-open/th-open.component';
-import { LoginComponent } from './010_thesa/social/login/login.component';
-import { SigninComponent } from './010_thesa/social/signin/signin.component';
-import { SignupComponent } from './010_thesa/social/signup/signup.component';
-import { LogoutComponent } from './010_thesa/social/logout/logout.component';
-import { ForgoutComponent } from './010_thesa/social/forgout/forgout.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ThesaComponent } from './010_thesa/page/thesa/thesa.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -26,7 +21,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConceptLinkComponent } from './010_thesa/widget/concept-link/concept-link.component';
 import { ConceptTHComponent } from './010_thesa/page/concept-th/concept-th.component';
 import { AltLabelComponent } from './010_thesa/widget/term/atribute-label/atribute-label.component';
-import { VideoPlayComponent } from './010_thesa/widget/video-play/video-play.component';
 import { NarrowComponent } from './010_thesa/widget/narrow/narrow.component';
 import { BroaderComponent } from './010_thesa/widget/broader/broader.component';
 import { RelatedComponent } from './010_thesa/widget/related/related.component';
@@ -54,6 +48,14 @@ import { IndexSystemicComponent } from './010_thesa/page/index-systemic/index-sy
 import { IndexAlphabeticComponent } from './010_thesa/page/index-alphabetic/index-alphabetic.component';
 import { ExportPDFComponent } from './010_thesa/page/export/export.component';
 import { ConfigLanguageComponent } from './010_thesa/widget/config/config-language/config-language.component';
+import { VideoPlayComponent } from './010_thesa/widget/video-play/video-play.component';
+import { VideoPlayShowComponent } from './010_thesa/widget/play-media-show/play-media--show.component';
+import { ThesaMyComponent } from './010_thesa/page/thesa-my/thesa-my.component';
+import { ForgetPasswordComponent } from './030_social/forget-password/forget-password.component';
+import { AuthPageComponent } from './030_social/auth-page/auth-page.component';
+import { PerfilComponent } from './030_social/perfil/perfil.component';
+import { SignupComponent } from './030_social/signup/signup.component';
+import { SigninComponent } from './030_social/signin/signin.component';
 
 @NgModule({
   declarations: [
@@ -65,11 +67,6 @@ import { ConfigLanguageComponent } from './010_thesa/widget/config/config-langua
     LogoBigComponent,
     ApiDocComponent,
     ThOpenComponent,
-    LoginComponent,
-    SigninComponent,
-    SignupComponent,
-    LogoutComponent,
-    ForgoutComponent,
     ThesaComponent,
     ThShowComponent,
     ConceptComponent,
@@ -77,7 +74,6 @@ import { ConfigLanguageComponent } from './010_thesa/widget/config/config-langua
     ConceptLinkComponent,
     ConceptTHComponent,
     AltLabelComponent,
-    VideoPlayComponent,
     NarrowComponent,
     BroaderComponent,
     RelatedComponent,
@@ -104,6 +100,16 @@ import { ConfigLanguageComponent } from './010_thesa/widget/config/config-langua
     IndexAlphabeticComponent,
     ExportPDFComponent,
     ConfigLanguageComponent,
+    VideoPlayComponent,
+    VideoPlayShowComponent,
+    ThesaMyComponent,
+    ForgetPasswordComponent,
+    AuthPageComponent,
+    PerfilComponent,
+    SigninComponent,
+    SignupComponent,
+    ForgetPasswordComponent,
+    PerfilComponent,
   ],
   imports: [
     BrowserModule,
@@ -117,5 +123,6 @@ import { ConfigLanguageComponent } from './010_thesa/widget/config/config-langua
   ],
   providers: [],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {}

@@ -6,10 +6,11 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+  styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
   @Input() editMode: boolean = false;
+  logo = 'assets/img/logo/logo_thesa.svg';
 
   constructor(
     private serviceThesa: ServiceThesaService,
@@ -17,8 +18,7 @@ export class NavbarComponent {
     private router: ActivatedRoute
   ) {}
 
-  ngOnInit()
-    {
-      this.editMode = this.serviceThesa.getEditMode();
-    }
+  ngOnInit() {
+    this.editMode = this.serviceThesa.getEditMode();
+  }
 }

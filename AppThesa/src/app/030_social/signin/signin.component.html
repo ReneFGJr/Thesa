@@ -1,0 +1,36 @@
+<div class="container d-flex justify-content-center">
+  <div class="card shadow p-4" style="width: 100%; max-width: 400px;">
+    <h2 class="text-center mb-4">Login</h2>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="email"
+          formControlName="email"
+          class="form-control"
+          id="email"
+          placeholder="seu@email.com"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Senha</label>
+        <input
+          type="password"
+          formControlName="password"
+          class="form-control"
+          id="password"
+          placeholder="Digite sua senha"
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Entrar</button>
+
+      <div class="d-flex justify-content-between mt-3">
+        <a routerLink="/social/forget" class="link-primary text-decoration-none">Esqueci minha senha</a>
+        <a routerLink="/social/signup" class="link-primary text-decoration-none">Cadastrar-se</a>
+      </div>
+    </form>
+  </div>
+</div>

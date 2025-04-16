@@ -27,6 +27,17 @@ class Api extends BaseController
             return $RSP;
 
         }
+
+    public function user()
+        {
+            $user = 0;
+            $apikey = get("APIKEY") . get("apikey");
+            if ($apikey != '') {
+                $Socials = new \App\Models\Socials();
+                $user = $Socials->validaAPIKEY($apikey);
+            }
+            return $user;
+        }
     public function index($arg1='',$arg2='',$arg3='')
     {
         global $user;
@@ -180,6 +191,16 @@ class Api extends BaseController
                 case 'thopen': /* Thesaurus aberto */
                     $Thesa = new \App\Models\Thesa\Index();
                     $RSP['th'] = $Thesa->thopen();
+                    break;
+                case 'thmy': /* Thesaurus aberto */
+                    $Thesa = new \App\Models\Thesa\Index();
+                    $userID = $this->user();
+                    if ($userID == 0) {
+                        $RSP['status'] = '400';
+                        $RSP['message'] = 'User not informed';
+                        echo json_encode($RSP); exit;
+                    }
+                    $RSP['th'] = $Thesa->thopen($userID);
                     break;
                 case 'resume':
                     $Thesa = new \App\Models\Thesa\Index();

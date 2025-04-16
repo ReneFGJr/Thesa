@@ -11,12 +11,15 @@ import { ThesaCreateComponent } from './010_thesa/page/thesa-create/thesa-create
 import { IndexSystemicComponent } from './010_thesa/page/index-systemic/index-systemic.component';
 import { IndexAlphabeticComponent } from './010_thesa/page/index-alphabetic/index-alphabetic.component';
 import { ExportPDFComponent } from './010_thesa/page/export/export.component';
+import { ThesaMyComponent } from './010_thesa/page/thesa-my/thesa-my.component';
+import { AuthPageComponent } from './030_social/auth-page/auth-page.component';
 
 
 const routes: Routes = [
   { path: '', component: HomepageComponent },
   { path: 'documentation', component: ApiDocComponent },
   { path: 'thopen', component: ThOpenComponent },
+  { path: 'thmy', component: ThesaMyComponent },
   { path: 'thesa/:id', component: ThesaComponent },
   { path: 'about/:id', component: AboutThComponent },
   { path: 'configuration/:id', component: ConfigurationComponent },
@@ -26,6 +29,8 @@ const routes: Routes = [
   { path: 'systemic_index/:id', component: IndexSystemicComponent },
   { path: 'alphabetic_index/:id', component: IndexAlphabeticComponent },
   { path: 'export/:id', component: ExportPDFComponent },
+  { path: 'social/:id', component: AuthPageComponent },
+  { path: 'social', component: AuthPageComponent },
 ];
 
 @NgModule({

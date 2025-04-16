@@ -1,0 +1,57 @@
+<div class="container d-flex justify-content-center">
+  <div class="card shadow p-4" style="width: 100%; max-width: 500px;">
+    <h2 class="text-center mb-4">Cadastrar-se</h2>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="mb-3">
+        <label for="fullname" class="form-label">Nome completo</label>
+        <input
+          type="text"
+          id="fullname"
+          formControlName="fullname"
+          class="form-control"
+          placeholder="Seu nome completo"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          class="form-control"
+          placeholder="seu@email.com"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="institution" class="form-label">Instituição</label>
+        <input
+          type="text"
+          id="institution"
+          formControlName="institution"
+          class="form-control"
+          placeholder="Instituição de vínculo"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Senha</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          class="form-control"
+          placeholder="Crie uma senha"
+        />
+      </div>
+
+      <button type="submit" class="btn btn-success w-100">Cadastrar</button>
+
+      <div class="text-center mt-3">
+        <a routerLink="/social/login" class="link-secondary text-decoration-none">Já tem conta? Fazer login</a>
+      </div>
+    </form>
+  </div>
+</div>
