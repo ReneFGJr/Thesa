@@ -1,16 +1,21 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from '../../000_core/service/auth.service';
+import { ServiceThesaService } from '../../000_core/service/service-thesa.service';
 
 @Component({
   selector: 'app-forget-password',
   templateUrl: './forget-password.component.html',
-  styleUrl: './forget-password.component.scss'
+  styleUrl: './forget-password.component.scss',
 })
 export class ForgetPasswordComponent {
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, private auth: AuthService) {
+  constructor(
+    private fb: FormBuilder,
+    private auth: AuthService,
+    private serviceThesa: ServiceThesaService
+  ) {
     this.form = fb.group({
       email: [''],
     });
@@ -18,10 +23,12 @@ export class ForgetPasswordComponent {
 
   submit() {
     const { email } = this.form.value;
-    if (this.auth.resetPassword(email)) {
-      alert('Um link de recuperação foi enviado para o seu e-mail (simulado).');
-    } else {
-      alert('Email não encontrado.');
-    }
+    let dt = { email: email };
+    console.log(dt);
+    this.serviceThesa
+      .api_post('social/forget', dt)
+      .subscribe((res) => {
+        console.log(res);
+      });
   }
 }

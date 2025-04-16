@@ -179,6 +179,7 @@ class Api extends BaseController
                 case 'import':
                     $tools = new \App\Models\Tools\Import();
                     $RSP = $tools->import();
+                    break;
                 case 'status':
                     $RSP['status'] = '200';
                     $RSP['messagem'] = 'The system is healthy';
@@ -214,6 +215,10 @@ class Api extends BaseController
                     break;
                 case 'th': /* Dados do Thesaurus */
                     $RSP = $this->th($arg2, $RSP);
+                    break;
+                case 'social':
+                    $Socials = new \App\Models\Socials();
+                    $RSP = $Socials->index($arg2,$arg3);
                     break;
                 default:
                     $RSP['status'] = '400';

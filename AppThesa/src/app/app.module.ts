@@ -56,6 +56,8 @@ import { AuthPageComponent } from './030_social/auth-page/auth-page.component';
 import { PerfilComponent } from './030_social/perfil/perfil.component';
 import { SignupComponent } from './030_social/signup/signup.component';
 import { SigninComponent } from './030_social/signin/signin.component';
+import { UserMenuComponent } from './030_social/user-menu/user-menu.component';
+import { RecoverPasswordComponent } from './030_social/recover-password/recover-password.component';
 
 @NgModule({
   declarations: [
@@ -110,6 +112,8 @@ import { SigninComponent } from './030_social/signin/signin.component';
     SignupComponent,
     ForgetPasswordComponent,
     PerfilComponent,
+    UserMenuComponent,
+    RecoverPasswordComponent,
   ],
   imports: [
     BrowserModule,

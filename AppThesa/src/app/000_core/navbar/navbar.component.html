@@ -1,6 +1,16 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" [routerLink]="['/']" class="ms-2"><img [src]="logo" title="Home page" style="height: 30px;"></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <a class="navbar-brand" [routerLink]="['/']" class="ms-2"
+    ><img [src]="logo" title="Home page" style="height: 30px"
+  /></a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarNav"
+    aria-controls="navbarNav"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
@@ -17,6 +27,9 @@
       <li class="nav-item" *ngIf="!editMode">
         <a class="nav-link" [routerLink]="['create']">create</a>
       </li>
+    </ul>
+    <ul class="ms-auto navbar-nav">
+        <app-user-menu></app-user-menu>
     </ul>
   </div>
 </nav>
