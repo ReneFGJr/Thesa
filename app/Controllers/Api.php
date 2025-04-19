@@ -41,24 +41,27 @@ class Api extends BaseController
         }
     public function index($arg1='',$arg2='',$arg3='')
     {
-        global $user;
         $RSP = [];
 
-        $user = 0;
-        $apikey = get("APIKEY") . get("apikey");
-        $apikey = troca($apikey, '"', '');
-        $RSP['key'] = $apikey;
-        if ($apikey != '')
-            {
-                $Socials = new \App\Models\Socials();
-                $user = $Socials->validaAPIKEY($apikey);
-            }
+        $user = $this->user();
+        $RSP['user'] = $user;
+        $RSP['data'] = $_POST;
+        $RSP['arg1'] = $arg1;
+        $RSP['arg2'] = $arg2;
 
         if ($arg1 == 'conecpt') { $arg1 = 'c'; }
         if ($arg1 == 'term') { $arg1 = 't'; }
 
         switch($arg1)
             {
+                case 'deleteNote':
+                    $Notes = new \App\Models\Property\Notes();
+                    $RSP = $Notes->deleteNote();
+                    break;
+                case 'saveNote':
+                    $Notes = new \App\Models\Property\Notes();
+                    $RSP = $Notes->saveNote();
+                    break;
                 case 'getNotesType':
                     $Prop = new \App\Models\RDF\ThProprity();
                     $RSP = $Prop->getNotesType();
@@ -239,7 +242,6 @@ class Api extends BaseController
                     $RSP['args'] = [$arg1,$arg2,$arg3];
             }
         $RSP['time'] = date("Y-m-dTH:i:s");
-        $RSP['apikey'] = $apikey;
         header('Access-Control-Allow-Origin: *');
         header("Content-Type: application/json");
         echo json_encode($RSP);

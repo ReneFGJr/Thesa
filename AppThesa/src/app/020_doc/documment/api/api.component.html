@@ -366,6 +366,28 @@ curl -X GET https://api.meusistema.com/users \
               </td>
             </tr>
 
+<tr>
+              <td>
+                <a href="{{ url }}/saveNote" target="_blank"
+                  >/api/saveNote</a
+                >
+              </td>
+              <td class="text-center">POST</td>
+              <td>
+                <ul>
+                  <li>:apikey - API key do usuário</li>
+                  <li>:field - Nome do campo da descrição (title, achronic, introduction, Methodology, Audience, License)</li>
+                  <li>:thesaurus - Número (ID) do tesauro</li>
+                  <li>:noteID (opcional) - ID da nota para alteração</li>
+                  <li>:conceptID - Número (ID) do conceito</li>
+                  <li>:note - Conteúdo a ser salvo dentro do campo de</li>
+                  <li>:noteType - Tipo de vinculo (broader, related)</li>
+                  <li>:thesaurus - Número (ID) do tesauro</li>
+                  <li>:lang - Idioma da nota (por, eng, spn, fra, get, ...)</li>
+                </ul>
+              </td>
+            </tr>
+
             <tr>
               <td><a href="{{ url }}/tools" target="_blank">/api/tools</a></td>
               <td class="text-center">POST</td>

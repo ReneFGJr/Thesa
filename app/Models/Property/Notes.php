@@ -43,31 +43,62 @@ class Notes extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function register($IDC,$prop,$note,$lang,$th)
-        {
-            $dt = $this
-                ->where('nt_concept',$IDC)
-                ->where('nt_content',$note)
-                ->where('nt_prop',$prop)
-                ->first();
+    function deleteNote()
+    {
+        $IDN = get('noteID');
+        $this->where('id_nt', $IDN)->delete();
+    }
 
-            if ($dt==[])
+    function saveNote()
+    {
+        $IDC = get('conceptID');
+        $IDN = get('noteID');
+        $thesaID =  get('thesaID');
+        $note = get('note');
+        $noteType = get('noteType');
+        $lang = get('lang');
+        $th = get('thesaurus');
+
+        /* Language */
+        $Language = new \App\Models\Language\Index();
+        $lg = $Language->where('lg_cod_marc',$lang)->first();
+        $lang = $lg['id_lg'];
+
+        $this->register($IDC, $noteType,$note,$lang, $thesaID, $IDN);
+
+    }
+
+    function register($IDC,$prop,$note,$lang,$th,$IDN=0)
+        {
+            $dd['nt_concept'] = $IDC;
+            $dd['nt_content'] = $note;
+            $dd['nt_prop'] = $prop;
+            $dd['nt_lang'] = $lang;
+
+            if ($IDN == 0)
                 {
-                    $dd['nt_concept'] = $IDC;
-                    $dd['nt_content'] = $note;
-                    $dd['nt_prop'] = $prop;
-                    $dd['nt_lang'] = $lang;
                     $this->set($dd)->insert();
+                } else {
+                    $this->set($dd)
+                        ->where('id_nt',$IDN)
+                        ->update();
                 }
             return true;
         }
 
     function le($id)
     {
+        $cp = 'lg_code, nt_content, id_nt, p_name';
         $ThNotes = new \App\Models\RDF\ThNotes();
         $dt = $ThNotes
+            ->select($cp)
             ->join('thesa_property', 'id_p = nt_prop')
+            ->join('language', 'id_lg = nt_lang')
             ->where('nt_concept', $id)->findAll();
+
+        foreach ($dt as $id => $line) {
+            $dt[$id]['p_name'] = lang('thesa.'.$line['p_name']);
+        }
         return $dt;
     }
 

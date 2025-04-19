@@ -102,6 +102,7 @@ class Index extends Model
                 {
                     $dd = [];
                     $dd['id_lg'] = $line['id_lg'];
+                    $dd['code'] = $line['lg_code'];
                     $dd['label'] = $line['lg_language'];
                     $dd['checked'] = ($line['lgt_th'] === null) ? 0 : 1;
                     array_push($RSP,$dd);

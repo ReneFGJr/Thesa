@@ -185,7 +185,7 @@ class Index extends Model
 
         if (! isset($dtTh['id_th'])) {
             $RSP['status'] = '500';
-            $RSP['message'] = 'Thesaurus ID invalid';
+            $RSP['message'] = 'Thesaurus ID not Found';
             return $RSP;
         }
 
