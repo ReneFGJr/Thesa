@@ -13,19 +13,21 @@ import { ServiceThesaService } from '../../../000_core/service/service-thesa.ser
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-notes',
+  selector: 'app-notes-show',
   templateUrl: './notes.component.html',
 })
 export class NotesComponent implements OnInit, AfterViewInit {
   @Input() notes: any[] = [];
   @Input() editMode: boolean = false;
-  @Input() thesaId: string = '';
-  @Input() conceptId: string = '';
+  @Input() thesaID: number = 0;
+  @Input() conceptID: number = 0;
+  @Output() actionNotes: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('offcanvasNovo', { static: true }) offcanvasEl!: ElementRef;
   offcanvasInstance!: Offcanvas;
 
   notasProp: Array<any> | any;
+  languages: Array<any> | any;
   formAction!: FormGroup;
 
   constructor(
@@ -36,14 +38,23 @@ export class NotesComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     // 1) Monta o FormGroup
     this.formAction = this.fb.group({
-      property: ['', Validators.required],
-      nt_content: ['', [Validators.required, Validators.minLength(3)]],
+      noteType: ['', Validators.required],
+      note: ['', [Validators.required, Validators.minLength(3)]],
+      language: ['', Validators.required],
     });
 
     // 2) Carrega tipos de nota
     this.serviceThesa.api_post('getNotesType', []).subscribe(
       (res: any) => {
         this.notasProp = res.notes || res;
+      },
+      (err) => console.error(err)
+    );
+
+    // 3) Carrega tipos de nota
+    this.serviceThesa.api_post('getLanguages/' + this.thesaID, []).subscribe(
+      (res: any) => {
+        this.languages = res.notes || res;
       },
       (err) => console.error(err)
     );
@@ -63,13 +74,22 @@ export class NotesComponent implements OnInit, AfterViewInit {
     if (this.formAction.invalid) return;
 
     let dt = {
-      thesaID: this.thesaId,
-      conceptID: this.conceptId,
-      property: this.formAction.value.property,
-      nt_content: this.formAction.value.nt_content,
+      thesaID: this.thesaID,
+      conceptID: this.conceptID,
+      noteType: this.formAction.value.noteType,
+      note: this.formAction.value.note,
+      language: this.formAction.value.language,
     };
+
+    this.serviceThesa.api_post('saveNote', dt).subscribe(
+      (res) => {
+        console.log('Resposta do Servidor', res);
+      },
+      (err) => console.error(err)
+    );
 
     console.log(dt);
     this.offcanvasInstance.hide();
+    this.actionNotes.emit('OK');
   }
 }

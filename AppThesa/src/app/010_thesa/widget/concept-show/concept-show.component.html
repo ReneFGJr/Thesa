@@ -1,5 +1,5 @@
 <div class="alert alert-danger" *ngIf="thesaID === 0">
-  ERRO ThesaID==>{{thesaID}}
+  Loading ... {{ thesaID }}
 </div>
 
 <div *ngIf="data" class="container">
@@ -11,17 +11,22 @@
       </h2>
     </div>
     <div class="col-12 col-lg-1 col-md-1 col-sm-2">
+      <i class="bi bi-arrow-clockwise float-start p-1 link" (click)="ngOnChanges()"></i>
       <app-concept-link [conceptLink]="conceptID"></app-concept-link>
     </div>
 
     <!-- TABS -->
     <div class="container">
       <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" *ngFor="let tab of tabs; let i = index" role="presentation">
+        <li
+          class="nav-item"
+          *ngFor="let tab of tabs; let i = index"
+          role="presentation"
+        >
           <button
             class="nav-link"
             [class.active]="i === 0"
-            id="{{tab.id}}-tab"
+            id="{{ tab.id }}-tab"
             data-bs-toggle="tab"
             [attr.data-bs-target]="'#' + tab.id"
             type="button"
@@ -46,31 +51,41 @@
           [attr.aria-labelledby]="tab.id + '-tab'"
         >
           <!---------------------------------------- Information -->
-          <ng-container *ngIf="tab.content=='information'">
-              <!-- Terminology -->
-              <app-concept-show-terms (actionAC)="action($event)" [data]="data" [editMode]="editMode"></app-concept-show-terms>
-              <!-- Concepts Relations -->
-              <app-concept-show-concepts (actionAC)="action($event)" [data]="data" [editMode]="editMode"></app-concept-show-concepts>
-              <!-- Notes -->
-              <app-notes [editMode]="editMode" [notes]="data.notes" [thesaID]="thesaID" [conceptID]="conceptID"></app-notes>
-
-
-
+          <ng-container *ngIf="tab.content == 'information'">
+            <!-- Terminology -->
+            <app-concept-show-terms
+              (actionAC)="action($event)"
+              [data]="data"
+              [editMode]="editMode"
+            ></app-concept-show-terms>
+            <!-- Concepts Relations -->
+            <app-concept-show-concepts
+              (actionAC)="action($event)"
+              [data]="data"
+              [editMode]="editMode"
+            ></app-concept-show-concepts>
+            <!-- Notes -->
+            <app-notes-show
+              (actionNote)="actionUpdate($event)"
+              [editMode]="editMode"
+              [notes]="data.notes"
+              [thesaID]="thesaID"
+              [conceptID]="conceptID"
+            ></app-notes-show>
           </ng-container>
           <!---------------------------------------- Notas -->
-          <ng-container *ngIf="tab.content=='notas'">
+          <ng-container *ngIf="tab.content == 'notas'">
             <!-- Notes -->
-              <app-notes [editMode]="editMode" [notes]="data.notes"></app-notes>
+            <app-notes [editMode]="editMode" [notes]="data.notes"></app-notes>
           </ng-container>
           <!---------------------------------------- Card -->
-          <ng-container *ngIf="tab.content=='card'">
+          <ng-container *ngIf="tab.content == 'card'">
             <app-concept-card [data]="data"></app-concept-card>
           </ng-container>
           <!---------------------------------------- Graph -->
-          <ng-container *ngIf="tab.content=='graph'">
+          <ng-container *ngIf="tab.content == 'graph'">
             <app-concept-grafo></app-concept-grafo>
           </ng-container>
-
         </div>
       </div>
     </div>
@@ -88,7 +103,7 @@
   aria-labelledby="popupConceptLabel"
 >
   <div class="offcanvas-header">
-    <h5 id="popupConceptLabel">{{title}}</h5>
+    <h5 id="popupConceptLabel">{{ title }}</h5>
     <button
       type="button"
       class="btn-close"
@@ -97,33 +112,46 @@
     ></button>
   </div>
   <div class="offcanvas-body">
-      <!-- Conteúdo do painel ------------------------ ALTLABEL E HIDDENLABEL-->
-      <ng-container *ngIf="actionAC === 'altLabel' || actionAC === 'hiddenLabel' || actionAC === 'prefLabel'">
-        <app-term-attribut-label
-          [editMode]="editMode"
-          [terms]="terms?.Terms"
-          [actionCV]="actionAC"
-          [conceptID]="conceptID"
-          [thesaID]="thesaID">
-        </app-term-attribut-label>
-      </ng-container>
+    <!-- Conteúdo do painel ------------------------ ALTLABEL E HIDDENLABEL-->
+    <ng-container
+      *ngIf="
+        actionAC === 'altLabel' ||
+        actionAC === 'hiddenLabel' ||
+        actionAC === 'prefLabel'
+      "
+    >
+      <app-term-attribut-label
+        [editMode]="editMode"
+        [terms]="terms?.Terms"
+        [actionCV]="actionAC"
+        [conceptID]="conceptID"
+        [thesaID]="thesaID"
+      >
+      </app-term-attribut-label>
+    </ng-container>
 
-      <!-- Conteúdo do painel ------------------------ broader, narrow and related -->
-      <ng-container *ngIf="actionAC === 'broader' || actionAC === 'narrow' || actionAC === 'related'">
-        <app-concept-relation
-          [editMode]="editMode"
-          [terms]="terms?.Terms"
-          [actionCV]="actionAC"
-          [conceptID]="conceptID"
-          [thesaID]="thesaID">
-        </app-concept-relation>
-      </ng-container>
+    <!-- Conteúdo do painel ------------------------ broader, narrow and related -->
+    <ng-container
+      *ngIf="
+        actionAC === 'broader' ||
+        actionAC === 'narrow' ||
+        actionAC === 'related'
+      "
+    >
+      <app-concept-relation
+        [editMode]="editMode"
+        [terms]="terms?.Terms"
+        [actionCV]="actionAC"
+        [conceptID]="conceptID"
+        [thesaID]="thesaID"
+      >
+      </app-concept-relation>
+    </ng-container>
 
     <!-- REMOVER -->
-    ==>{{actionAC}}
-    <br>
-    ==>{{thesaID}}
-    <br>
-
+    ==>{{ actionAC }}
+    <br />
+    ==>{{ thesaID }}
+    <br />
   </div>
 </div>

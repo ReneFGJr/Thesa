@@ -83,7 +83,7 @@ class Api extends BaseController
                     $Language = new \App\Models\Language\Index();
                     $RSP = $Language->languages_set($arg2);
                     break;
-                case 'languages_get':
+                case 'getLanguages':
                     $Language = new \App\Models\Language\Index();
                     $RSP = [];
                     $RSP['languages'] = $Language->languages($arg2,'');

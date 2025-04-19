@@ -39,6 +39,12 @@ export class ConceptShowComponent {
     private router: ActivatedRoute
   ) {}
 
+  actionUpdate(ev: Event) {
+     let actionACev = ev.toString();
+    console.log('#1-actionUpdate', actionACev);
+    //this.updateTerms();
+  }
+
   updateTerms() {
     if (this.actionAC === 'altLabel' || this.actionAC === 'hiddenLabel') {
       let url = 'term_list/' + this.thesaID;

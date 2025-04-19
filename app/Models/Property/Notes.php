@@ -51,21 +51,44 @@ class Notes extends Model
 
     function saveNote()
     {
+        $RSP = [];
         $IDC = get('conceptID');
         $IDN = get('noteID');
         $thesaID =  get('thesaID');
         $note = get('note');
         $noteType = get('noteType');
         $lang = get('lang');
-        $th = get('thesaurus');
+
+        /* IDC */
+        if ($IDC == '') {
+            $RSP['status'] = '500';
+            $RSP['message'] = 'conceptID not informed';
+            $RSP['data'] = $_POST;
+            return $RSP;
+        }
 
         /* Language */
         $Language = new \App\Models\Language\Index();
         $lg = $Language->where('lg_cod_marc',$lang)->first();
-        $lang = $lg['id_lg'];
-
-        $this->register($IDC, $noteType,$note,$lang, $thesaID, $IDN);
-
+        if ($lg == []) {
+            $lang = 1;
+        } else {
+            $lang = $lg['id_lg'];
+        }
+        if ($note == '') {
+            $RSP['status'] = '500';
+            $RSP['message'] = 'Note not informed';
+        } else {
+            $this->register($IDC, $noteType, $note, $lang, $thesaID, $IDN);
+            $RSP['status'] = '200';
+            $RSP['noteID'] = $IDN;
+            $RSP['IDC'] = $IDC;
+            $RSP['noteType'] = $noteType;
+            $RSP['note'] = $note;
+            $RSP['lang'] = $lang;
+            $RSP['message'] = 'Note saved';
+        }
+        return $RSP;
     }
 
     function register($IDC,$prop,$note,$lang,$th,$IDN=0)

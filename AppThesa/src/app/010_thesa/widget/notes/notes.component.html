@@ -1,8 +1,4 @@
----------------------------------------------------
-{{thesaId}} - {{conceptId}}
----------------------------------------------------
-
-<div *ngIf="(notasProp?.length > 0) || editMode" class="mt-2">
+<div *ngIf="notasProp?.length > 0 || editMode" class="mt-2">
   <h6 *ngIf="editMode">
     Notas
     <i class="bi bi-plus-circle link" (click)="newNotes()"></i>
@@ -34,51 +30,50 @@
     <form [formGroup]="formAction" (ngSubmit)="saveNote()">
       <!-- Tipo de nota -->
       <div class="mb-3">
-        <label for="noteType" class="form-label">Tipo das notas</label>
+        <label for="noteType" class="form-label bold">Tipo das notas</label>
         <select
           id="noteType"
-          class="form-select"
-          formControlName="property"
+          class="form-select border border-secondary"
+          formControlName="noteType"
           size="6"
         >
           <option *ngFor="let prop of notasProp" [value]="prop.id">
             {{ prop.label }}
           </option>
         </select>
-        <div
-          *ngIf="
-            formAction.get('property')?.touched &&
-            formAction.get('property')?.invalid
-          "
-          class="text-danger small"
-        >
-          Selecione um tipo válido.
-        </div>
       </div>
 
       <!-- Conteúdo da nota -->
       <div class="mb-3">
-        <label for="noteContent" class="form-label">Conteúdo da nota</label>
+        <label for="noteContent" class="form-label bold mt-3"
+          >Conteúdo da nota</label
+        >
         <textarea
           id="noteContent"
-          class="form-control"
+          class="form-control border border-secondary"
           rows="4"
-          formControlName="nt_content"
+          formControlName="note"
         ></textarea>
-        <div
-          *ngIf="
-            formAction.get('nt_content')?.touched &&
-            formAction.get('nt_content')?.invalid
-          "
-          class="text-danger small"
-        >
-          O conteúdo deve ter ao menos 3 caracteres.
+      </div>
+
+      <div class="mb-3">
+        <label for="noteType" class="form-label bold">Idioma do texto</label>
+        <div *ngFor="let lang of languages?.languages" class="form-check">
+          <input
+            type="radio"
+            class="form-check-input border border-secondary"
+            [value]="lang.code"
+            formControlName="language"
+          />
+          <label class="form-check-label" for="lang.id">
+            {{ lang.label }}
+          </label>
         </div>
       </div>
 
       <button
         type="submit"
-        class="btn btn-primary"
+        class="btn btn-primary full"
         [disabled]="formAction.invalid"
       >
         Salvar Nota
