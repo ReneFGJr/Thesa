@@ -5,8 +5,11 @@
   </h6>
 
   <div *ngFor="let note of notes">
-    <h5>Nota de {{ note.p_name }}</h5>
-    <p class="small">{{ note.nt_content }}</p>
+    <h5>Nota de {{ note.p_name }}
+        <i class="bi bi-pencil-square link" (click)="editNote(note)"></i>
+        <i class="bi bi-trash trash link" (click)="deleteNote(note.id_nt)"></i>
+    </h5>
+    <p class="small">{{ note.nt_content }} <sup>{{note.lg_code}}</sup></p>
   </div>
 </div>
 

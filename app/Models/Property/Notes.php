@@ -46,14 +46,24 @@ class Notes extends Model
     function deleteNote()
     {
         $IDN = get('noteID');
-        $this->where('id_nt', $IDN)->delete();
+        if ($IDN == '') {
+            $RSP['status'] = '500';
+            $RSP['message'] = 'noteID not informed';
+            $RSP['data'] = $_POST;
+            return $RSP;
+        } else {
+            $RSP['status'] = '200';
+            $RSP['message'] = 'Note deleted';
+            $this->where('id_nt', $IDN)->delete();
+        }
+
     }
 
     function saveNote()
     {
         $RSP = [];
         $IDC = get('conceptID');
-        $IDN = get('noteID');
+        $IDN = (get('noteID') == '') ? 0 : get('noteID');
         $thesaID =  get('thesaID');
         $note = get('note');
         $noteType = get('noteType');
@@ -79,7 +89,7 @@ class Notes extends Model
             $RSP['status'] = '500';
             $RSP['message'] = 'Note not informed';
         } else {
-            $this->register($IDC, $noteType, $note, $lang, $thesaID, $IDN);
+            $RSP['e'] = $this->register($IDC, $noteType, $note, $lang, $thesaID, $IDN);
             $RSP['status'] = '200';
             $RSP['noteID'] = $IDN;
             $RSP['IDC'] = $IDC;
@@ -101,12 +111,13 @@ class Notes extends Model
             if ($IDN == 0)
                 {
                     $this->set($dd)->insert();
+                    $id = "Insert";
                 } else {
                     $this->set($dd)
                         ->where('id_nt',$IDN)
                         ->update();
-                }
-            return true;
+                    $id = 'Update';                }
+            return $id;
         }
 
     function le($id)

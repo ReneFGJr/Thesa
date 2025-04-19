@@ -21,7 +21,7 @@ export class NotesComponent implements OnInit, AfterViewInit {
   @Input() editMode: boolean = false;
   @Input() thesaID: number = 0;
   @Input() conceptID: number = 0;
-  @Output() actionNotes: EventEmitter<any> = new EventEmitter<any>();
+  @Output() actionNotes = new EventEmitter<any>();
 
   @ViewChild('offcanvasNovo', { static: true }) offcanvasEl!: ElementRef;
   offcanvasInstance!: Offcanvas;
@@ -60,6 +60,26 @@ export class NotesComponent implements OnInit, AfterViewInit {
     );
   }
 
+  deleteNote(id: string) {
+    if (confirm('Deseja realmente excluir esta nota?')) {
+      this.serviceThesa.api_post('deleteNote', { noteID: id }).subscribe(
+        (res) => {
+          this.actionNotes.emit('OK deleteNotes');
+        },
+        (err) => console.error(err)
+      );
+    }
+  }
+
+  editNote(id: string) {
+    this.formAction.patchValue({
+      noteType: '',
+      note: '',
+      language: '',
+    });
+    this.offcanvasInstance.show();
+  }
+
   ngAfterViewInit() {
     this.offcanvasInstance = new Offcanvas(this.offcanvasEl.nativeElement);
   }
@@ -82,14 +102,10 @@ export class NotesComponent implements OnInit, AfterViewInit {
     };
 
     this.serviceThesa.api_post('saveNote', dt).subscribe(
-      (res) => {
-        console.log('Resposta do Servidor', res);
-      },
+      (res) => {},
       (err) => console.error(err)
     );
-
-    console.log(dt);
     this.offcanvasInstance.hide();
-    this.actionNotes.emit('OK');
+    this.actionNotes.emit('OK Notes');
   }
 }
