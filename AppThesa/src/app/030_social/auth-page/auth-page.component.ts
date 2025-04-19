@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 export class AuthPageComponent {
   data: Array<any> | any;
   pageID: string = '';
+  check: string = '';
   constructor(
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService,
@@ -20,6 +21,8 @@ export class AuthPageComponent {
   ngOnInit() {
     this.data = this.router.params.subscribe((params) => {
       this.pageID = params['id']; // (+) converts string 'id' to a number
+      this.check = params['chk']; // (+) converts string 'id' to a number
+      ;
       if (!this.pageID) {
         this.pageID = 'login';
       }

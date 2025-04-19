@@ -51,6 +51,11 @@ export class ServiceThesaService {
       formData.append(key, dt[key]);
     }
 
+    let apikey = localStorage.getItem('apikey');
+    if (apikey) {
+      formData.append('apikey', apikey);
+    }
+
     return this.HttpClient.post<Array<any>>(url, formData).pipe(
       map((res) => res),
       catchError((error) => throwError(() => new Error('An error occurred')))

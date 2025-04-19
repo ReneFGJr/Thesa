@@ -1,4 +1,7 @@
-<table class="table table-bordered table-striped table-hover w-100" *ngIf="members">
+<table
+  class="table table-bordered table-striped table-hover w-100"
+  *ngIf="members"
+>
   <thead class="table-light">
     <tr>
       <th scope="col">Nome</th>
@@ -10,25 +13,73 @@
   <tbody>
     <tr *ngFor="let person of members.members">
       <td>{{ person.fullname }}</td>
-      <td>{{ person.affiliation || '—' }}</td>
-      <td>{{ person.function || '—' }}</td>
-      <td class="text-center"><i class="link bi bi-trash" (click)="removeMember(person.idv)"></i></td>
+      <td>{{ person.affiliation || "—" }}</td>
+      <td>{{ person.function || "—" }}</td>
+      <td class="text-center">
+        <i class="link bi bi-trash" (click)="removeMember(person.idv)"></i>
+      </td>
     </tr>
   </tbody>
 </table>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mb-4">
-  <label for="searchInput" class="form-label">Informe o E-mail</label>
-  <input id="searchInput" type="text" formControlName="search" class="form-control" placeholder="Digite o nome ou e-mail do usuário" />
+  <div class="container border rounded p-2 border-secondary">
+    <div class="row">
+    <div class="col-12 col-lg-12 navbar-custom">Adicionar novos membros</div>
+      <div class="col-12 col-lg-6">
+        <label for="searchInput" class="form-label bold">Informe o E-mail</label>
+        <input
+          id="searchInput"
+          type="text"
+          formControlName="search"
+          class="form-control border border-secondary"
+          placeholder="Digite o nome ou e-mail do usuário"
+        />
 
-  <br><input type="radio" name="type" formControlName="type" value="1" id="type" class="form-check-input" /> Autor
-  <br><input type="radio" name="type" formControlName="type" value="2" id="type" class="form-check-input" /> Colaborador
-  <br><input type="radio" name="type" formControlName="type" value="3" id="type" class="form-check-input" /> Orientador
+        <button type="submit" class="btn btn-outline-primary mt-2 full" [disabled]="form.invalid">
+          Registrar
+        </button>
 
-  <button type="submit" class="btn btn-outline-primary mt-2">Registrar</button>
+      </div>
+      <div class="col-12 col-lg-6">
+        <label for="searchInput" class="form-label bold">Tipo de vinculo</label>
+        <br>
+        <input
+          type="radio"
+          name="type"
+          formControlName="type"
+          value="1"
+          id="type"
+          class="form-check-input border border-secondary"
+        />
+        Autor <br /><input
+          type="radio"
+          name="type"
+          formControlName="type"
+          value="2"
+          id="type"
+          class="form-check-input border border-secondary"
+        />
+        Colaborador <br /><input
+          type="radio"
+          name="type"
+          formControlName="type"
+          value="3"
+          id="type"
+          class="form-check-input border border-secondary"
+        />
+        Orientador
 
+        <br>
+
+      </div>
+      <div class="col-12 col-lg-12 mt-3">
+      <div *ngIf="loading" class="alert alert-info">Registrando...</div>
+
+      <div *ngIf="!loading && results?.length === 0" class="alert alert-warning">
+        Nenhum resultado encontrado.
+      </div>
+      </div>
+    </div>
+  </div>
 </form>
-
-<div *ngIf="loading" class="alert alert-info">Registrando...</div>
-
-<div *ngIf="!loading && results.length === 0" class="alert alert-warning">Nenhum resultado encontrado.</div>

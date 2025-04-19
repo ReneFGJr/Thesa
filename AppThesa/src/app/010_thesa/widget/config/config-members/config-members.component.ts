@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ServiceThesaService } from '../../../../000_core/service/service-thesa.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-config-members',
@@ -20,8 +20,8 @@ export class ConfigMembersComponent {
     private serviceThesa: ServiceThesaService
   ) {
     this.form = this.fb.group({
-      search: [''],
-      type: [''],
+      search: ['', Validators.required],
+      type: ['', Validators.required],
     });
   }
 
@@ -30,13 +30,20 @@ export class ConfigMembersComponent {
   }
 
   removeMember(id: string) {
-    alert(id);
+    if (confirm('Deseja remover este membro?')) {
+    let dt = {'id': id, 'thesaID': this.thesaID};
+        this.serviceThesa.api_post('members_remove', dt).subscribe(
+          (res) => {
+            this.getMembers(this.thesaID);
+          },
+          (error) => error
+        );
+    }
   }
 
   getMembers(thesaID: number) {
     this.serviceThesa.api_post('members/' + thesaID, []).subscribe(
       (res) => {
-        console.log(res);
         this.members = res;
       },
       (error) => error
@@ -46,22 +53,23 @@ export class ConfigMembersComponent {
   onSubmit()
     {
       const query = this.form.value.search;
+      const type = this.form.value.type;
       if (!query) return;
 
       this.loading = true;
       this.results = [];
 
 
-    let dt = {'query': query, 'thesaID': this.thesaID};
-    console.log(dt);
+    let dt = {'query': query, 'type': type, 'thesaID': this.thesaID};
+    console.log('=======',dt);
 
-    this.serviceThesa.api_post('members_search', dt).subscribe(
+    this.serviceThesa.api_post('members_register', dt).subscribe(
       (res) => {
-        console.log(res);
         this.results = res;
+        console.log('Resposta do servidor:', res);
         this.results = this.results.names;
         this.loading = false;
-        console.log(res);
+        this.getMembers(this.thesaID);
       },
       (error) => error
     );

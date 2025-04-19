@@ -48,5 +48,10 @@
           </li>
         </ul>
     </div>
+    <div *ngIf="editMode == true" class="col-12">
+      <div class="alert alert-warning" role="alert">
+        <strong>Aviso:</strong> Você está no modo de edição. Salve as alterações antes de sair.
+        <br>EditMode: {{editMode}}
+      </div>
   </div>
 </div>

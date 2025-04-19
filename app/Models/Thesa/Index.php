@@ -121,16 +121,23 @@ class Index extends Model
 
     function thopen($user = 0)
     {
+        $cp = 'id_th,th_name,th_achronic,th_cover';
         $Icone = new \App\Models\Thesa\Icone();
         if ($user > 0) {
             $dt = $this
-                ->join('thesa_users', 'th_us_th = id_th')
-                ->join('thesa_users_perfil', 'th_us_perfil = id_pf')
+                ->select($cp)
+                ->join('thesa_users', 'th_us_th = id_th','left')
+                ->join('thesa_users_perfil', 'th_us_perfil = id_pf', 'left')
                 ->where('th_us_user', $user)
+                ->OrWhere('th_own', $user)
+                ->groupBy($cp)
+                ->orderBy('th_name', 'ASC')
                 ->findAll();
         } else {
             $dt = $this
+                ->select($cp)
                 ->where('th_status', 1)
+                ->groupBy($cp)
                 ->orderBy('th_name', 'ASC')
                 ->findAll();
         }

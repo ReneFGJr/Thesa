@@ -13,6 +13,7 @@ export class AboutThComponent {
   thesa: any;
   id: number = 0;
   termID: number = 0;
+  editMode: boolean = false;
   constructor(
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService,
@@ -26,6 +27,12 @@ export class AboutThComponent {
       this.serviceThesa.api_post('th/' + this.id, []).subscribe(
         (res) => {
           this.data = res;
+          /* Edição */
+          if (this.data.editMode == 'allow') {
+            this.editMode = true;
+          } else {
+            this.data = false;
+          }
         },
         (error) => error
       );

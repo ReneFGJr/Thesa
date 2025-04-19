@@ -6,13 +6,14 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-index-alphabetic',
   templateUrl: './index-alphabetic.component.html',
-  styleUrl: './index-alphabetic.component.scss'
+  styleUrl: './index-alphabetic.component.scss',
 })
 export class IndexAlphabeticComponent {
-data: any;
+  data: any;
   thesa: any;
   id: number = 0;
   termID: number = 0;
+  editMode: boolean = false;
   constructor(
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService,
@@ -26,6 +27,11 @@ data: any;
       this.serviceThesa.api_post('th/' + this.id, []).subscribe(
         (res) => {
           this.data = res;
+          if (this.data.editMode == 'allow') {
+            this.editMode = true;
+          } else {
+            this.data = false;
+          }
         },
         (error) => error
       );

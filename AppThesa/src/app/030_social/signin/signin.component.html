@@ -25,6 +25,14 @@
         />
       </div>
 
+      <div class="alert alert-danger" *ngIf="data?.status === '404'">
+        <strong>Erro!</strong> {{ data.message }}
+      </div>
+
+      <div class="alert alert-success" *ngIf="data?.status === '200'">
+        {{ data.message }}
+      </div>
+
       <button type="submit" class="btn btn-primary w-100">Entrar</button>
 
       <div class="d-flex justify-content-between mt-3">
@@ -34,3 +42,5 @@
     </form>
   </div>
 </div>
+
+{{data | json}}

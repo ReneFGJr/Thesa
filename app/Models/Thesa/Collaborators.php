@@ -44,6 +44,38 @@ class Collaborators extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function isMember($apikey, $th)
+    {
+        $Users = new \App\Models\Socials();
+        $user = $Users->where('us_apikey', $apikey)->first();
+        if (isset($user['id_us'])) {
+                $idUser = $user['id_us'];
+            } else {
+                $idUser = 0;
+            }
+
+        $Thesa = new \App\Models\Thesa\Thesa();
+        $thD = $Thesa->where('id_th', $th)->first();
+        if ($thD == []) {
+            return 0;
+        } else {
+            if ($thD['th_own'] == $idUser) {
+                return 1;
+            }
+        }
+
+        $dt = $this
+            ->where('th_us_th', $th)
+            ->where('th_us_user', $idUser)
+            ->first();
+
+        if ($dt == []) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
     function authorizedSave($th, $user)
     {
         $dt = $this
@@ -90,59 +122,68 @@ class Collaborators extends Model
         return $sx;
     }
 
-    function form($th)
-    {
-        $value = get("name");
-        $sx = '';
-        $sx .= h(lang('thesa.collaborators.add'), 3);
-        $sx .= form_open();
-        $sx .= form_label(lang('thesa.user_name'));
-        $sx .= form_input(array('name' => 'name', 'class' => 'form-control full', 'value' => $value));
-        $sx .= form_submit('action', lang('thesa.search'));
-        $sx .= form_close();
-
-        if ($value != '') {
-            $Socials = new \App\Models\Socials();
-            $dt = $Socials
-                ->where("us_nome like '%$value%'")
-                ->ORwhere("us_email like '%$value%'")
-                ->orderby('us_nome')
-                ->findAll();
-            $sfa = form_open();
-            $sa = '';
-            $sb = '';
-
-            foreach ($dt as $id => $line) {
-                $sa .= form_radio('id_us', $line['id_us']);
-                $sa .= $line['us_nome'];
-                $sa .= ' (' . $line['us_email'] . ')';
-                $sa .= '<br>';
-            }
-            $sql = "select * from thesa_users_perfil";
-            $dba = $Socials->query($sql);
-            $dba = $dba->getresult();
-
-            foreach ($dba as $id => $line) {
-                $line = (array)$line;
-                $sb .= form_radio('id_pf', $line['id_pf']);
-                $sb .= lang($line['pf_name']);
-                $sb .= '<br>';
-            }
-            $sa .= form_submit('action', lang('thesa.save'));
-            $sfb = form_close();
-
-            $us = get("id_us");
-            $pf = get("id_pf");
-
-            if (($us != '') and ($pf != '')) {
-                $this->add($us, $th, $pf);
-                return wclose();
-            }
-
-            $sx .= '<br/>' . bsc($sa, 6) . bsc($sb, 6);
-            $sx = $sfa . bs($sx) . $sfb;
+    function members_remove()
+        {
+            $RSP = [];
+            $this->where('th_us_th', get('thesaID'))
+                ->where('id_th_us', get('id'))
+                ->delete();
+            $RSP['status'] = '200';
+            $RSP['message'] = 'Usuário removido com sucesso';
+            return $RSP;
         }
-        return $sx;
+
+    function members_register()
+    {
+        $RSP = [];
+        $Socials = new \App\Models\Socials();
+        $query = get("query");
+        $thesaID = get("thesaID");
+        $perfil = get("type");
+        $cp = 'us_nome,id_us,us_affiliation';
+
+        if ($thesaID == '') {
+            $RSP['status'] = '500';
+            $RSP['message'] = 'Thesa não encontrado';
+            return $RSP;
+        }
+
+        $dt = $Socials
+            ->select($cp)
+            ->where('us_email', $query)
+            ->first();
+
+         if ($dt == []) {
+            $RSP['status'] = '500';
+            $RSP['message'] = 'Usuário não encontrado';
+        } else {
+            $dt['th_us_th'] = $thesaID;
+            $dt['th_us_user'] = $dt['id_us'];
+            $dt['th_us_perfil'] = $perfil;
+            $dd = $this->where('th_us_th', $thesaID)
+                ->where('th_us_user', $dt['id_us'])
+                ->first();
+
+            if ($dd == []) {
+                $this->set($dt)->insert();
+                $RSP['status'] = '200';
+                $RSP['message'] = 'Usuário adicionado com sucesso';
+            } else {
+                if ($dd['th_us_perfil'] != $perfil) {
+                    $this
+                        ->set($dt)
+                        ->where('id_th_us', $dd['id_th_us'])
+                        ->where('th_us_user', $dt['id_us'])
+                        ->update();
+                    $RSP['status'] = '200';
+                    $RSP['message'] = 'Usuário já atualizado com sucesso';
+                } else {
+                    $RSP['status'] = '500';
+                    $RSP['message'] = 'Usuário já cadastrado';
+                }
+            }
+        }
+        return $RSP;
     }
 
     function add($user, $th, $perfil = 1)
@@ -184,24 +225,7 @@ class Collaborators extends Model
         return false;
     }
 
-    function members_search()
-    {
-        $query = get("query");
-        $thesaID = get("thesaID");
-        $cp = 'us_nome,id_us,us_affiliation';
-        $dt = $this
-            ->select($cp)
-            ->join('users', 'id_us = th_us_user')
-            ->join('thesa_users_perfil', 'th_us_perfil = id_pf')
-            ->groupStart() // inicia o grupo da busca textual
-            ->like('us_nome', $query)
-            ->orLike('us_email', $query)
-            ->groupEnd() // termina o grupo da busca textual
-            ->groupby($cp)
-            ->orderBy('id_pf, id_th_us')
-            ->findAll();
-        return $dt;
-    }
+
 
     function authors($th)
     {
@@ -211,6 +235,7 @@ class Collaborators extends Model
             ->where('th_us_th', $th)
             ->orderBy('id_pf, id_th_us')
             ->findAll();
+
 
         $dd = [];
         foreach ($dt as $id => $line) {

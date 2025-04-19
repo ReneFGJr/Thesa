@@ -12,16 +12,7 @@ export class ThShowComponent {
   @Input() editMode: boolean = false;
 
   constructor(
-    private serviceThesa: ServiceThesaService,
-    // private serviceStorage: ServiceStorageService,
-  ) {}
-
-  ngOnInit() {
-    this.ngOnChanges()
-  }
-
-  ngOnChanges()
-    {
-      this.editMode = this.serviceThesa.getEditMode();
-    }
+    private serviceThesa: ServiceThesaService
+  ) // private serviceStorage: ServiceStorageService,
+  {}
 }

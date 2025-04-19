@@ -34,6 +34,13 @@ export class SigninComponent {
     this.serviceThesa.api_post('social/login', { email, password }).subscribe(
       (res) => {
         console.log(res);
+        this.data = res;
+        if (this.data.status == '200') {
+          this.auth.setToken(this.data.token);
+          this.auth.setUser(this.data.user);
+          this.auth.setID(this.data.id);
+          this.router.navigate(['/']);
+        }
       }
     );
   }

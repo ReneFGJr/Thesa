@@ -1,11 +1,13 @@
-<app-th-show [thesa]="data" [tab]="'1'"></app-th-show>
+<app-th-show [thesa]="data" [tab]="'1'" [editMode]="editMode"></app-th-show>
 <div class="container">
   <div class="row">
+
     <div class="col-4 col-lg-4 col-md-4 col-sm-12">
-      <app-terms [thesa]="thesaID" (termChange)="changeTerm($event)"></app-terms>
+      <app-terms [editMode]="editMode" [thesa]="thesaID" (termChange)="changeTerm($event)"></app-terms>
     </div>
+
     <div class="col-8 col-lg-8 col-md-8 col-sm-12">
-      <app-concept-show *ngIf="termID > 0" [conceptID]="termID" [thesaID]="thesaID"></app-concept-show>
+      <app-concept-show *ngIf="termID > 0" [conceptID]="termID" [thesaID]="thesaID" [editMode]="editMode"></app-concept-show>
     </div>
   </div>
 </div>

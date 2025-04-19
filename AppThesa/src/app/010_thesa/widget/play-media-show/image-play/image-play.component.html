@@ -1,0 +1,4 @@
+<div *ngFor="let media of medias.other">
+  <img [src]="'https://ufrgs.br/thesa/public/'+media.mid_directory+media.mid_file" class="full" />
+  {{ media | json }}
+</div>

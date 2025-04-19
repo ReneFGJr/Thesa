@@ -30,6 +30,7 @@ const routes: Routes = [
   { path: 'alphabetic_index/:id', component: IndexAlphabeticComponent },
   { path: 'export/:id', component: ExportPDFComponent },
   { path: 'social/:id', component: AuthPageComponent },
+  { path: 'social/:id/:chk', component: AuthPageComponent },
   { path: 'social', component: AuthPageComponent },
 ];
 

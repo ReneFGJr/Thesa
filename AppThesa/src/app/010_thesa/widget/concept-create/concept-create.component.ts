@@ -55,7 +55,6 @@ export class ConceptCreateComponent {
       .subscribe((res) => {
         this.data = res;
         this.formAction.patchValue({ thesaID: this.thesaID });
-        console.log('Resposta do servidor:', res);
       });
   }
 
@@ -78,7 +77,10 @@ export class ConceptCreateComponent {
           // Oculta após 5 segundos
           setTimeout(() => {
             this.showSuccess = false;
+            this.ngOnChanges();
+            alert("Reload")
           }, 5000);
+
         } else {
           // Exibe a mensagem de erro
           this.showError = true;

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-user-menu',
@@ -6,5 +6,12 @@ import { Component } from '@angular/core';
   styleUrl: './user-menu.component.scss',
 })
 export class UserMenuComponent {
+  @Input() user: Array<any> | any;
   isLoggedIn: boolean = false;
+  iconeLogin: string = 'assets/img/login.svg';
+
+  ngOnInit()
+    {
+      this.isLoggedIn = this.user ? true : false;
+    }
 }

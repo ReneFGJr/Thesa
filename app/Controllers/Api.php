@@ -32,6 +32,7 @@ class Api extends BaseController
         {
             $user = 0;
             $apikey = get("APIKEY") . get("apikey");
+            $apikey = troca($apikey,'"','');
             if ($apikey != '') {
                 $Socials = new \App\Models\Socials();
                 $user = $Socials->validaAPIKEY($apikey);
@@ -45,6 +46,7 @@ class Api extends BaseController
 
         $user = 0;
         $apikey = get("APIKEY") . get("apikey");
+        $apikey = troca($apikey, '"', '');
         $RSP['key'] = $apikey;
         if ($apikey != '')
             {
@@ -57,12 +59,21 @@ class Api extends BaseController
 
         switch($arg1)
             {
-                case 'members_search':
+                case 'getNotesType':
+                    $Prop = new \App\Models\RDF\ThProprity();
+                    $RSP = $Prop->getNotesType();
+                    break;
+                case 'members_remove':
                     $Collaborators = new \App\Models\Thesa\Collaborators();
-                    $RSP['names'] = $Collaborators->members_search();
+                    $RSP = $Collaborators->members_remove();
+                    break;
+
+                case 'members_register':
+                    $Collaborators = new \App\Models\Thesa\Collaborators();
+                    $RSP['names'] = $Collaborators->members_register();
                     break;
                 case 'members':
-                $Collaborators = new \App\Models\Thesa\Collaborators();
+                    $Collaborators = new \App\Models\Thesa\Collaborators();
                     $RSP = $Collaborators->authors($arg2,$arg3);
                     break;
                 case 'languages_set':
@@ -196,6 +207,8 @@ class Api extends BaseController
                 case 'thmy': /* Thesaurus aberto */
                     $Thesa = new \App\Models\Thesa\Index();
                     $userID = $this->user();
+                    $userID = 2;
+
                     if ($userID == 0) {
                         $RSP['status'] = '400';
                         $RSP['message'] = 'User not informed';
@@ -226,6 +239,7 @@ class Api extends BaseController
                     $RSP['args'] = [$arg1,$arg2,$arg3];
             }
         $RSP['time'] = date("Y-m-dTH:i:s");
+        $RSP['apikey'] = $apikey;
         header('Access-Control-Allow-Origin: *');
         header("Content-Type: application/json");
         echo json_encode($RSP);
@@ -236,6 +250,20 @@ class Api extends BaseController
     {
         $Thesa = new \App\Models\Thesa\Thesa();
         $RSP = $Thesa->le($id);
+
+        /* Privilegios */
+        $apikey = get('apikey');
+        $apikey = troca($apikey,'"','');
+        $RSP['editMode'] = false;
+        if ($apikey != '') {
+            $Collaborators = new \App\Models\Thesa\Collaborators();
+            $editMode = $Collaborators->isMember($apikey,$id);
+            if ($editMode > 0) {
+                $RSP['editMode'] = 'allow';
+            } else {
+                $RSP['editMode'] = 'deny';
+            }
+        }
         return $RSP;
     }
 

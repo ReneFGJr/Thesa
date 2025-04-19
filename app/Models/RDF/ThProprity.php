@@ -42,6 +42,30 @@ class ThProprity extends Model
 
     var $quali = 0;
 
+    function getNotesType($grp='2')
+    {
+            $cp = 'p_name, id_p, p_reverse';
+            $dt = $this
+                ->select($cp)
+                ->where('id_p >= 6')
+                ->where('p_part_2',$grp)
+                ->orderBy('p_part_3')
+                ->findAll();
+            $dd = [];
+            foreach ($dt as $id=>$line)
+                {
+                    $da = [];
+                    $da['id'] = $line['id_p'];
+                    $da['name'] = $line['p_name'];
+                    $da['reverse'] = $line['p_reverse'];
+                    $da['label'] = lang('thesa.property.'.$line['p_name']);
+                    array_push($dd,$da);
+                }
+            $dt = [];
+            $dt['notes'] = $dd;
+            return $dt;
+    }
+
     function getProperty($class)
         {
             return $this->class($class);

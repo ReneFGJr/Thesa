@@ -1,16 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-th-open',
-  templateUrl: './th-open.component.html',
-  styleUrl: './th-open.component.scss',
+  templateUrl: './th-open.component.html'
 })
-export class ThOpenComponent {
-  data: Array<any> | any;
-  thesa: Array<any> | any;
+export class ThOpenComponent implements OnInit {
+  data: any;
+  thesa: any[] = [];
+  searchTerm: string = ''; // termo de busca
+  title: string = 'Thesa Aberto'; // título da página
 
   constructor(
     private serviceThesa: ServiceThesaService,
@@ -19,15 +20,23 @@ export class ThOpenComponent {
   ) {}
 
   ngOnInit() {
-    console.log('th-open.component.ts ngOnInit()');
     this.serviceThesa.api_post('thopen', []).subscribe((res) => {
       this.data = res;
       this.thesa = this.data.th;
     });
   }
 
-  selectThesa(thesa: any) {
-    this.serviceStorage.set('thesa', thesa);
-    this.router.navigate(['/thesa/' + thesa]);
+  // retorna lista filtrada
+  filteredThesa(): any[] {
+    const term = this.searchTerm.toLowerCase().trim();
+    if (!term) {
+      return this.thesa;
+    }
+    return this.thesa.filter((t) => t.th_name.toLowerCase().includes(term));
+  }
+
+  selectThesa(id: any) {
+    this.serviceStorage.set('thesa', id);
+    this.router.navigate(['/thesa/' + id]);
   }
 }

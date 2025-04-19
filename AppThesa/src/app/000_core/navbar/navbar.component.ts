@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class NavbarComponent {
   @Input() editMode: boolean = false;
+  @Input() user: Array<any> = [];
   logo = 'assets/img/logo/logo_thesa.svg';
 
   constructor(
@@ -18,7 +19,4 @@ export class NavbarComponent {
     private router: ActivatedRoute
   ) {}
 
-  ngOnInit() {
-    this.editMode = this.serviceThesa.getEditMode();
-  }
 }

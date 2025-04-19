@@ -48,8 +48,8 @@ import { IndexSystemicComponent } from './010_thesa/page/index-systemic/index-sy
 import { IndexAlphabeticComponent } from './010_thesa/page/index-alphabetic/index-alphabetic.component';
 import { ExportPDFComponent } from './010_thesa/page/export/export.component';
 import { ConfigLanguageComponent } from './010_thesa/widget/config/config-language/config-language.component';
-import { VideoPlayComponent } from './010_thesa/widget/video-play/video-play.component';
-import { VideoPlayShowComponent } from './010_thesa/widget/play-media-show/play-media--show.component';
+import { VideoPlayComponent } from './010_thesa/widget/play-media-show/video-play/video-play.component';
+import { VideoPlayShowComponent } from './010_thesa/widget/play-media-show/play-media-show.component';
 import { ThesaMyComponent } from './010_thesa/page/thesa-my/thesa-my.component';
 import { ForgetPasswordComponent } from './030_social/forget-password/forget-password.component';
 import { AuthPageComponent } from './030_social/auth-page/auth-page.component';
@@ -58,6 +58,7 @@ import { SignupComponent } from './030_social/signup/signup.component';
 import { SigninComponent } from './030_social/signin/signin.component';
 import { UserMenuComponent } from './030_social/user-menu/user-menu.component';
 import { RecoverPasswordComponent } from './030_social/recover-password/recover-password.component';
+import { ImagePlayComponent } from './010_thesa/widget/play-media-show/image-play/image-play.component';
 
 @NgModule({
   declarations: [
@@ -114,6 +115,7 @@ import { RecoverPasswordComponent } from './030_social/recover-password/recover-
     PerfilComponent,
     UserMenuComponent,
     RecoverPasswordComponent,
+    ImagePlayComponent,
   ],
   imports: [
     BrowserModule,

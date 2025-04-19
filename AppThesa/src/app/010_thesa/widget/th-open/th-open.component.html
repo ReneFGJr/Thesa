@@ -1,21 +1,35 @@
 <div class="container" *ngIf="data">
-  <div class="row">
-  <div class="col-12">
-      <h1>Tesauros Publicos / Abertos</h1>
+  <!-- input de filtro -->
+  <div class="row mb-3">
+    <div class="col-12">
+      <h1>{{title}}</h1>
   </div>
+
+    <div class="col-12">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Filtrar tesauros por título..."
+        [(ngModel)]="searchTerm"
+      />
+    </div>
+  </div>
+
+  <div class="row">
     <div
-      class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4 text-center"
-      *ngFor="let th of thesa"
+      class="col-6 col-sm-4 col-md-3 col-lg-3 mb-4 text-center"
+      *ngFor="let th of filteredThesa()"
     >
       <div class="card h-100 link" (click)="selectThesa(th.id_th)">
-        <img [src]="th.th_cover" class="card-img-top" alt="{{ th.th_description }}" />
+        <img
+          [src]="th.th_cover"
+          class="card-img-top"
+          [alt]="th.th_description"
+          style="height: 150px; object-fit: cover"
+        />
         <div class="card-body d-flex flex-column">
           <h5 class="card-title">{{ th.th_name }}</h5>
-          <button
-            class="btn btn-secondary mt-auto"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <button class="btn btn-secondary mt-auto">
             Acessar
           </button>
         </div>

@@ -2,7 +2,5 @@
 <app-forget-password *ngIf="pageID=='forget'"></app-forget-password>
 <app-signup *ngIf="pageID=='signup'"></app-signup>
 <app-perfil *ngIf="pageID=='perfil'"></app-perfil>
-<app-recover-password *ngIf="pageID=='recover_password'"></app-recover-password>
-
-
-[{{pageID}}]
+<app-recover-password *ngIf="pageID=='recover_password'" [check]="check"></app-recover-password>
+[{{pageID}}] = {{check}}

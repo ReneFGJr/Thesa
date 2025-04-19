@@ -1,7 +1,7 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" [routerLink]="['/']" class="ms-2"
-    ><img [src]="logo" title="Home page" style="height: 30px"
-  /></a>
+<nav class="navbar navbar-expand-lg navbar-light navbar-custom mb-5">
+  <a class="navbar-brand ms-2" [routerLink]="['/']">
+    <img [src]="logo" title="Home page" style="height: 30px"/>
+  </a>
   <button
     class="navbar-toggler"
     type="button"
@@ -22,14 +22,14 @@
         <a class="nav-link" [routerLink]="['/thmy']">Meus Tesauros</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" [routerLink]="['documentation']">documentation</a>
+        <a class="nav-link" [routerLink]="['documentation']">Documentation</a>
       </li>
       <li class="nav-item" *ngIf="!editMode">
-        <a class="nav-link" [routerLink]="['create']">create</a>
+        <a class="nav-link" [routerLink]="['create']">Create</a>
       </li>
     </ul>
     <ul class="ms-auto navbar-nav">
-        <app-user-menu></app-user-menu>
+      <app-user-menu [user]="user"></app-user-menu>
     </ul>
   </div>
 </nav>

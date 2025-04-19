@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { ServiceStorageService } from './service-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -8,35 +9,33 @@ export class AuthService {
   private isAuthenticated = false;
   private userKey = 'loggedUser';
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private serviceStorage: ServiceStorageService
+  ) {}
 
-  login(email: string, password: string): boolean {
-    const user = localStorage.getItem(email);
-    if (user && JSON.parse(user).password === password) {
-      localStorage.setItem(this.userKey, email);
-      this.isAuthenticated = true;
-      return true;
-    }
-    return false;
+  setToken(token: string): void {
+    this.serviceStorage.set('apikey', token);
   }
 
-  signup(email: string, password: string): boolean {
-    if (localStorage.getItem(email)) return false;
-    localStorage.setItem(email, JSON.stringify({ email, password }));
-    return true;
+  setUser(name: string): void {
+    this.serviceStorage.set('user', name);
   }
 
-  logout(): void {
-    localStorage.removeItem(this.userKey);
-    this.isAuthenticated = false;
-    this.router.navigate(['/login']);
+  setID(name: string): void {
+    this.serviceStorage.set('userID', name);
   }
 
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem(this.userKey);
+  getApikey(): string | null {
+    return this.serviceStorage.get('apikey');
   }
 
-  resetPassword(email: string): boolean {
-    return !!localStorage.getItem(email);
+  getUser(): Array<any> | any {
+    let dt = {
+      userID: this.serviceStorage.get('userID'),
+      name: this.serviceStorage.get('name'),
+      apikey: this.serviceStorage.get('apikey'),
+    };
+    return dt;
   }
 }

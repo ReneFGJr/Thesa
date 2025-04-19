@@ -94,6 +94,5 @@ export class ConceptShowComponent {
       },
       (error) => error
     );
-    this.editMode = this.serviceThesa.getEditMode();
   }
 }

@@ -35,10 +35,16 @@ export class ConceptTHComponent {
           .api_post('th/' + this.thesaID, [])
           .subscribe((res) => {
             this.thesa = res;
+
+            /* Edição */
+            if (this.thesa.editMode == 'allow') {
+              this.editMode = true;
+            } else {
+              this.editMode = false;
+            }
           });
       });
     });
-    this.editMode = this.serviceThesa.getEditMode();
   }
 
   changeTerm(term: any) {
