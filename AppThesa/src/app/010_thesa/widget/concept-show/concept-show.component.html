@@ -150,14 +150,9 @@
         [actionCV]="actionAC"
         [conceptID]="conceptID"
         [thesaID]="thesaID"
+        (actionAC)="action($event)"
       >
       </app-concept-relation>
     </ng-container>
-
-    <!-- REMOVER -->
-    ==>{{ actionAC }}
-    <br />
-    ==>{{ thesaID }}
-    <br />
   </div>
 </div>

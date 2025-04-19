@@ -54,6 +54,11 @@ class Api extends BaseController
 
         switch($arg1)
             {
+                case 'getNote':
+                    $Notes = new \App\Models\Property\Notes();
+                    $noteID = get('noteID');
+                    $RSP = $Notes->getNote($noteID);
+                    break;
                 case 'deleteNote':
                     $Notes = new \App\Models\Property\Notes();
                     $RSP = $Notes->deleteNote();

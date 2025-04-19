@@ -43,6 +43,22 @@ class Notes extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function getNote($noteID)
+    {
+        $RSP = [];
+        if ($noteID == '') {
+            $RSP['status'] = '500';
+            $RSP['message'] = 'noteID not informed';
+            $RSP['data'] = $_POST;
+        } else {
+            $RSP['status'] = '200';
+            $RSP['message'] = 'Note found';
+            $RSP['noteID'] = $noteID;
+            $RSP['data'] = $this->find($noteID);
+        }
+        return $RSP;
+    }
+
     function deleteNote()
     {
         $IDN = get('noteID');
@@ -67,7 +83,7 @@ class Notes extends Model
         $thesaID =  get('thesaID');
         $note = get('note');
         $noteType = get('noteType');
-        $lang = get('lang');
+        $lang = get('language');
 
         /* IDC */
         if ($IDC == '') {
@@ -79,23 +95,27 @@ class Notes extends Model
 
         /* Language */
         $Language = new \App\Models\Language\Index();
-        $lg = $Language->where('lg_cod_marc',$lang)->first();
-        if ($lg == []) {
-            $lang = 1;
-        } else {
-            $lang = $lg['id_lg'];
+        if (!sonumero($lang)) {
+            $lg = $Language->where('lg_cod_marc', $lang)->first();
+            if ($lg == []) {
+                $lang = 1;
+            } else {
+                $lang = $lg['id_lg'];
+            }
         }
+
         if ($note == '') {
             $RSP['status'] = '500';
             $RSP['message'] = 'Note not informed';
         } else {
-            $RSP['e'] = $this->register($IDC, $noteType, $note, $lang, $thesaID, $IDN);
+            if ($lang > 0)
+                {
+                    $RSP['e'] = $this->register($IDC, $noteType, $note, $lang, $thesaID, $IDN);
+                }
             $RSP['status'] = '200';
             $RSP['noteID'] = $IDN;
-            $RSP['IDC'] = $IDC;
-            $RSP['noteType'] = $noteType;
-            $RSP['note'] = $note;
-            $RSP['lang'] = $lang;
+            $RSP['language_code'] = $lang;
+            $RSP['language'] = get('language');
             $RSP['message'] = 'Note saved';
         }
         return $RSP;
@@ -107,6 +127,7 @@ class Notes extends Model
             $dd['nt_content'] = $note;
             $dd['nt_prop'] = $prop;
             $dd['nt_lang'] = $lang;
+            $dd['updated_at'] = date('Y-m-d H:i:s');
 
             if ($IDN == 0)
                 {

@@ -2,23 +2,25 @@
   <form [formGroup]="formAction" (ngSubmit)="onSubmit()">
     <div *ngIf="showError" class="alert alert-warning mt-4" role="alert">
       {{ messageError }}
-      XXXERRORXXX
     </div>
 
-<div *ngFor="let nterm of data.Terms">
-  <input
-    type="checkbox"
-    [value]="nterm.id"
-    (change)="onCheckboxChange($event)"
-  />
-  {{ nterm.term }} <sup>{{nterm.lang}}</sup>
-</div>
+    <div *ngFor="let nterm of data.Terms">
+      <input
+        type="checkbox"
+        [value]="nterm.id"
+        (change)="onCheckboxChange($event)"
+      />
+      {{ nterm.term }} <sup>{{ nterm.lang }}</sup>
+    </div>
 
-    <button type="submit" class="btn btn-outline-primary mt-4">Criar conceito</button>
-    <span class="btn btn-outline-warning ms-2 mt-4" (click)="loadOrigin()"
-      >Cancelar</span
-    >
+    <button type="submit" class="btn btn-primary mt-2 full">
+      Criar conceito
+    </button>
   </form>
+
+  <button class="btn btn-outline-warning mt-2 full" (click)="loadOrigin()">
+    Cancelar 3
+  </button>
 
   <div *ngIf="showSuccess" class="alert alert-success mt-4" role="alert">
     Dados salvos com sucesso!

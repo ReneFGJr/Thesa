@@ -68,7 +68,10 @@
   </div>
   <div class="offcanvas-body">
     <!-- Conteúdo do painel -->
-    <app-concept-create [thesaID]="thesa"></app-concept-create>
+    <app-concept-create
+      [thesaID]="thesa"
+      (actionAC)="actionAC($event)"
+      ></app-concept-create>
   </div>
 </div>
 

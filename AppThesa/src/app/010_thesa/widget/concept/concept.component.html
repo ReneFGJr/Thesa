@@ -10,7 +10,7 @@
 />
 
 <form [formGroup]="formAction" (ngSubmit)="onSubmit()">
-  <label for="termSelect">Selecione um termo:</label>
+  <label for="termSelect" class="bold">Selecione um conceito:</label>
   <select id="termSelect" formControlName="termId" class="full" size="12">
     <option *ngFor="let item of filteredTerms()" [value]="item.id">
       {{ item.Term }}
@@ -21,4 +21,4 @@
 </form>
 
 <!-- Botão de fechar -->
-<span class="btn btn-warning mt-3 full" (click)="close()">Fechar</span>
+<span class="btn btn-warning mt-3 full" (click)="cancelButton()">Fechar</span>

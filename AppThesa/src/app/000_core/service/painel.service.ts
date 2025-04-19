@@ -1,13 +1,19 @@
-import { Injectable } from '@angular/core';
+import { ElementRef, Injectable, ViewChild } from '@angular/core';
 import { Offcanvas } from 'bootstrap';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PainelService {
+  offcanvasInstance!: Offcanvas;
+  @ViewChild('offcanvasNovo', { static: true }) offcanvasEl!: ElementRef;
+
   constructor() {}
 
   openConceptPanel(element: string = 'popupConcept') {
+    if (!element) {
+      return;
+    }
     const el = document.getElementById(element);
     if (el) {
       const bsCanvas = new Offcanvas(el);

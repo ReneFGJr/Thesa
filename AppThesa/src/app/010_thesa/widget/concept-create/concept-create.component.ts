@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
@@ -10,6 +10,7 @@ import { ServiceStorageService } from '../../../000_core/service/service-storage
 })
 export class ConceptCreateComponent {
   @Input() thesaID: number = 0;
+  @Output() actionAC = new EventEmitter<string>();
   field: string = 'ds_term';
   orign: string = '';
   showSuccess: boolean = false;
@@ -31,19 +32,19 @@ export class ConceptCreateComponent {
     });
   }
 
-    onCheckboxChange(event: any) {
-      const termsArray: FormArray = this.formAction.get('terms') as FormArray;
+  onCheckboxChange(event: any) {
+    const termsArray: FormArray = this.formAction.get('terms') as FormArray;
 
-      if (event.target.checked) {
-        termsArray.push(new FormControl(event.target.value));
-      } else {
-        const index = termsArray.controls.findIndex(
-          (x) => x.value === event.target.value
-        );
-        if (index >= 0) {
-          termsArray.removeAt(index);
-        }
+    if (event.target.checked) {
+      termsArray.push(new FormControl(event.target.value));
+    } else {
+      const index = termsArray.controls.findIndex(
+        (x) => x.value === event.target.value
+      );
+      if (index >= 0) {
+        termsArray.removeAt(index);
       }
+    }
   }
 
   // ⛳ Este método é chamado automaticamente quando @Input() muda
@@ -60,6 +61,7 @@ export class ConceptCreateComponent {
 
   loadOrigin() {
     this.formAction.patchValue({ thesaID: this.thesaID });
+    this.actionAC.emit('cancel');
   }
 
   onSubmit(): void {
@@ -73,14 +75,10 @@ export class ConceptCreateComponent {
           // Exibe a mensagem de sucesso
           this.showSuccess = true;
           this.formAction.patchValue({ terms: '' });
+          this.actionAC.emit('cancel');
 
-          // Oculta após 5 segundos
-          setTimeout(() => {
-            this.showSuccess = false;
-            this.ngOnChanges();
-            alert("Reload")
-          }, 5000);
-
+          this.showError = true;
+          this.messageError = this.data.message;
         } else {
           // Exibe a mensagem de erro
           this.showError = true;

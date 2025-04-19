@@ -1,9 +1,17 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
 import { ActivatedRoute } from '@angular/router';
 import { Offcanvas } from 'bootstrap';
 import { language } from '../../../../language/language_pt';
+import { PainelService } from '../../../000_core/service/painel.service';
 
 @Component({
   selector: 'app-concept-show',
@@ -36,13 +44,14 @@ export class ConceptShowComponent {
   constructor(
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService,
-    private router: ActivatedRoute
+    private router: ActivatedRoute,
+    private painelService: PainelService
   ) {}
 
   actionUpdate(ev: Event) {
-     let actionACev = ev.toString();
+    let actionACev = ev.toString();
     console.log('#1-actionUpdate', actionACev);
-    this.ngOnChanges()
+    this.ngOnChanges();
   }
 
   updateTerms() {
@@ -77,15 +86,19 @@ export class ConceptShowComponent {
 
   action(ev: Event) {
     this.actionAC = ev.toString();
-    this.updateTerms();
-    this.openConceptPanel('popupConcept');
-  }
-
-  openConceptPanel(type: string) {
-    const el = document.getElementById('popupConcept');
-    if (el) {
-      const bsCanvas = new Offcanvas(el);
-      bsCanvas.show();
+    if (this.actionAC != '') {
+      this.updateTerms();
+      if (
+        this.actionAC === 'relateConcept' ||
+        this.actionAC === 'cancel' ||
+        this.actionAC === 'reload'
+      ) {
+        this.painelService.closeConceptPanel('popupConcept');
+        console.log('#2-action', this.actionAC);
+        this.ngOnChanges();
+      } else {
+        this.painelService.openConceptPanel('popupConcept');
+      }
     }
   }
 

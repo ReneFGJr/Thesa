@@ -22,11 +22,12 @@ export class TermLabelComponent {
   ) {}
 
   deleteItem(id: string = '', label: string) {
-    const confirmacao = confirm('Tem certeza que deseja excluir este item?');
+    const confirmacao = confirm('Tem certeza que deseja excluir este conceito?');
     if (confirmacao) {
       // Executa a exclusão
       console.log('Item excluído');
       this.removeLabel(id, label);
+      this.action.emit('reload');
     } else {
       // Cancela a exclusão
       console.log('Exclusão cancelada');

@@ -3,6 +3,7 @@ import { ServiceThesaService } from '../../../000_core/service/service-thesa.ser
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
 import { ActivatedRoute } from '@angular/router';
 import { Offcanvas } from 'bootstrap';
+import { PainelService } from '../../../000_core/service/painel.service';
 
 @Component({
   selector: 'app-terms',
@@ -29,8 +30,16 @@ export class TermsComponent {
   constructor(
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService,
-    private router: ActivatedRoute
+    private router: ActivatedRoute,
+    private painelService: PainelService
   ) {}
+
+  actionAC(ev: Event | any) {
+    let actionACev = ev.toString();
+    console.log('#3-actionUpdate', actionACev);
+    this.ngOnChanges();
+    this.painelService.closeConceptPanel('termPainel');
+  }
 
   //<!-------------- TooglePanel --------------->
   togglePanel(action: string) {

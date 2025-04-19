@@ -6,8 +6,8 @@
 
   <div *ngFor="let note of notes">
     <h5>Nota de {{ note.p_name }}
-        <i class="bi bi-pencil-square link" (click)="editNote(note)"></i>
-        <i class="bi bi-trash trash link" (click)="deleteNote(note.id_nt)"></i>
+        <i class="bi bi-pencil-square link" (click)="editNote(note.id_nt)"></i>
+        <i class="bi bi-trash ms-2 link" style="color: #fbb;" (click)="deleteNote(note.id_nt)"></i>
     </h5>
     <p class="small">{{ note.nt_content }} <sup>{{note.lg_code}}</sup></p>
   </div>
@@ -40,7 +40,8 @@
           formControlName="noteType"
           size="6"
         >
-          <option *ngFor="let prop of notasProp" [value]="prop.id">
+
+          <option *ngFor="let prop of notasProp" [value]="prop.id" [selected]="prop.id == formAction.value.noteType">
             {{ prop.label }}
           </option>
         </select>
@@ -67,6 +68,7 @@
             class="form-check-input border border-secondary"
             [value]="lang.code"
             formControlName="language"
+            [checked]="lang.id_lg == formAction.value.language"
           />
           <label class="form-check-label" for="lang.id">
             {{ lang.label }}
@@ -81,6 +83,10 @@
       >
         Salvar Nota
       </button>
+
+      <!-- Botão de fechar -->
+      <span class="btn btn-warning mt-3 full" (click)="cancelButton()">Fechar</span>
+
     </form>
   </div>
 </div>

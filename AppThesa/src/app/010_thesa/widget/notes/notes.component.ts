@@ -26,6 +26,7 @@ export class NotesComponent implements OnInit, AfterViewInit {
   @ViewChild('offcanvasNovo', { static: true }) offcanvasEl!: ElementRef;
   offcanvasInstance!: Offcanvas;
 
+  dataNotes: Array<any> | any;
   notasProp: Array<any> | any;
   languages: Array<any> | any;
   formAction!: FormGroup;
@@ -38,6 +39,7 @@ export class NotesComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     // 1) Monta o FormGroup
     this.formAction = this.fb.group({
+      noteID: 0,
       noteType: ['', Validators.required],
       note: ['', [Validators.required, Validators.minLength(3)]],
       language: ['', Validators.required],
@@ -71,13 +73,21 @@ export class NotesComponent implements OnInit, AfterViewInit {
     }
   }
 
+  cancelButton() {
+    this.offcanvasInstance.hide();
+  }
+
   editNote(id: string) {
-    this.formAction.patchValue({
-      noteType: '',
-      note: '',
-      language: '',
+    this.serviceThesa.api_post('getNote', { noteID: id }).subscribe((res) => {
+      this.dataNotes = res;
+      this.formAction.patchValue({
+        noteID: id,
+        noteType: this.dataNotes.data.nt_prop,
+        note: this.dataNotes.data.nt_content,
+        language: this.dataNotes.data.nt_lang,
+      });
+      this.offcanvasInstance.show();
     });
-    this.offcanvasInstance.show();
   }
 
   ngAfterViewInit() {
@@ -94,6 +104,7 @@ export class NotesComponent implements OnInit, AfterViewInit {
     if (this.formAction.invalid) return;
 
     let dt = {
+      noteID: this.formAction.value.noteID,
       thesaID: this.thesaID,
       conceptID: this.conceptID,
       noteType: this.formAction.value.noteType,

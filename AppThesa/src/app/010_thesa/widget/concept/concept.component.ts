@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
@@ -15,6 +15,7 @@ export class ConceptComponent {
   @Input() actionCV: string = '';
   @Input() thesaID: number = 0;
   @Input() conceptID: number = 0;
+  @Output() actionAC: any = new EventEmitter<any>();
   data:Array<any> = [];
   formAction: FormGroup;
   title: string = 'Termos';
@@ -46,9 +47,6 @@ export class ConceptComponent {
     });
   }
 
-  close() {
-    this.painelService.closeConceptPanel('popupConcept');
-  }
 
   onSubmit() {
     console.log(this.formAction.value); // Aqui você acessa o ID selecionado
@@ -58,12 +56,15 @@ export class ConceptComponent {
       property: this.actionCV,
       thesaurus: this.thesaID,
     };
-    console.log(data)
     this.serviceThesa
       .api_post('relateConcept', data)
       .subscribe((res) => {
-          console.log(res)
+          this.actionAC.emit("relateConcept");
       });
+  }
+
+  cancelButton() {
+    this.actionAC.emit('relateConcept');
   }
 
   ngOnChanges() {
@@ -79,7 +80,7 @@ export class ConceptComponent {
       });
       /************ Titulo da Página */
       if (this.actionCV === 'broader') {
-        this.title = 'Conceito de Geral';
+        this.title = 'Conceito Geral';
       } else if (this.actionCV === 'narrow') {
         this.title = 'Conceito Específico';
       } else if (this.actionCV === 'related') {
