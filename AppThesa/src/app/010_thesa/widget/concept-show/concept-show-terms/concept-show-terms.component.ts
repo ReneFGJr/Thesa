@@ -9,6 +9,7 @@ export class ConceptShowTermsComponent {
   @Input() editMode: boolean = false;
   @Output() actionAC: EventEmitter<any> = new EventEmitter<any>();
   action(ev: Event) {
+    console.log("#4-actionupdate",ev)
     this.actionAC.emit(ev);
   }
 }

@@ -49,7 +49,7 @@
   </div>
   <div class="offcanvas-body">
     <!-- Conteúdo do painel -->
-    <app-term-input [thesaID]="thesa"></app-term-input>
+    <app-term-input [thesaID]="thesa" (action)="actionAC($event)"></app-term-input>
   </div>
 </div>
 

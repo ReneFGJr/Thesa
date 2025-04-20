@@ -14,6 +14,7 @@ export class IndexAlphabeticComponent {
   id: number = 0;
   termID: number = 0;
   editMode: boolean = false;
+  concepts: Array<any> | any;
   constructor(
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService,
@@ -35,6 +36,10 @@ export class IndexAlphabeticComponent {
         },
         (error) => error
       );
+
+      this.serviceThesa.api_post('index_alphabetic/' + this.id, []).subscribe((res) => {
+        this.concepts = res;
+      });
     });
   }
 }

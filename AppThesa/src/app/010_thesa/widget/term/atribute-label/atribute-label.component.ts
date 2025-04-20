@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -21,6 +21,7 @@ export class AltLabelComponent {
   @Input() actionCV: string = '';
   @Input() thesaID: number = 0;
   @Input() conceptID: number = 0;
+  @Output() action = new EventEmitter<any>();
   formAction: FormGroup;
   title: string = 'Termos';
 
@@ -64,6 +65,7 @@ export class AltLabelComponent {
       (res) => {
         console.log('Resposta do servidor:', res);
         this.painelService.closeConceptPanel('popupConcept');
+        this.action.emit('reload');
       },
       (error) => {
         console.error('Erro ao enviar os dados:', error);

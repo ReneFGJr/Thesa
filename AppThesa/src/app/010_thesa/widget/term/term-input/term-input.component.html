@@ -1,23 +1,50 @@
 <div class="container mt-4">
   <form [formGroup]="formAction" (ngSubmit)="onSubmit()">
     <div class="mb-3">
-      <textarea id="desc" class="form-control" rows="10" formControlName="terms"></textarea>
+      <textarea
+        id="desc"
+        class="form-control"
+        rows="10"
+        formControlName="terms"
+      ></textarea>
     </div>
 
-  <div *ngIf="showError" class="alert alert-warning mt-4" role="alert">
-    {{messageError}}
-  </div>
-
-
-    <div class="mb-3">
+    <div *ngIf="showError" class="alert alert-warning mt-4" role="alert">
+      {{ messageError }}
+    </div>
+    <!-- Idioma -->
+    <div class="mb-3" *ngIf="languages">
       <label for="desc" class="form-label">Selecione o idioma do termo</label>
-      <br><input type="radio" id="lang" formControlName="lang" value="por" /> Português
-      <br><input type="radio" id="lang" formControlName="lang" value="eng" /> Inglês
-      <br><input type="radio" id="lang" formControlName="lang" value="spa" /> Espanhol
+
+      <div *ngFor="let lang of languages.languages" class="form-check">
+        <input
+          class="form-check-input border border-secondary"
+          type="radio"
+          [id]="'lang' + lang.id_lg"
+          name="lang"
+          [value]="lang.code"
+          formControlName="lang"
+        />
+        <label class="form-check-label" [for]="'lang' + lang.id_lg">
+          {{ lang.label }}
+        </label>
+      </div>
+
+      <div
+        *ngIf="
+          formAction.get('language')?.touched &&
+          formAction.get('language')?.invalid
+        "
+        class="text-danger small mt-1"
+      >
+        Selecione um idioma.
+      </div>
     </div>
 
-    <button type="submit" class="btn btn-outline-primary">Salvar</button>
-    <span class="btn btn-outline-warning ms-2" (click)="loadOrigin()">Cancelar</span>
+    <button type="submit" class="btn btn-primary full">Salvar</button>
+    <span class="btn btn-outline-warning mt-2 full" (click)="loadOrigin()"
+      >Fechar</span
+    >
   </form>
 
   <div *ngIf="showSuccess" class="alert alert-success mt-4" role="alert">

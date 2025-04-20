@@ -96,6 +96,7 @@ export class ConceptShowComponent {
         this.painelService.closeConceptPanel('popupConcept');
         console.log('#2-action', this.actionAC);
         this.ngOnChanges();
+        //alert("reload")
       } else {
         this.painelService.openConceptPanel('popupConcept');
       }

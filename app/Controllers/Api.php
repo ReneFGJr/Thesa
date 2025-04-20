@@ -54,6 +54,12 @@ class Api extends BaseController
 
         switch($arg1)
             {
+                case 'index_alphabetic':
+                    $Concepts = new \App\Models\Thesa\Concepts\Index();
+                    $RSP = $Concepts->index_alphabetic($arg2);
+                    $RSP['status'] = '200';
+                    $RSP['message'] = 'Index';
+                    break;
                 case 'getNote':
                     $Notes = new \App\Models\Property\Notes();
                     $noteID = get('noteID');
@@ -284,6 +290,18 @@ class Api extends BaseController
                 {
                     case 'altLabel':
                         $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
+                        $dr = $ThConceptPropriety->where('id_ct', get('idr'))->first();
+
+                        $TermsTh = new \App\Models\Term\TermsTh();
+                        $dx = [];
+                        $dx['term_th_concept'] = 0;
+                        /* Libera termo */
+                        $TermsTh->set($dx)
+                            ->where('term_th_term', $dr['ct_literal'])
+                            ->where('term_th_thesa', $dr['ct_th'])
+                            ->update();
+
+                        /* Excluir conceito e relação */
                         $ThConceptPropriety->where('id_ct', get('idr'))->delete();
 
                         $RSP['status'] = '200';

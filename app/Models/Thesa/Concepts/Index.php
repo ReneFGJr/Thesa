@@ -43,6 +43,40 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function index_alphabetic($th)
+    {
+            $dt = $this
+            ->join('thesa_terms_th', 'c_concept = term_th_concept')
+            ->join('thesa_terms', 'term_th_term = id_term')
+            ->join('language', 'term_lang = id_lg')
+                ->where('c_th', $th)
+                ->where('c_ativo', 1)
+                ->orderBy('term_name, c_concept')
+                ->findAll();
+            $dd = [];
+            foreach ($dt as $d) {
+                $dx = [];
+                $name = UpperCase(ascii($d['term_name']));
+                $ltr = substr($name, 0, 1);
+                if (!isset($dd[$ltr])) {
+                    $dd[$ltr] = [];
+                }
+                $dx['id'] = $d['c_concept'];
+                $dx['term'] = $d['term_name'];
+                array_push($dd[$ltr], $dx);
+            }
+            $dx = [];
+            foreach ($dd as $k => $v) {
+                $dv = [];
+                $dv['ltr'] = $k;
+                $dv['terms'] = $v;
+                array_push($dx, $dv);
+            }
+            $dd = [];
+            $dd['terms'] = $dx;
+            return $dd;
+    }
+
     function change_status($id,$st)
         {
             $data['c_status'] = $st;

@@ -3,11 +3,22 @@
   <div class="row">
     <div class="col-12 col-lg-2 col-md-2 col-sm-2">
       <h3>
-      Índice<br>
-      Sistemático
+        Índice<br />
+        Sistemático
       </h3>
     </div>
     <div class="col-12 col-lg-10 col-md-10 col-sm-10">
+      <div class="row" *ngIf="concepts">
+        <div
+          *ngFor="let concept of concepts.terms"
+          class="col-12 col-lg-3 col-md-3 col-sm-3"
+        >
+          <h2>{{ concept.ltr }}</h2>
+          <li *ngFor="let terms of concept.terms">
+            {{ terms.term }}
+          </li>
+        </div>
+      </div>
     </div>
   </div>
 </div>
