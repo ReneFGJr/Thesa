@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../000_core/service/auth.service';
 import { Router } from '@angular/router';
 import { ServiceThesaService } from '../../000_core/service/service-thesa.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-logout',
@@ -22,7 +23,7 @@ export class LogoutComponent {
 
     // Oculta após 5 segundos
     setTimeout(() => {
-      location.assign('/');
+      location.assign(environment.Url+ '/');
     }, 1000);
   }
 }

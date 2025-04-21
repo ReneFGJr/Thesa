@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../000_core/service/auth.service';
 import { Router } from '@angular/router';
 import { ServiceThesaService } from '../../000_core/service/service-thesa.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-social-signin',
@@ -43,7 +44,7 @@ export class SigninComponent {
           this.auth.setID(this.data.id);
           // Oculta após 5 segundos
           setTimeout(() => {
-            location.assign('/thesa/web/thmy');
+            location.assign(environment.Url + '/thmy');
           }, 500);
         }
       }
