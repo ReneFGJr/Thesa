@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.seusite.com/api',
-  Url: 'https://www.ufrgs.br/thesa/v2',
+  apiUrl: 'https://www.ufrgs.br/thesa/api',
+  Url: 'https://www.ufrgs.br/thesa/web',
   editMode: false,
 };
