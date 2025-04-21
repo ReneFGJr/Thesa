@@ -1,0 +1,20 @@
+# Disable directory browsing
+Options All -Indexes
+
+<IfModule mod_rewrite.c>
+    Options +FollowSymlinks
+    RewriteEngine On
+
+    # Se a URI for exatamente "/" (raiz), redireciona para /web/index.html
+    RewriteCond %{REQUEST_URI} ^/thesa/?$
+    RewriteRule ^$ /thesa/web/index.html [R=302,L]
+
+
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    ErrorDocument 404 public/index.php
+</IfModule>
+
+# Server Signature Off
+ServerSignature Off

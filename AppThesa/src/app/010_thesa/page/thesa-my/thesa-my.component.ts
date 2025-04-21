@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
 import { Router } from '@angular/router';
@@ -12,6 +12,8 @@ export class ThesaMyComponent {
   thesa: Array<any> | any;
   searchTerm: string = '';
   title: string = 'Thesa Pessoal'; // título da página
+  create: boolean = false;
+  @Input() editMode: boolean = false; // modo de edição
 
   constructor(
     private serviceThesa: ServiceThesaService,

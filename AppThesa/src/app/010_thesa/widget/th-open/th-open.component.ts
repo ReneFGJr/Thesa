@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-th-open',
-  templateUrl: './th-open.component.html'
+  templateUrl: './th-open.component.html',
 })
 export class ThOpenComponent implements OnInit {
   data: any;
   thesa: any[] = [];
   searchTerm: string = ''; // termo de busca
   title: string = 'Thesa Aberto'; // título da página
+  @Input() editMode: boolean = false; // modo de edição
+  @Input() canCreate: string = ''; // ID do modo de edição
 
   constructor(
     private serviceThesa: ServiceThesaService,

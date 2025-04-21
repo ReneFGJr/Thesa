@@ -18,16 +18,29 @@ export class ServiceStorageService {
   }
 
   get(key: string): any {
-    if (this.storage) {
-      return JSON.parse(<any>this.storage.getItem(key));
+    if (!this.storage) {
+      return null;
     }
-    return null;
+
+    const raw = this.storage.getItem(key);
+    // Se não existir nada no storage, retorna null sem parse
+    if (raw === null) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(raw);
+    } catch (e) {
+      return null;
+    }
   }
 
   remove(key: string): boolean {
     if (this.storage) {
       this.storage.removeItem(key);
       return true;
+    } else {
+      console.log('Error: Storage not available ', key);
     }
     return false;
   }
@@ -53,16 +66,16 @@ export class ServiceStorageService {
   }
 
   getEditMode(): boolean {
-    let status = this.get('editModeLocal')
+    let status = this.get('editModeLocal');
     if (status == 'true') {
-      return true
-    } else  {
-      return false
+      return true;
+    } else {
+      return false;
     }
   }
 
-  setEditMode(value:string): boolean {
-    this.set('editModeLocal', value)
+  setEditMode(value: string): boolean {
+    this.set('editModeLocal', value);
     return true;
   }
 }

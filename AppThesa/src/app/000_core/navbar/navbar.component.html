@@ -24,9 +24,6 @@
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['documentation']">Documentation</a>
       </li>
-      <li class="nav-item" *ngIf="!editMode">
-        <a class="nav-link" [routerLink]="['create']">Create</a>
-      </li>
     </ul>
     <ul class="ms-auto navbar-nav">
       <app-user-menu [user]="user"></app-user-menu>
