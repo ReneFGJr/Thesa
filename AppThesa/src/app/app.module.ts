@@ -59,6 +59,7 @@ import { SigninComponent } from './030_social/signin/signin.component';
 import { UserMenuComponent } from './030_social/user-menu/user-menu.component';
 import { RecoverPasswordComponent } from './030_social/recover-password/recover-password.component';
 import { ImagePlayComponent } from './010_thesa/widget/play-media-show/image-play/image-play.component';
+import { EditModePageComponent } from './010_thesa/page/edit-mode-page/edit-mode-page.component';
 
 @NgModule({
   declarations: [
@@ -116,6 +117,7 @@ import { ImagePlayComponent } from './010_thesa/widget/play-media-show/image-pla
     UserMenuComponent,
     RecoverPasswordComponent,
     ImagePlayComponent,
+    EditModePageComponent,
   ],
   imports: [
     BrowserModule,

@@ -8,50 +8,96 @@
       <h5>{{ thesa.th_achronic }}</h5>
 
       <!-- MENU -->
-        <ul class="nav  mt-5 mb-2 small">
-          <li class="nav-item">
-            <a class="nav-link link"
+      <ul class="nav mt-5 mb-2 small">
+        <li class="nav-item">
+          <a
+            class="nav-link link"
             [routerLink]="['/thesa/', thesa.id_th]"
             [ngClass]="{ active: tab === '1' }"
-            routerLinkActive="active">Conceitos</a>
-          </li>
+            routerLinkActive="active"
+            >Conceitos</a
+          >
+        </li>
 
-          <li class="nav-item">
-            <a class="nav-link link" [routerLink]="['/about/', thesa.id_th]"
+        <li class="nav-item">
+          <a
+            class="nav-link link"
+            [routerLink]="['/about/', thesa.id_th]"
             [ngClass]="{ active: tab === '2' }"
-            routerLinkActive="active">Sobre</a>
-          </li>
+            routerLinkActive="active"
+            >Sobre</a
+          >
+        </li>
 
-          <li class="nav-item">
-            <a class="nav-link link" [routerLink]="['/alphabetic_index/', thesa.id_th]"
+        <li class="nav-item">
+          <a
+            class="nav-link link"
+            [routerLink]="['/alphabetic_index/', thesa.id_th]"
             [ngClass]="{ active: tab === '3' }"
-            routerLinkActive="active">Apresentação Alfabética</a>
-          </li>
+            routerLinkActive="active"
+            >Apresentação Alfabética</a
+          >
+        </li>
 
-          <li class="nav-item">
-            <a class="nav-link link" [routerLink]="['/systemic_index/', thesa.id_th]"
+        <li class="nav-item">
+          <a
+            class="nav-link link"
+            [routerLink]="['/systemic_index/', thesa.id_th]"
             [ngClass]="{ active: tab === '4' }"
-            routerLinkActive="active">Apresentação Sistemática</a>
-          </li>
+            routerLinkActive="active"
+            >Apresentação Sistemática</a
+          >
+        </li>
 
-          <li class="nav-item">
-            <a class="nav-link link" [routerLink]="['/export/', thesa.id_th]"
+        <li class="nav-item">
+          <a
+            class="nav-link link"
+            [routerLink]="['/export/', thesa.id_th]"
             [ngClass]="{ active: tab === '5' }"
-            routerLinkActive="active">Exportação</a>
-          </li>
+            routerLinkActive="active"
+            >Exportação</a
+          >
+        </li>
 
-          <li class="nav-item">
-            <a class="nav-link link" [routerLink]="['/configuration/', thesa.id_th]"
+        <li class="nav-item">
+          <a
+            class="nav-link link"
+            [routerLink]="['/configuration/', thesa.id_th]"
             [ngClass]="{ active: tab === '6' }"
             *ngIf="editMode == true"
-            routerLinkActive="active">Configurações</a>
-          </li>
-        </ul>
-    </div>
-    <div *ngIf="editMode == true" class="col-12">
-      <div class="alert alert-warning" role="alert">
-        <strong>Aviso:</strong> Você está no modo de edição. Salve as alterações antes de sair.
-        <br>EditMode: {{editMode}}
+            routerLinkActive="active"
+            >Configurações</a
+          >
+        </li>
+
+        <li class="nav-item" *ngIf="editModeLocal == true && editMode == true">
+          <a
+            class="nav-link link"
+            [routerLink]="['/chageEditMode/', thesa.id_th, 'false']"
+            style="color: #f00; border-bottom: 2px solid #f00"
+            [ngClass]="{ active: tab === '7' }"
+            *ngIf="editMode == true"
+            routerLinkActive="active"
+            >Desativar Edição</a
+          >
+        </li>
+
+        <li class="nav-item" *ngIf="editModeLocal == false && editMode == true">
+          <a
+            class="nav-link link"
+            [routerLink]="['/chageEditMode/', thesa.id_th, 'true']"
+            style="color: #00f; border-bottom: 2px solid #00f"
+            [ngClass]="{ active: tab === '7' }"
+            *ngIf="editMode == true"
+            routerLinkActive="active"
+            >Habilita Edição</a
+          >
+        </li>
+      </ul>
+
+      <div class="edit-ribbon" *ngIf="editModeLocal && editMode">
+        <i class="bi bi-pencil-fill"></i> EDIÇÃO ATIVADA
       </div>
+    </div>
   </div>
 </div>

@@ -1,4 +1,5 @@
-<app-th-show [thesa]="data" [tab]="'2'" [editMode]="editMode"></app-th-show>
+<app-th-show *ngIf="data" [thesaID]="id" [thesa]="data" [tab]="'2'" [editMode]="editMode"></app-th-show>
+
 <div class="container">
   <div class="row">
     <div class="col-12 col-lg-2 col-md-2 col-sm-2">
@@ -14,9 +15,11 @@
           class="col-12 col-lg-3 col-md-3 col-sm-3"
         >
           <h2>{{ concept.ltr }}</h2>
-          <li *ngFor="let terms of concept.terms">
-            {{ terms.term }}
-          </li>
+          <div *ngFor="let terms of concept.terms">
+            <a class="link small" [routerLink]="['/c', terms.id]">
+              {{ terms.term }}
+            </a>
+          </div>
         </div>
       </div>
     </div>

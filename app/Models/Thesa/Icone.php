@@ -62,7 +62,7 @@ class Icone extends Model
                     $img = PATH . '/img/icons/' . $img;
                     if ($dt['th_icone'] != 0) {
                         $img = strzero($dt['th_icone'], 4) . '.png';
-                        $img = PATH . '/img/icons/' . $img;
+                        $img = getenv("repository") . '/img/icons/' . $img;
                     }
                 }
         }

@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './thesa.component.scss',
 })
 export class ThesaComponent {
-  data: any;
+  data: Array<any> | any;
   thesa: any;
   termID: number = 0;
   thesaID: number = 0;
@@ -28,11 +28,7 @@ export class ThesaComponent {
         (res) => {
           this.data = res;
           /* Edição */
-          if (this.data.editMode == 'allow') {
-            this.editMode = true;
-          } else {
-            this.editMode = false;
-          }
+          this.editMode = this.serviceStorage.mathEditMode(this.data)
         },
         (error) => error
       );

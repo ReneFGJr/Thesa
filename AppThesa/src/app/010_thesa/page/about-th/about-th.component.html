@@ -1,4 +1,4 @@
-<app-th-show [thesa]="data" [tab]="'2'" [editMode]="editMode"></app-th-show>
+<app-th-show *ngIf="data" [thesaID]="thesaID" [thesa]="data" [tab]="'2'" [editMode]="editMode"></app-th-show>
 <div class="container">
   <div class="row">
     <div class="col-12 col-lg-2 col-md-2 col-sm-2">
@@ -7,7 +7,13 @@
     <div class="col-12 col-lg-10 col-md-10 col-sm-10">
       <div *ngFor="let info of data?.info">
         <h4 class="h4_info">{{ info.class }}</h4>
-        <p>{{ info.description }}</p>
+        <div *ngIf="info.class=='Authors'" class="h5_info">
+            <li *ngFor="let author of info.description.members" class="list-group-item list-group-item-action ms-3">
+              {{ author.fullname }} <span *ngIf="author?.affiliation">({{author.affiliation}})</span>
+            </li>
+            <br>
+        </div>
+        <p *ngIf="info.class!='Authors'" class="ms-4">{{ info.description }}</p>
       </div>
     </div>
   </div>

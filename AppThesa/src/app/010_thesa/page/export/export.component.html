@@ -1,12 +1,15 @@
-<app-th-show [thesa]="data" [tab]="'5'"></app-th-show>
+<app-th-show *ngIf="data" [thesaID]="id" [thesa]="data" [tab]="'5'" [editMode]="editMode"></app-th-show>
+
 <div class="container">
   <div class="row">
     <div class="col-12 col-lg-2 col-md-2 col-sm-2">
       <h3>
-      Exportação
+        Exportação
       </h3>
     </div>
     <div class="col-12 col-lg-10 col-md-10 col-sm-10">
+    <h1>Exportação</h1>
+    {{data | json}}
     </div>
   </div>
 </div>

@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-
 export class ServiceStorageService {
   private storage: Storage;
   constructor() {
@@ -39,5 +38,31 @@ export class ServiceStorageService {
       return true;
     }
     return false;
+  }
+
+  mathEditMode(data: any): boolean {
+    if (data.editMode == 'allow' || data.editMode == 'true') {
+      if (this.getEditMode() == true) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  getEditMode(): boolean {
+    let status = this.get('editModeLocal')
+    if (status == 'true') {
+      return true
+    } else  {
+      return false
+    }
+  }
+
+  setEditMode(value:string): boolean {
+    this.set('editModeLocal', value)
+    return true;
   }
 }

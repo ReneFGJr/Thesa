@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
 import { ActivatedRoute } from '@angular/router';
@@ -13,6 +13,7 @@ data: any;
   thesa: any;
   id: number = 0;
   termID: number = 0;
+  @Input() editMode: boolean = false;
   constructor(
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService,

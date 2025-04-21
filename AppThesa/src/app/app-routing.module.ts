@@ -13,6 +13,7 @@ import { IndexAlphabeticComponent } from './010_thesa/page/index-alphabetic/inde
 import { ExportPDFComponent } from './010_thesa/page/export/export.component';
 import { ThesaMyComponent } from './010_thesa/page/thesa-my/thesa-my.component';
 import { AuthPageComponent } from './030_social/auth-page/auth-page.component';
+import { EditModePageComponent } from './010_thesa/page/edit-mode-page/edit-mode-page.component';
 
 
 const routes: Routes = [
@@ -23,9 +24,10 @@ const routes: Routes = [
   { path: 'thesa/:id', component: ThesaComponent },
   { path: 'about/:id', component: AboutThComponent },
   { path: 'configuration/:id', component: ConfigurationComponent },
+  { path: 'chageEditMode/:thesaID/:id', component: EditModePageComponent },
   { path: 'c/:id', component: ConceptTHComponent },
   { path: 'create', component: ThesaCreateComponent },
-  { path: 'export/:id', component: HomepageComponent },
+  { path: 'export/:id', component: ExportPDFComponent },
   { path: 'systemic_index/:id', component: IndexSystemicComponent },
   { path: 'alphabetic_index/:id', component: IndexAlphabeticComponent },
   { path: 'export/:id', component: ExportPDFComponent },

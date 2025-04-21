@@ -16,6 +16,6 @@ export class HomepageComponent {
   ) {}
 
   ngOnInit() {
-    this.serviceStorage.set('apikey', '2e3db7994011c8c5e315e42a0cb439c5');
+
   }
 }

@@ -121,7 +121,7 @@ class Index extends Model
 
     function thopen($user = 0)
     {
-        $cp = 'id_th,th_name,th_achronic,th_cover';
+        $cp = 'id_th,th_name,th_achronic,th_cover,th_icone_custom';
         $Icone = new \App\Models\Thesa\Icone();
         if ($user > 0) {
             $dt = $this
@@ -165,7 +165,7 @@ class Index extends Model
     function terms($th,$lt='')
         {
             $Concept = new \App\Models\Thesa\Concepts\Index();
-            $cp = 'term_name as Term,c_concept as Concept, p_name as Propriety';
+            $cp = 'term_name as Term,c_concept as Concept, p_name as Propriety, lg_code as Lang';
             $cpg = 'Term, Concept, Propriety';
             //$cp = '*';
             $dt = $Concept
@@ -173,6 +173,7 @@ class Index extends Model
                 ->join('thesa_concept_term', 'ct_concept = c_concept')
                 ->join('thesa_terms', 'ct_literal = id_term')
                 ->join('thesa_property', 'ct_propriety = id_p')
+                ->join('language', 'term_lang = id_lg')
                 ->where('c_th',$th)
                 ->groupby($cpg)
                 ->orderby('term_name')

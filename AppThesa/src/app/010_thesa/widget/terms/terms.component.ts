@@ -55,7 +55,6 @@ export class TermsComponent {
       (error) => error
     );
     this.updateTermosList();
-    this.editMode = this.serviceThesa.getEditMode();
   }
 
   updateTermosList() {
