@@ -56,13 +56,13 @@ class Icone extends Model
             } else {
                 if (!isset($dt['th_icone'])) {
                     $img = strzero(0, 4) . '.svg';
-                    $img = PATH . '/img/icons/' . $img;
+                    $img = PATH . '/assets/img/icons/' . $img;
                 } else {
                     $img = strzero($dt['th_icone'], 4) . '.png';
-                    $img = PATH . '/img/icons/' . $img;
+                    $img = PATH . '/assets/img/icons/' . $img;
                     if ($dt['th_icone'] != 0) {
                         $img = strzero($dt['th_icone'], 4) . '.png';
-                        $img = getenv("repository") . '/img/icons/' . $img;
+                        $img = getenv("repository") . '/assets/img/icons/' . $img;
                     }
                 }
         }

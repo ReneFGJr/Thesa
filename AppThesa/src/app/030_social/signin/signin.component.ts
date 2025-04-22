@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../000_core/service/auth.service';
 import { Router } from '@angular/router';
 import { ServiceThesaService } from '../../000_core/service/service-thesa.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-social-signin',
@@ -36,10 +37,15 @@ export class SigninComponent {
         console.log(res);
         this.data = res;
         if (this.data.status == '200') {
-          this.auth.setToken(this.data.token);
-          this.auth.setUser(this.data.user);
+          console.log('Logado com sucesso');
+          console.log(this.data);
+          this.auth.setToken(this.data.apikey);
+          this.auth.setUser(this.data.name);
           this.auth.setID(this.data.id);
-          this.router.navigate(['/']);
+          // Oculta após 5 segundos
+          setTimeout(() => {
+            location.assign(environment.Url + '/thmy');
+          }, 500);
         }
       }
     );

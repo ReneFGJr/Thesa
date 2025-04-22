@@ -12,6 +12,13 @@ export class UserMenuComponent {
 
   ngOnInit()
     {
-      this.isLoggedIn = this.user ? true : false;
+      if (this.user.userID === undefined) {
+        this.isLoggedIn = false;
+      } else {
+        this.isLoggedIn = true;
+        if (this.user.name=== null) {
+          this.user.name = "logado";
+        }
+      }
     }
 }

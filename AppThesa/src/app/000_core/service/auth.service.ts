@@ -14,6 +14,16 @@ export class AuthService {
     private serviceStorage: ServiceStorageService
   ) {}
 
+  logoff()
+    {
+      this.serviceStorage.remove('apikey');
+      this.serviceStorage.remove('user');
+      this.serviceStorage.remove('userID');
+      this.serviceStorage.remove('name');
+      this.serviceStorage.remove('email');
+      console.log('logoff');
+    }
+
   setToken(token: string): void {
     this.serviceStorage.set('apikey', token);
   }
@@ -33,9 +43,12 @@ export class AuthService {
   getUser(): Array<any> | any {
     let dt = {
       userID: this.serviceStorage.get('userID'),
-      name: this.serviceStorage.get('name'),
+      name: this.serviceStorage.get('user'),
       apikey: this.serviceStorage.get('apikey'),
     };
+    if (dt.userID == null) {
+      return null;
+    }
     return dt;
   }
 }

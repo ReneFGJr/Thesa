@@ -315,16 +315,17 @@ class Socials extends Model
 				$RSP['status'] = '404';
 				return $RSP;
 			} else {
-				$name = $dt['us_nome'];
-				//$name = explode(' ', $name);
-				//$name = $name[0];
-				//if (isset($name[1])) {
-					//$name = $name[0] . ' ' . $name[1];
-				//}
+				$name = trim($dt['us_nome']);
+				$name = explode(' ', $name);
+
+				$xname = $name[0];
+				if (isset($name[1])) {
+					$xname = $name[0] . ' ' . $name[1];
+				}
 				$RSP['message'] = 'User loged';
 				$RSP['status'] = '200';
 				$RSP['id'] = $dt['id_us'];
-				$RSP['name'] = $name;
+				$RSP['name'] = $xname;
 				$RSP['apikey'] = $dt['us_apikey'];
 				$RSP['image'] = $dt['us_image'];
 			}

@@ -1,0 +1,43 @@
+# Disable directory browsing
+Options All -Indexes
+
+<IfModule mod_rewrite.c>
+    Options +FollowSymlinks
+    RewriteEngine On
+
+    # Força não-www (opcional)
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+    RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
+
+    # Remove barras finais
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Rotas da API
+    RewriteCond %{REQUEST_URI} ^/api(/.*)?$
+    RewriteRule ^api(/.*)?$ public/index.php/api$1 [L,QSA]
+
+    # Rota Angular - tudo em /web/* vai para index.html do Angular
+    RewriteCond %{REQUEST_URI} ^/thesa/web(/.*)?$
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^thesa/web(/.*)?$ thesa/public/web/index.html [L]
+
+    # Roteamento geral backend
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ public/index.php/$1 [L,NC,QSA]
+
+    # Header de autorização
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    ErrorDocument 404 public/index.php
+</IfModule>
+
+# Server Signature Off
+ServerSignature Off
