@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './homepage.component.scss',
 })
 export class HomepageComponent {
+  lang: string = 'por';
   constructor(
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService,
