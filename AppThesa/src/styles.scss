@@ -3,7 +3,10 @@
 /* Importing Bootstrap SCSS file. */
 @import "bootstrap/scss/bootstrap";
 @import url("https://fonts.googleapis.com/css2?family=Actor&family=Arsenal&family=Cabin+Condensed&family=Lora:ital@1&family=Roboto+Slab:wght@300&family=Roboto:wght@100&family=Titillium+Web:wght@200&display=swap");
-
+.XX
+  {
+    counter-reset: section;
+  }
 .navbar-custom {
   background-color: #CCF;  /* ou qualquer tom de azul escuro que preferir */
 }

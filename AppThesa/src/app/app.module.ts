@@ -61,6 +61,7 @@ import { RecoverPasswordComponent } from './030_social/recover-password/recover-
 import { ImagePlayComponent } from './010_thesa/widget/play-media-show/image-play/image-play.component';
 import { EditModePageComponent } from './010_thesa/page/edit-mode-page/edit-mode-page.component';
 import { LogoutComponent } from './030_social/logout/logout.component';
+import { LinkedataComponent } from './010_thesa/widget/linkedata/linkedata.component';
 
 @NgModule({
   declarations: [
@@ -120,6 +121,7 @@ import { LogoutComponent } from './030_social/logout/logout.component';
     ImagePlayComponent,
     EditModePageComponent,
     LogoutComponent,
+    LinkedataComponent,
   ],
   imports: [
     BrowserModule,

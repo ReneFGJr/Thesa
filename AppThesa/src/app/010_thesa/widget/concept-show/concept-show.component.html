@@ -73,6 +73,12 @@
               [conceptID]="conceptID"
             ></app-notes-show>
           </ng-container>
+          <app-linkedata
+              [editMode]="editMode"
+              [notes]="data.notes"
+              [thesaID]="thesaID"
+              [conceptID]="conceptID"
+          ></app-linkedata>
           <!---------------------------------------- Notas -->
           <ng-container *ngIf="tab.content == 'notas'">
             <!-- Notes -->

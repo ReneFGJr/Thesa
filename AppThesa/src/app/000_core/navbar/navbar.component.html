@@ -1,33 +1,39 @@
-<nav class="navbar navbar-expand-lg navbar-light navbar-custom mb-5">
-  <a class="navbar-brand ms-2" [routerLink]="['/']">
-    <img [src]="logo" title="Thesa" style="height: 30px"/>
-  </a>
-  <button
-    class="navbar-toggler"
-    type="button"
-    data-toggle="collapse"
-    data-target="#navbarNav"
-    aria-controls="navbarNav"
-    aria-expanded="false"
-    aria-label="Toggle navigation"
-  >
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/thopen']">Tesauros Abertos</a>
-      </li>
-
-      <li class="nav-item" *ngIf="user">
-        <a class="nav-link" [routerLink]="['/thmy']">Meus Tesauros</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['documentation']">DOcumentação</a>
-      </li>
-    </ul>
-    <ul class="ms-auto navbar-nav">
-      <app-user-menu [user]="user"></app-user-menu>
-    </ul>
+<nav class="navbar navbar-expand-lg navbar-light navbar-custom mb-5 fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand ms-2" [routerLink]="['/']">
+      <img [src]="logo" title="Thesa" style="height: 30px" />
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavX"
+      aria-controls="navbarNavX"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavX">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/thopen']">Tesauros Abertos</a>
+        </li>
+        <li class="nav-item" *ngIf="user">
+          <a class="nav-link" [routerLink]="['/thmy']">Meus Tesauros</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['documentation']">DOcumentação</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+      <ul class="ms-auto navbar-nav">
+        <app-user-menu [user]="user"></app-user-menu>
+      </ul>
+    </div>
   </div>
 </nav>
+<div class="mt-5 pt-5">
+</div>

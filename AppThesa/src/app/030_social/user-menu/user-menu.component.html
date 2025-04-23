@@ -1,7 +1,7 @@
-<a routerLink="/social/login" class="nav-link" *ngIf="!isLoggedIn">
+<a routerLink="/social/login" class="nav-link" *ngIf="!user">
   <img [src]="iconeLogin" style="height: 25px;">
 </a>
 
-<a routerLink="/social/perfil" class="nav-link" *ngIf="isLoggedIn">
+<a routerLink="/social/perfil" class="nav-link" *ngIf="user">
   {{ user.name }}
 </a>
