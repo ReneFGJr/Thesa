@@ -338,6 +338,7 @@ class Api extends BaseController
             $Concept = new \App\Models\Thesa\Concepts\Index();
             $Broader = new \App\Models\Thesa\Relations\Broader();
             $Relations = new \App\Models\Thesa\Relations\Relations();
+            $Linkeddata = new \App\Models\Linkeddata\Index();
 
             $Notes = new \App\Models\Property\Notes();
             $RSP = $Concept->le($id);
@@ -354,6 +355,8 @@ class Api extends BaseController
             $RSP['relations'] = $Relations->le_relations($id);
 
             $RSP['notes'] = $Notes->le($id);
+
+            $RSP['linkeddata'] = $Linkeddata->le($id);
 
             return $RSP;
         }

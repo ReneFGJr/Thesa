@@ -1,12 +1,29 @@
-<h5 *ngIf="editMode == true || terms?.length > 0">
-  {{ termLabel }}
+<h5 *ngIf="editMode == true || terms?.length > 0">{{ termLabel }}
   <i
-    *ngIf="label != 'narrow' && editMode==true"
+    *ngIf="(label != 'narrow' && editMode==true && editPlus == true)"
     class="bi bi-plus-circle link"
     (click)="togglePanel(label)"
   ></i>
 </h5>
-<ul>
+
+<!--- LinkedData-->
+<ul *ngIf="label == 'linkedData'">
+  <li
+    *ngFor="let term of terms"
+    [class]="term.Propriety"
+    class="option_select"
+    style="list-style-type: none; padding: 0; margin: 0"
+  >
+    <a href="{{ term.Url }}" target="_blank" class="link" title="{{term.Url}}">
+      <img [src]="term.Icone" alt="Linked Data" style="height: 22px" />
+      {{ term.Term }}
+    </a>
+
+  </li>
+</ul>
+
+<!--- Terms-->
+<ul *ngIf="label != 'linkedData'">
   <li
     *ngFor="let term of terms"
     [class]="term.Propriety"
@@ -16,9 +33,11 @@
     <span *ngIf="!term.id"
       >{{ term.Term }}</span
     >
+    <!-- Target -->
     <a *ngIf="term.id" [routerLink]="['/c', term.id]" class="link">
       <i class="bi bi-tag-fill"></i> {{ term.Term }}
     </a>
+
     <!-- Lixeirra -->
     <i *ngIf="editMode == true && ((label != 'prefLabel') || (label == 'prefLabel' && terms.length > 1))"
             class="bi bi-trash ms-2 link"

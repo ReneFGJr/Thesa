@@ -31,7 +31,7 @@ data: any;
             this.editMode = true;
           }
           else {
-            this.data = false;
+            this.editMode = false;
           }
         },
         (error) => error

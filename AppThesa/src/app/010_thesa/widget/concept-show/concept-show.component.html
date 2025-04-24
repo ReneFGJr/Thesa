@@ -1,17 +1,20 @@
-<div class="alert alert-danger" *ngIf="thesaID === 0">
+<div class="alert alert-success" *ngIf="thesaID === 0">
   Loading ... {{ thesaID }}
 </div>
 
 <div *ngIf="data" class="container">
   <div class="row">
-    <div class="col-10 col-lg-11 col-md-11 col-sm-10">
+    <div class="col-10 col-lg-10 col-md-8 col-sm-8">
       <h2>
         <i class="bi bi-tag-fill"></i>
         {{ data.label }} <sup>({{ data.lg_code }})</sup>
       </h2>
     </div>
-    <div class="col-12 col-lg-1 col-md-1 col-sm-2">
-      <i class="bi bi-arrow-clockwise float-start p-1 link" (click)="ngOnChanges()"></i>
+    <div class="col-12 col-lg-2 col-md-4 col-sm-4 text-end">
+      <i
+        class="bi bi-arrow-clockwise float-start p-1 link"
+        (click)="ngOnChanges()"
+      ></i>
       <app-concept-link [conceptLink]="conceptID"></app-concept-link>
     </div>
 
@@ -52,37 +55,53 @@
         >
           <!---------------------------------------- Information -->
           <ng-container *ngIf="tab.content == 'information'">
-            <!-- Terminology -->
-            <app-concept-show-terms
-              (actionAC)="action($event)"
-              [data]="data"
-              [editMode]="editMode"
-            ></app-concept-show-terms>
-            <!-- Concepts Relations -->
-            <app-concept-show-concepts
-              (actionAC)="action($event)"
-              [data]="data"
-              [editMode]="editMode"
-            ></app-concept-show-concepts>
-            <!-- Notes -->
-            <app-notes-show
-              (actionNotes)="actionUpdate($event)"
-              [editMode]="editMode"
-              [notes]="data.notes"
-              [thesaID]="thesaID"
-              [conceptID]="conceptID"
-            ></app-notes-show>
+            <div class="container">
+              <div class="row">
+                <div class="col-12 col-lg-7 col-md-8 col-sm-8">
+                  <!-- Terminology -->
+                  <app-concept-show-terms
+                    (actionAC)="action($event)"
+                    [data]="data"
+                    [editMode]="editMode"
+                  ></app-concept-show-terms>
+
+                  <!-- Concepts Relations -->
+                  <app-concept-show-concepts
+                    (actionAC)="action($event)"
+                    [data]="data"
+                    [editMode]="editMode"
+                  ></app-concept-show-concepts>
+
+                  <!-- Notes -->
+                  <app-notes-show
+                    (actionNotes)="actionUpdate($event)"
+                    [editMode]="editMode"
+                    [notes]="data.notes"
+                    [thesaID]="thesaID"
+                    [conceptID]="conceptID"
+                  ></app-notes-show>
+                  <!-- Linked Data -->
+                  <app-linkedata
+                    (actionLD)="action($event)"
+                    [editMode]="editMode"
+                    [data]="data.linkeddata"
+                    [thesaID]="thesaID"
+                    [conceptID]="conceptID"
+                  ></app-linkedata>
+                </div>
+                <div class="col-12 col-lg-5 col-md-4 col-sm-4">
+                  <app-video-play-show
+                    [medias]="data?.medias"
+                  ></app-video-play-show>
+                </div>
+              </div>
+            </div>
           </ng-container>
-          <app-linkedata
-              [editMode]="editMode"
-              [notes]="data.notes"
-              [thesaID]="thesaID"
-              [conceptID]="conceptID"
-          ></app-linkedata>
+
           <!---------------------------------------- Notas -->
           <ng-container *ngIf="tab.content == 'notas'">
             <!-- Notes -->
-          <app-notes-show
+            <app-notes-show
               (actionNotes)="actionUpdate($event)"
               [editMode]="editMode"
               [notes]="data.notes"
@@ -160,6 +179,14 @@
         (actionAC)="action($event)"
       >
       </app-concept-relation>
+    </ng-container>
+    <!------------------------------------------- Exact Match ------------>
+    <ng-container *ngIf="actionAC === 'exactmatch'">
+    HELLO - exactmatch
+    </ng-container>
+    <!------------------------------------------- Linked Data------------->
+    <ng-container *ngIf="actionAC === 'linkeddata'">
+    HELLO - linkeddata
     </ng-container>
   </div>
 </div>

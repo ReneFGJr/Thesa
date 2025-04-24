@@ -18,6 +18,7 @@ import { EditModePageComponent } from './010_thesa/page/edit-mode-page/edit-mode
 
 const routes: Routes = [
   { path: '', component: HomepageComponent },
+  { path: 'home', component: HomepageComponent },
   { path: 'documentation', component: ApiDocComponent },
   { path: 'thopen', component: ThOpenComponent },
   { path: 'thmy', component: ThesaMyComponent },

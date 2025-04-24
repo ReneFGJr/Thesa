@@ -1,7 +1,13 @@
 <div class="container">
   <div class="row">
-    <div class="col-12 col-lg-12 col-md-12 col-sm-12">
-      <h5>Linked Data</h5>
+    <div class="mt-2">
+      <app-term-label
+        (action)="newLinkedData($event)"
+        [termID]="data?.lds_icone"
+        [terms]="data"
+        [label]="'linkedData'"
+        [editMode]="editMode"
+      ></app-term-label>
     </div>
   </div>
 </div>

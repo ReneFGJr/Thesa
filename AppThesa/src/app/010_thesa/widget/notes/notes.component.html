@@ -1,92 +1,112 @@
-<div *ngIf="notasProp?.length > 0 || editMode" class="mt-2">
-  <h6 *ngIf="editMode">
-    Notas
-    <i class="bi bi-plus-circle link" (click)="newNotes()"></i>
-  </h6>
+<div class="container">
+  <div class="row">
+    <div *ngIf="notasProp?.length > 0 || editMode" class="mt-2">
+      <h5 *ngIf="editMode">
+        Notas
+        <i class="bi bi-plus-circle link" (click)="newNotes()"></i>
+      </h5>
 
-  <div *ngFor="let note of notes">
-    <h5>Nota de {{ note.p_name }}
-        <i class="bi bi-pencil-square link" (click)="editNote(note.id_nt)"></i>
-        <i class="bi bi-trash ms-2 link" style="color: #fbb;" (click)="deleteNote(note.id_nt)"></i>
-    </h5>
-    <p class="small">{{ note.nt_content }} <sup>{{note.lg_code}}</sup></p>
-  </div>
-</div>
-
-<!-- Offcanvas para nova nota -->
-<div
-  #offcanvasNovo
-  class="offcanvas offcanvas-end"
-  tabindex="-1"
-  aria-labelledby="offcanvasNovoLabel"
->
-  <div class="offcanvas-header">
-    <h5 id="offcanvasNovoLabel">Nova Nota</h5>
-    <button
-      type="button"
-      class="btn-close text-reset"
-      aria-label="Close"
-      (click)="offcanvasInstance.hide()"
-    ></button>
-  </div>
-  <div class="offcanvas-body">
-    <form [formGroup]="formAction" (ngSubmit)="saveNote()">
-      <!-- Tipo de nota -->
-      <div class="mb-3">
-        <label for="noteType" class="form-label bold">Tipo das notas</label>
-        <select
-          id="noteType"
-          class="form-select border border-secondary"
-          formControlName="noteType"
-          size="6"
-        >
-
-          <option *ngFor="let prop of notasProp" [value]="prop.id" [selected]="prop.id == formAction.value.noteType">
-            {{ prop.label }}
-          </option>
-        </select>
+      <div *ngFor="let note of notes">
+        <h5>
+          Nota de {{ note.p_name }}
+          <i
+            class="bi bi-pencil-square link"
+            (click)="editNote(note.id_nt)"
+          ></i>
+          <i
+            class="bi bi-trash ms-2 link"
+            style="color: #fbb"
+            (click)="deleteNote(note.id_nt)"
+          ></i>
+        </h5>
+        <p class="small">
+          {{ note.nt_content }} <sup>{{ note.lg_code }}</sup>
+        </p>
       </div>
+    </div>
 
-      <!-- Conteúdo da nota -->
-      <div class="mb-3">
-        <label for="noteContent" class="form-label bold mt-3"
-          >Conteúdo da nota</label
-        >
-        <textarea
-          id="noteContent"
-          class="form-control border border-secondary"
-          rows="4"
-          formControlName="note"
-        ></textarea>
+    <!-- Offcanvas para nova nota -->
+    <div
+      #offcanvasNovo
+      class="offcanvas offcanvas-end"
+      tabindex="-1"
+      aria-labelledby="offcanvasNovoLabel"
+    >
+      <div class="offcanvas-header">
+        <h5 id="offcanvasNovoLabel">Nova Nota</h5>
+        <button
+          type="button"
+          class="btn-close text-reset"
+          aria-label="Close"
+          (click)="offcanvasInstance.hide()"
+        ></button>
       </div>
+      <div class="offcanvas-body">
+        <form [formGroup]="formAction" (ngSubmit)="saveNote()">
+          <!-- Tipo de nota -->
+          <div class="mb-3">
+            <label for="noteType" class="form-label bold">Tipo das notas</label>
+            <select
+              id="noteType"
+              class="form-select border border-secondary"
+              formControlName="noteType"
+              size="6"
+            >
+              <option
+                *ngFor="let prop of notasProp"
+                [value]="prop.id"
+                [selected]="prop.id == formAction.value.noteType"
+              >
+                {{ prop.label }}
+              </option>
+            </select>
+          </div>
 
-      <div class="mb-3">
-        <label for="noteType" class="form-label bold">Idioma do texto</label>
-        <div *ngFor="let lang of languages?.languages" class="form-check">
-          <input
-            type="radio"
-            class="form-check-input border border-secondary"
-            [value]="lang.code"
-            formControlName="language"
-            [checked]="lang.id_lg == formAction.value.language"
-          />
-          <label class="form-check-label" for="lang.id">
-            {{ lang.label }}
-          </label>
-        </div>
+          <!-- Conteúdo da nota -->
+          <div class="mb-3">
+            <label for="noteContent" class="form-label bold mt-3"
+              >Conteúdo da nota</label
+            >
+            <textarea
+              id="noteContent"
+              class="form-control border border-secondary"
+              rows="4"
+              formControlName="note"
+            ></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="noteType" class="form-label bold"
+              >Idioma do texto</label
+            >
+            <div *ngFor="let lang of languages?.languages" class="form-check">
+              <input
+                type="radio"
+                class="form-check-input border border-secondary"
+                [value]="lang.code"
+                formControlName="language"
+                [checked]="lang.id_lg == formAction.value.language"
+              />
+              <label class="form-check-label" for="lang.id">
+                {{ lang.label }}
+              </label>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-primary full"
+            [disabled]="formAction.invalid"
+          >
+            Salvar Nota
+          </button>
+
+          <!-- Botão de fechar -->
+          <span class="btn btn-warning mt-3 full" (click)="cancelButton()"
+            >Fechar</span
+          >
+        </form>
       </div>
-
-      <button
-        type="submit"
-        class="btn btn-primary full"
-        [disabled]="formAction.invalid"
-      >
-        Salvar Nota
-      </button>
-
-      <!-- Botão de fechar -->
-      <span class="btn btn-warning mt-3 full" (click)="cancelButton()">Fechar</span>
-
-    </form>
+    </div>
   </div>
 </div>

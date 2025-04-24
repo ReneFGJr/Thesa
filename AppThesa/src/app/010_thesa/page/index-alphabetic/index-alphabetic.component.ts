@@ -31,7 +31,7 @@ export class IndexAlphabeticComponent {
           if (this.data.editMode == 'allow') {
             this.editMode = true;
           } else {
-            this.data = false;
+            this.editMode = false;
           }
         },
         (error) => error

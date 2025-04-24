@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ServiceThesaService } from '../../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../../000_core/service/service-storage.service';
 
-
 @Component({
   selector: 'app-term-label',
   templateUrl: './term-label.component.html',
@@ -15,6 +14,7 @@ export class TermLabelComponent {
   @Input() thesaID: string = '';
   @Output() action = new EventEmitter<any>();
   public termLabel = '';
+  editPlus: boolean = true;
 
   constructor(
     private serviceThesa: ServiceThesaService,
@@ -22,7 +22,9 @@ export class TermLabelComponent {
   ) {}
 
   deleteItem(id: string = '', label: string) {
-    const confirmacao = confirm('Tem certeza que deseja excluir este conceito?');
+    const confirmacao = confirm(
+      'Tem certeza que deseja excluir este conceito?'
+    );
     if (confirmacao) {
       // Executa a exclusão
       console.log('Item excluído');
@@ -61,6 +63,10 @@ export class TermLabelComponent {
   }
 
   ngOnInit() {
+    this.ngOnChanges();
+  }
+
+  ngOnChanges() {
     if (this.label === 'prefLabel') {
       this.termLabel = 'Termo Preferencial';
     } else if (this.label === 'altLabel') {
@@ -69,10 +75,18 @@ export class TermLabelComponent {
       this.termLabel = 'Termo Oculto';
     } else if (this.label === 'broader') {
       this.termLabel = 'Conceito Geral (TG)';
+      console.log('====>', this.terms.length);
+      if (this.terms.length > 0) {
+        this.editPlus = false;
+      } else {
+        this.editPlus = true;
+      }
     } else if (this.label === 'narrow') {
       this.termLabel = 'Conceito Específico (TE)';
     } else if (this.label === 'related') {
       this.termLabel = 'Conceito Relacionado (TR)';
+    } else if (this.label === 'linkedData') {
+      this.termLabel = 'Linked Data (LD)';
     } else {
       this.termLabel = 'Termo ->' + this.label;
     }

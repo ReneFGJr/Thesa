@@ -1,26 +1,30 @@
-<app-term-label
-  (action)="action($event)"
-  [thesaID]="data.c_th"
-  [termID]="data?.c_concept"
-  [terms]="data?.broader"
-  [label]="'broader'"
-  [editMode]="editMode"
-></app-term-label>
+<div class="container">
+  <div class="row">
+    <app-term-label
+      (action)="action($event)"
+      [thesaID]="data.c_th"
+      [termID]="data?.c_concept"
+      [terms]="data?.broader"
+      [label]="'broader'"
+      [editMode]="editMode"
+    ></app-term-label>
 
-<app-term-label
-  (action)="action($event)"
-  [thesaID]="data.c_th"
-  [termID]="data?.c_concept"
-  [terms]="data?.narrow"
-  [label]="'narrow'"
-  [editMode]="editMode"
-></app-term-label>
+    <app-term-label
+      (action)="action($event)"
+      [thesaID]="data.c_th"
+      [termID]="data?.c_concept"
+      [terms]="data?.narrow"
+      [label]="'narrow'"
+      [editMode]="editMode"
+    ></app-term-label>
 
-<app-term-label
-  (action)="action($event)"
-  [thesaID]="data.c_th"
-  [termID]="data?.c_concept"
-  [terms]="data?.relations"
-  [label]="'related'"
-  [editMode]="editMode"
-></app-term-label>
+    <app-term-label
+      (action)="action($event)"
+      [thesaID]="data.c_th"
+      [termID]="data?.c_concept"
+      [terms]="data?.relations"
+      [label]="'related'"
+      [editMode]="editMode"
+    ></app-term-label>
+  </div>
+</div>

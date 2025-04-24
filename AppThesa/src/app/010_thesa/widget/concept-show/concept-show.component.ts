@@ -79,6 +79,12 @@ export class ConceptShowComponent {
         },
         (error) => error
       );
+    } else if (this.actionAC === 'linkeddata') {
+      let url = 'linkeddata/' + this.thesaID + '/' + this.conceptID;
+      console.log('linkeddata', url);
+    } else if (this.actionAC === 'exactmatch') {
+      let url = 'exactmatch/' + this.thesaID + '/' + this.conceptID;
+      console.log('linkeddata', url);
     } else {
       console.log('Ação não definida: ' + this.actionAC);
     }
