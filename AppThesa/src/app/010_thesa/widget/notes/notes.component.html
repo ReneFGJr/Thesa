@@ -10,10 +10,12 @@
         <h5>
           Nota de {{ note.p_name }}
           <i
+            *ngIf="editMode == true"
             class="bi bi-pencil-square link"
             (click)="editNote(note.id_nt)"
           ></i>
           <i
+            *ngIf="editMode == true"
             class="bi bi-trash ms-2 link"
             style="color: #fbb"
             (click)="deleteNote(note.id_nt)"
