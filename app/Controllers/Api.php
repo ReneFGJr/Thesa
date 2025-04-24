@@ -54,6 +54,11 @@ class Api extends BaseController
 
         switch($arg1)
             {
+                case 'email_test':
+                    $Email = new \App\Models\Email\Index();
+                    $RSP['response'] = $Email->email_test(get('email'));
+                    $RSP['status'] = '200';
+                    break;
                 case 'index_alphabetic':
                     $Concepts = new \App\Models\Thesa\Concepts\Index();
                     $RSP = $Concepts->index_alphabetic($arg2);

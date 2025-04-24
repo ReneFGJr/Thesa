@@ -11,6 +11,7 @@ import { ServiceThesaService } from '../../000_core/service/service-thesa.servic
 export class ForgetPasswordComponent {
   form: FormGroup;
   data: any; // ou algo como: data: { success: boolean; message: string; };
+  loading: boolean = false; // <— Adicionei esta propriedade para controle de loading
 
   constructor(
     private fb: FormBuilder,
@@ -19,7 +20,7 @@ export class ForgetPasswordComponent {
   ) {
     this.form = this.fb.group({
       email: [
-        'renefgj@gmail.com',
+        '',
         [Validators.required], // <— Validators em array
       ],
     });
@@ -31,14 +32,18 @@ export class ForgetPasswordComponent {
       return;
     }
 
+    this.loading = true; // <— Inicia o loading
+
     const { email } = this.form.value;
     this.serviceThesa.api_post('social/forget', { email }).subscribe(
       (res) => {
         console.log('res:', res);
         this.data = res;
+        this.loading = false; // <— Inicia o loading
       },
       (err) => {
         console.error('erro:', err);
+        this.loading = false; // <— Inicia o loading
         // aqui você pode setar um objeto de erro em `this.data`
       }
     );

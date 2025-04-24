@@ -259,10 +259,23 @@ class Socials extends Model
 			return $RSP;
 		} else {
 			$link = $this->create_temp_access($dt['id_us']);
+			$RSP['status'] = '200';
 			$RSP['message'] = msg('social_forget_password');
-			$RSP['link'] = base_url('social/recover_password/' . $link);
+			//$RSP['link'] = base_url('social/recover_password/' . $link);
 		}
-		$RSP['data'] = $dt;
+		$message = "Olá, {$dt['us_nome']}!<br>";
+		$message .= "Você solicitou a recuperação de senha.<br>";
+		$message .= "Clique no link abaixo para redefinir sua senha:<br>";
+		$message .= "<a href='" . getenv("app.Url") . '/'.'social/recover_password/' . $link . "'>Redefinir Senha</a><br>";
+		$message .= "Se você não solicitou essa alteração, ignore este e-mail.<br>";
+		$message .= "Atenciosamente,<br>";
+		$message .= "Equipe do Sistema<br>";
+		$message .= "<br><br>";
+		$message .= "<small>Este é um e-mail automático. Não responda.</small>";
+		$message .= "<br><small>Link: " . getenv("app.Url").'/'.('social/recover_password/' . $link) . "</small>";
+
+		$Email = new \App\Models\Email\Index();
+		$Email->sendEmail($dt['us_email'], 'Recuperação de Senha', $message);
 
 		return $RSP;
 	}
@@ -290,6 +303,58 @@ class Socials extends Model
 		$password = md5('thesa' . $password);
 		return $password;
 	}
+
+	function signup()
+		{
+			$email = get('email');
+			$instituicao = get('institution');
+			$nome = get('fullname');
+			$RSP = [];
+			if (($email == '') or ($instituicao == '') or ($nome == '')) {
+				$RSP['status'] = '404';
+				$RSP['message'] = 'Data not informed';
+				return $RSP;
+			}
+
+			/********************************************************/
+			$dt = $this->where('us_email', $email)->first();
+			if ($dt != []) {
+				$RSP['status'] = '404';
+				$RSP['message'] = 'User already exists';
+				return $RSP;
+			}
+			$RSP['status'] = '200';
+			$RSP['message'] = 'Usuário criado com sucesso! Acesse seu e-mail para ativar sua conta!';
+			$dt = [];
+			$dt['us_email'] = $email;
+			$dt['us_nome'] = $nome;
+			$dt['us_affiliation'] = $instituicao;
+			$dt['us_password'] = $this->codifyPassword(get('password'));
+			$dt['us_password_method'] = 'MD5';
+			$dt['us_apikey'] = '';
+			$dt['us_apikey_active'] = 0;
+			$dt['us_apikey_date'] = date("Y-m-d H:i:s");
+			$dt['us_recover'] = 0;
+			$dt['us_recoverkey'] = '';
+			$dt['us_lastaccess'] = date("Y-m-d H:i:s");
+			$dt['us_image'] = 'https://brapci.inf.br/img/user.png';
+			$dt['us_genero'] = 'N';
+
+			$link = $this->create_temp_access($dt['us_email']);
+
+			//$this->set($dt)->insert();
+
+			$Email = new \App\Models\Email\Index();
+			$Subject = 'Cadastro no Sistema - Thesa';
+			$txt = 'Olá, ' . $nome . '!<br>Seu cadastro foi realizado com sucesso!<br>Obrigado por se cadastrar em nosso sistema!';
+			$txt .= '<br><br>Para ativar sua conta, clique no link abaixo:<br>';
+			$txt .= '<a href="' . getenv("app.Url") . '/' . 'social/recover_password/' . $link . '" style="border: 1px solid #000; border-radius: 10px; padding: 5px 10px;">Definir sua senha</a><br>';
+			$txt .= '<br>';
+			$txt .= '<br><br><small>Este é um e-mail automático. Não responda.</small>';
+			//$Email->sendEmail($email, $Subject, $txt);
+
+			return $RSP;
+		}
 
 	function signin()
 	{

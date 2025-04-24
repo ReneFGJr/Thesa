@@ -1,5 +1,25 @@
 <div class="container d-flex justify-content-center">
-  <div class="card shadow p-4" style="width: 100%; max-width: 500px;">
+  <app-processing
+    *ngIf="loading"
+    message="Consultando dados da API..."
+  ></app-processing>
+  <!-- Cadastro OK -->
+  <div *ngIf="signuped && data?.status == '200'" class="alert alert-success full" role="alert">
+    <h4 class="alert-heading">Cadastro realizado com sucesso!</h4>
+    <p class="mb-0">{{ data.message }}</p>
+  </div>
+  <!-- Erro de cadastro-->
+  <div *ngIf="signuped && data?.status == '404'" class="alert alert-danger full" role="alert">
+    <h4 class="alert-heading">Erro ao cadastrar!</h4>
+    <p class="mb-0">{{ data.message }}</p>
+    <br/>
+    <button class="btn btn-outline-danger" (click)="signuped = false">Voltar</button>
+  </div>
+  <div
+    class="card shadow p-4"
+    style="width: 100%; max-width: 500px"
+    *ngIf="!signuped"
+  >
     <h2 class="text-center mb-4">Cadastrar-se</h2>
 
     <form [formGroup]="form" (ngSubmit)="submit()">
@@ -9,7 +29,7 @@
           type="text"
           id="fullname"
           formControlName="fullname"
-          class="form-control"
+          class="form-control border border-secondary"
           placeholder="Seu nome completo"
         />
       </div>
@@ -20,7 +40,7 @@
           type="email"
           id="email"
           formControlName="email"
-          class="form-control"
+          class="form-control border border-secondary"
           placeholder="seu@email.com"
         />
       </div>
@@ -31,26 +51,25 @@
           type="text"
           id="institution"
           formControlName="institution"
-          class="form-control"
+          class="form-control border border-secondary"
           placeholder="Instituição de vínculo"
         />
       </div>
 
-      <div class="mb-3">
-        <label for="password" class="form-label">Senha</label>
-        <input
-          type="password"
-          id="password"
-          formControlName="password"
-          class="form-control"
-          placeholder="Crie uma senha"
-        />
-      </div>
-
-      <button type="submit" class="btn btn-success w-100">Cadastrar</button>
+      <button
+        type="submit"
+        class="btn btn-success w-100"
+        [disabled]="form.invalid"
+      >
+        Cadastrar
+      </button>
 
       <div class="text-center mt-3">
-        <a routerLink="/social/login" class="link-secondary text-decoration-none">Já tem conta? Fazer login</a>
+        <a
+          routerLink="/social/login"
+          class="link-secondary text-decoration-none"
+          >Já tem conta? Fazer login</a
+        >
       </div>
     </form>
   </div>

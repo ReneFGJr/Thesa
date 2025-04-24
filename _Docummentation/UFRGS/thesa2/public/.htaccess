@@ -1,0 +1,11 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /thesa/web/
+
+  # Se não for um arquivo ou diretório físico...
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+
+  # ...entrega sempre o index.html do Angular
+  RewriteRule ^ index.html [L]
+</IfModule>

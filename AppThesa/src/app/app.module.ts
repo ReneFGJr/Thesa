@@ -62,6 +62,7 @@ import { ImagePlayComponent } from './010_thesa/widget/play-media-show/image-pla
 import { EditModePageComponent } from './010_thesa/page/edit-mode-page/edit-mode-page.component';
 import { LogoutComponent } from './030_social/logout/logout.component';
 import { LinkedataComponent } from './010_thesa/widget/linkedata/linkedata.component';
+import { ProcessingComponent } from './000_core/widget/processing/processing.component';
 
 @NgModule({
   declarations: [
@@ -122,6 +123,7 @@ import { LinkedataComponent } from './010_thesa/widget/linkedata/linkedata.compo
     EditModePageComponent,
     LogoutComponent,
     LinkedataComponent,
+    ProcessingComponent,
   ],
   imports: [
     BrowserModule,
