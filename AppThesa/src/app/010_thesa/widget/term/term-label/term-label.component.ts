@@ -35,6 +35,13 @@ export class TermLabelComponent {
       console.log('Exclusão cancelada');
     }
   }
+  editLinkedData(id: string = '') {
+    console.log('editLinkedData');
+  }
+
+  deleteLinkedData(id: string = '') {
+    console.log('deleteLinkedData');
+  }
 
   removeLabel(id: string = '', label: string) {
     let url = 'removeRelation';

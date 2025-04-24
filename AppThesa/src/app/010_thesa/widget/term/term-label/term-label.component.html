@@ -18,6 +18,18 @@
       <img [src]="term.Icone" alt="Linked Data" style="height: 22px" />
       {{ term.Term }}
     </a>
+{{term | json}}
+          <i
+            *ngIf="editMode == true"
+            class="bi bi-pencil-square link"
+            (click)="editLinkedData(term.idReg)"
+          ></i>
+          <i
+            *ngIf="editMode == true"
+            class="bi bi-trash ms-2 link"
+            style="color: #fbb"
+            (click)="deleteLinkedData(term.idReg)"
+          ></i>
 
   </li>
 </ul>
