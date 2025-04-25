@@ -5,9 +5,10 @@ import { AuthService } from '../../000_core/service/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signup.component.html',
-  styleUrl: './signup.component.scss',
+    selector: 'app-signup',
+    templateUrl: './signup.component.html',
+    styleUrl: './signup.component.scss',
+    standalone: false
 })
 export class SignupComponent {
   form: FormGroup;

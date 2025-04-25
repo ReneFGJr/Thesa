@@ -5,9 +5,10 @@ import { ServiceStorageService } from '../../../../000_core/service/service-stor
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-config-language',
-  templateUrl: './config-language.component.html',
-  styleUrl: './config-language.component.scss',
+    selector: 'app-config-language',
+    templateUrl: './config-language.component.html',
+    styleUrl: './config-language.component.scss',
+    standalone: false
 })
 export class ConfigLanguageComponent {
   @Input() thesaID: number = 0;

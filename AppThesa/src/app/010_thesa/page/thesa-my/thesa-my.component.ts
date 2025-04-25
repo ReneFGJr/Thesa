@@ -4,8 +4,9 @@ import { ServiceStorageService } from '../../../000_core/service/service-storage
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-thesa-my',
-  templateUrl: '../../widget/th-open/th-open.component.html',
+    selector: 'app-thesa-my',
+    templateUrl: '../../widget/th-open/th-open.component.html',
+    standalone: false
 })
 export class ThesaMyComponent {
   data: Array<any> | any;

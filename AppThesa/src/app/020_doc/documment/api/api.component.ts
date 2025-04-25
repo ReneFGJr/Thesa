@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-doc-api',
-  templateUrl: './api.component.html',
-  styleUrl: './api.component.scss',
+    selector: 'app-doc-api',
+    templateUrl: './api.component.html',
+    styleUrl: './api.component.scss',
+    standalone: false
 })
 export class ApiDocComponent {
   url = 'https://www.ufrgs.br/thesa/v2/index.php/api'

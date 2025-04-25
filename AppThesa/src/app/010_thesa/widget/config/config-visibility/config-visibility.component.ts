@@ -4,9 +4,10 @@ import { ServiceThesaService } from '../../../../000_core/service/service-thesa.
 import { ServiceStorageService } from '../../../../000_core/service/service-storage.service';
 
 @Component({
-  selector: 'app-config-visibility',
-  templateUrl: './config-visibility.component.html',
-  styleUrl: './config-visibility.component.scss',
+    selector: 'app-config-visibility',
+    templateUrl: './config-visibility.component.html',
+    styleUrl: './config-visibility.component.scss',
+    standalone: false
 })
 export class ConfigVisibilityComponent {
   @Input() thesaID: number = 0;

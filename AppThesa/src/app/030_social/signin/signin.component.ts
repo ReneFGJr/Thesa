@@ -6,9 +6,10 @@ import { ServiceThesaService } from '../../000_core/service/service-thesa.servic
 import { environment } from '../../../environments/environment';
 
 @Component({
-  selector: 'app-social-signin',
-  templateUrl: './signin.component.html',
-  styleUrl: './signin.component.scss',
+    selector: 'app-social-signin',
+    templateUrl: './signin.component.html',
+    styleUrl: './signin.component.scss',
+    standalone: false
 })
 export class SigninComponent {
   form: FormGroup;

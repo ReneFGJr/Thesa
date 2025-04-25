@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-linkedata',
-  templateUrl: './linkedata.component.html',
-  styleUrl: './linkedata.component.scss',
+    selector: 'app-linkedata',
+    templateUrl: './linkedata.component.html',
+    styleUrl: './linkedata.component.scss',
+    standalone: false
 })
 export class LinkedataComponent {
   @Input() data: Array<any> | any;

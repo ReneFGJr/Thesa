@@ -5,9 +5,10 @@ import { ServiceStorageService } from '../../../000_core/service/service-storage
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-configuration',
-  templateUrl: './configuration.component.html',
-  styleUrl: './configuration.component.scss',
+    selector: 'app-configuration',
+    templateUrl: './configuration.component.html',
+    styleUrl: './configuration.component.scss',
+    standalone: false
 })
 export class ConfigurationComponent {
   data: any;

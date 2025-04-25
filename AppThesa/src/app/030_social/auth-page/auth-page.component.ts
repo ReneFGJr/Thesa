@@ -4,9 +4,10 @@ import { ServiceStorageService } from '../../000_core/service/service-storage.se
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-auth-page',
-  templateUrl: './auth-page.component.html',
-  styleUrl: './auth-page.component.scss',
+    selector: 'app-auth-page',
+    templateUrl: './auth-page.component.html',
+    styleUrl: './auth-page.component.scss',
+    standalone: false
 })
 export class AuthPageComponent {
   data: Array<any> | any;

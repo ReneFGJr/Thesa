@@ -4,9 +4,10 @@ import { ServiceStorageService } from '../../../000_core/service/service-storage
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-about-th',
-  templateUrl: './about-th.component.html',
-  styleUrl: './about-th.component.scss'
+    selector: 'app-about-th',
+    templateUrl: './about-th.component.html',
+    styleUrl: './about-th.component.scss',
+    standalone: false
 })
 export class AboutThComponent {
   data: any;

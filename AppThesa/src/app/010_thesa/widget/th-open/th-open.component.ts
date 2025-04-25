@@ -4,8 +4,9 @@ import { ServiceStorageService } from '../../../000_core/service/service-storage
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-th-open',
-  templateUrl: './th-open.component.html',
+    selector: 'app-th-open',
+    templateUrl: './th-open.component.html',
+    standalone: false
 })
 export class ThOpenComponent implements OnInit {
   data: any;

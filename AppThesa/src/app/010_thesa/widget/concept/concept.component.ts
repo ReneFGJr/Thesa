@@ -5,8 +5,9 @@ import { ServiceStorageService } from '../../../000_core/service/service-storage
 import { PainelService } from '../../../000_core/service/painel.service';
 
 @Component({
-  selector: 'app-concept-relation',
-  templateUrl: './concept.component.html'
+    selector: 'app-concept-relation',
+    templateUrl: './concept.component.html',
+    standalone: false
 })
 export class ConceptComponent {
   @Input() terms: Array<any> | any;

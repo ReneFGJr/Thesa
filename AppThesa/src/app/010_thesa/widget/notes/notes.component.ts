@@ -13,8 +13,9 @@ import { ServiceThesaService } from '../../../000_core/service/service-thesa.ser
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-notes-show',
-  templateUrl: './notes.component.html',
+    selector: 'app-notes-show',
+    templateUrl: './notes.component.html',
+    standalone: false
 })
 export class NotesComponent implements OnInit, AfterViewInit {
   @Input() notes: any[] = [];

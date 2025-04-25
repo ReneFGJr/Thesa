@@ -4,9 +4,10 @@ import { AuthService } from '../../000_core/service/auth.service';
 import { ServiceThesaService } from '../../000_core/service/service-thesa.service';
 
 @Component({
-  selector: 'app-recover-password',
-  templateUrl: './recover-password.component.html',
-  styleUrl: './recover-password.component.scss',
+    selector: 'app-recover-password',
+    templateUrl: './recover-password.component.html',
+    styleUrl: './recover-password.component.scss',
+    standalone: false
 })
 export class RecoverPasswordComponent {
   @Input() check: string = ''; // ou @Input() check: any = '';

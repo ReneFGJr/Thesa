@@ -4,9 +4,10 @@ import { ServiceStorageService } from '../../../000_core/service/service-storage
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-thesa',
-  templateUrl: './thesa.component.html',
-  styleUrl: './thesa.component.scss',
+    selector: 'app-thesa',
+    templateUrl: './thesa.component.html',
+    styleUrl: './thesa.component.scss',
+    standalone: false
 })
 export class ThesaComponent {
   data: Array<any> | any;

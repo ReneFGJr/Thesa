@@ -4,9 +4,10 @@ import { ServiceStorageService } from '../../../000_core/service/service-storage
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-pdf-export',
-  templateUrl: './export.component.html',
-  styleUrl: './export.component.scss'
+    selector: 'app-pdf-export',
+    templateUrl: './export.component.html',
+    styleUrl: './export.component.scss',
+    standalone: false
 })
 export class ExportPDFComponent {
 data: any;

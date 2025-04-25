@@ -3,9 +3,10 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-edit-mode-page',
-  templateUrl: './edit-mode-page.component.html',
-  styleUrl: './edit-mode-page.component.scss',
+    selector: 'app-edit-mode-page',
+    templateUrl: './edit-mode-page.component.html',
+    styleUrl: './edit-mode-page.component.scss',
+    standalone: false
 })
 export class EditModePageComponent {
   data: any;

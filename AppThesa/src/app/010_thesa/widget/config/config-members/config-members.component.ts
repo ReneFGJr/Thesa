@@ -3,9 +3,10 @@ import { ServiceThesaService } from '../../../../000_core/service/service-thesa.
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-config-members',
-  templateUrl: './config-members.component.html',
-  styleUrl: './config-members.component.scss',
+    selector: 'app-config-members',
+    templateUrl: './config-members.component.html',
+    styleUrl: './config-members.component.scss',
+    standalone: false
 })
 export class ConfigMembersComponent {
   @Input() thesaID: number = 0;

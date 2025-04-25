@@ -4,9 +4,10 @@ import { ServiceStorageService } from '../../../000_core/service/service-storage
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-index-alphabetic',
-  templateUrl: './index-alphabetic.component.html',
-  styleUrl: './index-alphabetic.component.scss',
+    selector: 'app-index-alphabetic',
+    templateUrl: './index-alphabetic.component.html',
+    styleUrl: './index-alphabetic.component.scss',
+    standalone: false
 })
 export class IndexAlphabeticComponent {
   data: any;

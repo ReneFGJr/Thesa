@@ -14,8 +14,9 @@ import { language } from '../../../../language/language_pt';
 import { PainelService } from '../../../000_core/service/painel.service';
 
 @Component({
-  selector: 'app-concept-show',
-  templateUrl: './concept-show.component.html',
+    selector: 'app-concept-show',
+    templateUrl: './concept-show.component.html',
+    standalone: false
 })
 export class ConceptShowComponent {
   @ViewChild('offcanvasNovo') offcanvasNovo!: ElementRef;

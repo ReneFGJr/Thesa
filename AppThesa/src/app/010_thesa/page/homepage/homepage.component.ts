@@ -4,9 +4,10 @@ import { ServiceStorageService } from '../../../000_core/service/service-storage
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-homepage',
-  templateUrl: './homepage.component.html',
-  styleUrl: './homepage.component.scss',
+    selector: 'app-homepage',
+    templateUrl: './homepage.component.html',
+    styleUrl: './homepage.component.scss',
+    standalone: false
 })
 export class HomepageComponent {
   lang: string = 'por';

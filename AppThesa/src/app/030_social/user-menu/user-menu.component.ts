@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-user-menu',
-  templateUrl: './user-menu.component.html',
-  styleUrl: './user-menu.component.scss',
+    selector: 'app-user-menu',
+    templateUrl: './user-menu.component.html',
+    styleUrl: './user-menu.component.scss',
+    standalone: false
 })
 export class UserMenuComponent {
   @Input() user: Array<any> | any;

@@ -4,9 +4,10 @@ import { ServiceStorageService } from '../../../000_core/service/service-storage
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-index-systemic',
-  templateUrl: './index-systemic.component.html',
-  styleUrl: './index-systemic.component.scss'
+    selector: 'app-index-systemic',
+    templateUrl: './index-systemic.component.html',
+    styleUrl: './index-systemic.component.scss',
+    standalone: false
 })
 export class IndexSystemicComponent {
 data: any;

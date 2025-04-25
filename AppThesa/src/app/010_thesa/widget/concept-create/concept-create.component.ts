@@ -4,9 +4,10 @@ import { ServiceThesaService } from '../../../000_core/service/service-thesa.ser
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
 
 @Component({
-  selector: 'app-concept-create',
-  templateUrl: './concept-create.component.html',
-  styleUrl: './concept-create.component.scss',
+    selector: 'app-concept-create',
+    templateUrl: './concept-create.component.html',
+    styleUrl: './concept-create.component.scss',
+    standalone: false
 })
 export class ConceptCreateComponent {
   @Input() thesaID: number = 0;

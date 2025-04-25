@@ -5,9 +5,10 @@ import { ServiceThesaService } from '../../000_core/service/service-thesa.servic
 import { environment } from '../../../environments/environment';
 
 @Component({
-  selector: 'app-logout',
-  templateUrl: './logout.component.html',
-  styleUrl: './logout.component.scss'
+    selector: 'app-logout',
+    templateUrl: './logout.component.html',
+    styleUrl: './logout.component.scss',
+    standalone: false
 })
 export class LogoutComponent {
   data: Array<any> | any;

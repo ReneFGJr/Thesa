@@ -4,9 +4,10 @@ import { ServiceThesaService } from '../../../../000_core/service/service-thesa.
 import { ServiceStorageService } from '../../../../000_core/service/service-storage.service';
 
 @Component({
-  selector: 'app-form-textarea',
-  templateUrl: './form-textarea.component.html',
-  styleUrl: './form-textarea.component.scss',
+    selector: 'app-form-textarea',
+    templateUrl: './form-textarea.component.html',
+    styleUrl: './form-textarea.component.scss',
+    standalone: false
 })
 export class FormTextareaComponent {
   @Input() thesaID: number = 0;

@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-concept-show-concepts',
-  templateUrl: './concept-show-concepts.component.html'
+    selector: 'app-concept-show-concepts',
+    templateUrl: './concept-show-concepts.component.html',
+    standalone: false
 })
 export class ConceptShowConceptsComponent {
   @Input() data: any = [];

@@ -7,8 +7,9 @@ import { PainelService } from '../../../../000_core/service/painel.service';
 
 
 @Component({
-  selector: 'app-term-input',
-  templateUrl: './term-input.component.html'
+    selector: 'app-term-input',
+    templateUrl: './term-input.component.html',
+    standalone: false
 })
 export class TermInputComponent {
   @Input() thesaID: number = 0;

@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-narrow',
-  templateUrl: './narrow.component.html',
-  styleUrl: './narrow.component.scss',
+    selector: 'app-narrow',
+    templateUrl: './narrow.component.html',
+    styleUrl: './narrow.component.scss',
+    standalone: false
 })
 export class NarrowComponent {
   @Input() terms: Array<any> | any;

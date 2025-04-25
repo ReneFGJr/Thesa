@@ -3,8 +3,9 @@ import { ServiceThesaService } from '../../../../000_core/service/service-thesa.
 import { ServiceStorageService } from '../../../../000_core/service/service-storage.service';
 
 @Component({
-  selector: 'app-term-label',
-  templateUrl: './term-label.component.html',
+    selector: 'app-term-label',
+    templateUrl: './term-label.component.html',
+    standalone: false
 })
 export class TermLabelComponent {
   @Input() termID: Array<any> | any;

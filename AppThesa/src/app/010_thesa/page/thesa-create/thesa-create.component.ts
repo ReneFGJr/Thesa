@@ -5,9 +5,10 @@ import { ServiceStorageService } from '../../../000_core/service/service-storage
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-thesa-create',
-  templateUrl: './thesa-create.component.html',
-  styleUrl: './thesa-create.component.scss',
+    selector: 'app-thesa-create',
+    templateUrl: './thesa-create.component.html',
+    styleUrl: './thesa-create.component.scss',
+    standalone: false
 })
 export class ThesaCreateComponent {
   thesaID: number = 0;

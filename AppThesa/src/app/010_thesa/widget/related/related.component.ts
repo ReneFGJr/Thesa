@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-related',
-  templateUrl: './related.component.html',
-  styleUrl: './related.component.scss',
+    selector: 'app-related',
+    templateUrl: './related.component.html',
+    styleUrl: './related.component.scss',
+    standalone: false
 })
 export class RelatedComponent {
   @Input() terms: Array<any> | any;

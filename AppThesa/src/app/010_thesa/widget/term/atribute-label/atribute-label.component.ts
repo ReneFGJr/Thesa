@@ -11,8 +11,9 @@ import { ServiceStorageService } from '../../../../000_core/service/service-stor
 import { PainelService } from '../../../../000_core/service/painel.service';
 
 @Component({
-  selector: 'app-term-attribut-label',
-  templateUrl: './atribute-label.component.html',
+    selector: 'app-term-attribut-label',
+    templateUrl: './atribute-label.component.html',
+    standalone: false
 })
 export class AltLabelComponent {
   @Input() terms: Array<any> | any;

@@ -6,9 +6,10 @@ import { Offcanvas } from 'bootstrap';
 import { PainelService } from '../../../000_core/service/painel.service';
 
 @Component({
-  selector: 'app-terms',
-  templateUrl: './terms.component.html',
-  styleUrl: './terms.component.scss',
+    selector: 'app-terms',
+    templateUrl: './terms.component.html',
+    styleUrl: './terms.component.scss',
+    standalone: false
 })
 export class TermsComponent {
   @ViewChild('offcanvasNovo') offcanvasNovo!: ElementRef;

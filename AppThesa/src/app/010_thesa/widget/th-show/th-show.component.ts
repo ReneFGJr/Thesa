@@ -3,9 +3,10 @@ import { ServiceThesaService } from '../../../000_core/service/service-thesa.ser
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
 
 @Component({
-  selector: 'app-th-show',
-  templateUrl: './th-show.component.html',
-  styleUrl: './th-show.component.scss',
+    selector: 'app-th-show',
+    templateUrl: './th-show.component.html',
+    styleUrl: './th-show.component.scss',
+    standalone: false
 })
 export class ThShowComponent {
   @Input() thesa: any;

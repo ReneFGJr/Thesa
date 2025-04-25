@@ -4,9 +4,10 @@ import { ServiceThesaService } from '../../../../000_core/service/service-thesa.
 import { ServiceStorageService } from '../../../../000_core/service/service-storage.service';
 
 @Component({
-  selector: 'app-config-title',
-  templateUrl: './config-title.component.html',
-  styleUrl: './config-title.component.scss',
+    selector: 'app-config-title',
+    templateUrl: './config-title.component.html',
+    styleUrl: './config-title.component.scss',
+    standalone: false
 })
 export class ConfigTitleComponent {
   @Input() thesaID: number = 0;

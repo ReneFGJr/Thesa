@@ -4,9 +4,10 @@ import { ServiceStorageService } from '../../../000_core/service/service-storage
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-concept-th',
-  templateUrl: './concept-th.component.html',
-  styleUrl: './concept-th.component.scss',
+    selector: 'app-concept-th',
+    templateUrl: './concept-th.component.html',
+    styleUrl: './concept-th.component.scss',
+    standalone: false
 })
 export class ConceptTHComponent {
   data: any;

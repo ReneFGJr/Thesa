@@ -4,9 +4,10 @@ import { AuthService } from '../../000_core/service/auth.service';
 import { ServiceThesaService } from '../../000_core/service/service-thesa.service';
 
 @Component({
-  selector: 'app-forget-password',
-  templateUrl: './forget-password.component.html',
-  styleUrls: ['./forget-password.component.scss'], // <— corrigi aqui
+    selector: 'app-forget-password',
+    templateUrl: './forget-password.component.html',
+    styleUrls: ['./forget-password.component.scss'],
+    standalone: false
 })
 export class ForgetPasswordComponent {
   form: FormGroup;
