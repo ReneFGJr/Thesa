@@ -15,6 +15,7 @@ return [
     'Title' => 'Título',
     'Introduction' => 'Introdução',
     'Methodology' => 'Metodologia',
+    'ThesaType' => 'Tipo de Thesa',
     'Audience' => 'Público alvo',
     'Language' => 'Idiomas',
     'License' => 'Licença de uso',

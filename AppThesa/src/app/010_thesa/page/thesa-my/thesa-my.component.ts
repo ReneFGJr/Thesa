@@ -4,16 +4,18 @@ import { ServiceStorageService } from '../../../000_core/service/service-storage
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-thesa-my',
-    templateUrl: '../../widget/th-open/th-open.component.html',
-    standalone: false
+  selector: 'app-thesa-my',
+  templateUrl: '../../widget/th-open/th-open.component.html',
+  standalone: false,
 })
 export class ThesaMyComponent {
   data: Array<any> | any;
   thesa: Array<any> | any;
+  dataCheck: Array<any> | any;
   searchTerm: string = '';
   title: string = 'Thesa Pessoal'; // título da página
   create: boolean = false;
+  allow: boolean = false; // permite criar nova thesa
   @Input() editMode: boolean = false; // modo de edição
 
   constructor(
@@ -27,6 +29,18 @@ export class ThesaMyComponent {
       this.data = res;
       this.thesa = this.data.th;
     });
+
+    /***************************************** Permite criar nova thesa */
+    this.serviceThesa.api_post('canCreateNewThesa', []).subscribe((res) => {
+      this.dataCheck = res;
+      if (this.dataCheck.total < 1) {
+        this.allow = true; // permite criar nova thesa
+      }
+      if (this.dataCheck.multiples == 1) {
+        this.allow = true; // permite criar nova thesa
+      }
+    });
+    /*********************************************************************/
   }
 
   // retorna lista filtrada
@@ -35,7 +49,9 @@ export class ThesaMyComponent {
     if (!term) {
       return this.thesa;
     }
-    return this.thesa.filter((t:Array<any>|any) => t.th_name.toLowerCase().includes(term));
+    return this.thesa.filter((t: Array<any> | any) =>
+      t.th_name.toLowerCase().includes(term)
+    );
   }
 
   selectThesa(thesa: any) {

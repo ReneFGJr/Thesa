@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ServiceThesaService } from '../service/service-thesa.service';
 import { ServiceStorageService } from '../service/service-storage.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 
 @Component({

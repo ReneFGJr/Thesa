@@ -4,15 +4,18 @@ import { ServiceStorageService } from '../../../000_core/service/service-storage
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-th-open',
-    templateUrl: './th-open.component.html',
-    standalone: false
+  selector: 'app-th-open',
+  templateUrl: './th-open.component.html',
+  standalone: false,
 })
 export class ThOpenComponent implements OnInit {
-  data: any;
-  thesa: any[] = [];
-  searchTerm: string = ''; // termo de busca
-  title: string = 'Thesa Aberto'; // título da página
+  public data: any;
+  public dataCheck: any;
+  public thesa: any[] = [];
+  public searchTerm: string = ''; // termo de busca
+  public title: string = 'Thesa Aberto'; // título da página
+  public allow: boolean = false; // permite criar nova thesa
+
   @Input() editMode: boolean = false; // modo de edição
   @Input() canCreate: string = ''; // ID do modo de edição
 
@@ -27,6 +30,18 @@ export class ThOpenComponent implements OnInit {
       this.data = res;
       this.thesa = this.data.th;
     });
+
+    /***************************************** Permite criar nova thesa */
+    this.serviceThesa.api_post('canCreateNewThesa', []).subscribe((res) => {
+      this.dataCheck = res;
+      if (this.dataCheck.total < 1) {
+        this.allow = true; // permite criar nova thesa
+      }
+      if (this.dataCheck.multiples == 1) {
+        this.allow = true; // permite criar nova thesa
+      }
+    });
+    /*********************************************************************/
   }
 
   // retorna lista filtrada

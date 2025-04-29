@@ -67,6 +67,40 @@ class Index extends Model
             return $dt;
         }
 
+    function thesaTypes()
+    {
+        $ThesaTypes = new \App\Models\Thesa\Types();
+        $dt = $ThesaTypes->findAll();
+        $tp = [];
+        foreach ($dt as $key => $value) {
+            $dd = [];
+            $dd['id'] = $value['id_tt'];
+            $dd['name'] = $value['tt_name'];
+            $dd['description'] = $value['tt_description'];
+            array_push($tp, $dd);
+        }
+        return $tp;
+    }
+    function canCreateNewThesa()
+    {
+        $Social = new \App\Models\Socials();
+
+        $apikey = get('apikey');
+        $apikey = troca($apikey, '"', '');
+        $Thesa = new \App\Models\Thesa\Thesa();
+        $dt = $Thesa
+            ->select('count(*) as total')
+            ->join('users', 'th_own = id_us')
+            ->where('us_apikey', $apikey)
+            ->first();
+        $RSP = [];
+        $RSP['total'] = $dt['total'];
+        /************* Multiple *************/
+        $du = $Social->where('us_apikey', $apikey)->first();
+        $RSP['multiples'] = $du['us_verificado'];
+        return $RSP;
+    }
+
     function saveDescription($dt = array())
     {
         $Descriptions = new \App\Models\Thesa\Descriptions();

@@ -5,10 +5,10 @@ import { ServiceStorageService } from '../../../000_core/service/service-storage
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-    selector: 'app-configuration',
-    templateUrl: './configuration.component.html',
-    styleUrl: './configuration.component.scss',
-    standalone: false
+  selector: 'app-configuration',
+  templateUrl: './configuration.component.html',
+  styleUrl: './configuration.component.scss',
+  standalone: false,
 })
 export class ConfigurationComponent {
   data: any;
@@ -25,7 +25,8 @@ export class ConfigurationComponent {
   ) {}
 
   sections = [
-    { id: 'Title', title: 'Tesauro' },
+    { id: 'Title', title: 'Thesa' },
+    { id: 'Type', title: 'Tipo do Thesa' },
     { id: 'Descript', title: 'Descrição' },
     { id: 'Methodology', title: 'Metodologia' },
     { id: 'Audience', title: 'Público Alvo' },

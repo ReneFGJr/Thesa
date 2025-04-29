@@ -31,6 +31,13 @@
             <app-form-textarea [thesaID]="id" [field]="'Introduction'"></app-form-textarea>
             </div>
           </ng-container>
+<!----------------------------------------- Introduction-->
+          <ng-container [ngSwitch]="selectedSection">
+            <div *ngSwitchCase="'Type'" class="fade-in">
+            <h4>Tipo do Thesa</h4>
+            <app-config-type [thesaID]="id" [field]="'Type'"></app-config-type>
+            </div>
+          </ng-container>
 <!----------------------------------------- Methodology-->
           <ng-container [ngSwitch]="selectedSection">
             <div *ngSwitchCase="'Methodology'" class="fade-in">

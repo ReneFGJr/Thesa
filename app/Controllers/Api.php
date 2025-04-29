@@ -44,16 +44,26 @@ class Api extends BaseController
         $RSP = [];
 
         $user = $this->user();
+        /*
         $RSP['user'] = $user;
         $RSP['data'] = $_POST;
         $RSP['arg1'] = $arg1;
         $RSP['arg2'] = $arg2;
+        */
 
         if ($arg1 == 'conecpt') { $arg1 = 'c'; }
         if ($arg1 == 'term') { $arg1 = 't'; }
 
         switch($arg1)
             {
+                case 'thesaTypes':
+                    $Thesa = new \App\Models\Thesa\Index();
+                    $RSP['thesaTypes'] = $Thesa->thesaTypes();
+                    break;
+                case 'canCreateNewThesa':
+                    $Thesa = new \App\Models\Thesa\Index();
+                    $RSP = $Thesa->canCreateNewThesa($user);
+                    break;
                 case 'email_test':
                     $Email = new \App\Models\Email\Index();
                     $RSP['response'] = $Email->email_test(get('email'));

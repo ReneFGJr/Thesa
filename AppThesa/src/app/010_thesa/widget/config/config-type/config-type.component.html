@@ -1,1 +1,15 @@
-<p>config-type works!</p>
+<table class="table table-striped full" *ngIf="types && types.thesaTypes.length > 0">
+  <tr *ngFor="let tp of types.thesaTypes">
+    <td  valign="top">
+      <input type="radio" name="type"
+      [checked]="tp.id == type"
+      class="marked"
+      [class.selected]="tp.id === type"
+      [value]="tp.id" />
+      </td>
+    <td>
+      {{ tp.name }}
+      <p class="small">{{ tp.description }}</p>
+    </td>
+  </tr>
+</table>
