@@ -1,0 +1,34 @@
+.cancelado-alert {
+  background: linear-gradient(135deg, #ff4b2b, #ff416c);
+  color: white;
+  padding: 40px;
+  margin: 20px auto;
+  text-align: center;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 600px;
+  animation: fadeInScale 1s ease-out, pulseGlow 2s infinite alternate;
+}
+
+/* Animação de entrada */
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Animação pulsante suave */
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 20px rgba(255, 65, 108, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 40px rgba(255, 65, 108, 1);
+  }
+}

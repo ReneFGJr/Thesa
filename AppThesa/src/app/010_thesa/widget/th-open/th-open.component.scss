@@ -1,0 +1,41 @@
+.ribbon {
+  position: absolute;
+  top: 42px;
+  left: -30px;
+  transform: rotate(-45deg);
+  background-color: red;
+  color: white;
+  padding: 5px 40px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-transform: uppercase;
+}
+
+.private {
+  background: linear-gradient(135deg, #ff4b2b, #ee879f);
+  color: white;
+  padding: 0px 20px;
+}
+
+.public {
+  background: linear-gradient(135deg, #02481c, #79f78e93);
+  color: white;
+  padding: 0px 20px;
+}
+.img-cancel {
+  opacity: 0.3;
+}
+
+.taged {
+  position: absolute;
+  top: 20px;
+  right: -10px;
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+  z-index: 5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-transform: uppercase;
+}

@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-th-open',
   templateUrl: './th-open.component.html',
+  styleUrls: ['./th-open.component.scss'],
   standalone: false,
 })
 export class ThOpenComponent implements OnInit {

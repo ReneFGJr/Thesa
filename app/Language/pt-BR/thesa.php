@@ -1,7 +1,7 @@
 <?php
 return [
     'Thesaurus' => "Thesauros",
-    'new_thesa' => 'Novo tesauro',
+    'new_thesa' => 'Novo Thesa',
     'th_atual' => 'Tesauro atual',
     'ThOpen' => 'Tesauros abertos',
     'terms_selected_to_create' => 'Criar conceitos',

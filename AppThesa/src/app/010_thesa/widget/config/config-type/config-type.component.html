@@ -1,15 +1,14 @@
 <table class="table table-striped full" *ngIf="types && types.thesaTypes.length > 0">
   <tr *ngFor="let tp of types.thesaTypes">
-    <td  valign="top">
+    <td  valign="top" >
       <input type="radio" name="type"
       [checked]="tp.id == type"
-      class="marked"
-      [class.selected]="tp.id === type"
-      [value]="tp.id" />
+      [value]="tp.id"
+      (click)="selectType(tp.id)" />
       </td>
-    <td>
+    <td class="p-2" [class.marked]="tp.id === type">
       {{ tp.name }}
-      <p class="small">{{ tp.description }}</p>
+      <p class="small" [class.marked]="tp.id === type">{{ tp.description }}</p>
     </td>
   </tr>
 </table>

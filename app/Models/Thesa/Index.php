@@ -24,12 +24,13 @@ class Index extends Model
         'th_type',
         'th_icone',
         'th_icone_custom',
+        'th_licence',
         'th_visibility',
         'th_user_create',
         'th_user_update',
         'th_date_create',
-        'th_date_update'
-        ,'th_terms',
+        'th_date_update',
+        'th_terms',
 
     ];
 
@@ -57,15 +58,66 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function getDescription($d1,$d2)
-        {
-            $Descriptions = new \App\Models\Thesa\Descriptions();
-            $dt = $Descriptions
-                ->where('ds_prop', $d2)
-                ->where('ds_th', $d1)
-                ->first();
-            return $dt;
+    function getDescription($d1, $d2)
+    {
+        $Descriptions = new \App\Models\Thesa\Descriptions();
+        $dt = $Descriptions
+            ->where('ds_prop', $d2)
+            ->where('ds_th', $d1)
+            ->first();
+        return $dt;
+    }
+
+    function chageStatus($th = 0, $type = 0)
+    {
+        $dd = [];
+        $dd['th_status'] = $type;
+        if ($type != '') {
+            $this->set($dd)->where('id_th', $th)->update();
+            $RSP['status'] = '200';
+            $RSP['message'] = 'Thesa status updated';
+            $RSP['data'] = $dd;
+        } else {
+            $RSP['status'] = '500';
+            $RSP['message'] = 'Thesa status not informed';
+            $RSP['data'] = $dd;
         }
+        return $RSP;
+    }
+
+    function chageLicence($th = 0, $type = 0)
+    {
+        $dd = [];
+        $dd['th_licence'] = $type;
+        if ($type != '') {
+            $this->set($dd)->where('id_th', $th)->update();
+            $RSP['status'] = '200';
+            $RSP['message'] = 'Thesa type updated';
+            $RSP['data'] = $dd;
+        } else {
+            $RSP['status'] = '500';
+            $RSP['message'] = 'Thesa type not informed';
+            $RSP['data'] = $dd;
+        }
+        return $RSP;
+    }
+
+    function chageTypes($th = 0, $type = 0)
+    {
+        $dd = [];
+        $dd['th_type'] = $type;
+        if ($type != '') {
+            $this->set($dd)->where('id_th', $th)->update();
+            $RSP['status'] = '200';
+            $RSP['message'] = 'Thesa type updated';
+            $RSP['data'] = $dd;
+        } else {
+            $RSP['status'] = '500';
+            $RSP['message'] = 'Thesa type not informed';
+            $RSP['data'] = $dd;
+        }
+        return $RSP;
+    }
 
     function thesaTypes()
     {
@@ -81,6 +133,23 @@ class Index extends Model
         }
         return $tp;
     }
+
+    function thesaLicences()
+    {
+        $ThesaTypes = new \App\Models\Thesa\Licenses();
+        $dt = $ThesaTypes->findAll();
+        $tp = [];
+        foreach ($dt as $key => $value) {
+            $dd = [];
+            $dd['id'] = $value['id_lc'];
+            $dd['name'] = $value['lc_name'];
+            $dd['icon'] = $value['lc_icone'];
+            $dd['description'] = $value['lc_description'];
+            array_push($tp, $dd);
+        }
+        return $tp;
+    }
+
     function canCreateNewThesa()
     {
         $Social = new \App\Models\Socials();
@@ -106,8 +175,7 @@ class Index extends Model
         $Descriptions = new \App\Models\Thesa\Descriptions();
         $dt = array_merge($dt, $_GET);
 
-        if (isset($dt['title']) and (isset($dt['acronic'])) and (isset($dt['thesaurus'])))
-        {
+        if (isset($dt['title']) and (isset($dt['acronic'])) and (isset($dt['thesaurus']))) {
             $Thesa = new \App\Models\Thesa\Thesa();
             $dd = [];
             $dd['th_name'] = $dt['title'];
@@ -121,8 +189,7 @@ class Index extends Model
             return $dd;
         }
 
-        if ((!isset($dt['field'])) or (!isset($dt['thesaurus'])))
-        {
+        if ((!isset($dt['field'])) or (!isset($dt['thesaurus']))) {
             $dd = [];
             $dd['status'] = '500';
             $dd['message'] = 'Field, Thesaurus ou Description not informed';
@@ -155,12 +222,12 @@ class Index extends Model
 
     function thopen($user = 0)
     {
-        $cp = 'id_th,th_name,th_achronic,th_cover,th_icone_custom';
+        $cp = 'id_th,th_name,th_achronic,th_cover,th_icone_custom, th_status';
         $Icone = new \App\Models\Thesa\Icone();
         if ($user > 0) {
             $dt = $this
                 ->select($cp)
-                ->join('thesa_users', 'th_us_th = id_th','left')
+                ->join('thesa_users', 'th_us_th = id_th', 'left')
                 ->join('thesa_users_perfil', 'th_us_perfil = id_pf', 'left')
                 ->where('th_us_user', $user)
                 ->OrWhere('th_own', $user)
@@ -176,10 +243,9 @@ class Index extends Model
                 ->findAll();
         }
 
-        foreach($dt as $id=>$da)
-            {
-                $dt[$id]['th_cover'] = $Icone->icone($da);
-            }
+        foreach ($dt as $id => $da) {
+            $dt[$id]['th_cover'] = $Icone->icone($da);
+        }
         return $dt;
     }
 
@@ -196,24 +262,24 @@ class Index extends Model
         }
     }
 
-    function terms($th,$lt='')
-        {
-            $Concept = new \App\Models\Thesa\Concepts\Index();
-            $cp = 'term_name as Term,c_concept as Concept, p_name as Propriety, lg_code as Lang';
-            $cpg = 'Term, Concept, Propriety';
-            //$cp = '*';
-            $dt = $Concept
-                ->select($cp)
-                ->join('thesa_concept_term', 'ct_concept = c_concept')
-                ->join('thesa_terms', 'ct_literal = id_term')
-                ->join('thesa_property', 'ct_propriety = id_p')
-                ->join('language', 'term_lang = id_lg')
-                ->where('c_th',$th)
-                ->groupby($cpg)
-                ->orderby('term_name')
-                ->findAll();
-            return $dt;
-        }
+    function terms($th, $lt = '')
+    {
+        $Concept = new \App\Models\Thesa\Concepts\Index();
+        $cp = 'term_name as Term,c_concept as Concept, p_name as Propriety, lg_code as Lang';
+        $cpg = 'Term, Concept, Propriety';
+        //$cp = '*';
+        $dt = $Concept
+            ->select($cp)
+            ->join('thesa_concept_term', 'ct_concept = c_concept')
+            ->join('thesa_terms', 'ct_literal = id_term')
+            ->join('thesa_property', 'ct_propriety = id_p')
+            ->join('language', 'term_lang = id_lg')
+            ->where('c_th', $th)
+            ->groupby($cpg)
+            ->orderby('term_name')
+            ->findAll();
+        return $dt;
+    }
 
     function le($id)
     {

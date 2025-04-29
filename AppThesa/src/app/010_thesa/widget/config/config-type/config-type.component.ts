@@ -23,19 +23,34 @@ export class ConfigTypeComponent {
       this.type = this.thesa.th_type;
     });
 
-    if (!this.busy)
-    {
+    if (!this.busy) {
       this.ngOnChanges();
     }
-
   }
+
   ngOnChanges() {
     this.busy = true;
-    this.serviceThesa.api_post('th/'+this.thesaID,[]).subscribe((res) => {
+    this.serviceThesa.api_post('th/' + this.thesaID, []).subscribe((res) => {
       this.thesa = res;
       console.log(this.thesa);
       this.type = this.thesa.th_type;
       this.busy = false;
     });
   }
+
+  selectType(id:number)
+    {
+      if (confirm('Você tem certeza que deseja alterar o tipo de thesa?')) {
+        let dt = {type: id}
+        this.serviceThesa
+          .api_post(
+            'typeChange/' + this.thesaID,
+            dt
+          )
+          .subscribe((res) => {
+            this.type = id;
+            console.log('Server', res);
+          });
+      }
+    }
 }

@@ -14,16 +14,16 @@ import { language } from '../../../../language/language_pt';
 import { PainelService } from '../../../000_core/service/painel.service';
 
 @Component({
-    selector: 'app-concept-show',
-    templateUrl: './concept-show.component.html',
-    standalone: false
+  selector: 'app-concept-show',
+  templateUrl: './concept-show.component.html',
+  standalone: false,
 })
 export class ConceptShowComponent {
   @ViewChild('offcanvasNovo') offcanvasNovo!: ElementRef;
+  @Input() thesaID: number = 0;
   @Input() conceptID: number = 0;
   actionAC: string = '';
   data: any;
-  @Input() thesaID: number = 0;
   @Input() editMode: boolean = false;
   terms: Array<any> | any;
 

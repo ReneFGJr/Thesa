@@ -1,14 +1,13 @@
-<div class="container mt-4">
-  <div class="form-check" *ngFor="let option of radioOptions">
-    <input
-      class="form-check-input"
-      type="radio"
-      [value]="option.value"
-      formControlName="classification"
-      [id]="option.value"
-    />
-    <label class="form-check-label" [for]="option.value">
-      {{ option.label }}
-    </label>
-  </div>
-</div>
+<table class="table table-striped full" *ngIf="types && (status > 0)">
+  <tr *ngFor="let tp of types">
+    <td  valign="top" width="1%">
+      <input type="radio" name="type"
+      [checked]="tp.id == status"
+      [value]="tp.id"
+      (click)="selectType(tp.id)" />
+      </td>
+    <td class="p-2" [class.marked]="tp.id == status">{{ tp.name }}
+      <p class="small" [class.marked]="tp.id == status">{{ tp.description }}</p>
+    </td>
+  </tr>
+</table>

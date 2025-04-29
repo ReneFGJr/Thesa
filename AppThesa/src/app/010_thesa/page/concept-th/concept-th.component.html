@@ -5,7 +5,7 @@
     <div class="col-4 col-lg-4 col-md-4 col-sm-12" *ngIf="thesa?.id_th">
       <app-terms [thesa]="thesa.id_th" [editMode]="editMode" (termChange)="changeTerm($event)"></app-terms>
     </div>
-    <div class="col-8 col-lg-8 col-md-8 col-sm-12">
+    <div class="col-8 col-lg-8 col-md-8 col-sm-12" *ngIf="thesaID > 0">
       <app-concept-show [conceptID]="termID" [editMode]="editMode" [thesaID]="thesaID"></app-concept-show>
     </div>
   </div>

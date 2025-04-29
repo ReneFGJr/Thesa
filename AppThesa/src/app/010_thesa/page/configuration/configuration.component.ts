@@ -43,11 +43,8 @@ export class ConfigurationComponent {
     this.selectedSection = id;
   }
 
-  ngOnInit() {
-    this.url = environment.apiUrl;
-    this.data = this.router.params.subscribe((params) => {
-      this.id = +params['id']; // (+) converts string 'id' to a number
-
+  update()
+    {
       this.serviceThesa.api_post('th/' + this.id, []).subscribe(
         (res) => {
           this.data = res;
@@ -60,6 +57,13 @@ export class ConfigurationComponent {
         },
         (error) => error
       );
+    }
+
+  ngOnInit() {
+    this.url = environment.apiUrl;
+    this.data = this.router.params.subscribe((params) => {
+      this.id = +params['id']; // (+) converts string 'id' to a number
+      this.update()
     });
   }
 }

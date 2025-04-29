@@ -63,6 +63,7 @@ import { EditModePageComponent } from './010_thesa/page/edit-mode-page/edit-mode
 import { LogoutComponent } from './030_social/logout/logout.component';
 import { LinkedataComponent } from './010_thesa/widget/linkedata/linkedata.component';
 import { ProcessingComponent } from './000_core/widget/processing/processing.component';
+import { ThCanceledComponent } from './010_thesa/widget/th-canceled/th-canceled.component';
 
 @NgModule({
   declarations: [
@@ -124,6 +125,7 @@ import { ProcessingComponent } from './000_core/widget/processing/processing.com
     LogoutComponent,
     LinkedataComponent,
     ProcessingComponent,
+    ThCanceledComponent,
   ],
   imports: [
     BrowserModule,

@@ -56,7 +56,23 @@ class Api extends BaseController
 
         switch($arg1)
             {
-                case 'thesaTypes':
+            case 'changeStatus':
+                    $Thesa = new \App\Models\Thesa\Index();
+                    $RSP['thesaStatus'] = $Thesa->chageStatus($arg2, get("type"));
+                    break;
+            case 'typeLicence':
+                    $Thesa = new \App\Models\Thesa\Index();
+                    $RSP['thesaLicence'] = $Thesa->chageLicence($arg2, get("type"));
+                    break;
+                case 'thesaLicences':
+                    $Thesa = new \App\Models\Thesa\Index();
+                    $RSP['Licences'] = $Thesa->thesaLicences();
+                    break;
+            case 'typeChange':
+                    $Thesa = new \App\Models\Thesa\Index();
+                    $RSP['thesaTypes'] = $Thesa->chageTypes($arg2,get("type"));
+                    break;
+            case 'thesaTypes':
                     $Thesa = new \App\Models\Thesa\Index();
                     $RSP['thesaTypes'] = $Thesa->thesaTypes();
                     break;

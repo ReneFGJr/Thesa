@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-thesa-my',
   templateUrl: '../../widget/th-open/th-open.component.html',
+  styleUrls: ['../../widget/th-open/th-open.component.scss'],
   standalone: false,
 })
 export class ThesaMyComponent {
@@ -13,7 +14,7 @@ export class ThesaMyComponent {
   thesa: Array<any> | any;
   dataCheck: Array<any> | any;
   searchTerm: string = '';
-  title: string = 'Thesa Pessoal'; // título da página
+  title: string = 'Meus Thesa'; // título da página
   create: boolean = false;
   allow: boolean = false; // permite criar nova thesa
   @Input() editMode: boolean = false; // modo de edição

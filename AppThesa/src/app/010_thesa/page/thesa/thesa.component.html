@@ -1,6 +1,6 @@
-<app-th-show *ngIf="data" [thesaID]="thesaID" [thesa]="data" [tab]="'1'" [editMode]="editMode"></app-th-show>
-
-<div class="container">
+<app-th-show *ngIf="data" [thesaID]="thesaID" [thesa]="data" [tab]="'1'" [editMode]="editMode" [thStatus]="data.th_status"></app-th-show>
+<app-th-canceled *ngIf="data.th_status == 9"></app-th-canceled>
+<div class="container" *ngIf="data.th_status != 9">
   <div class="row">
 
     <div class="col-4 col-lg-4 col-md-4 col-sm-12">
