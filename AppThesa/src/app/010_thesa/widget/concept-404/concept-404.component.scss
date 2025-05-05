@@ -1,0 +1,62 @@
+/* not-found.component.scss */
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+
+.animation-wrapper {
+  text-align: center;
+}
+
+.error-code {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.digit {
+  font-size: 5rem;
+  font-weight: bold;
+  color: #ff6b6b;
+  opacity: 0;
+  animation: typePulse 1s ease forwards;
+}
+
+/* Delay individual digits */
+.digit:nth-child(1) { animation-delay: 0s; }
+.digit:nth-child(2) { animation-delay: 0.2s; }
+.digit:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typePulse {
+  0% { opacity: 0; transform: translateY(-30px) scale(0.8); }
+  50% { opacity: 1; transform: translateY(0) scale(1.2); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.btn-home {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background: #4e54c8;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.btn-home:hover {
+  transform: scale(1.05);
+}

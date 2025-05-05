@@ -77,6 +77,51 @@ class Index extends Model
             return $dd;
     }
 
+    function deleteConcept($id)
+        {
+            $this->where('id_c', $id)->delete();
+
+            $ThTermTh = new \App\Models\RDF\ThTermTh();
+            $TermConcept =  new \App\Models\Term\TermConcept();
+            $dt = $TermConcept
+                ->select('ct_literal')
+                ->where('ct_concept', $id)
+                ->where('ct_literal <> 0')
+                ->findAll();
+
+            $dd = [];
+            foreach ($dt as $d) {
+                $dd[] = $d['ct_literal'];
+            }
+            $ThTermTh->set(['term_th_concept'=>0])
+                ->whereIn('term_th_term', $dd)
+                ->update();
+
+            /******************************** Relations */
+            $Broader = new \App\Models\Thesa\Relations\Broader();
+            $Broader
+                ->where('b_concept_boader', $id)
+                ->Orwhere('b_concept_narrow', $id)
+                ->delete();
+
+            /******************************** Notes */
+            $Notes = new \App\Models\RDF\ThNotes();
+            $Notes->where('nt_concept', $id)->delete();
+
+            /*************************** LinkedData */
+            $Linkeddata = new \App\Models\Linkeddata\Index();
+            $Linkeddata->where('ld_concept', $id)->delete();
+
+            /************* Remover Dados de RDF *************/
+            $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
+            $ThConceptPropriety->where('ct_concept', $id)->delete();
+            $RSP = [];
+            $RSP['status'] = '200';
+            $RSP['message'] = 'Concept removed';
+            $RSP['ID'] = $id;
+            return $RSP;
+        }
+
     function change_status($id,$st)
         {
             $data['c_status'] = $st;
@@ -177,6 +222,12 @@ class Index extends Model
     function le($id)
     {
         $dt = $this->find($id);
+        if (!$dt) {
+            $RSP['status'] = '404';
+            $RSP['message'] = 'Concept not found';
+            $RSP['post'] = $_POST;
+            return $RSP;
+        }
         $th = $dt['c_th'];
 
         $dt = $this

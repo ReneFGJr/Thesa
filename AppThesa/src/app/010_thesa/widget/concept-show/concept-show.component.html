@@ -2,7 +2,9 @@
   Loading ... {{ thesaID }}
 </div>
 
-<div *ngIf="data" class="container">
+<app-concept-404 *ngIf="data?.status=='404'"></app-concept-404>
+
+<div *ngIf="data && (data?.status !='404')" class="container">
   <div class="row">
     <div class="col-10 col-lg-10 col-md-8 col-sm-8">
       <h2>
@@ -10,7 +12,9 @@
         {{ data.label }} <sup>({{ data.lg_code }})</sup>
       </h2>
     </div>
+
     <div class="col-12 col-lg-2 col-md-4 col-sm-4 text-end">
+      <app-concept-delete [conceptID]="conceptID" [editMode]="editMode"></app-concept-delete>
       <i
         class="bi bi-arrow-clockwise float-start p-1 link"
         (click)="ngOnChanges()"
@@ -183,6 +187,7 @@
     <!------------------------------------------- Exact Match ------------>
     <ng-container *ngIf="actionAC === 'exactmatch'">
     HELLO - exactmatch
+    <app-linkedata-edit [conceptID]="conceptID" [thesaID]="thesaID"></app-linkedata-edit>
     </ng-container>
     <!------------------------------------------- Linked Data------------->
     <ng-container *ngIf="actionAC === 'linkeddata'">

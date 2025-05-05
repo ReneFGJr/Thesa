@@ -56,6 +56,10 @@ class Api extends BaseController
 
         switch($arg1)
             {
+            case 'concept_delete':
+                    $Concept = new \App\Models\Thesa\Concepts\Index();
+                    $RSP = $Concept->deleteConcept($arg2);
+                    break;
             case 'changeStatus':
                     $Thesa = new \App\Models\Thesa\Index();
                     $RSP['thesaStatus'] = $Thesa->chageStatus($arg2, get("type"));

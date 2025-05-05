@@ -31,19 +31,25 @@ export class ConceptTHComponent {
         this.data = res;
         this.thesaID = this.data.c_th;
 
-        /* Dados do Thesauro */
-        this.serviceThesa
-          .api_post('th/' + this.thesaID, [])
-          .subscribe((res) => {
-            this.thesa = res;
+        console.log('#1-initTerm', this.data);
 
-            /* Edição */
-            if (this.thesa.editMode == 'allow') {
-              this.editMode = true;
-            } else {
-              this.editMode = false;
-            }
-          });
+        if (this.data.status == '404') {
+          this.serviceStorage.set('error', 'Termo não encontrado');
+          } else {
+          /* Dados do Thesauro */
+          this.serviceThesa
+            .api_post('th/' + this.thesaID, [])
+            .subscribe((res) => {
+              this.thesa = res;
+
+              /* Edição */
+              if (this.thesa.editMode == 'allow') {
+                this.editMode = true;
+              } else {
+                this.editMode = false;
+              }
+            });
+          }
       });
     });
   }
