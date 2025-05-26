@@ -67,6 +67,7 @@ import { ThCanceledComponent } from './010_thesa/widget/th-canceled/th-canceled.
 import { ConceptDeleteComponent } from './010_thesa/widget/concept-delete/concept-delete.component';
 import { Concept404Component } from './010_thesa/widget/concept-404/concept-404.component';
 import { LinkedataEditComponent } from './010_thesa/widget/linkedata-edit/linkedata-edit.component';
+import { TopConceptComponent } from './010_thesa/widget/schema/top-concept/top-concept.component';
 
 @NgModule({
   declarations: [
@@ -132,6 +133,7 @@ import { LinkedataEditComponent } from './010_thesa/widget/linkedata-edit/linked
     ConceptDeleteComponent,
     Concept404Component,
     LinkedataEditComponent,
+    TopConceptComponent,
   ],
   imports: [
     BrowserModule,
