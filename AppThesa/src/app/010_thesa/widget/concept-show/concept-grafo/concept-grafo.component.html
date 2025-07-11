@@ -1,24 +1,27 @@
-<div class="concept-container">
-  <!-- Conceito atual -->
-  <h3>{{ conceptData.prefLabel[0]?.Term }}</h3>
+<ngx-graph
+  [links]="links"
+  [nodes]="nodes"
+  [layout]="'dagre'"
+  [enableZoom]="true"
+  [zoomLevel]="0.8"
+  [autoCenter]="true"
+  [curve]="'linear'">
 
-  <!-- Conceito mais amplo -->
-  <div *ngIf="conceptData.broader?.length > 0" class="mt-3">
-    <strong>Mais amplo:</strong>
-    <ul>
-      <li *ngFor="let item of conceptData.broader">
-        {{ item.Term }} ({{ item.Lang }})
-      </li>
-    </ul>
-  </div>
+  <ng-template #defsTemplate></ng-template>
 
-  <!-- Conceitos mais específicos -->
-  <div *ngIf="conceptData.narrow?.length > 0" class="mt-3">
-    <strong>Mais específicos:</strong>
-    <ul>
-      <li *ngFor="let item of conceptData.narrow">
-        {{ item.Term }} ({{ item.Lang }})
-      </li>
-    </ul>
-  </div>
-</div>
+  <ng-template #nodeTemplate let-node>
+    <g>
+      <rect [attr.width]="node.label.length * 10 + 20" height="30" fill="#0d6efd" rx="5" ry="5"></rect>
+      <text alignment-baseline="middle" text-anchor="middle" x="50%" y="50%" fill="#fff">
+        {{ node.label }}
+      </text>
+    </g>
+  </ng-template>
+
+  <ng-template #linkTemplate let-link>
+    <svg:g>
+      <svg:text>{{ link.label }}</svg:text>
+    </svg:g>
+  </ng-template>
+
+</ngx-graph>

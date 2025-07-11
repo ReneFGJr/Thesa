@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@swimlane/ngx-charts": "^23.0.0-alpha.0",
+    "@swimlane/ngx-graph": "^11.0.0-alpha.0",
+    "d3": "^7.9.0"
+  }
+}
