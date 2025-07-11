@@ -146,7 +146,7 @@ import { ConceptTopConceptComponent } from './010_thesa/widget/concept-top-conce
     FormsModule,
     ReactiveFormsModule,
     AngularEditorModule,
-    NgxGraphModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent],
