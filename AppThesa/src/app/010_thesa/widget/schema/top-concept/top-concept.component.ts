@@ -5,6 +5,7 @@ import { Component, Input } from '@angular/core';
   selector: 'app-top-concept',
   templateUrl: './top-concept.component.html',
   styleUrl: './top-concept.component.scss',
+  standalone: false,
 })
 export class TopConceptComponent {
   @Input() data: any;

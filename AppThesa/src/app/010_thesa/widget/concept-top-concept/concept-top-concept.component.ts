@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-concept-top-concept',
   templateUrl: './concept-top-concept.component.html',
   styleUrl: './concept-top-concept.component.scss',
-  standealone: false
+  standalone: false,
 })
-export class ConceptTopConceptComponent {
-
-}
+export class ConceptTopConceptComponent {}

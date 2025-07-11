@@ -69,6 +69,7 @@ import { Concept404Component } from './010_thesa/widget/concept-404/concept-404.
 import { LinkedataEditComponent } from './010_thesa/widget/linkedata-edit/linkedata-edit.component';
 import { TopConceptComponent } from './010_thesa/widget/schema/top-concept/top-concept.component';
 import { ConceptTopConceptComponent } from './010_thesa/widget/concept-top-concept/concept-top-concept.component';
+import { NgxGraphModule } from '@swimlane/ngx-graph';
 
 @NgModule({
   declarations: [
@@ -146,7 +147,7 @@ import { ConceptTopConceptComponent } from './010_thesa/widget/concept-top-conce
     FormsModule,
     ReactiveFormsModule,
     AngularEditorModule,
-
+    NgxGraphModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

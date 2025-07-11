@@ -10,12 +10,12 @@
   <ng-template #defsTemplate></ng-template>
 
   <ng-template #nodeTemplate let-node>
-    <g>
+    <svg:g>
       <rect [attr.width]="node.label.length * 10 + 20" height="30" fill="#0d6efd" rx="5" ry="5"></rect>
       <text alignment-baseline="middle" text-anchor="middle" x="50%" y="50%" fill="#fff">
         {{ node.label }}
       </text>
-    </g>
+    </svg:g>
   </ng-template>
 
   <ng-template #linkTemplate let-link>
