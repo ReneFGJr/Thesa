@@ -10,7 +10,7 @@
       <h2>
         <i class="bi bi-tag-fill"></i>
         {{ data.label }} <sup>({{ data.lg_code }})</sup>
-        <app-top-concept [data]="data"></app-top-concept>
+        <app-top-concept [data]="data" [editMode]="editMode"></app-top-concept>
       </h2>
     </div>
 
@@ -120,7 +120,7 @@
           </ng-container>
           <!---------------------------------------- Graph -->
           <ng-container *ngIf="tab.content == 'graph'">
-            <app-concept-grafo></app-concept-grafo>
+            <app-concept-grafo [conceptData]="data"></app-concept-grafo>
           </ng-container>
         </div>
       </div>

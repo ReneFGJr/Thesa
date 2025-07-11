@@ -56,6 +56,10 @@ class Api extends BaseController
 
         switch($arg1)
             {
+            case 'setTopConcept':
+                    $TopConcept = new \App\Models\Thesa\Schema\TopConcept();
+                    $RSP = $TopConcept->setTopConcept();
+                    break;
             case 'concept_delete':
                     $Concept = new \App\Models\Thesa\Concepts\Index();
                     $RSP = $Concept->deleteConcept($arg2);
@@ -394,7 +398,8 @@ class Api extends BaseController
 
             $RSP['linkeddata'] = $Linkeddata->le($id);
 
-            $RSP['topSchema'] = $ConceptTopSchema->getTopConceptsByThesa($id);
+            //$RSP['Collections'] = $ConceptTopSchema->getTopConceptsByThesa($id);
+            $RSP['topConcept'] = $ConceptTopSchema->getTopConcept($id);
 
             return $RSP;
         }

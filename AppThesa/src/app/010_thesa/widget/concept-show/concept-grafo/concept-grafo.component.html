@@ -1,1 +1,24 @@
-<p>concept-grafo works!</p>
+<div class="concept-container">
+  <!-- Conceito atual -->
+  <h3>{{ conceptData.prefLabel[0]?.Term }}</h3>
+
+  <!-- Conceito mais amplo -->
+  <div *ngIf="conceptData.broader?.length > 0" class="mt-3">
+    <strong>Mais amplo:</strong>
+    <ul>
+      <li *ngFor="let item of conceptData.broader">
+        {{ item.Term }} ({{ item.Lang }})
+      </li>
+    </ul>
+  </div>
+
+  <!-- Conceitos mais específicos -->
+  <div *ngIf="conceptData.narrow?.length > 0" class="mt-3">
+    <strong>Mais específicos:</strong>
+    <ul>
+      <li *ngFor="let item of conceptData.narrow">
+        {{ item.Term }} ({{ item.Lang }})
+      </li>
+    </ul>
+  </div>
+</div>

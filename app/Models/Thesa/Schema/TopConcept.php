@@ -7,17 +7,17 @@ use CodeIgniter\Model;
 class TopConcept extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'thesa_topconcept';
-    protected $primaryKey       = 'id_ttc';
+    protected $table            = 'thesa_concept_scheme';
+    protected $primaryKey       = 'id_cs';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_ttc',
-        'th_thesa',
-        'th_concept'
+        'id_cs',
+        'cs_th',
+        'cs_topConcept'
     ];
 
     // Dates
@@ -46,23 +46,63 @@ class TopConcept extends Model
 
     function getTopConceptsByThesa($thesaId)
     {
-        return $this->where('th_thesa', $thesaId)->findAll();
+        return $this->where('cs_th', $thesaId)->findAll();
     }
 
-    function setTopConcept($thesaId, $conceptId)
+    function getTopConcept($conceptID)
     {
+        $dt = $this->where('cs_topConcept', $conceptID)->first();
+        if ($dt) {
+            return true;
+        }
+        return false;
+    }
+
+    function setTopConcept()
+    {
+        $Token = get("apikey");
+        $Social = new \App\Models\Socials();
+        if ($Social->validaAPIKEY($Token) == 0) {
+            return [
+                'status' => '500',
+                'message' => 'Invalid API key',
+                'token' => $Token
+            ];
+        }
+        $conceptId = get("conceptId");
+        $thesaId = get("thesaId");
+
         $dt = $this->where([
-            'th_thesa' => $thesaId,
-            'th_concept' => $conceptId
+            'cs_th' => $thesaId,
+            'cs_topConcept' => $conceptId
         ])->first();
 
         if ($dt) {
-            return $dt['id_ttc'];
+            // Remove the top concept
+            $this->where('id_cs', $dt['id_cs'])->delete();
+            return [
+                'status' => '200',
+                'message' => 'Top concept removed successfully',
+                'conceptId' => $conceptId
+            ];
+        } else {
+            // Set the top concept
+            $data = [
+                'cs_th' => $thesaId,
+                'cs_topConcept' => $conceptId
+            ];
+            $this->insert($data);
+            return [
+                'status' => '200',
+                'message' => 'Top concept set successfully',
+                'conceptId' => $conceptId
+            ];
         }
-        $data = [
-            'th_thesa' => $thesaId,
-            'th_concept' => $conceptId
+
+        return [
+            'status' => '200',
+            'message' => 'OK',
+            'rsp'=>$dt
         ];
-        return $this->set($data)->insert();
     }
 }

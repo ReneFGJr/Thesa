@@ -83,7 +83,7 @@ export class TermLabelComponent {
       this.termLabel = 'Termo Oculto';
     } else if (this.label === 'broader') {
       this.termLabel = 'Conceito Geral (TG)';
-      console.log('====>', this.terms.length);
+      console.log('=x=x=x=>', this.terms.length);
       if (this.terms.length > 0) {
         this.editPlus = false;
       } else {

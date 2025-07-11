@@ -1,3 +1,8 @@
 <!-- versão preenchida -->
-<i class="bi bi-star-fill ms-2" style="opacity: 0.1" title="Definir como conceito top"></i>
-{{ topConcept }}
+<span *ngIf="editMode==true">
+<i class="bi bi-star-fill ms-2 link" *ngIf="topConceptEdit && !topConcept" style="opacity: 0.1" (click)="setTopConcept(1)" title="Definir como conceito top"></i>
+<i class="bi bi-star-fill ms-2 link" style="color: blue;" *ngIf="topConcept" (click)="setTopConcept(0)" title="Definir como conceito top"></i>
+</span>
+<span *ngIf="!editMode">
+  <i class="bi bi-star-fill ms-2" style="color: blue;" *ngIf="topConcept"  title="Top Concept defined!"></i>
+</span>

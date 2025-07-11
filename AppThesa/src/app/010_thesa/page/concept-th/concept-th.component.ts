@@ -43,11 +43,7 @@ export class ConceptTHComponent {
               this.thesa = res;
 
               /* Edição */
-              if (this.thesa.editMode == 'allow') {
-                this.editMode = true;
-              } else {
-                this.editMode = false;
-              }
+              this.editMode = this.serviceStorage.mathEditMode(res);
             });
           }
       });

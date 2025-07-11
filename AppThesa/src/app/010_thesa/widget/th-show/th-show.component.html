@@ -1,10 +1,12 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-2 col-4">
+      <a [routerLink]="['/thesa/', thesa.id_th]">
       <img [src]="thesa?.icone" alt="Thesa Image" class="img-fluid" />
+      </a>
     </div>
     <div class="col-lg-10 col-8">
-      <h4>{{ thesa.th_name }}</h4>
+      <a class="h4 link" [routerLink]="['/thesa/', thesa.id_th]">{{ thesa.th_name }}</a>
       <h5>{{ thesa.th_achronic }}</h5>
 
       <!-- MENU -->

@@ -1,6 +1,7 @@
 <div class="container">
   <div class="row">
     <app-term-label
+      *ngIf="!data?.topConcept"
       (action)="action($event)"
       [thesaID]="data.c_th"
       [termID]="data?.c_concept"
@@ -8,6 +9,7 @@
       [label]="'broader'"
       [editMode]="editMode"
     ></app-term-label>
+    <app-concept-top-concept *ngIf="data?.topConcept"></app-concept-top-concept>
 
     <app-term-label
       (action)="action($event)"

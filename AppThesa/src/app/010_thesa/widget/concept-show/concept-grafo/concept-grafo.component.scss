@@ -1,0 +1,19 @@
+.concept-container {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+}
+
+h3 {
+  color: #0d6efd; // azul Bootstrap
+}
+
+ul {
+  padding-left: 1.2rem;
+  list-style-type: disc;
+
+  li {
+    margin: 0.25rem 0;
+  }
+}

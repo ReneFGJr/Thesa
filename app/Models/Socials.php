@@ -98,6 +98,7 @@ class Socials extends Model
 
 	function validaAPIKEY($apiKey)
 	{
+		$apiKey = troca($apiKey, '"', '');
 		$builder = $this->db->table('users');
 		$builder->where('us_apikey', $apiKey);
 		$query = $builder->get();
