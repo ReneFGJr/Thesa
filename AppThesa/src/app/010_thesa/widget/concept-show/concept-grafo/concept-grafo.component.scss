@@ -1,5 +1,17 @@
-:host ::ng-deep ngx-graph {
-  height: 600px;
-  width: 100%;
-  display: block;
+svg {
+  font-family: Arial, sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+.node circle {
+  fill: #0d6efd;
+}
+
+.node text {
+  font: 10px sans-serif;
 }
