@@ -51,7 +51,7 @@ export class ConceptShowComponent {
 
   actionUpdate(ev: Event) {
     let actionACev = ev.toString();
-    console.log('#1-actionUpdate', actionACev);
+    console.log('#1-actionUpdate#', actionACev);
     this.ngOnChanges();
   }
 

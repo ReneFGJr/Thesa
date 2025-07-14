@@ -15,7 +15,8 @@ class Index extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_c','c_concept','c_th','c_ativo','c_agency'
+        'id_c','c_concept','c_th','c_ativo','c_agency',
+        'c_updated'
     ];
 
     // Dates
@@ -138,6 +139,12 @@ class Index extends Model
             return $RSP;
         }
 
+    function updateConcept($IDc)
+        {
+            $dt['c_updated'] = date('Y-m-d');
+            $this->set($dt)->where('id_c',$IDc)->update();
+        }
+
     function findAgent($agent,$th)
         {
             $this->where('c_agency',$agent);
@@ -165,6 +172,7 @@ class Index extends Model
                     $id  = $this->set($dd)->insert();
                     $dd['c_concept'] = $id;
                     $this->set($dd)->where('id_c',$id)->update();
+                    $this->updateConcept($id);
                 } else {
                     $id = $dt['id_c'];
                 }

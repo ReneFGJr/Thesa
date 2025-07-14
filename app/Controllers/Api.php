@@ -56,6 +56,10 @@ class Api extends BaseController
 
         switch($arg1)
             {
+            case 'updateTerm':
+                    $Term = new \App\Models\Term\Index();
+                    $RSP = $Term->updateTerm();
+                    break;
             case 'setTopConcept':
                     $TopConcept = new \App\Models\Thesa\Schema\TopConcept();
                     $RSP = $TopConcept->setTopConcept();
@@ -72,7 +76,7 @@ class Api extends BaseController
                     $Thesa = new \App\Models\Thesa\Index();
                     $RSP['thesaLicence'] = $Thesa->chageLicence($arg2, get("type"));
                     break;
-                case 'thesaLicences':
+            case 'thesaLicences':
                     $Thesa = new \App\Models\Thesa\Index();
                     $RSP['Licences'] = $Thesa->thesaLicences();
                     break;
@@ -400,7 +404,6 @@ class Api extends BaseController
 
             //$RSP['Collections'] = $ConceptTopSchema->getTopConceptsByThesa($id);
             $RSP['topConcept'] = $ConceptTopSchema->getTopConcept($id);
-
             return $RSP;
         }
 }

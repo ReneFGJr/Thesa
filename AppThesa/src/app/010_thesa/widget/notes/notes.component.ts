@@ -114,7 +114,9 @@ export class NotesComponent implements OnInit, AfterViewInit {
     };
 
     this.serviceThesa.api_post('saveNote', dt).subscribe(
-      (res) => {},
+      (res) => {
+        console.log("notas",res);
+      },
       (err) => console.error(err)
     );
     this.offcanvasInstance.hide();

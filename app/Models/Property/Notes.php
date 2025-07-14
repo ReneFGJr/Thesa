@@ -79,7 +79,15 @@ class Notes extends Model
     {
         $RSP = [];
         $IDC = get('conceptID');
-        $IDN = (get('noteID') == '') ? 0 : get('noteID');
+        if (isset($_POST['noteID']))
+            {
+                $IDN = get('noteID');
+            }
+        if($IDN == 'null')
+            {
+                $IDN = 0;
+            }
+
         $thesaID =  get('thesaID');
         $note = get('note');
         $noteType = get('noteType');
@@ -117,6 +125,7 @@ class Notes extends Model
             $RSP['language_code'] = $lang;
             $RSP['language'] = get('language');
             $RSP['message'] = 'Note saved';
+            $RSP['IDN'] = $IDN;
         }
         return $RSP;
     }
@@ -137,7 +146,10 @@ class Notes extends Model
                     $this->set($dd)
                         ->where('id_nt',$IDN)
                         ->update();
-                    $id = 'Update';                }
+                    $id = 'Update';
+                }
+            $Concept = new \App\Models\Concept\Index();
+            $Concept->updateConcept($IDC);
             return $id;
         }
 
@@ -152,6 +164,7 @@ class Notes extends Model
             ->where('nt_concept', $id)->findAll();
 
         foreach ($dt as $id => $line) {
+            $dt[$id]['note'] = $line['p_name'];
             $dt[$id]['p_name'] = lang('thesa.'.$line['p_name']);
         }
         return $dt;

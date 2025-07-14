@@ -70,6 +70,7 @@ import { LinkedataEditComponent } from './010_thesa/widget/linkedata-edit/linked
 import { TopConceptComponent } from './010_thesa/widget/schema/top-concept/top-concept.component';
 import { ConceptTopConceptComponent } from './010_thesa/widget/concept-top-concept/concept-top-concept.component';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
+import { TermEditConceptComponent } from './010_thesa/widget/term-edit-concept/term-edit-concept.component';
 
 @NgModule({
   declarations: [
@@ -137,6 +138,7 @@ import { NgxGraphModule } from '@swimlane/ngx-graph';
     LinkedataEditComponent,
     TopConceptComponent,
     ConceptTopConceptComponent,
+    TermEditConceptComponent,
   ],
   imports: [
     BrowserModule,

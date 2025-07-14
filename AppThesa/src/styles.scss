@@ -2,6 +2,13 @@
   {
     counter-reset: section;
   }
+@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Roboto|Titillium+Web');
+
+body {
+  font-family: 'Titillium Web','Open Sans Condensed', sans-serif;
+  font-size: 0.9rem;
+  color: #333;
+}
 .navbar-custom {
   background-color: #CCF;  /* ou qualquer tom de azul escuro que preferir */
 }

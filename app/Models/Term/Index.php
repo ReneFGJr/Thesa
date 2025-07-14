@@ -42,6 +42,21 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function updateTerm()
+    {
+        $idt = get("id_term");
+        $name = trim(get("label"));
+
+        $dd = [];
+        $dd['term_name'] = $name;
+        $this->set($dd)->where('id_term', $idt)->update();
+        $RSP = [];
+        $RSP['status'] = '200';
+        $RSP['message'] = 'Term updated successfully';
+        $RSP['id_term'] = $idt;
+        return $RSP;
+    }
+
     function registerTerm($user)
         {
             $RSP = [];

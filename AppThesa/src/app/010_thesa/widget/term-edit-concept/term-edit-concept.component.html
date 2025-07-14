@@ -1,0 +1,32 @@
+<!-- Modo de visualização -->
+<div *ngIf="!editing" class="d-flex align-items-center">
+  <i class="bi bi-tag-fill me-2 text-secondary"></i>
+  <span class="me-1">{{ data.label }}</span>
+  <sup class="text-muted">({{ data.lg_code }})</sup>
+  <i
+    *ngIf="editMode"
+    class="bi bi-pencil-square ms-2 text-secondary"
+    role="button"
+    (click)="enableEditing()"
+    title="Editar"
+  ></i>
+</div>
+
+<!-- Modo de edição -->
+<div *ngIf="editing" class="row align-items-center g-2">
+  <div class="col-auto">
+    <i class="bi bi-tag-fill me-2 text-secondary"></i>
+  </div>
+  <div class="col">
+    <input
+      type="text"
+      class="form-control border border-secondary"
+      [(ngModel)]="data.label"
+      placeholder="Editar rótulo"
+    />
+  </div>
+  <div class="col-auto">
+    <i class="bi bi-check-circle link me-1" style="color: blue;"  (click)="saveChanges()"></i>
+    <i class="bi bi-x-circle link" style="color: red;"  (click)="cancelChanges()"></i>
+  </div>
+</div>

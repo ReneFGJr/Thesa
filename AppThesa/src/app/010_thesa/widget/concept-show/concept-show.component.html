@@ -8,8 +8,7 @@
   <div class="row">
     <div class="col-10 col-lg-10 col-md-8 col-sm-8">
       <h2>
-        <i class="bi bi-tag-fill"></i>
-        {{ data.label }} <sup>({{ data.lg_code }})</sup>
+        <app-term-edit-concept [data]="data" [editMode]="editMode"></app-term-edit-concept>
         <app-top-concept [data]="data" [editMode]="editMode"></app-top-concept>
       </h2>
     </div>
@@ -62,7 +61,7 @@
           <ng-container *ngIf="tab.content == 'information'">
             <div class="container">
               <div class="row">
-                <div class="col-12 col-lg-7 col-md-8 col-sm-8">
+                <div class="col-12 col-lg-9 col-md-8 col-sm-8">
                   <!-- Terminology -->
                   <app-concept-show-terms
                     (actionAC)="action($event)"
@@ -94,7 +93,7 @@
                     [conceptID]="conceptID"
                   ></app-linkedata>
                 </div>
-                <div class="col-12 col-lg-5 col-md-4 col-sm-4">
+                <div class="col-12 col-lg-3 col-md-4 col-sm-4">
                   <app-video-play-show
                     [medias]="data?.medias"
                   ></app-video-play-show>

@@ -239,7 +239,10 @@ class Index extends Model
                 p_name as resource_name,
                 lg_code, lg_language,
                 t1.ct_resource as ct_resource,
-                t1.ct_concept_2 as ct_concept_2')
+                t1.ct_concept_2 as ct_concept_2,
+                id_term,
+                c_created,
+                c_updated')
             /*  */
             ->join('thesa_concept_term as t1', 't1.ct_concept = id_c')
             ->join('thesa_terms', 'ct_literal = id_term', 'left')
@@ -252,6 +255,11 @@ class Index extends Model
             ->first();
 
             $ThesaMidias = new \App\Models\Thesa\Medias\Index();
+            $dt['created'] = date('d/m/Y', strtotime($dt['c_created']));
+            if ($dt['c_updated'] == '') {
+                $dt['c_updated'] = $dt['c_created'];
+            }
+            $dt['updated'] = date('d/m/Y', strtotime($dt['c_updated']));
             $dt['medias'] = $ThesaMidias->le($id);
         return $dt;
     }
