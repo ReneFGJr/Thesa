@@ -33,7 +33,7 @@ export class ConfigurationComponent {
     { id: 'Language', title: 'Idiomas' },
     { id: 'License', title: 'Licença' },
     { id: 'Visibility', title: 'Visibilidade' },
-    { id: 'Icon', title: 'Thema e Incones' },
+    { id: 'Themes', title: 'Thema e Incones' },
     { id: 'Members', title: 'Membros' },
   ];
 
@@ -43,27 +43,26 @@ export class ConfigurationComponent {
     this.selectedSection = id;
   }
 
-  update()
-    {
-      this.serviceThesa.api_post('th/' + this.id, []).subscribe(
-        (res) => {
-          this.data = res;
-          /* Edição */
-          if (this.data.editMode == 'allow') {
-            this.editMode = true;
-          } else {
-            this.data = false;
-          }
-        },
-        (error) => error
-      );
-    }
+  update() {
+    this.serviceThesa.api_post('th/' + this.id, []).subscribe(
+      (res) => {
+        this.data = res;
+        /* Edição */
+        if (this.data.editMode == 'allow') {
+          this.editMode = true;
+        } else {
+          this.data = false;
+        }
+      },
+      (error) => error
+    );
+  }
 
   ngOnInit() {
     this.url = environment.apiUrl;
     this.data = this.router.params.subscribe((params) => {
       this.id = +params['id']; // (+) converts string 'id' to a number
-      this.update()
+      this.update();
     });
   }
 }

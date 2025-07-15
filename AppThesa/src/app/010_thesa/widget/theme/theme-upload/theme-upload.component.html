@@ -1,0 +1,14 @@
+<div class="upload-wrapper">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label class="upload-label">
+      <input type="file" accept="image/*" (change)="onFileChange($event)" hidden />
+      <span>Escolher Imagem</span>
+    </label>
+
+    <div *ngIf="imagePreview" class="preview">
+      <img [src]="imagePreview" alt="Pré-visualização da imagem" />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2" [disabled]="!form.valid">Enviar</button>
+  </form>
+</div>

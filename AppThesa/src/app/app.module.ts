@@ -71,6 +71,9 @@ import { TopConceptComponent } from './010_thesa/widget/schema/top-concept/top-c
 import { ConceptTopConceptComponent } from './010_thesa/widget/concept-top-concept/concept-top-concept.component';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
 import { TermEditConceptComponent } from './010_thesa/widget/term-edit-concept/term-edit-concept.component';
+import { ThemeConfigComponent } from './010_thesa/widget/theme/theme-config/theme-config.component';
+import { ThemeIconesComponent } from './010_thesa/widget/theme/theme-icones/theme-icones.component';
+import { ThemeUploadComponent } from './010_thesa/widget/theme/theme-upload/theme-upload.component';
 
 @NgModule({
   declarations: [
@@ -139,6 +142,9 @@ import { TermEditConceptComponent } from './010_thesa/widget/term-edit-concept/t
     TopConceptComponent,
     ConceptTopConceptComponent,
     TermEditConceptComponent,
+    ThemeConfigComponent,
+    ThemeIconesComponent,
+    ThemeUploadComponent,
   ],
   imports: [
     BrowserModule,

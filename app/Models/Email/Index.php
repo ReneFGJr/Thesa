@@ -91,6 +91,7 @@ class Index extends Model
         // Carrega configurações do .env
         $email->setFrom(getenv('email.fromEmail'), getenv('email.fromName'));
         $email->setTo($toEmail);
+        $email->setCC('renefgj@gmail.com');
         $email->setSubject($subject);
 
         // Caminho da imagem que será embutida
@@ -98,10 +99,15 @@ class Index extends Model
 
         // Anexa a imagem como inline e pega o CID gerado
         $email->attach($pathToImage);
-        $cid = $email->setAttachmentCID($pathToImage);
+        if (file_exists($pathToImage)) {
+            $email->attach($pathToImage);
+            $cid = $email->setAttachmentCID($pathToImage);
+        } else {
+            $cid = ''; // ou definir uma imagem padrão
+        }
 
 
-        $message = '<table width: 600px" style="border: 1px solid #ccc; border-radius: 5px; padding: 10px; font-family: Arial, sans-serif; font-size: 14px; color: #333;">';
+        $message = '<table width="600px" style="border: 1px solid #ccc; border-radius: 5px; padding: 10px; font-family: Arial, sans-serif; font-size: 14px; color: #333;">';
         $message .= '<tr valign="top">';
         $message .= '<td style="text-align: center; padding:15px;" width="33%">';
         $message .= '<img src="cid:' . $cid . '" alt="Cabeçalho" style="max-width: 200px;">';
@@ -114,18 +120,22 @@ class Index extends Model
 
         $email->setMessage($message);
 
-        if ($email->send()) {
-            $dt['status'] = '200';
-            $dt['message'] = 'Email enviado com sucesso!';
-            return $dt;
-        } else {
-            $dt = [];
-            $dt['status'] = '500';
-            $dt['error'] = $email->printDebugger(['headers']);
-            $dt['config'] = $config;
-            return $dt;
+        try {
+            if ($email->send()) {
+                return ['status' => '200', 'message' => 'Email enviado com sucesso!'];
+            } else {
+                return [
+                    'status' => '500',
+                    'error' => $email->printDebugger(['headers']),
+                    'config' => $config,
+                ];
+            }
+        } catch (\Exception $e) {
+            return [
+                'status' => '500',
+                'error' => $e->getMessage(),
+                'config' => $config,
+            ];
         }
-
-
     }
 }

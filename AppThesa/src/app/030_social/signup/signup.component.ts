@@ -24,9 +24,9 @@ export class SignupComponent {
     private ServiceThesa: ServiceThesaService
   ) {
     this.form = fb.group({
-      fullname: ['Rene FG Jr', Validators.required],
-      email: ['rene.gabriel@ufrgs.br', Validators.required],
-      institution: ['UFRGS', Validators.required],
+      fullname: ['', Validators.required],
+      email: ['', Validators.required],
+      institution: ['', Validators.required],
     });
   }
 
@@ -45,7 +45,7 @@ export class SignupComponent {
           this.loading = false; // <— Inicia o loading
           this.signuped = true; // <— Inicia o loading
           this.data = response
-
+          console.log('User created successfully:', response);
         },
         (error) => {
           console.error('Error creating user:', error);

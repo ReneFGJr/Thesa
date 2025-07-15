@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="row">
+    <div class="col-4">
+      <img
+        src="{{ thesa.icone }}"
+        alt="Thesa Icon"
+        class="thesa-icon img-fluid"
+      />
+
+      <hr>
+      <app-theme-upload [thesaID]="thesaID"></app-theme-upload>
+    </div>
+
+    <div class="col-4">
+      <app-theme-icones></app-theme-icones>
+      <pre>{{ thesa | json }}</pre>
+    </div>
+  </div>
+</div>

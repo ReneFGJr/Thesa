@@ -340,10 +340,9 @@ class Socials extends Model
 			$dt['us_lastaccess'] = date("Y-m-d H:i:s");
 			$dt['us_image'] = 'https://brapci.inf.br/img/user.png';
 			$dt['us_genero'] = 'N';
+			$this->set($dt)->insert();
 
 			$link = $this->create_temp_access($dt['us_email']);
-
-			//$this->set($dt)->insert();
 
 			$Email = new \App\Models\Email\Index();
 			$Subject = 'Cadastro no Sistema - Thesa';
@@ -352,7 +351,7 @@ class Socials extends Model
 			$txt .= '<a href="' . getenv("app.Url") . '/' . 'social/recover_password/' . $link . '" style="border: 1px solid #000; border-radius: 10px; padding: 5px 10px;">Definir sua senha</a><br>';
 			$txt .= '<br>';
 			$txt .= '<br><br><small>Este é um e-mail automático. Não responda.</small>';
-			//$Email->sendEmail($email, $Subject, $txt);
+			$Email->sendEmail($email, $Subject, $txt);
 
 			return $RSP;
 		}
