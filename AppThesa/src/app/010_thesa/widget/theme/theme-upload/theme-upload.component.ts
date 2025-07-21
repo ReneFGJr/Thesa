@@ -1,6 +1,6 @@
 import { ServiceThesaService } from './../../../../000_core/service/service-thesa.service';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 
 @Component({
@@ -16,8 +16,12 @@ export class ThemeUploadComponent {
   uploadSuccess: boolean | null = null;
   data: Array<any> | any;
   @Input() thesaID: number = 0; // ID do Thesa, pode ser passado como input
+  @Output() actionAC = new EventEmitter<string>();
 
-  constructor(private http: HttpClient, private ServiceThesa: ServiceThesaService) {}
+  constructor(
+    private http: HttpClient,
+    private ServiceThesa: ServiceThesaService
+  ) {}
 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
@@ -46,7 +50,7 @@ export class ThemeUploadComponent {
     this.ServiceThesa.api_post(url, dt).subscribe(
       (res) => {
         this.data = res;
-        console.log('Upload successful:', this.data);
+        this.actionAC.emit(this.previewUrl as string);
       },
       (error) => error
     );
