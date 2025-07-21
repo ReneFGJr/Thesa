@@ -1,14 +1,32 @@
-<div class="upload-wrapper">
-  <form [formGroup]="form" (ngSubmit)="submit()">
-    <label class="upload-label">
-      <input type="file" accept="image/*" (change)="onFileChange($event)" hidden />
-      <span>Escolher Imagem</span>
-    </label>
+<form method="post" enctype="multipart/form-data">
+  <div class="card-header">
+    <h3>Upload de Imagem</h3>
+  </div>
+<div class="card p-4">
+  <h5>Upload de Imagem</h5>
 
-    <div *ngIf="imagePreview" class="preview">
-      <img [src]="imagePreview" alt="Pré-visualização da imagem" />
+  <input type="file" (change)="onFileSelected($event)" accept="image/*" class="form-control mb-2">
+
+  <div *ngIf="previewUrl" class="mb-3">
+    <img [src]="previewUrl" class="img-thumbnail" style="max-height: 200px;">
+  </div>
+
+  <button class="btn btn-primary" (click)="uploadImage()" [disabled]="!selectedFile">Enviar</button>
+
+  <div *ngIf="uploadProgress > 0" class="mt-3">
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" [style.width.%]="uploadProgress">
+        {{ uploadProgress }}%
+      </div>
     </div>
+  </div>
 
-    <button type="submit" class="btn btn-primary mt-2" [disabled]="!form.valid">Enviar</button>
-  </form>
+  <div *ngIf="uploadSuccess === true" class="alert alert-success mt-3">
+    Upload concluído com sucesso!
+  </div>
+
+  <div *ngIf="uploadSuccess === false" class="alert alert-danger mt-3">
+    Erro no upload. Tente novamente.
+  </div>
 </div>
+</form>

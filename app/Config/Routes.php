@@ -36,6 +36,9 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 
+
+$routes->get('/image/(:any)/(:any)', 'Api::image/$1/$2');
+
 $routes->get('/api', 'Api::index/');
 $routes->post('/api', 'Api::index/');
 $routes->get('/api/(:any)', 'Api::index/$1');

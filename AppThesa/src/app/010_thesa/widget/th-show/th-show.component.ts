@@ -26,7 +26,6 @@ export class ThShowComponent {
   ngOnInit() {
     setTimeout(() => {
       this.editModeLocal = this.serviceStorage.getEditMode();
-      console.log('ThesaID=====>', this.thesaID);
       if (this.thesaID > 0) {
         this.serviceThesa.api_post('th/' + this.thesaID, {}).subscribe(
           (res) => {

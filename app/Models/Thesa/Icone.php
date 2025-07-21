@@ -4,6 +4,9 @@ namespace App\Models\Thesa;
 
 use CodeIgniter\Model;
 use CodeIgniter\HTTP\Files\UploadedFile;
+use CodeIgniter\RESTful\ResourceController;
+use CodeIgniter\API\ResponseTrait;
+use FontLib\Table\Type\head;
 
 class Icone extends Model
 {
@@ -41,31 +44,110 @@ class Icone extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function icone($dt = array())
-    {
-        if (isset($dt['th_icone_custom']))
-            {
-                $img = $dt['th_icone_custom'];
-                if (!file_exists($img))
-                    {
-                        $img = strzero(0, 4) . '.svg';
-                        $img = PATH . '/img/icons/' . $img;
-                    } else {
-                        $img = URL.'/'.$img;
-                    }
-            } else {
-                if (!isset($dt['th_icone'])) {
-                    $img = strzero(0, 4) . '.svg';
-                    $img = PATH . '/assets/img/icons/' . $img;
+    public $directory = '../_repository/icones/';
+    public $filePath = '';
+    public $filePathExt = '';
+
+    /************************ DIRETORIO DE IMAGENS PERSONALIZADAS */
+    /* ../../_repository/icones/
+    */
+
+    function ShowImage($dt)
+        {
+            $dd = $this->icone($dt);
+            if (file_exists($this->filePath))
+                {
+                    header('Content-Type: image/'.$this->filePathExt);
+                    header('Content-Length: ' . filesize($this->filePath));
+                    readfile($this->filePath);
+                    exit;
                 } else {
-                    $img = strzero($dt['th_icone'], 4) . '.png';
-                    $img = PATH . '/assets/img/icons/' . $img;
-                    if ($dt['th_icone'] != 0) {
-                        $img = strzero($dt['th_icone'], 4) . '.png';
-                        $img = getenv("repository") . '/assets/img/icons/' . $img;
-                    }
+                    $this->filePath = 'img/icons/0000.svg';
+                    $this->filePathExt = '.svg';
+                    header('Content-Type: image/' . $this->filePathExt);
+                    header('Content-Length: ' . filesize($this->filePath));
+                    readfile($this->filePath);
                 }
         }
+
+    function uploadSchema()
+    {
+        $RSP = [];
+        $thesaID = sonumero(get("thesaID"));
+        $thesaID = round($thesaID, 0);
+        $base64Data = get("fileUpload");
+        if ($thesaID == 0 || $base64Data == '') {
+            $RSP['status'] = '400';
+            $RSP['message'] = 'ID do Thesa inválido ou dados de imagem ausentes';
+            return $RSP;
+        }
+
+        // Remove o prefixo 'data:image/...;base64,'
+        if (preg_match('/^data:image\/(\w+);base64,/', $base64Data, $type)) {
+            $base64Data = substr($base64Data, strpos($base64Data, ',') + 1);
+            $extension = strtolower($type[1]); // exemplo: png, jpg
+
+            // Segurança básica: permite apenas png, jpg e jpeg
+            if (!in_array($extension, ['jpg', 'jpeg', 'png'])) {
+                $RSP['status'] = '415';
+                $RSP['message'] = 'Tipo de imagem não suportado: ' . $extension;
+                return $RSP;
+            }
+        } else {
+            $RSP['status'] = '400';
+            $RSP['message'] = 'Formato inválido de imagem base64';
+            return $RSP;
+        }
+
+        // Decodifica o base64
+        $decodedImage = base64_decode($base64Data);
+
+        if ($decodedImage === false) {
+            $RSP['status'] = '500';
+            $RSP['message'] = 'Erro ao decodificar imagem';
+            return $RSP;
+        }
+
+        // Cria o diretório se necessário
+        $uploadPath = $this->directory;
+        dircheck($uploadPath);
+
+        // Gera nome único
+        $filename = 'icone_'.strzero($thesaID, 4) . '.' . $extension;
+        $filepath = $uploadPath . $filename;
+
+        // Salva a imagem
+        if (!file_put_contents($filepath, $decodedImage)) {
+            $RSP['status'] = '500';
+            $RSP['message'] = 'Erro ao salvar imagem';
+        }
+
+        $RSP['status'] = '200';
+        $RSP['message'] = 'Imagem salva com sucesso';
+        $RSP['filename'] = $filename;
+        $RSP['path'] = $filepath;
+        return $RSP;
+    }
+
+
+    function icone($dt = array())
+    {
+        $exts = array('.png', '.jpg', '.jpeg', '.svg');
+        foreach ($exts as $ext) {
+            $PATH = $_SERVER['SCRIPT_FILENAME'];
+            $PATH = str_replace('index.php', '', $PATH);
+
+            $img = $PATH.$this->directory . 'icone_' . strzero($dt['id_th'], 4) . $ext;
+
+            if (file_exists($img)) {
+                $this->filePath = $img;
+                $this->filePathExt = troca($ext,'.','');
+                $img = base_url('image/icone/'.$dt['id_th']);
+                return $img;
+                break;
+            }
+        }
+        $img = 'http://thesa/img/icons/0000.svg';
         return $img;
     }
 
