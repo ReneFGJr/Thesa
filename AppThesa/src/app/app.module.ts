@@ -74,6 +74,7 @@ import { TermEditConceptComponent } from './010_thesa/widget/term-edit-concept/t
 import { ThemeConfigComponent } from './010_thesa/widget/theme/theme-config/theme-config.component';
 import { ThemeIconesComponent } from './010_thesa/widget/theme/theme-icones/theme-icones.component';
 import { ThemeUploadComponent } from './010_thesa/widget/theme/theme-upload/theme-upload.component';
+import { LinkedataListComponent } from './010_thesa/widget/linkedata-list/linkedata-list.component';
 
 @NgModule({
   declarations: [
@@ -145,6 +146,7 @@ import { ThemeUploadComponent } from './010_thesa/widget/theme/theme-upload/them
     ThemeConfigComponent,
     ThemeIconesComponent,
     ThemeUploadComponent,
+    LinkedataListComponent,
   ],
   imports: [
     BrowserModule,

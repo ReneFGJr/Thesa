@@ -14,7 +14,9 @@ class Index extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = [
+        'ld_url', 'ld_concept', 'ld_visible', 'ld_source'
+    ];
 
     // Dates
     protected $useTimestamps = false;
@@ -39,6 +41,37 @@ class Index extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    function index()
+    {
+        $SourceLinkedData = new \App\Models\Linkeddata\Source_rdf();
+        $link = get('URI');
+        if (strpos($link, '#') > 0)
+        {
+            $link = substr($link, 0, strpos($link, '#'));
+        }
+        $RSP = [];
+        $RSP['data'] = $_POST;
+        $RSP['link'] = $link;
+        if ($link != '')
+            {
+                $RSP['link'] = $link;
+                $dt = $this->where('ld_url', $link)->first();
+                if ($dt)
+                {
+                    $RSP['linkedata'] = $dt;
+                } else {
+                    $ds = $SourceLinkedData->source($link);
+                    $dd = [];
+                    $dd['ld_url'] = $link;
+                    $dd['ld_concept'] = get("conceptID");
+                    $dd['ld_visible'] = 1;
+                    $dd['ld_source'] = $ds['id_lds']; // Default source, can be changed later
+                    $this->set($dd)->insert();
+                }
+            }
+        return $RSP;
+    }
 
     function le($id)
     {

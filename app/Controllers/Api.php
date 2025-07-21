@@ -70,6 +70,10 @@ class Api extends BaseController
         }
 
         switch ($arg1) {
+            case 'linkedata':
+                $Linkeddata = new \App\Models\Linkeddata\Index();
+                $RSP = $Linkeddata->index($arg2, $arg3);
+                break;
             case 'uploadSchema':
                 $Icone = new \App\Models\Thesa\Icone();
                 $RSP = $Icone->uploadSchema();
