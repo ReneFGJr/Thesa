@@ -3,9 +3,9 @@ import { ServiceThesaService } from '../../../../000_core/service/service-thesa.
 import { ServiceStorageService } from '../../../../000_core/service/service-storage.service';
 
 @Component({
-    selector: 'app-term-label',
-    templateUrl: './term-label.component.html',
-    standalone: false
+  selector: 'app-term-label',
+  templateUrl: './term-label.component.html',
+  standalone: false,
 })
 export class TermLabelComponent {
   @Input() termID: Array<any> | any;
@@ -41,7 +41,21 @@ export class TermLabelComponent {
   }
 
   deleteLinkedData(id: string = '') {
-    console.log('deleteLinkedData');
+    console.log('deleteLinkedData',id);
+
+    let dt = {
+      id_ld: id,
+    }
+    if (confirm('Tem certeza que deseja excluir este Linked Data?')) {
+      this.serviceThesa.api_post('deleteLinkedData', dt).subscribe(
+        (res) => {
+          console.log('Resposta do servidor:', res);
+        },
+        (error) => {
+          console.error('Erro ao enviar os dados:', error);
+        }
+      );
+    }
   }
 
   removeLabel(id: string = '', label: string) {

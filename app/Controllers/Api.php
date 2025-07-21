@@ -70,6 +70,10 @@ class Api extends BaseController
         }
 
         switch ($arg1) {
+            case 'deleteLinkedData':
+                $Linkeddata = new \App\Models\Linkeddata\Index();
+                $RSP = $Linkeddata->deleteLinkedData($arg2);
+                break;
             case 'linkedata':
                 $Linkeddata = new \App\Models\Linkeddata\Index();
                 $RSP = $Linkeddata->index($arg2, $arg3);

@@ -73,6 +73,18 @@ class Index extends Model
         return $RSP;
     }
 
+    function deleteLinkedData()
+        {
+            $id = get('id_ld');
+            if ($id)
+            {
+                $this->where('id_ld', $id)->delete();
+                return ['status' => 'success', 'message' => 'Linked Data deleted successfully.'];
+            } else {
+                return ['status' => 'error', 'message' => 'ID not provided.'];
+            }
+        }
+
     function le($id)
     {
         $cp = 'lds_icone, lds_name, ld_url, id_ld, ld_concept, ld_visible';
@@ -86,10 +98,12 @@ class Index extends Model
 
         foreach($dt as $id=>$d)
             {
+                $Term = troca($d['ld_url'],'http://','');
+                $Term = troca($Term,'https://','');
                 $dd = [];
                 $dd['Prop'] = 'Linked Data';
                 $dd['id'] = $d['ld_concept'];
-                $dd['Term'] = $d['lds_name'];
+                $dd['Term'] = $Term;
                 $dd['Icone'] = $d['lds_icone'];
                 $dd['Url'] = $d['ld_url'];
                 $dd['Lang'] = 'nn';
