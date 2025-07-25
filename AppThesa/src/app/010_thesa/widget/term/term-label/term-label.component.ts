@@ -107,8 +107,12 @@ export class TermLabelComponent {
       this.termLabel = 'Conceito Específico (TE)';
     } else if (this.label === 'related') {
       this.termLabel = 'Conceito Relacionado (TR)';
+    } else if (this.label === 'exactMatch') {
+      this.termLabel = 'Exact Match (SKOS)';
     } else if (this.label === 'linkedData') {
       this.termLabel = 'Linked Data (LD)';
+    } else if (this.label === 'exactMatch') {
+      this.termLabel = 'Exact Match (EM)';
     } else {
       this.termLabel = 'Termo ->' + this.label;
     }

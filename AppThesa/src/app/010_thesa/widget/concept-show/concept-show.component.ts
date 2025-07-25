@@ -85,7 +85,7 @@ export class ConceptShowComponent {
       console.log('linkeddata', url);
     } else if (this.actionAC === 'exactmatch') {
       let url = 'exactmatch/' + this.thesaID + '/' + this.conceptID;
-      console.log('linkeddata', url);
+      console.log('exactmatch', url);
     } else {
       console.log('Ação não definida: ' + this.actionAC);
     }

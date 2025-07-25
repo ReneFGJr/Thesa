@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="row">
+    <div class="mt-2">
+      <app-term-label
+        (action)="newLinkedData($event)"
+        [termID]="data?.lds_icone"
+        [terms]="data"
+        [label]="'exactMatch'"
+        [editMode]="editMode"
+      ></app-term-label>
+      <app-linkedata-list [linkedData]="data?.linkedData" [editMode]="editMode"></app-linkedata-list>
+    </div>
+  </div>
+</div>

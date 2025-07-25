@@ -70,6 +70,10 @@ class Api extends BaseController
         }
 
         switch ($arg1) {
+            case 'exactmatch':
+                $Exactmatch = new \App\Models\Skos\Exactmatch();
+                $RSP = $Exactmatch->index($arg2, $arg3);
+                break;
             case 'deleteLinkedData':
                 $Linkeddata = new \App\Models\Linkeddata\Index();
                 $RSP = $Linkeddata->deleteLinkedData($arg2);

@@ -7,6 +7,38 @@
   ></i>
 </h5>
 
+<!--- ExactMatch-->
+<ul *ngIf="label == 'exactMatch'">
+  <li
+    *ngFor="let term of terms"
+    [class]="term.Propriety"
+    class="option_select"
+    style="list-style-type: none; padding: 0; margin: 0"
+  >
+    <a
+      href="{{ term.Url }}"
+      target="_blank"
+      class="link"
+      title="{{ term.Url }}"
+    >
+      <img [src]="term.Icone" alt="Exact MAtch" style="height: 22px" />
+      {{ term.Term }}
+    </a>
+
+    <i
+      *ngIf="editMode == true"
+      class="bi bi-pencil-square link"
+      (click)="editLinkedData(term.idReg)"
+    ></i>
+    <i
+      *ngIf="editMode == true"
+      class="bi bi-trash ms-2 link"
+      style="color: #fbb"
+      (click)="deleteLinkedData(term.idReg)"
+    ></i>
+  </li>
+</ul>
+
 <!--- LinkedData-->
 <ul *ngIf="label == 'linkedData'">
   <li

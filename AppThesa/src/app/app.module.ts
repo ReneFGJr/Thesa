@@ -75,6 +75,8 @@ import { ThemeConfigComponent } from './010_thesa/widget/theme/theme-config/them
 import { ThemeIconesComponent } from './010_thesa/widget/theme/theme-icones/theme-icones.component';
 import { ThemeUploadComponent } from './010_thesa/widget/theme/theme-upload/theme-upload.component';
 import { LinkedataListComponent } from './010_thesa/widget/linkedata-list/linkedata-list.component';
+import { SkosExactmathComponent } from './010_thesa/widget/skos/skos-exactmath/skos-exactmath.component';
+import { SkosExactmathEditComponent } from './010_thesa/widget/skos/skos-exactmath-edit/skos-exactmath-edit.component';
 
 @NgModule({
   declarations: [
@@ -147,6 +149,8 @@ import { LinkedataListComponent } from './010_thesa/widget/linkedata-list/linked
     ThemeIconesComponent,
     ThemeUploadComponent,
     LinkedataListComponent,
+    SkosExactmathComponent,
+    SkosExactmathEditComponent,
   ],
   imports: [
     BrowserModule,

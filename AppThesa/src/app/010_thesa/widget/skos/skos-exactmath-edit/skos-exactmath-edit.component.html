@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col-12">
+    <h3>Exact Match</h3>
+    <p>
+        Propriedade do SKOS que declara que dois conceitos, mesmo pertencendo a esquemas diferentes, têm o mesmo significado e podem ser usados de forma intercambiável.
+    </p>
+  </div>
+</div>
+
+<form [formGroup]="linkForm" (ngSubmit)="submit()" class="p-2 border rounded bg-light">
+  <div class="mb-2">
+    <label for="label" class="form-label">🔖 Rótulo</label>
+    <input type="text" id="label" formControlName="label" class="form-control" placeholder="Ex: Mudança climática">
+  </div>
+
+  <div class="mb-2">
+    <label for="uri" class="form-label">Conceitos em outros thesauros</label>
+    <input type="url" id="uri" formControlName="uri" class="form-control" placeholder="https://www.wikidata.org/entity/Q8094">
+    <div *ngIf="linkForm.controls['uri'].invalid && linkForm.controls['uri'].touched" class="text-danger">
+      Insira uma URI válida iniciando com http:// ou https://
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary" [disabled]="linkForm.invalid">Adicionar Link</button>
+</form>
