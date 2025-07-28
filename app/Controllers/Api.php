@@ -418,6 +418,7 @@ class Api extends BaseController
         $Broader = new \App\Models\Thesa\Relations\Broader();
         $Relations = new \App\Models\Thesa\Relations\Relations();
         $Linkeddata = new \App\Models\Linkeddata\Index();
+        $Exactmatch = new \App\Models\Skos\Exactmatch();
         $ConceptTopSchema = new \App\Models\Thesa\Schema\TopConcept();
 
         $Notes = new \App\Models\Property\Notes();
@@ -437,6 +438,7 @@ class Api extends BaseController
         $RSP['notes'] = $Notes->le($id);
 
         $RSP['linkeddata'] = $Linkeddata->le($id);
+        $RSP['exactmatch'] = $Exactmatch->le($id);
 
         //$RSP['Collections'] = $ConceptTopSchema->getTopConceptsByThesa($id);
         $RSP['topConcept'] = $ConceptTopSchema->getTopConcept($id);
