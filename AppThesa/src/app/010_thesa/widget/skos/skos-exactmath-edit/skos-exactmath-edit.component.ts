@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ServiceThesaService } from '../../../../000_core/service/service-thesa.service';
 
@@ -15,6 +15,8 @@ export class SkosExactmathEditComponent {
   @Output() linkAdded = new EventEmitter<{ label: string; uri: string }>();
 
   linkForm: FormGroup;
+  message: string = '';
+  data: any;
 
   constructor(
     private fb: FormBuilder,
@@ -29,6 +31,14 @@ export class SkosExactmathEditComponent {
     });
   }
 
+  ngOnChanges(): void {
+    this.message = '';
+  }
+
+  OnInit() {
+    this.message = '';
+  }
+
   submit() {
     if (this.linkForm.valid) {
       this.linkAdded.emit(this.linkForm.value);
@@ -41,7 +51,13 @@ export class SkosExactmathEditComponent {
       this.serviceThesa.api_post('exactmatch', dt).subscribe({
         next: (response) => {
           console.log('Link data added successfully:', response);
-          //this.linkForm.reset();
+          this.data = response;
+          if (this.data.status != '200') {
+            this.message = this.data?.message || 'Error adding link data';
+          } else if (this.data?.status == '200') {
+            this.linkForm.reset();
+          }
+
         },
       });
     }

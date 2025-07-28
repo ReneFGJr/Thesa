@@ -70,6 +70,10 @@ class Api extends BaseController
         }
 
         switch ($arg1) {
+            case 'deleteExactMatch':
+                $Exactmatch = new \App\Models\Skos\Exactmatch();
+                $RSP = $Exactmatch->deleteExactMatch($arg2);
+                break;
             case 'exactmatch':
                 $Exactmatch = new \App\Models\Skos\Exactmatch();
                 $RSP = $Exactmatch->index($arg2, $arg3);
@@ -445,18 +449,17 @@ class Api extends BaseController
         return $RSP;
     }
 
-    function image($type='',$id='')
-        {
-switch($type)
-            {
-                case 'icone':
-                    $Icone = new \App\Models\Thesa\Icone();
-                    $RSP = $Icone->ShowImage(['id_th' => $id]);
-                    break;
-                default:
-                    $RSP['status'] = '400';
-                    $RSP['message'] = 'Type not informed';
-            }
-            return $RSP;
+    function image($type = '', $id = '')
+    {
+        switch ($type) {
+            case 'icone':
+                $Icone = new \App\Models\Thesa\Icone();
+                $RSP = $Icone->ShowImage(['id_th' => $id]);
+                break;
+            default:
+                $RSP['status'] = '400';
+                $RSP['message'] = 'Type not informed';
         }
+        return $RSP;
+    }
 }

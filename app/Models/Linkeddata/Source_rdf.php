@@ -43,6 +43,7 @@ class Source_rdf extends Model
     function source($link)
         {
             $domain = $this->extrairDominio($link);
+
             $dt = $this->where('lds_url', $domain)->first();
             $icone = '/assets/icone/diagram-3-fill.svg';
             if ($dt)

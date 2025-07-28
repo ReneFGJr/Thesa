@@ -34,7 +34,7 @@
       *ngIf="editMode == true"
       class="bi bi-trash ms-2 link"
       style="color: #fbb"
-      (click)="deleteLinkedData(term.idReg)"
+      (click)="deleteExactMatch(term.idReg)"
     ></i>
   </li>
 </ul>
@@ -72,7 +72,7 @@
 </ul>
 
 <!--- Terms-->
-<ul *ngIf="label != 'linkedData'">
+<ul *ngIf="label != 'linkedData' && label != 'exactMatch'">
   <li
     *ngFor="let term of terms"
     [class]="term.Propriety"

@@ -8,17 +8,19 @@ class Exactmatch extends Model
 {
     protected $DBGroup          = 'default';
     protected $table            = 'thesa_exactmatch';
-    protected $primaryKey       = 'id_em ';
+    protected $primaryKey       = 'id_em';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_em ',
+        'id_em',
         'em_concept',
         'em_link',
         'em_type',
+        'em_source',
+        'em_visible',
         'em_lastupdate'
     ];
 
@@ -50,6 +52,12 @@ class Exactmatch extends Model
     {
         $SourceLinkedData = new \App\Models\Linkeddata\Source_rdf();
         $link = get('URI');
+        $thesaID = get('thesaID');
+        if ($thesaID == '') {
+            $RSP['status'] = '500';
+            $RSP['message'] = 'Thesaurus ID not provided.';
+            return $RSP;
+        }
         if (strpos($link, '#') > 0) {
             $link = substr($link, 0, strpos($link, '#'));
         }
@@ -58,23 +66,31 @@ class Exactmatch extends Model
         $RSP['link'] = $link;
         if ($link != '') {
             $RSP['link'] = $link;
-            $dt = $this->where('em_link', $link)->first();
+            $dt = $this
+                ->join('thesa_concept', 'em_concept = id_c')
+                ->where('em_link', $link)
+                ->where('c_th',$thesaID)
+                ->first();
             if ($dt) {
                 $RSP['linkedata'] = $dt;
+                $RSP['status'] = '500';
+                $RSP['message'] = 'Linked Data already exists.';
             } else {
                 $ds = $SourceLinkedData->source($link);
                 $dd = [];
                 $dd['em_link'] = $link;
                 $dd['em_concept'] = get("conceptID");
                 $dd['em_visible'] = 1;
-                $dd['em_source'] = $ds['id_em']; // Default source, can be changed later
+                $dd['em_source'] = $ds['id_lds']; // Default source, can be changed later
                 $this->set($dd)->insert();
+                $RSP['status'] = '200';
+                $RSP['message'] = 'Linked Data added successfully.';
             }
         }
         return $RSP;
     }
 
-    function deleteLinkedData()
+    function deleteExactMatch()
     {
         $id = get('id_em');
         if ($id) {
@@ -92,7 +108,7 @@ class Exactmatch extends Model
         $link = [];
         $dt = $this
             ->select($cp)
-            ->join('thesa_linked_data_source', 'em_source = id_em')
+            ->join('thesa_linked_data_source', 'em_source = id_lds')
             ->where('em_concept', $id)
             ->findAll();
 
@@ -100,7 +116,7 @@ class Exactmatch extends Model
             $Term = troca($d['em_link'], 'http://', '');
             $Term = troca($Term, 'https://', '');
             $dd = [];
-            $dd['Prop'] = 'Linked Data';
+            $dd['Prop'] = 'Exact Match';
             $dd['id'] = $d['em_concept'];
             $dd['Term'] = $Term;
             $dd['Icone'] = $d['lds_icone'];

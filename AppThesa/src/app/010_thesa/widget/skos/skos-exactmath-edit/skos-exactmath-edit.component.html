@@ -15,11 +15,15 @@
 
   <div class="mb-2">
     <label for="uri" class="form-label">Conceitos em outros thesauros</label>
-    <input type="url" id="uri" formControlName="uri" class="form-control" placeholder="https://www.wikidata.org/entity/Q8094">
+    <input type="url" id="uri" formControlName="uri" class="form-control" placeholder="ex: https://www.wikidata.org/entity/Q8094">
     <div *ngIf="linkForm.controls['uri'].invalid && linkForm.controls['uri'].touched" class="text-danger">
       Insira uma URI válida iniciando com http:// ou https://
     </div>
   </div>
 
   <button type="submit" class="btn btn-primary" [disabled]="linkForm.invalid">Adicionar Link</button>
+
+  <div class="mt-2" *ngIf="message">
+    <div class="alert alert-warning">{{ message }}</div>
+  </div>
 </form>

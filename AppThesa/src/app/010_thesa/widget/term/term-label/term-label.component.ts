@@ -40,12 +40,30 @@ export class TermLabelComponent {
     console.log('editLinkedData');
   }
 
+  deleteExactMatch(id: string = '') {
+    console.log('deleteExactMatch', id);
+
+    let dt = {
+      id_em: id,
+    };
+    if (confirm('Tem certeza que deseja excluir este Exact Match?')) {
+      this.serviceThesa.api_post('deleteExactMatch', dt).subscribe(
+        (res) => {
+          console.log('Resposta do servidor:', res);
+        },
+        (error) => {
+          console.error('Erro ao enviar os dados:', error);
+        }
+      );
+    }
+  }
+
   deleteLinkedData(id: string = '') {
-    console.log('deleteLinkedData',id);
+    console.log('deleteLinkedData', id);
 
     let dt = {
       id_ld: id,
-    }
+    };
     if (confirm('Tem certeza que deseja excluir este Linked Data?')) {
       this.serviceThesa.api_post('deleteLinkedData', dt).subscribe(
         (res) => {

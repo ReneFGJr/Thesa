@@ -16,6 +16,7 @@ class ThProprityCustom extends Model
     protected $protectFields    = true;
     protected $allowedFields    = [
         'pcst_class', 'pcst_th', 'pcst_type',
+        'pcst_group', 'pcst_order',
         'pcst_achronic', 'pcst_name', 'pcst_description',
         'pcst_part_1', 'pcst_part_2', 'pcst_part_3',
         'pcst_public', 'pcst_aplicable', 'updated_at',

@@ -5,9 +5,9 @@ import { ServiceStorageService } from '../../../000_core/service/service-storage
 import { PainelService } from '../../../000_core/service/painel.service';
 
 @Component({
-    selector: 'app-concept-relation',
-    templateUrl: './concept.component.html',
-    standalone: false
+  selector: 'app-concept-relation',
+  templateUrl: './concept.component.html',
+  standalone: false,
 })
 export class ConceptComponent {
   @Input() terms: Array<any> | any;
@@ -17,7 +17,7 @@ export class ConceptComponent {
   @Input() thesaID: number = 0;
   @Input() conceptID: number = 0;
   @Output() actionAC: any = new EventEmitter<any>();
-  data:Array<any> = [];
+  data: Array<any> = [];
   formAction: FormGroup;
   title: string = 'Termos';
 
@@ -28,8 +28,9 @@ export class ConceptComponent {
     if (!this.filterText) return this.terms;
 
     const filter = this.filterText.toLowerCase();
+    console.log('Filter:', filter);
     return this.terms.filter((term: any) =>
-      term.Term.toLowerCase().includes(filter)
+      term.Term?.toLowerCase().includes(filter)
     );
   }
 
@@ -48,7 +49,6 @@ export class ConceptComponent {
     });
   }
 
-
   onSubmit() {
     console.log(this.formAction.value); // Aqui você acessa o ID selecionado
     let data = {
@@ -57,11 +57,9 @@ export class ConceptComponent {
       property: this.actionCV,
       thesaurus: this.thesaID,
     };
-    this.serviceThesa
-      .api_post('relateConcept', data)
-      .subscribe((res) => {
-          this.actionAC.emit("relateConcept");
-      });
+    this.serviceThesa.api_post('relateConcept', data).subscribe((res) => {
+      this.actionAC.emit('relateConcept');
+    });
   }
 
   cancelButton() {
