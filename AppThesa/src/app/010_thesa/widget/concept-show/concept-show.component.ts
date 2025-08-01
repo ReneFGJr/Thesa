@@ -80,6 +80,14 @@ export class ConceptShowComponent {
         },
         (error) => error
       );
+    } else if (this.actionAC === 'related') {
+      let url = 'related_candidate/' + this.thesaID + '/' + this.conceptID;
+      this.serviceThesa.api_post(url, []).subscribe(
+        (res) => {
+          this.terms = res;
+        },
+        (error) => error
+      );
     } else if (this.actionAC === 'linkeddata') {
       let url = 'linkeddata/' + this.thesaID + '/' + this.conceptID;
       console.log('linkeddata', url);

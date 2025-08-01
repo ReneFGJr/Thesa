@@ -34,6 +34,7 @@ export class ConfigurationComponent {
     { id: 'License', title: 'Licença' },
     { id: 'Visibility', title: 'Visibilidade' },
     { id: 'Themes', title: 'Thema e Incones' },
+    { id: 'Relations', title: 'Tipos de Relações' },
     { id: 'Members', title: 'Membros' },
   ];
 

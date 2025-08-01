@@ -83,6 +83,14 @@
             </div>
           </ng-container>
 
+<!----------------------------------------- Related  -->
+          <ng-container [ngSwitch]="selectedSection">
+            <div *ngSwitchCase="'Relations'" class="fade-in">
+            <h4>Relações</h4>
+            <app-config-related [thesaID]="id" [thesa]="data"></app-config-related>
+            </div>
+          </ng-container>
+
 <!----------------------------------------- Members -->
           <ng-container [ngSwitch]="selectedSection">
             <div *ngSwitchCase="'Members'" class="fade-in">

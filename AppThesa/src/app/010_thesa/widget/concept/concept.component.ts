@@ -23,6 +23,7 @@ export class ConceptComponent {
 
   filterText: string = '';
 
+  /******************* Filtro */
   filteredTerms(): any[] {
     if (!this.terms) return [];
     if (!this.filterText) return this.terms;

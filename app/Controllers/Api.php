@@ -194,6 +194,10 @@ class Api extends BaseController
                 $Broader = new \App\Models\Thesa\Relations\Broader();
                 $RSP = $Broader->relateConcept();
                 break;
+            case 'related_candidate':
+                $Related = new \App\Models\Thesa\Relations\Related();
+                $RSP = $Related->related_candidate($arg2, $arg3);
+                break;
             case 'broader_candidate':
                 $Broader = new \App\Models\Thesa\Relations\Broader();
                 $RSP = $Broader->broader_candidate($arg2, $arg3);
@@ -247,6 +251,11 @@ class Api extends BaseController
                 $Thesa = new \App\Models\Thesa\Index();
                 $dt = $_POST;
                 $RSP = $Thesa->getDescription($arg2, $arg3);
+                break;
+            case 'getRelations':
+                $Thesa = new \App\Models\Thesa\Relations\Related();
+                $dt = $_POST;
+                $RSP = $Thesa->getRelations($arg2, $arg3);
                 break;
             case 'tools':
                 $Tools = new \App\Models\Tools\Index();
