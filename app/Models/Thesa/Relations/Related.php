@@ -50,6 +50,8 @@ class Related extends Model
         return $dt;
         }
 
+
+
     function relateConcept()
     {
         $ThProprity = new \App\Models\RDF\ThProprity();

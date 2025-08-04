@@ -20,6 +20,7 @@ export class ConceptComponent {
   data: Array<any> = [];
   formAction: FormGroup;
   title: string = 'Termos';
+  related: Array<any> = [];
 
   filterText: string = '';
 
@@ -85,6 +86,11 @@ export class ConceptComponent {
         this.title = 'Conceito Específico';
       } else if (this.actionCV === 'related') {
         this.title = 'Conceito Relacionado';
+        let dt = { thesaID: this.thesaID };
+        this.serviceThesa.api_post('getRelationsTh', dt).subscribe((res) => {
+          let dd:any = res
+          this.related = dd?.relations || [];
+        });
       }
     });
   }

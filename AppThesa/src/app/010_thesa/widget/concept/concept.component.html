@@ -19,15 +19,12 @@
 
   <div *ngIf="actionCV == 'related'" class="mt-3">
     <label class="bold">Tipo de relação:</label>
-    <select id="actionCV" formControlName="actionCV" class="full" size="6">
+    <select id="actionCV" formControlName="actionCV" class="full" size="6" *ngIf="related">
       <option value="">::Select::</option>
-      <option value="related">Relacionado</option>
-      <option value="broader">Mais amplo</option>
-      <option value="narrower">Mais restrito</option>
-      <option value="equivalent">Equivalente</option>
-      <option value="usedFor">Usado para</option>
-      <option value="hasPart">Parte de</option>
-      </select>
+      <option *ngFor="let item of related" [value]="item.id_rt">
+        {{ item.rp_achronic }}/{{ item.rp_achronic_reverse }}
+      </option>
+    </select>
   </div>
 
 

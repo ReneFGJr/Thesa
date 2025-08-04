@@ -257,6 +257,16 @@ class Api extends BaseController
                 $dt = $_POST;
                 $RSP = $Thesa->getRelations($arg2, $arg3);
                 break;
+            case 'getRelationsTh':
+                $Thesa = new \App\Models\Thesa\Relations\RelationsGroupTh();
+                $dt = $_POST;
+                $RSP = $Thesa->getRelationsTh($arg2, $arg3);
+                $RSP['post'] = $_POST;
+                break;
+            case 'setRelationsType':
+                $Thesa = new \App\Models\Thesa\Relations\RelationsGroupTh();
+                $RSP = $Thesa->setRelationsType();
+                break;
             case 'tools':
                 $Tools = new \App\Models\Tools\Index();
                 $RSP = $Tools->index($arg2, $arg3);

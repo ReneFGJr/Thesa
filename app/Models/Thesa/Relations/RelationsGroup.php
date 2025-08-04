@@ -46,10 +46,14 @@ class RelationsGroup extends Model
 
     function getGroup($th)
     {
+        $th = get("thesaID");
+        if ($th == '') { $th = 0; }
         $dt = $this
             ->join('thesa_related_property','rp_group = id_rg')
+            ->join('thesa_related_thesa','(rt_group = id_rg) and (rt_th = '.$th.')', 'left')
             ->orderBy('id_rg')
             ->findAll();
+
 
         $dn = [];
         $dd = [];
@@ -64,7 +68,12 @@ class RelationsGroup extends Model
             }
             $idn = $dn[$name];
             $dd[$idn]['property'][] = $d;
+            $dd[$idn]['name'] = $name;
+            $dd[$idn]['checked'] = $d['rt_group'] ? 1 : 0;
+            $dd[$idn]['ID'] = $d['id_rg'];
         }
-        return $dd;
+        $dr = [];
+        $dr['groups'] = $dd;
+        return $dr;
     }
 }
