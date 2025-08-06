@@ -9,7 +9,7 @@ import { Component, Input } from '@angular/core';
 })
 export class ConfigRelatedComponent {
   data: any;
-  @Input() thesaID: string = '';
+  @Input() thesaID: number = 0;
   constructor(private ServiceThesa: ServiceThesaService) {}
 
   onGroupClick(ID:string, checked:string)
