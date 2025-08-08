@@ -72,6 +72,10 @@ class Api extends BaseController
         }
 
         switch ($arg1) {
+            case 'systematic':
+                $Systematic = new \App\Models\Thesa\Systematic();
+                $RSP = $Systematic->index($arg2, $arg3);
+                break;
             case 'deleteExactMatch':
                 $Exactmatch = new \App\Models\Skos\Exactmatch();
                 $RSP = $Exactmatch->deleteExactMatch($arg2);
