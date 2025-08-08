@@ -42,12 +42,14 @@ class Api extends BaseController
     }
     public function index($arg1 = '', $arg2 = '', $arg3 = '')
     {
+
         /* NAO USADO PARA AS APIS */
         header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Origin', '*');
-        header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-        header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-
+        //header('Access-Control-Allow-Origin', '*');
+        //header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+        //header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        //echo "OK";
+        //exit;
         if ((get("test") == '') and (get("code") == '')) {
             header("Content-Type: application/json");
         }

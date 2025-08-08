@@ -52,6 +52,15 @@ class Icone extends Model
     /* ../../_repository/icones/
     */
 
+    function __construct()
+        {
+            parent::__construct();
+            if ($_SERVER['SERVER_ADDR'] == '143.54.1.197')
+                {
+                    $this->directory = 'public/img/';
+                }
+        }
+
     function ShowImage($dt)
         {
             $dd = $this->icone($dt);
@@ -137,6 +146,7 @@ class Icone extends Model
             $PATH = $_SERVER['SCRIPT_FILENAME'];
             $PATH = str_replace('index.php', '', $PATH);
 
+            $PATH = str_replace('app/Controllers', '', $PATH);
             $img = $PATH.$this->directory . 'icone_' . strzero($dt['id_th'], 4) . $ext;
 
             if (file_exists($img)) {
@@ -147,7 +157,7 @@ class Icone extends Model
                 break;
             }
         }
-        $img = 'http://thesa/img/icons/0000.svg';
+        $img = base_url('/img/icons/0000.svg');
         return $img;
     }
 
