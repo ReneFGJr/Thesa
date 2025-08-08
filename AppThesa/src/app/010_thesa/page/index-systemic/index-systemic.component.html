@@ -8,13 +8,7 @@
       </h3>
     </div>
     <div class="col-12 col-lg-10 col-md-10 col-sm-10 ps-5">
-      {{meta | json}}
-      <div class="header" *ngIf="meta">
-
-        <div>Thesa: {{ meta.thesa }}</div>
-        <div>Time: {{ meta.time }}</div>
-      </div>
-      <pre class="tree">{{ treeText }}</pre>
+      <app-systematic-viewer [map]="tree.map"></app-systematic-viewer>
     </div>
   </div>
 </div>
