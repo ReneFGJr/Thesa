@@ -72,6 +72,11 @@ class Api extends BaseController
         }
 
         switch ($arg1) {
+            case 'concept_import_uri':
+                $ExtractSkos = new \App\Models\Skos\ExtractSkos();
+                $url = get('url');
+                $RSP = $ExtractSkos->extract($url);
+                break;
             case 'systematic':
                 $Systematic = new \App\Models\Thesa\Systematic();
                 $RSP = $Systematic->index($arg2, $arg3);

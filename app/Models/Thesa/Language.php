@@ -71,6 +71,8 @@ class Language extends Model
                     case 'en':
                         $lg = 'eng';
                         break;
+                    case 'fr':
+                        $lg = 'fre';
                 }
             if (!isset($langs[$lg]))
                 {

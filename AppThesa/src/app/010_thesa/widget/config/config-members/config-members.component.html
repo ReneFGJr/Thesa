@@ -25,9 +25,11 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mb-4">
   <div class="container border rounded p-2 border-secondary">
     <div class="row">
-    <div class="col-12 col-lg-12 navbar-custom">Adicionar novos membros</div>
+      <div class="col-12 col-lg-12 navbar-custom">Adicionar novos membros</div>
       <div class="col-12 col-lg-6">
-        <label for="searchInput" class="form-label bold">Informe o E-mail</label>
+        <label for="searchInput" class="form-label bold"
+          >Informe o E-mail</label
+        >
         <input
           id="searchInput"
           type="text"
@@ -36,15 +38,18 @@
           placeholder="Digite o nome ou e-mail do usuário"
         />
 
-        <button type="submit" class="btn btn-outline-primary mt-2 full" [disabled]="form.invalid">
+        <button
+          type="submit"
+          class="btn btn-outline-primary mt-2 full"
+          [disabled]="form.invalid"
+        >
           Registrar
         </button>
-
       </div>
       <div class="col-12 col-lg-6">
         <label for="searchInput" class="form-label bold">Tipo de vinculo</label>
-        <br>
-        <input
+        <br />
+<input
           type="radio"
           name="type"
           formControlName="type"
@@ -52,7 +57,9 @@
           id="type"
           class="form-check-input border border-secondary"
         />
-        Autor <br /><input
+        Autor e Revisor (Gerente)<br />
+
+        <input
           type="radio"
           name="type"
           formControlName="type"
@@ -60,7 +67,17 @@
           id="type"
           class="form-check-input border border-secondary"
         />
-        Colaborador <br /><input
+        Autor (Coautor) <br /><input
+          type="radio"
+          name="type"
+          formControlName="type"
+          value="2"
+          id="type"
+          class="form-check-input border border-secondary"
+        />
+        Colaborador <br />
+
+        <input
           type="radio"
           name="type"
           formControlName="type"
@@ -68,17 +85,29 @@
           id="type"
           class="form-check-input border border-secondary"
         />
-        Orientador
+        Orientador<br />
 
-        <br>
 
+
+        <input
+          type="radio"
+          name="type"
+          formControlName="type"
+          value="5"
+          id="type"
+          class="form-check-input border border-secondary"
+        />
+        Digitador<br />
       </div>
       <div class="col-12 col-lg-12 mt-3">
-      <div *ngIf="loading" class="alert alert-info">Registrando...</div>
+        <div *ngIf="loading" class="alert alert-info">Registrando...</div>
 
-      <div *ngIf="!loading && results?.length === 0" class="alert alert-warning">
-        Nenhum resultado encontrado.
-      </div>
+        <div
+          *ngIf="!loading && results?.length === 0"
+          class="alert alert-warning"
+        >
+          Nenhum resultado encontrado.
+        </div>
       </div>
     </div>
   </div>

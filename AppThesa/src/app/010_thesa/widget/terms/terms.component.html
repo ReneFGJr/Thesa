@@ -7,19 +7,21 @@
     [(ngModel)]="filterText"
   />
   <!------- Termos não associados-->
-  <span *ngIf="editMode && termTotal > 0"
+  <span
+    *ngIf="editMode && termTotal > 0"
     class="input-group-text"
     role="button"
     title="Termos não associados"
     data-bs-toggle="offcanvas"
     data-bs-target="#termPainel"
     aria-controls="termPainel"
-    style="background-color: #CCf; color: #000"
+    style="background-color: #ccf; color: #000"
   >
-    {{termTotal}}
+    {{ termTotal }}
   </span>
 
-  <span *ngIf="editMode"
+  <span
+    *ngIf="editMode"
     class="input-group-text"
     role="button"
     title="Incluir novos termos"
@@ -29,9 +31,41 @@
   >
     <i class="bi bi-plus-circle"></i>
   </span>
+
+  <span
+    *ngIf="editMode"
+    class="input-group-text"
+    role="button"
+    title="Incluir termos de outros thesa"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#importConcept"
+    aria-controls="importConcept"
+  >
+    <i class="bi bi-file-earmark-arrow-down"></i>
+  </span>
 </div>
 
 <!-- Offcanvas (painel lateral tipo PANEL) -->
+<!-- Import Concept -->
+<div
+  class="offcanvas offcanvas-end"
+  tabindex="-1"
+  id="importConcept"
+  aria-labelledby="importConceptLabel"
+>
+  <div class="offcanvas-header">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h5 id="importConceptLabel">Importar Conceitos</h5>
+        </div>
+        <app-concept-import-thesa></app-concept-import-thesa>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Novos termos -->
 <div
   class="offcanvas offcanvas-end"
   tabindex="-1"
@@ -49,10 +83,12 @@
   </div>
   <div class="offcanvas-body">
     <!-- Conteúdo do painel -->
-    <app-term-input [thesaID]="thesa" (action)="actionAC($event)"></app-term-input>
+    <app-term-input
+      [thesaID]="thesa"
+      (action)="actionAC($event)"
+    ></app-term-input>
   </div>
 </div>
-
 
 <!-- Offcanvas (Painel lateral tipo PANEL) -->
 <!-------------------------------------------------------------------------- Concept-->
@@ -64,22 +100,26 @@
 >
   <div class="offcanvas-header">
     <h5 id="termPainelLabel">Termos para candidatos a conceito</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Fechar"
+    ></button>
   </div>
   <div class="offcanvas-body">
     <!-- Conteúdo do painel -->
     <app-concept-create
       [thesaID]="thesa"
       (actionAC)="actionAC($event)"
-      ></app-concept-create>
+    ></app-concept-create>
   </div>
 </div>
-
 
 <!-- Lista de termos com DIVs -->
 <div
   class="form-control term-select"
-  style="max-height: 400px; overflow-y: auto;"
+  style="max-height: 400px; overflow-y: auto"
 >
   <div
     *ngFor="let term of filteredTerms()"
@@ -88,6 +128,6 @@
     [class.selected]="term.Concept === selectedConcept"
     class="link option_select"
   >
-    {{ term.Term }} <sup>{{term.Lang}}</sup>
+    {{ term.Term }} <sup>{{ term.Lang }}</sup>
   </div>
 </div>

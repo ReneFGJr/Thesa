@@ -1,0 +1,81 @@
+<div class="col-12">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <label for="texto" class="form-label">Texto</label>
+    <input
+      id="texto"
+      type="text"
+      class="form-control full"
+      formControlName="texto"
+      placeholder="Digite algo"
+    />
+    <div
+      *ngIf="submitted && form.get('texto')?.invalid"
+      class="text-danger small mt-1"
+    >
+      <span *ngIf="form.get('texto')?.errors?.['required']"
+        >Campo obrigatório.</span
+      >
+      <span *ngIf="form.get('texto')?.errors?.['minlength']"
+        >Mínimo de 3 caracteres.</span
+      >
+    </div>
+
+    <div class="mb-3">
+      <label for="escolha" class="form-label">Selecione uma opção</label>
+      <select
+        id="escolha"
+        class="form-select"
+        size="3"
+        formControlName="escolha"
+      >
+        <option value="" disabled>— selecione —</option>
+        <option *ngFor="let o of opcoes" [value]="o.value">
+          {{ o.label }}
+        </option>
+      </select>
+      <div
+        *ngIf="submitted && form.get('escolha')?.invalid"
+        class="text-danger small mt-1"
+      >
+        Selecione uma opção.
+      </div>
+    </div>
+
+    <button class="btn btn-outline-primary" type="submit">Enviar</button>
+    <button class="btn btn-outline-secondary ms-2" type="button" (click)="reset()">
+      Limpar
+    </button>
+  </form>
+
+  <!------------- URL --->
+<hr class="my-4" />
+  <h4>Importar Conceitos SKOS</h4>
+<form [formGroup]="urlForm" (ngSubmit)="onSubmitUrl()" novalidate>
+    <label for="url" class="form-label">URL de outros Tesauros</label>
+    <input
+      id="url"
+      type="text"
+      class="form-control full"
+      formControlName="url"
+      placeholder="Digite algo"
+    />
+    <div
+      *ngIf="submitted && urlForm.get('url')?.invalid"
+      class="text-danger small mt-1"
+    >
+      <span *ngIf="urlForm.get('url')?.errors?.['required']"
+        >Campo obrigatório.</span
+      >
+      <span *ngIf="urlForm.get('url')?.errors?.['minlength']"
+        >Link da URL obrigatório.</span
+      >
+    </div>
+    <button class="btn btn-outline-primary" type="submit">Enviar</button>
+    <button class="btn btn-outline-secondary ms-2" type="button" (click)="reset2()">
+      Limpar
+    </button>
+  </form>
+
+  <!-- Só para visualizar os valores -->
+  <pre class="mt-3"><code>{{ form.value | json }}</code></pre>
+</div>

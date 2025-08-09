@@ -40,6 +40,46 @@ class Source_rdf extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function getType($url)
+    {
+        $urlN = $url;
+        $RSP = [];
+        $RSP['status'] = '400';
+        $RSP['message'] = 'Invalid URL';
+        if (strpos($url, '/c/') !== false ) {
+            /************************ Thesa */
+            if (strpos($url,':4200') !== false) {
+                /******** Local */
+                $url = troca($url, 'localhost:4200', 'thesa/api');
+            } else {
+                /******** Online */
+                $url = troca($url, '/c/', '/api/c/');
+                $url = troca($url, '/web','');
+            }
+            $RSP['status'] = '200';
+            $RSP['message'] = 'Thesa - Concept found';
+            $RSP['type'] = 'thesa';
+            $RSP['url'] = $url;
+        } else if (strpos($url, 'loterre.fr') !== false) {
+            /****************************************** LOTERRE */
+            /* http://data.loterre.fr/ark:/67375/9SD-TDN4545C-W */
+            /* http://data.loterre.fr/ark:/67375/Q1W-MJMTQSSG-Q */
+            /* https://loterre.istex.fr/rest/v1/Q1W/data?uri=http://data.loterre.fr/ark:/67375/Q1W-MJMTQSSG-Q&format=application/json */
+            if (strpos($url,'ark:') !== false) {
+                $uri = $url;
+                $url = 'https://loterre.istex.fr/rest/v1/Q1W/data?uri=' . $uri . '&format=application/json';
+                $RSP['status'] = '200';
+                $RSP['message'] = 'Loterre - ARK found';
+                $RSP['type'] = 'loterre';
+                $RSP['url'] = $url;
+            } else if (strpos($url,'/rest/v1/') !== false) {
+                $RSP['status'] = '500';
+                $RSP['message'] = 'Invalid URL for Loterre - ARK not found';
+            }
+        }
+        return $RSP;
+    }
+
     function source($link)
         {
             $domain = $this->extrairDominio($link);
