@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 
@@ -14,6 +14,7 @@ interface Opcao {
   styleUrl: './concept-import-thesa.component.scss',
 })
 export class ConceptImportThesaComponent {
+  @Input() thesaID: number = 0;
   form: FormGroup;
   urlForm: FormGroup;
   submitted = false;
@@ -56,16 +57,19 @@ export class ConceptImportThesaComponent {
   onSubmitUrl(): void {
     this.submitted = true;
     if (this.urlForm.invalid) return;
-    console.log('Valores do formulário de URL:', this.urlForm.value);
+
     if (confirm('Você tem certeza que deseja excluir o conceito?')) {
       // Lógica para excluir o conceito
-      let dt = { uri: this.urlForm.get('url')?.value };
+      let dt = {
+        uri: this.urlForm.get('url')?.value,
+        thesaID: this.thesaID
+        };
       this.thesaaService
         .api_post('concept_import_uri', dt)
         .subscribe(
           (res) => {
-            this.data = res;
-            console.log('Conceito excluído com sucesso:', this.data);
+            this.data = res
+            console.log(res)
           },
           (error) => error
         );

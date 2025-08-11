@@ -30,7 +30,6 @@ export class ConceptComponent {
     if (!this.filterText) return this.terms;
 
     const filter = this.filterText.toLowerCase();
-    console.log('Filter:', filter);
     return this.terms.filter((term: any) =>
       term.Term?.toLowerCase().includes(filter)
     );

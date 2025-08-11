@@ -48,19 +48,128 @@ class ExtractSkos extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function extract($url)
+    function registerConcept($URL, $ThID)
     {
         $Term = new \App\Models\Term\Index();
+        $Note = new \App\Models\Property\Notes();
         $TermTh = new \App\Models\Term\TermsTh();
         $Concept = new \App\Models\Thesa\Concepts\Index();
+        $TermConcept = new \App\Models\Term\TermConcept();
 
-        $th = get('thesaID');
-        if (!$th) {
+        if ($ThID == '' || $ThID == 0) {
             return [
                 'status' => '500',
                 'message' => 'Thesa ID não fornecido.'
             ];
         }
+        /************** Biblioteca de Idiomas */
+        $Languages = new \App\Models\Thesa\Language();
+        $lang = $Languages->getLanguage($ThID);
+
+        $Langs = [];
+        foreach ($lang as $item) {
+            $Langs[$item['id_lg']] = $item['lg_code'];
+        }
+        /************ Extração de Dados */
+        $Data = $this->extract($URL);
+
+        if ($Data['status'] != '200') {
+            return $Data;
+        }
+
+        if ($Data['status'] == '200') {
+            $Terms = $Data['data']['terms'] ?? [];
+            $Notes = $Data['data']['notes'] ?? [];
+            /********** Registras Termos */
+            $First = true;
+
+            foreach ($Terms['prefLabel'] as $item) {
+                //echo $Languages->convert($item);
+                $lang = $Languages->convert($item['lang']);
+                $term = nbr_title($item['value'] ?? '');
+
+                /********* Verifica se o idioma está no tesauro */
+                if (isset($Langs[$lang])) {
+
+                    $idt = $Term->register($term, $lang, $ThID);
+                    $TermTh->register($idt, $ThID, 0);
+
+                    if ($First) {
+                        $id_term = $idt;
+                        $First = false;
+                    }
+                }
+            }
+            /************* Não foi identificado termo principal */
+            if ($id_term == 0) {
+                return [
+                    'status' => '500',
+                    'message' => 'Não foi identificado termo principal.'
+                ];
+            }
+            /************ Criar Concepts */
+            $agency = $Data['data']['ID'] ?? '';
+
+            /* Cria o conceito */
+            $IDc = $Concept->register($id_term, $ThID, $agency, 'id');
+
+            /* ExactMatch */
+            $Exactmatch = new \App\Models\Skos\Exactmatch();
+            $source = $Data['data']['Source'] ?? '0';
+            $Exactmatch->register($IDc, $URL, 1, $source, 1);
+
+            /* Inserir Outros PrefLabel */
+            $tps = ['prefLabel', 'altLabel', 'hiddenLabel'];
+            foreach ($tps as $tp) {
+                foreach ($Terms[$tp] as $item) {
+                    $lang = $Languages->convert($item['lang']);
+                    if (isset($Langs[$lang])) {
+                        $term = nbr_title($item['value'] ?? '');
+                        $idT = $Term->register($term, $lang, $ThID);
+                        $TermConcept->register_term_label($ThID, $IDc, $idT, $tp);
+
+                        $TermsTh = new \App\Models\Term\TermsTh();
+                        $TermsTh->register($idT, $ThID, $IDc);
+                    }
+                }
+            }
+
+            /*************************** Notas */
+            $tps = ['scopeNote'];
+            foreach($tps as $tp) {
+                if (!isset($Notes[$tp])) {
+                    continue;
+                }
+                foreach($Notes[$tp] as $item) {
+                    $lang = $Languages->convert($item['lang']);
+                    if (isset($Langs[$lang])) {
+                        $note = nbr_title($item['value'] ?? '');
+                        $Note->register($IDc, $tp, $note, $lang, $ThID);
+                        // register($IDC,$prop,$note,$lang,$th,$IDN=0)
+                    }
+                }
+
+            }
+
+
+            $RSP = [
+                'status' => '200',
+                'message' => 'Dados extraídos e registrados com sucesso.',
+                'URL' => $URL,
+                'data' => $Data['data']
+            ];
+        } else {
+            $RSP = [
+                'status' => '500',
+                'message' => 'Erro ao extrair dados: ' . $Data['message']
+            ];
+        }
+        return $RSP;
+    }
+
+    function extract($url)
+    {
+        /********** Identificar Tipo de Dado */
         $SourceLinkedData = new \App\Models\Linkeddata\Source_rdf();
         $type = $SourceLinkedData->getType($url);
         if ($type['status'] != '200') {
@@ -68,34 +177,20 @@ class ExtractSkos extends Model
         }
 
         /************************************ Read Json */
-        $Languages = new \App\Models\Thesa\Language();
-        $lang = $Languages->getLanguage($th);
-        $Langs = [];
-        foreach ($lang as $item) {
-            $Langs[$item['lg_code']] = $item['lg_code'];
-        }
-
         try {
             $Json = $this->readJson($type['url']);
             switch ($type['type']) {
                 case 'loterre':
                     $Loterre = new \App\Models\Skos\Schemes\Loterre();
                     $Data = $Loterre->extract($Json);
-
-                    pre($Data);
-                    $Terms = $Data['terms'] ?? [];
-
-                    /********** Registras Termos */
-                    foreach ($Terms['prefLabel'] as $item) {
-                        //echo $Languages->convert($item);
-                        $lang = $Languages->convert($item['lang']);
-                        $term = nbr_title($item['value'] ?? '');
-
-                        $idt = $Term->register($term, $lang, $th);
-                        $TermTh->register($idt, $th, 0);
-                        echo '==>'.$idt. ' == '.$term.'<br>';
-                    }
-                    /************ Criar Concepts */
+                    break;
+                case 'unesco':
+                    $Unesco = new \App\Models\Skos\Schemes\Unesco();
+                    $Data = $Unesco->extract($Json);
+                    break;
+                case 'usda.gov':
+                    $Usda = new \App\Models\Skos\Schemes\Usda();
+                    $Data = $Usda->extract($Json);
                     break;
                 default:
                     return [
@@ -103,7 +198,6 @@ class ExtractSkos extends Model
                         'message' => 'Tipo de dado não suportado: ' . $type['type']
                     ];
             }
-            pre($type);
         } catch (\Exception $e) {
             return [
                 'status' => '500',
@@ -116,11 +210,13 @@ class ExtractSkos extends Model
         // This is a placeholder for the actual extraction logic
         $RSP['status'] = '200';
         $RSP['message'] = 'SKOS data extracted successfully.';
+        $RSP['data'] = $Data;
         return $RSP;
     }
 
     function readJson(string $url, int $timeoutSeconds = 30): array
     {
+        $NURL = trim($url);
         // Preferencial: cURL
         if (function_exists('curl_init')) {
             $ch = curl_init($url);
@@ -143,6 +239,7 @@ class ExtractSkos extends Model
                 CURLOPT_SSL_VERIFYPEER => false,
                 CURLOPT_SSL_VERIFYHOST => 0
             ]);
+
 
             $body = curl_exec($ch);
             if ($body === false) {
@@ -167,7 +264,12 @@ class ExtractSkos extends Model
                 return ['status' => '500', 'message' => 'JSON inválido: ' . json_last_error_msg(), 'raw' => $body];
             }
 
-            return ['status' => '200', 'message' => 'Dados extraídos com sucesso.', 'data' => $data];
+            return [
+                'status' => '200',
+                'message' => 'Dados do JSON extraídos com sucesso.',
+                'url' => $NURL,
+                'data' => $data
+            ];
         }
 
         // Fallback: file_get_contents com contexto e timeout
@@ -202,7 +304,6 @@ class ExtractSkos extends Model
         if (json_last_error() !== JSON_ERROR_NONE) {
             return ['status' => '500', 'message' => 'JSON inválido: ' . json_last_error_msg(), 'raw' => $body];
         }
-
-        return ['status' => '200', 'message' => 'Dados extraídos com sucesso.', 'data' => $data];
+        return ['status' => '200', 'message' => 'Dados extraídos com sucesso.', 'url' => $NURL, 'data' => $data];
     }
 }

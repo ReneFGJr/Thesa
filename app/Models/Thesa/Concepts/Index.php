@@ -145,39 +145,10 @@ class Index extends Model
                 }
         }
 
-    function register($id_term, $th, $agency = '',$rsp='')
-    {
-        $id_concept = $this->register_concept($th, $agency);
-
-        /***************************************** Class - SkosConcept */
-        $ClassPropriety = new \App\Models\RDF\Ontology\ClassPropryties();
-        $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
-
-        /********************************************** Update Concept */
-        $du = array();
-        $du['c_concept'] = $id_concept;
-        $du['c_ativo'] = 1;
-        $this->set($du)->where('id_c', $id_concept)->update();
-
-        $class = 'skos:prefLabel';
-        $prop_prefLabel = $ClassPropriety->Class($class);
-        $idr = $ThConceptPropriety->register($th, $id_concept, $prop_prefLabel, 0, 0, $id_term);
-
-        /********************************************** Trava o Termos do Vocabulario */
-        $Term = new \App\Models\RDF\ThTerm();
-        $Term->term_block($id_term, $id_concept, $th);
-
-        if ($rsp == 'id')
-            {
-                return $id_concept;
-            }
-
-        $sx = '<a href="' . PATH . '/v/' . $id_concept . '" class="btn btn-outline-secondary">' . 'thesa:c' . $id_term . '</a>' . ' created';
-        return $sx . '<br>';
-    }
-
     function register_concept($th, $agency)
     {
+        $TermConcept = new \App\Models\Term\TermConcept();
+        $Property = new \App\Models\Property\Index();
         /******************************************************* NEW CONCEPT */
         if ($agency != '') {
             $dt = $this->where('c_agency', $agency)->where('c_th', $th)->findAll();
@@ -196,22 +167,65 @@ class Index extends Model
         }
 
         /***************************************** Class - SkosConcept */
-        $ClassPropriety = new \App\Models\RDF\Ontology\ClassPropryties();
-        $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
-
-        $class = 'skos:Concept';
-        $id_class = $ClassPropriety->Class($class);
-
-        $class = 'rdf:isInstanceOf';
-        $id_prop = $ClassPropriety->Class($class);
+        $class = 'prefLabel';
+        $id_class = 0;
+        $id_prop = $Property->findPropriety($class, $th);
 
         /****************************************** Class- Register ****/
-        $ThConceptPropriety->register($th, $id_concept, $id_prop, 0, $id_class, 0);
+        # function register($th, $concept, $prop, $qualy, $resource, $literal)
+        $qualy = 0;
+        $literal = 0;
+        $TermConcept->register($th, $id_concept, $id_prop, $qualy, $id_class, $literal);
+
+
         $data['c_concept'] = $id_concept;
         $this->set($data)->where('id_c', $id_concept)->update();
 
         return $id_concept;
     }
+
+    function register($id_term, $th, $agency = '',$rsp='')
+    {
+        $TermConcept = new \App\Models\Term\TermConcept();
+        $Property = new \App\Models\Property\Index();
+        if ($id_term == '' || $id_term == 0) {
+            return [
+                'status' => '500',
+                'message' => 'Term ID não fornecido.'
+            ];
+        }
+        $id_concept = $this->register_concept($th, $agency);
+
+        /***************************************** Class - SkosConcept */
+        $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
+
+
+        /********************************************** Update Concept */
+        $du = array();
+        $du['c_concept'] = $id_concept;
+        $du['c_ativo'] = 1;
+        $this->set($du)->where('id_c', $id_concept)->update();
+
+        $class = 'prefLabel';
+        $prop_prefLabel = $Property->findPropriety($class,$th);
+        ## $th, $concept, $prop, $qualy, $resource, $literal
+        $idr = $TermConcept->register($th, $id_concept, $prop_prefLabel, 0, 0, $id_term);
+
+
+        /********************************************** Trava o Termos do Vocabulario */
+        $Term = new \App\Models\RDF\ThTerm();
+        $Term->term_block($id_term, $id_concept, $th);
+
+        if ($rsp == 'id')
+            {
+                return $id_concept;
+            }
+
+        $sx = '<a href="' . PATH . '/v/' . $id_concept . '" class="btn btn-outline-secondary">' . 'thesa:c' . $id_term . '</a>' . ' created';
+        return $sx . '<br>';
+    }
+
+
 
     function recover_th($id)
         {

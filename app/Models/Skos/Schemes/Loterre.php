@@ -50,23 +50,13 @@ class Loterre extends Model
 
     function extract($json)
     {
-        $RSP = [];
-        $data = $json['data']['graph'];
-        pre($json);
-        foreach ($data as $item) {
-            $type = $item['type'] ?? '';
-            if ($type == 'skos:Concept') {
-                $prefLabel = $item['prefLabel'] ?? [];
-                $altLabel = $item['altLabel'] ?? [];
-                $hiddenLabel = $item['hiddenLabel'] ?? [];
+        $SKOSMOS = new \App\Models\Skos\Schemes\Skosmos();
+        return $SKOSMOS->extract($json);
+    }
 
-                $RSP['status'] = '200';
-                $RSP['message'] = 'Termos extraídos com sucesso.';
-                $RSP['terms']['prefLabel'] = $prefLabel;
-                $RSP['terms']['altLabel'] = $altLabel;
-                $RSP['terms']['hiddenLabel'] = $hiddenLabel;
-            }
-        }
-        return $RSP;
+    function extractID($ID)
+    {
+        $SKOSMOS = new \App\Models\Skos\Schemes\Skosmos();
+        return $SKOSMOS->extractID($ID);
     }
 }

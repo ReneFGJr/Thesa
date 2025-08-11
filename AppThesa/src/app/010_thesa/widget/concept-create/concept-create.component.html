@@ -13,13 +13,13 @@
       {{ nterm.term }} <sup>{{ nterm.lang }}</sup>
     </div>
 
-    <button type="submit" class="btn btn-primary mt-2 full">
+    <button type="submit" class="btn btn-primary mt-2 full" *ngIf="data.Terms">
       Criar conceito
     </button>
   </form>
 
   <button class="btn btn-outline-warning mt-2 full" (click)="loadOrigin()">
-    Cancelar 3
+    Fechar
   </button>
 
   <div *ngIf="showSuccess" class="alert alert-success mt-4" role="alert">

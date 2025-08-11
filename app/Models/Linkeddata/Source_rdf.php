@@ -72,10 +72,31 @@ class Source_rdf extends Model
                 $RSP['message'] = 'Loterre - ARK found';
                 $RSP['type'] = 'loterre';
                 $RSP['url'] = $url;
-            } else if (strpos($url,'/rest/v1/') !== false) {
-                $RSP['status'] = '500';
-                $RSP['message'] = 'Invalid URL for Loterre - ARK not found';
             }
+
+        } else if (strpos($url, 'vocabularies.unesco.org') !== false) {
+                /* UNESCO Thesaurus */
+                /* http://vocabularies.unesco.org/thesaurus/concept2 */
+                /* https://vocabularies.unesco.org/browser/rest/v1/thesaurus/data?uri=http%3A%2F%2Fvocabularies.unesco.org%2Fthesaurus%2Fconcept2&format=application/ld%2Bjson */
+                $uri = $url;
+                $url = 'https://vocabularies.unesco.org/browser/rest/v1/thesaurus/data?uri=' . $uri . '&format=application/json';
+                $RSP['status'] = '200';
+                $RSP['message'] = 'Unesco Thesaurus - Concept found';
+                $RSP['type'] = 'unesco';
+                $RSP['url'] = $url;
+        } else if (strpos($url, 'lod.nal.usda.gov') !== false) {
+            /* UNESCO Thesaurus */
+            /* https://lod.nal.usda.gov/nalt/en/page/17411 */
+            /* https://lod.nal.usda.gov/rest/v1/nalt/data?uri=https%3A%2F%2Flod.nal.usda.gov%2Fnalt%2F17411&format=application/ld%2Bjson */
+            $uri = $url;
+            $url = 'https://lod.nal.usda.gov/rest/v1/nalt/data?uri=' . $uri . '&format=application/json';
+            $RSP['status'] = '200';
+            $RSP['message'] = 'Usda Thesaurus - Concept found';
+            $RSP['type'] = 'usda.gov';
+            $RSP['url'] = $url;
+        } else if (strpos($url,'/rest/v1/') !== false) {
+            $RSP['status'] = '500';
+            $RSP['message'] = 'Invalid URL Linked Data';
         }
         return $RSP;
     }

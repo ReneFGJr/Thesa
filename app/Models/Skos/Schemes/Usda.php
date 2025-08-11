@@ -1,23 +1,27 @@
 <?php
 
-namespace App\Models\Property;
+namespace App\Models\Skos\Schemes;
 
 use CodeIgniter\Model;
 
-class Index extends Model
+class Usda extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'thesa_property';
-    protected $primaryKey       = 'id_p';
+    protected $table            = 'thesa_exactmatch';
+    protected $primaryKey       = 'id_em';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_p','p_name', 'p_reverse',
-        'p_equivalente', 'p_range', 'p_group',
-        'p_description','p_th','p_global'
+        'id_em',
+        'em_concept',
+        'em_link',
+        'em_type',
+        'em_source',
+        'em_visible',
+        'em_lastupdate'
     ];
 
     // Dates
@@ -44,17 +48,15 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function findPropriety($prop,$th=0)
-        {
-            $dt = $this
-                ->where('p_name',$prop)
-                ->where('(p_th = '.$th.' or p_global = 1)')
-                ->first();
+    function extract($json)
+    {
+        $SKOSMOS = new \App\Models\Skos\Schemes\Skosmos();
+        return $SKOSMOS->extract($json);
+    }
 
-            if ($dt == [])
-                {
-                    return -1;
-                }
-            return $dt['id_p'];
-        }
+    function extractID($ID)
+    {
+        $SKOSMOS = new \App\Models\Skos\Schemes\Skosmos();
+        return $SKOSMOS->extractID($ID);
+    }
 }

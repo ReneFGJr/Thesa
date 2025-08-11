@@ -138,6 +138,13 @@ class Notes extends Model
             $dd['nt_lang'] = $lang;
             $dd['updated_at'] = date('Y-m-d H:i:s');
 
+            if($dd['nt_prop'] != sonumero($dd['nt_prop']))
+                {
+                    $Property = new \App\Models\Property\Index();
+                    $prop = $dd['nt_prop'];
+                    $dd['nt_prop'] = $Property->findPropriety($prop,$th);
+                }
+
             if ($IDN == 0)
                 {
                     $this->set($dd)->insert();

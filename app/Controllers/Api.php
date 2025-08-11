@@ -74,8 +74,9 @@ class Api extends BaseController
         switch ($arg1) {
             case 'concept_import_uri':
                 $ExtractSkos = new \App\Models\Skos\ExtractSkos();
-                $url = get('url');
-                $RSP = $ExtractSkos->extract($url);
+                $url = get('uri');
+                $ThID = get('thesaID');
+                $RSP = $ExtractSkos->registerConcept($url,$ThID);
                 break;
             case 'systematic':
                 $Systematic = new \App\Models\Thesa\Systematic();
@@ -296,7 +297,6 @@ class Api extends BaseController
                 $Term = new \App\Models\Term\Index();
                 $RSP = $Term->listTermPref($arg2, $arg3);
                 break;
-
             case 'listPrefTerm':
                 $Term = new \App\Models\Term\Index();
                 $RSP = $Term->listPrefTerm($arg2);

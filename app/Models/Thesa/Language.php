@@ -73,12 +73,31 @@ class Language extends Model
                         break;
                     case 'fr':
                         $lg = 'fre';
+                    case 'ru':
+                        $lg = 'rus';
+                        break;
+                    case 'ar':
+                        $lg = 'arb';
+                        break;
                 }
             if (!isset($langs[$lg]))
                 {
-                    echo "ERRO LINGAGE $lg";
-                    pre($langs);
-                    exit;
+                    $Language = new \App\Models\Language\Index();
+
+                    if (strlen($lg) != 3) {
+                        echo "ERRO LINGAGE $lg";
+                        pre($langs);
+                    } else {
+                        $dd = [];
+                        $dd['lg_code'] = $lg;
+                        $dd['lg_language'] = $lg;
+                        $dd['lg_cod_short'] = $lg;
+                        $dd['lg_order'] = 99;
+                        $dd['lg_cod_marc'] = $lg;
+                        $dd['lg_active'] = 1;
+                        $id = $Language->register($dd);
+                        $langs[$lg] = $id;
+                    }
                 }
             return $langs[$lg];
 
@@ -87,7 +106,7 @@ class Language extends Model
     function getLanguage($th)
         {
             $dt = $this
-                ->select('lg_code,lg_language')
+                ->select('lg_code,lg_language,id_lg')
                 ->join('language', 'id_lg = lgt_language')
                 ->where('lgt_th',$th)
                 ->orderby('lgt_order')

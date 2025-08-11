@@ -80,6 +80,7 @@ import { SkosExactmathEditComponent } from './010_thesa/widget/skos/skos-exactma
 import { ConfigRelatedComponent } from './010_thesa/widget/config/config-related/config-related.component';
 import { SystematicViewerComponent } from './010_thesa/widget/systematic-viewer/systematic-viewer.component';
 import { ConceptImportThesaComponent } from './010_thesa/widget/concept-import-thesa/concept-import-thesa.component';
+import { MessageComponent } from './010_thesa/widget/message/message.component';
 
 @NgModule({
   declarations: [
@@ -157,6 +158,7 @@ import { ConceptImportThesaComponent } from './010_thesa/widget/concept-import-t
     ConfigRelatedComponent,
     SystematicViewerComponent,
     ConceptImportThesaComponent,
+    MessageComponent,
   ],
   imports: [
     BrowserModule,

@@ -63,8 +63,8 @@ class ThConceptPropriety extends Model
         $concept = sonumero(get('ida'));
         $th = sonumero(get('th'));
 
-        $Broader = new \App\Models\Thesa\Concepts\Broader();
-        return $Broader->register($th,$concept,$id);
+        $Broader = new \App\Models\Thesa\Relations\Broader();
+        return $Broader->register($th,$concept,$id,0);
     }
 
 
@@ -123,29 +123,5 @@ class ThConceptPropriety extends Model
     }
 
 
-    function register($th, $concept, $prop, $qualy, $resource, $literal)
-    {
-        $data['ct_concept'] = $concept;
-        $data['ct_propriety'] = $prop;
-        $data['ct_th'] = $th;
-        $data['ct_literal'] = $literal;
-        $data['ct_resource'] = $resource;
-        $data['ct_concept_2_qualify'] = $qualy;
-        $data['ct_use'] = 0;
 
-        $da = $this
-            ->where('ct_th', $th)
-            ->where('ct_concept', $concept)
-            ->where('ct_propriety', $prop)
-            ->where('ct_literal', $literal)
-            ->findAll();
-
-        if (count($da) == 0) {
-            $id = $this->set($data)->insert();
-
-        } else {
-            $id = $da[0]['id_ct'];
-        }
-        return $id;
-    }
 }

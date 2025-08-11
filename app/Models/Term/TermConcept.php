@@ -51,6 +51,47 @@ class TermConcept extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function register($th, $concept, $prop, $qualy, $resource, $literal)
+    {
+        $data['ct_concept'] = $concept;
+        $data['ct_propriety'] = $prop;
+        $data['ct_th'] = $th;
+        $data['ct_literal'] = $literal;
+        $data['ct_resource'] = $resource;
+        $data['ct_concept_2_qualify'] = $qualy;
+        $data['ct_use'] = 0;
+
+        /* Verifica se já existe */
+        $da = $this
+            ->where('ct_th', $th)
+            ->where('ct_concept', $concept)
+            ->where('ct_propriety', $prop)
+            ->orderBy('ct_literal')
+            ->first();
+
+        if (!$da) {
+            /* Verifica se existe conceite sem termo */
+            $db = $this
+                ->where('ct_th', $th)
+                ->where('ct_concept', $concept)
+                ->where('ct_propriety', $prop)
+                ->where('ct_literal', 0)
+                ->first();
+            if ($db) {
+                $da = $db;
+            }
+        }
+
+        if (!$da) {
+            $id = $this->set($data)->insert();
+        } else {
+            $this->set($data)->where('id_ct', $da['id_ct'])->update();
+            $id = $da['id_ct'];
+        }
+        return $id;
+    }
+
+
     function register_term_label($thesaID, $conceptID, $termID, $prop)
         {
             $ThProprity = new \App\Models\RDF\ThProprity();

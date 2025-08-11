@@ -61,7 +61,7 @@
     />
     <div
       *ngIf="submitted && urlForm.get('url')?.invalid"
-      class="text-danger small mt-1"
+      class="text-danger small mt-1 mb-2"
     >
       <span *ngIf="urlForm.get('url')?.errors?.['required']"
         >Campo obrigatório.</span
@@ -74,6 +74,8 @@
     <button class="btn btn-outline-secondary ms-2" type="button" (click)="reset2()">
       Limpar
     </button>
+
+    <app-message [data]="data"></app-message>
   </form>
 
   <!-- Só para visualizar os valores -->

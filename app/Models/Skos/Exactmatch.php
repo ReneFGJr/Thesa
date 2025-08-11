@@ -90,6 +90,31 @@ class Exactmatch extends Model
         return $RSP;
     }
 
+    function register($IDc, $URL, $type, $source, $visible)
+        {
+            $dt = $this->where('em_concept', $IDc)
+                ->where('em_link', $URL)
+                ->first();
+            if ($dt) {
+                return [
+                    'status' => '500',
+                    'message' => 'Linked Data already exists.'
+                ];
+            } else {
+                $dd = [];
+                $dd['em_concept'] = $IDc;
+                $dd['em_link'] = $URL;
+                $dd['em_type'] = $type;
+                $dd['em_source'] = $source;
+                $dd['em_visible'] = $visible;
+                $this->set($dd)->insert();
+                return [
+                    'status' => '200',
+                    'message' => 'Linked Data added successfully.'
+                ];
+            }
+        }
+
     function deleteExactMatch()
     {
         $id = get('id_em');
