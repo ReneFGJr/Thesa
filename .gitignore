@@ -3,3 +3,5 @@ writable/
 public/_acervo/
 public/_repository/users/
 .tmp/
+/Angular/Thesa/.angular/cache
+/Angular/Thesa/node_modules
