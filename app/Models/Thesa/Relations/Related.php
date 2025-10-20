@@ -15,8 +15,8 @@ class Related extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_b', 'b_th', 'b_concept_boader',
-        'b_concept_narrow', 'b_concept_master', 'updated_at'
+        'id_r', 'r_th', 'r_c1',
+        'r_c2', 'r_property', 'updated_at'
     ];
 
     // Dates
@@ -49,8 +49,6 @@ class Related extends Model
         $dt = $RelationsGroup->getGroup($th);
         return $dt;
         }
-
-
 
     function relateConcept()
     {
@@ -116,18 +114,19 @@ class Related extends Model
 
 
 
-    function register($th, $c1, $c2, $master)
+    function register($th, $c1, $c2, $type)
     {
         $sx = '';
 
-        $data['b_th'] = $th;
-        $data['b_concept_boader'] = $c1;
-        $data['b_concept_narrow'] = $c2;
-        $data['b_concept_master'] = $master;
+        $data['r_th'] = $th;
+        $data['r_c1'] = $c1;
+        $data['r_c2'] = $c2;
+        $data['r_property'] = $type;
         $data['updated_at'] = date("Y-m-d H:i:s");
 
         $dt = $this
-            ->where('b_concept_narrow', $c2)
+            ->where('r_c2', $c2)
+            ->Orwhere('r_c1', $c1)
             ->findAll();
 
         if (count($dt) == 0) {
@@ -136,26 +135,16 @@ class Related extends Model
             $RSP['status'] = '200';
             $RSP['message'] = 'OK';
         } else {
-            $sx .= bsmessage("Já existe um TG", 3);
+            $sx .= bsmessage("Já existe um TR", 3);
             $RSP['status'] = '400';
-            $RSP['message'] = 'Already exists';
-            $RSP['id'] = $dt[0]['id_b'];
+            $RSP['message'] = 'Related already exists';
+            $RSP['id'] = $dt[0]['id_r'];
         }
         return $RSP;
     }
 
-    function exist_broader($id,$th)
-        {
-        $dt = $this
-            ->where('b_concept_narrow',$id)
-            ->where('b_th',$th)
-            ->findAll();
-        if (count($dt) == 0)
-            {
-                return false;
-            }
-        return true;
-        }
+
+
     function related_candidate($th, $c)
     {
         $Relations = new \App\Models\Thesa\Relations\Relations();
@@ -186,67 +175,4 @@ class Related extends Model
         return $RSP;
     }
 
-    function broader_candidate($th, $c)
-    {
-            if ($this->exist_broader($c,$th))
-                {
-                    $sx = bsmessage(lang('thesa.already_broader'),3);
-                    return $sx;
-                }
-
-            $dc = $this->canditates_broader($th, $c);
-            $concepts = [];
-            foreach($dc as $id => $line)
-                {
-                    $dd = [];
-                    $dd['id'] = $line['c_concept'];
-                    $dd['Term'] = $line['term_name'];
-                    $dd['Lang'] = '';
-                    array_push($concepts,$dd);
-
-                }
-
-            $RSP = [];
-            $RSP['status'] = '200';
-            $RSP['message'] = 'OK';
-            $RSP['Terms'] = $concepts;
-            $RSP['th'] = $th;
-            $RSP['concept'] = $c;
-            $RSP['time'] = date("Y-m-dTH:i:s");
-            return $RSP;
-    }
-
-    function canditates_broader($th, $id)
-    {
-        $tl1 = $this
-            ->select('b_concept_narrow as idc')
-            ->join('thesa_concept', 'c_concept = b_concept_boader', 'right')
-            ->where('b_concept_boader',$id)
-            ->where('c_th', $th)
-            ->findAll();
-
-        $tl2 = $this
-            ->select('b_concept_boader as idc')
-            ->join('thesa_concept', 'c_concept = b_concept_narrow', 'right')
-            ->where('b_concept_narrow', $id)
-            ->where('c_th', $th)
-            ->findAll();
-        /********************************/
-        $Concept = new \App\Models\Thesa\Concepts\Index();
-        $Concept->select('term_name, c_concept, ct_th');
-        $Concept->join('thesa_concept_term', 'ct_concept = c_concept and ct_literal <> 0');
-        $Concept->join('thesa_terms','id_term = ct_literal');
-        foreach ($tl1 as $idx => $xline) {
-            $Concept->where('c_concept <> ' . $xline['idc']);
-        }
-        foreach ($tl2 as $idx => $xline) {
-            $Concept->where('c_concept <> ' . $xline['idc']);
-        }
-        $Concept->where('c_th', $th);
-        $Concept->where('c_concept <> ' . $id);
-
-        $Concept->orderby('term_name');
-        $dt = $Concept->findAll();
-        return $dt;
-    }
 }

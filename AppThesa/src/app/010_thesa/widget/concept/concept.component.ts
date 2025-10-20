@@ -17,6 +17,7 @@ export class ConceptComponent {
   @Input() thesaID: number = 0;
   @Input() conceptID: number = 0;
   @Output() actionAC: any = new EventEmitter<any>();
+
   data: Array<any> = [];
   formAction: FormGroup;
   title: string = 'Termos';
@@ -51,14 +52,16 @@ export class ConceptComponent {
   }
 
   onSubmit() {
-    console.log(this.formAction.value); // Aqui você acessa o ID selecionado
     let data = {
       c1: this.conceptID,
       c2: this.formAction.value.termId,
+      type: this.formAction.value.actionCV,
       property: this.actionCV,
       thesaurus: this.thesaID,
     };
+    console.log('data submit', data);
     this.serviceThesa.api_post('relateConcept', data).subscribe((res) => {
+      console.log("------------", res);
       this.actionAC.emit('relateConcept');
     });
   }
@@ -67,9 +70,14 @@ export class ConceptComponent {
     this.actionAC.emit('relateConcept');
   }
 
+  ngOnInit() {
+    this.ngOnChanges();
+  }
+
   ngOnChanges() {
     this.formAction = this.fb.group({
       termId: [''], // valor inicial
+      actionCV: [this.actionCV],
     });
 
     setTimeout(() => {
@@ -78,6 +86,7 @@ export class ConceptComponent {
         conceptID: this.conceptID,
         verb: this.actionCV,
       });
+
       /************ Titulo da Página */
       if (this.actionCV === 'broader') {
         this.title = 'Conceito Geral';
@@ -88,6 +97,7 @@ export class ConceptComponent {
         let dt = { thesaID: this.thesaID };
         this.serviceThesa.api_post('getRelationsTh', dt).subscribe((res) => {
           let dd:any = res
+          console.log(dd);
           this.related = dd?.relations || [];
         });
       }

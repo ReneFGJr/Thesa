@@ -99,9 +99,30 @@ class Relations extends Model
         return $RSP;
     }
 
-    function le_relations()
+    function le_relations($id)
         {
-            return [];
+            $Related = new \App\Models\Thesa\Relations\Related();
+            $cp = 'r_c2 as id, term_name as Term, lg_code as Lang, rp_achronic as Prop, id_r as idReg';
+            $dt1 = $Related
+                ->select($cp)
+                ->join('thesa_related_property', 'r_property = id_rp')
+                ->join('thesa_concept_term', 'r_c2 = ct_concept')
+                ->join('thesa_terms', 'ct_literal = id_term')
+                ->join('language', 'id_lg = term_lang')
+                ->where('r_c1', $id)
+                ->findAll();
+
+            $cp = 'r_c1 as id, term_name as Term, lg_code as Lang, rp_achronic_reverse as Prop, id_r as idReg';
+            $dt2 = $Related
+                ->select($cp)
+                ->join('thesa_related_property', 'r_property = id_rp')
+                ->join('thesa_concept_term', 'r_c1 = ct_concept')
+                ->join('thesa_terms', 'ct_literal = id_term')
+                ->join('language', 'id_lg = term_lang')
+                ->where('r_c2', $id)
+                ->findAll();
+
+            return array_merge($dt1, $dt2);
         }
 
 

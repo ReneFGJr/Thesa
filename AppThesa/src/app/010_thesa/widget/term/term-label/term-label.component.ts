@@ -144,4 +144,8 @@ export class TermLabelComponent {
     alert(this.termID);
     alert(this.label);
   }
+
+  deleteRelated(id: string = '') {
+    console.log('deleteRelated', id);
+  }
 }

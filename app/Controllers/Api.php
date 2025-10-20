@@ -203,8 +203,12 @@ class Api extends BaseController
                 $RSP = $this->removeRelation($arg2, $arg3);
                 break;
             case 'relateConcept':
-                $Broader = new \App\Models\Thesa\Relations\Broader();
-                $RSP = $Broader->relateConcept();
+                $Related = new \App\Models\Thesa\Relations\Related();
+                $th = get("thesaID");
+                $c1 = get("c1");
+                $c2 = get("c2");
+                $type = get("type");
+                $RSP = $Related->register($th, $c1, $c2, $type);
                 break;
             case 'related_candidate':
                 $Related = new \App\Models\Thesa\Relations\Related();
@@ -267,6 +271,9 @@ class Api extends BaseController
             case 'getRelations':
                 $Thesa = new \App\Models\Thesa\Relations\Related();
                 $dt = $_POST;
+                if ($arg2 == '') {
+                    $arg2 = get("thesaID");
+                }
                 $RSP = $Thesa->getRelations($arg2, $arg3);
                 break;
             case 'getRelationsTh':
@@ -274,6 +281,8 @@ class Api extends BaseController
                 $dt = $_POST;
                 $RSP = $Thesa->getRelationsTh($arg2, $arg3);
                 $RSP['post'] = $_POST;
+                $RSP['get'] = $_GET;
+                $RSP['arg2'] = $arg2;
                 break;
             case 'setRelationsType':
                 $Thesa = new \App\Models\Thesa\Relations\RelationsGroupTh();

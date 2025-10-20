@@ -47,8 +47,11 @@ class Broader extends Model
     {
         $ThProprity = new \App\Models\RDF\ThProprity();
 
-        $prop = get("property");
-        $prop = $ThProprity->getProperty($prop);
+        $prop = get("type");
+        if ($prop == '') {
+            $prop = get("property");
+            $prop = $ThProprity->getProperty($prop);
+        }
 
         $RSP = [];
         $dd['b_th'] = get("thesaurus");
@@ -214,7 +217,7 @@ class Broader extends Model
         } else {
             $sx .= bsmessage("Já existe um TG", 3);
             $RSP['status'] = '400';
-            $RSP['message'] = 'Already exists';
+            $RSP['message'] = 'Broader Already exists';
             $RSP['id'] = $dt[0]['id_b'];
         }
         return $RSP;

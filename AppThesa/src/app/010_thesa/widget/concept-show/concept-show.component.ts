@@ -94,6 +94,9 @@ export class ConceptShowComponent {
     } else if (this.actionAC === 'exactmatch') {
       let url = 'exactmatch/' + this.thesaID + '/' + this.conceptID;
       console.log('exactmatch', url);
+    } else if (this.actionAC === 'relateConcept') {
+      let url = 'relateConcept/' + this.thesaID + '/' + this.conceptID;
+      console.log('relateConcept', url);
     } else {
       console.log('Ação não definida: ' + this.actionAC);
     }
