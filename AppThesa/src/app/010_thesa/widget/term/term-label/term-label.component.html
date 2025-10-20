@@ -80,11 +80,15 @@
     class="option_select"
     style="list-style-type: none; padding: 0; margin: 0"
   >
+    <span *ngIf="label == 'related'">{{ term.Prop}} </span>
     <span *ngIf="!term.id">{{ term.Term }}</span>
+
     <!-- Target -->
     <a *ngIf="term.id" [routerLink]="['/c', term.id]" class="link">
       <i class="bi bi-tag-fill"></i> {{ term.Term }}
     </a>
+    <!-- Idioma-->
+    <sup style="color: #888" class="ms-2">{{ term.Lang }}</sup>
 
     <!-- Lixeirra -->
     <i
@@ -97,7 +101,6 @@
       style="color: #fbb"
     ></i>
 
-    <!-- Idioma-->
-    <sup style="color: #888" class="ms-2">{{ term.Lang }}</sup>
+
   </li>
 </ul>
