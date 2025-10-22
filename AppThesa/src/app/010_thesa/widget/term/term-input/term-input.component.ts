@@ -43,7 +43,6 @@ export class TermInputComponent {
     /* Carrega Idiomas */
     this.serviceThesa.api_post('getLanguages/' + this.thesaID, []).subscribe((res) => {
       this.languages = res;
-      console.log('Resposta do servidor:', res);
     });
   }
 
@@ -63,7 +62,7 @@ export class TermInputComponent {
       .api_post('term_add', this.formAction.value)
       .subscribe((res) => {
         this.data = res;
-        console.log('Resposta do servidor:', res);
+
         if (this.data.status == '200') {
           // Exibe a mensagem de sucesso
           this.showSuccess = true;

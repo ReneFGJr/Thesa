@@ -64,7 +64,6 @@ export class AltLabelComponent {
     let url = 'relateTerms';
     this.serviceThesa.api_post(url, this.formAction.value).subscribe(
       (res) => {
-        console.log('Resposta do servidor:', res);
         this.painelService.closeConceptPanel('popupConcept');
         this.action.emit('reload');
       },

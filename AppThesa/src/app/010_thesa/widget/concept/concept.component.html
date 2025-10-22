@@ -21,7 +21,7 @@
     <label class="bold">Tipo de relação:</label>
     <select id="actionCV" formControlName="actionCV" class="full" size="6" *ngIf="related">
       <option value="">::Select::</option>
-      <option *ngFor="let item of related" [value]="item.id_rt">
+      <option *ngFor="let item of related" [value]="item.id_rp">
         {{ item.rp_achronic }}/{{ item.rp_achronic_reverse }}
       </option>
     </select>

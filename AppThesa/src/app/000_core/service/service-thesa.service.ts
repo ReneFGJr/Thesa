@@ -43,7 +43,6 @@ export class ServiceThesaService {
 
   public api_post(type: string, dt: Array<any> | any) {
     let url = `${this.url}/${type}`;
-    console.log(`Generic: ${url}`);
 
     var formData: any = new FormData();
 

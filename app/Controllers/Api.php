@@ -436,6 +436,13 @@ class Api extends BaseController
                 $RSP['message'] = 'Relation removed';
                 $RSP['situation'] = 'GREEN';
                 break;
+            case 'related':
+                $Related = new \App\Models\Thesa\Relations\Related();
+                $dt = $Related->where('id_r', get('idr'))->delete();
+                $RSP['status'] = '200';
+                $RSP['message'] = 'Relation removed';
+                $RSP['situation'] = 'GREEN';
+                break;
             default:
                 $RSP['status'] = '400';
                 $RSP['message'] = 'Verb not informed';

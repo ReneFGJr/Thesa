@@ -66,12 +66,10 @@ export class ConceptCreateComponent {
   }
 
   onSubmit(): void {
-    console.log('Valor enviado:', this.formAction.value);
     this.serviceThesa
       .api_post('concept_create_term', this.formAction.value)
       .subscribe((res) => {
         this.data = res;
-        console.log('Resposta do servidor:', res);
         if (this.data.status == '200') {
           // Exibe a mensagem de sucesso
           this.showSuccess = true;

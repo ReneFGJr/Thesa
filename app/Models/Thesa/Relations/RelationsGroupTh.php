@@ -48,7 +48,7 @@ class RelationsGroupTh extends Model
         {
         $th = get("thesaID");
         if ($th == '') { $th = 0; } // Default to 0 if no thesaID is provided
-        $cp = 'id_rt, rp_achronic, rp_achronic_reverse, rg_name';
+        $cp = 'id_rp, rp_achronic, rp_achronic_reverse, rg_name';
         $dt = $this
             ->select($cp)
             ->join('thesa_related_group', 'rt_group = id_rg')

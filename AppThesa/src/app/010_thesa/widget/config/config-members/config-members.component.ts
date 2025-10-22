@@ -67,7 +67,6 @@ export class ConfigMembersComponent {
     this.serviceThesa.api_post('members_register', dt).subscribe(
       (res) => {
         this.results = res;
-        console.log('Resposta do servidor:', res);
         this.results = this.results.names;
         this.loading = false;
         this.getMembers(this.thesaID);

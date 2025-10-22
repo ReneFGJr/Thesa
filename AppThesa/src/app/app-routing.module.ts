@@ -14,11 +14,13 @@ import { ExportPDFComponent } from './010_thesa/page/export/export.component';
 import { ThesaMyComponent } from './010_thesa/page/thesa-my/thesa-my.component';
 import { AuthPageComponent } from './030_social/auth-page/auth-page.component';
 import { EditModePageComponent } from './010_thesa/page/edit-mode-page/edit-mode-page.component';
+import { AboutUsComponent } from './010_thesa/page/about-us/about-us.component';
 
 
 const routes: Routes = [
   { path: '', component: HomepageComponent },
   { path: 'home', component: HomepageComponent },
+  { path: 'about', component: AboutUsComponent },
   { path: 'documentation', component: ApiDocComponent },
   { path: 'thopen', component: ThOpenComponent },
   { path: 'thmy', component: ThesaMyComponent },
