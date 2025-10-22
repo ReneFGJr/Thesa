@@ -95,6 +95,10 @@ class Relations extends Model
             $RSP['status'] = '200';
             $RSP['message'] = 'Relation created';
             $RSP['id'] = $this->set($data)->insert();
+
+            $Logs = new \App\Modules\Logs\Models\LogsModel();
+            $description = 'Create relation between concept '.$data['ct_concept'].' and '.$data['ct_concept_2'].' with property '.$data['ct_propriety'];
+            $Logs->registerLogs($data['ct_th'], $data['ct_concept'], 'create_relation', $description    );
         }
         return $RSP;
     }
@@ -106,7 +110,7 @@ class Relations extends Model
             $dt1 = $Related
                 ->select($cp)
                 ->join('thesa_related_property', 'r_property = id_rp')
-                ->join('thesa_concept_term', 'r_c2 = ct_concept')
+                ->join('thesa_concept_term', 'r_c2 = ct_concept AND ct_propriety = 2')
                 ->join('thesa_terms', 'ct_literal = id_term')
                 ->join('language', 'id_lg = term_lang')
                 ->where('r_c1', $id)
@@ -116,13 +120,19 @@ class Relations extends Model
             $dt2 = $Related
                 ->select($cp)
                 ->join('thesa_related_property', 'r_property = id_rp')
-                ->join('thesa_concept_term', 'r_c1 = ct_concept')
+                ->join('thesa_concept_term', 'r_c1 = ct_concept AND ct_propriety = 2')
                 ->join('thesa_terms', 'ct_literal = id_term')
                 ->join('language', 'id_lg = term_lang')
                 ->where('r_c2', $id)
                 ->findAll();
 
-            return array_merge($dt1, $dt2);
+            $dt = array_merge($dt1, $dt2);
+            foreach( $dt as $k => $v ) {
+                $dt[$k]['Label'] = lang('app.'. $v['Prop']);
+            }
+
+
+            return $dt;
         }
 
 

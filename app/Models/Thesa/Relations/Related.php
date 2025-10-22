@@ -125,15 +125,22 @@ class Related extends Model
         $data['updated_at'] = date("Y-m-d H:i:s");
 
         $dt = $this
-            ->where('r_c2', $c2)
-            ->where('r_c1', $c1)
+            ->where('r_c1', $c2)
+            ->where('r_c2', $c1)
             ->findAll();
 
         if (count($dt) == 0) {
+            pre($data);
             $this->set($data)->insert();
             $RSP = [];
             $RSP['status'] = '200';
             $RSP['message'] = 'OK';
+
+            $Logs = new \App\Models\LogsModel();
+            $Description = "Related (Broader): ".$c1." with ".$c2;
+            $Logs->registerLogs($th, $c1, 'add_broader', $Description);
+            $Description = "Related (Narrow): ".$c1." with ".$c2;
+            $Logs->registerLogs($th, $c2, 'add_narrow', $Description);
         } else {
             $sx .= bsmessage("Já existe um TR", 3);
             $RSP['status'] = '400';

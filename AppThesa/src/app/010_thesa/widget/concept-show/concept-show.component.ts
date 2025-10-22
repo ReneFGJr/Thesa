@@ -40,6 +40,7 @@ export class ConceptShowComponent {
     { name: 'Grafo', id: 'graph', icon: 'fa-solid fa-book', content: 'graph' },
     { name: 'Ficha', id: 'card', icon: 'fa-solid fa-book', content: 'card' },
     { name: 'Notas', id: 'notas', icon: 'fa-solid fa-book', content: 'notas' },
+    { name: 'Log', id: 'log', icon: 'fa-solid fa-book', content: 'log' },
   ];
 
   constructor(

@@ -203,12 +203,27 @@ class Api extends BaseController
                 $RSP = $this->removeRelation($arg2, $arg3);
                 break;
             case 'relateConcept':
-                $Related = new \App\Models\Thesa\Relations\Related();
+                
                 $th = get("thesaID");
                 $c1 = get("c1");
                 $c2 = get("c2");
-                $type = get("type");
-                $RSP = $Related->register($th, $c1, $c2, $type);
+                $type = get("property");
+
+
+                switch ($type) {
+                    case 'broader':
+                        $Broader = new \App\Models\Thesa\Relations\Broader();
+                        $RSP = $Broader->register($th, $c1, $c2, '');
+                        break;
+                    case 'related':
+                        $Related = new \App\Models\Thesa\Relations\Related();
+                        $RSP = $Related->register($th, $c1, $c2, $type);
+                        
+                        //$Related = new \App\Models\Thesa\Relations\Related();
+                        break;
+                    }   
+                $RSP['type'] = $type;           
+                
                 break;
             case 'related_candidate':
                 $Related = new \App\Models\Thesa\Relations\Related();
@@ -470,6 +485,7 @@ class Api extends BaseController
         $Linkeddata = new \App\Models\Linkeddata\Index();
         $Exactmatch = new \App\Models\Skos\Exactmatch();
         $ConceptTopSchema = new \App\Models\Thesa\Schema\TopConcept();
+        $Logs = new \App\Models\LogsModel();
 
         $Notes = new \App\Models\Property\Notes();
         $RSP = $Concept->le($id);
@@ -492,6 +508,8 @@ class Api extends BaseController
 
         //$RSP['Collections'] = $ConceptTopSchema->getTopConceptsByThesa($id);
         $RSP['topConcept'] = $ConceptTopSchema->getTopConcept($id);
+
+        $RSP['logs'] = $Logs->getLogs($id);
         return $RSP;
     }
 

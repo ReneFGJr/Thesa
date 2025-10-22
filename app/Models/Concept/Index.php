@@ -42,12 +42,15 @@ class Index extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+    public $idC = 0;
 
     function createConcept($id,$th)
         {
             $RSP = [];
+            $Logs = new \App\Models\LogsModel();
             $TermsTh = new \App\Models\Term\TermsTh();
             $RDFproprity = new \App\Models\RDF\ThProprity();
+            $ThTerm = new \App\Models\RDF\ThTerm();
 
             $classID = $RDFproprity->getClass('prefLabel');
             $RSP['class'] = $classID;
@@ -75,6 +78,7 @@ class Index extends Model
                         }
 
                     $RSP['concept'] = $idC;
+                    $this->idC = $idC;
 
                     /*********** PrefLabel */
                     $prop = $RDFproprity->getClass('prefLabel');
@@ -96,6 +100,13 @@ class Index extends Model
                             $dd['ct_literal'] = $id;
                             $dd['ct_resource'] = 0;
                             $ThConceptPropriety->set($dd)->insert();
+
+
+                            /******************* LOGS */
+                            $term = $ThTerm->find($id);                            
+                            $description = 'Create concept "'.$term['term_name'].'" ('.$idC.')';
+                            $Logs->registerLogs($th, $this->idC, 'create_concept', $description);
+
                         } else {
                             $ThConceptPropriety->set('ct_value',$id)->where('id_ct',$da['id_ct'])->update();
                         }
@@ -110,7 +121,7 @@ class Index extends Model
         }
 
     function createConceptAPI($dt)
-        {
+        {            
             $RSP['result'] = '';
             if (!isset($dt['terms']))
                 {

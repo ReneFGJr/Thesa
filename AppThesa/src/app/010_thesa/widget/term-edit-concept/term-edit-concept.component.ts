@@ -16,6 +16,12 @@ export class TermEditConceptComponent {
   public editing: boolean = false;
   public originalTerm: string = '';
 
+  copyLabel(): void {
+    navigator.clipboard.writeText(this.data.label).then(
+      () => {}
+    );
+  }
+
   saveDefinition(def: any): void {
     // Aqui você pode enviar para API, serviço, ou apenas logar
     console.log('Salvando definição:', def.nt_content);

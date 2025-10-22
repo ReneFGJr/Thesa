@@ -82,6 +82,7 @@ import { SystematicViewerComponent } from './010_thesa/widget/systematic-viewer/
 import { ConceptImportThesaComponent } from './010_thesa/widget/concept-import-thesa/concept-import-thesa.component';
 import { MessageComponent } from './010_thesa/widget/message/message.component';
 import { AboutUsComponent } from './010_thesa/page/about-us/about-us.component';
+import { LogListConceptComponent } from './010_thesa/widget/log/log-list-concept/log-list-concept.component';
 
 @NgModule({
   declarations: [
@@ -161,6 +162,7 @@ import { AboutUsComponent } from './010_thesa/page/about-us/about-us.component';
     ConceptImportThesaComponent,
     MessageComponent,
     AboutUsComponent,
+    LogListConceptComponent,
   ],
   imports: [
     BrowserModule,

@@ -127,6 +127,10 @@
           <ng-container *ngIf="tab.content == 'card'">
             <app-concept-card [data]="data"></app-concept-card>
           </ng-container>
+          <!---------------------------------------- Log -->
+          <ng-container *ngIf="tab.content == 'log'">
+            <app-log-list-concept [data]="data"></app-log-list-concept>
+          </ng-container>          
           <!---------------------------------------- Graph -->
           <ng-container *ngIf="tab.content == 'graph'">
             <app-concept-grafo [conceptData]="data"></app-concept-grafo>

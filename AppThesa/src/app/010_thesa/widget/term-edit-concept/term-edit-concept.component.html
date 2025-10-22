@@ -3,6 +3,7 @@
   <i class="bi bi-tag-fill me-2 text-secondary"></i>
   <span class="me-1">{{ data.label }}</span>
   <sup class="text-muted">({{ data.lg_code }})</sup>
+  <sup><i class="bi bi-copy ms-2 link" title="Copiar rótulo" (click)="copyLabel()"></i></sup>
   <i
     *ngIf="editMode"
     class="bi bi-pencil-square ms-2 text-secondary"

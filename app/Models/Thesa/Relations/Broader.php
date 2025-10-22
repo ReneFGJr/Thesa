@@ -210,10 +210,15 @@ class Broader extends Model
             ->findAll();
 
         if (count($dt) == 0) {
+            
             $this->set($data)->insert();
             $RSP = [];
             $RSP['status'] = '200';
             $RSP['message'] = 'OK';
+
+            $Logs = new \App\Models\LogsModel();
+            $description = 'Create Broader between concept '.$c1.' and '.$c2.' with property '.$c1;
+            $Logs->registerLogs($data['b_th'], $data['b_concept_boader'], 'create_relation', $description);
         } else {
             $sx .= bsmessage("Já existe um TG", 3);
             $RSP['status'] = '400';

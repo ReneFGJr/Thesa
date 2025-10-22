@@ -44,6 +44,8 @@ export class ServiceThesaService {
   public api_post(type: string, dt: Array<any> | any) {
     let url = `${this.url}/${type}`;
 
+    console.log('API Post URL:', url);    
+
     var formData: any = new FormData();
 
     for (const key in dt) {
@@ -54,6 +56,8 @@ export class ServiceThesaService {
     if (apikey) {
       formData.append('apikey', apikey);
     }
+
+    console.log('API Post Data:', dt);
 
     return this.HttpClient.post<Array<any>>(url, formData).pipe(
       map((res) => res),

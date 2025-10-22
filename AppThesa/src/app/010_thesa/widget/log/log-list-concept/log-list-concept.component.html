@@ -1,0 +1,33 @@
+<div class="container mt-3">
+  <h4 class="text-primary mb-3">
+    <i class="bi bi-clock-history"></i> Histórico dos Registros
+  </h4>
+
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th style="width: 200px;">Data</th>
+          <th>Ação</th>
+          <th>Usuário</th>
+          <th>Descrição</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of data.logs">
+          <td>{{ item.created_at | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td><span class="badge bg-info text-dark">{{ item.log_action }}</span></td>
+          <td>
+            {{
+              item.us_nome
+                ?.split(' ')
+                .slice(0, 2)
+                .join(' ')
+            }}
+          </td>
+          <td>{{ item.log_description }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -80,7 +80,7 @@
     class="option_select"
     style="list-style-type: none; padding: 0; margin: 0"
   >
-    <span *ngIf="label == 'related'">{{ term.Prop}} </span>
+    <span class="italic" style="cursor: help" title="Property: {{ term.Prop }}" *ngIf="label == 'related'">{{ term.Label}} </span>
     <span *ngIf="!term.id">{{ term.Term }}</span>
 
     <!-- Target -->
