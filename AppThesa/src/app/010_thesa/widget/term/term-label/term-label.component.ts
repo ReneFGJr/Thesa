@@ -24,11 +24,10 @@ export class TermLabelComponent {
 
   deleteItem(id: string = '', label: string) {
     const confirmacao = confirm(
-      'Tem certeza que deseja excluir este conceito?'
+      'Tem certeza que deseja excluir este conceito? ' + label
     );
     if (confirmacao) {
       // Executa a exclusão
-      console.log('Item excluído');
       this.removeLabel(id, label);
       this.action.emit('reload');
     } else {
@@ -49,7 +48,7 @@ export class TermLabelComponent {
     if (confirm('Tem certeza que deseja excluir este Exact Match?')) {
       this.serviceThesa.api_post('deleteExactMatch', dt).subscribe(
         (res) => {
-          console.log('Resposta do servidor:', res);
+
         },
         (error) => {
           console.error('Erro ao enviar os dados:', error);
@@ -67,7 +66,7 @@ export class TermLabelComponent {
     if (confirm('Tem certeza que deseja excluir este Linked Data?')) {
       this.serviceThesa.api_post('deleteLinkedData', dt).subscribe(
         (res) => {
-          console.log('Resposta do servidor:', res);
+
         },
         (error) => {
           console.error('Erro ao enviar os dados:', error);
@@ -86,7 +85,7 @@ export class TermLabelComponent {
     };
     this.serviceThesa.api_post(url, dt).subscribe(
       (res) => {
-        console.log('Resposta do servidor:', res);
+        console.log(res);
       },
       (error) => {
         console.error('Erro ao enviar os dados:', error);

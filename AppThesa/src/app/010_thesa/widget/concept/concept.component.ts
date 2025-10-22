@@ -40,7 +40,6 @@ export class ConceptComponent {
     private fb: FormBuilder,
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService,
-    private painelService: PainelService
   ) {
     this.formAction = this.fb.group({
       terms: this.fb.array([], Validators.required),
@@ -61,7 +60,7 @@ export class ConceptComponent {
     };
     console.log('data submit', data);
     this.serviceThesa.api_post('relateConcept', data).subscribe((res) => {
-      console.log("------------", res);
+      console.log("Resposta", res);
       this.actionAC.emit('relateConcept');
     });
   }

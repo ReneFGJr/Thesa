@@ -126,7 +126,7 @@ class Related extends Model
 
         $dt = $this
             ->where('r_c2', $c2)
-            ->Orwhere('r_c1', $c1)
+            ->where('r_c1', $c1)
             ->findAll();
 
         if (count($dt) == 0) {

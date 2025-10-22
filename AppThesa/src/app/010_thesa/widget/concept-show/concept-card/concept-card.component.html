@@ -56,6 +56,7 @@
         <ng-container *ngFor="let rel of data.relations; let isFirst = first">
           <div class="tt">
             &nbsp;&nbsp;&nbsp;&nbsp;{{ isFirst ? 'TR' : '&nbsp;&nbsp;' }} {{ rel.Term }} <sup>({{ rel.Lang }})</sup>
+            <sup> ({{ rel.Prop }})</sup>
           </div>
         </ng-container>
 
@@ -74,6 +75,8 @@
         </ng-container>
       </td>
     </tr>
+
+
 
     <tr>
       <td>&nbsp;</td>

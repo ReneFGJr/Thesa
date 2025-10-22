@@ -3,19 +3,22 @@
     <a class="navbar-brand ms-2" [routerLink]="['/']">
       <img [src]="logo" title="Thesa" style="height: 30px" />
     </a>
+
+    <!-- botão hamburguer -->
     <button
       class="navbar-toggler"
       type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarNavX"
+      (click)="toggleMenu()"
       aria-controls="navbarNavX"
       aria-expanded="false"
       aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
+
+    <!-- conteúdo da navbar -->
     <div class="collapse navbar-collapse" id="navbarNavX">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav" (click)="closeMenu()">
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/thopen']">Thesa Abertos</a>
         </li>
@@ -23,18 +26,18 @@
           <a class="nav-link" [routerLink]="['/thmy']">Meus Thesa</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['documentation']">Documentação</a>
+          <a class="nav-link" [routerLink]="['/documentation']">Documentação</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['about']">Sobre</a>
+          <a class="nav-link" [routerLink]="['/about']">Sobre</a>
         </li>
-
       </ul>
+
       <ul class="ms-auto navbar-nav">
         <app-user-menu [user]="user"></app-user-menu>
       </ul>
     </div>
   </div>
 </nav>
-<div class="mt-5 pt-5">
-</div>
+
+<div class="mt-5 pt-5"></div>
