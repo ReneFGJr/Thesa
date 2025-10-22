@@ -24,7 +24,7 @@ export class TermLabelComponent {
 
   deleteItem(id: string = '', label: string) {
     const confirmacao = confirm(
-      'Tem certeza que deseja excluir este conceito? ' + label
+      'Tem certeza que deseja excluir este rótulo? ' + label
     );
     if (confirmacao) {
       // Executa a exclusão
