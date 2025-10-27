@@ -1,25 +1,26 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
 
 @Component({
-    selector: 'app-concept-create',
-    templateUrl: './concept-create.component.html',
-    styleUrl: './concept-create.component.scss',
-    standalone: false
+  selector: 'app-concept-create',
+  templateUrl: './concept-create.component.html',
+  styleUrl: './concept-create.component.scss',
+  standalone: false,
 })
 export class ConceptCreateComponent {
   @Input() thesaID: number = 0;
+  @Input() termListCandidate: any;
   @Output() actionAC = new EventEmitter<string>();
+
+  data: any = [];
   field: string = 'ds_term';
   orign: string = '';
-  showSuccess: boolean = false;
   showError: boolean = false;
   messageError: string = '';
 
   formAction: FormGroup;
-  data: any = [];
 
   constructor(
     private fb: FormBuilder,
@@ -27,66 +28,64 @@ export class ConceptCreateComponent {
     private serviceStorage: ServiceStorageService
   ) {
     this.formAction = this.fb.group({
-      terms: this.fb.array([]),
+      terms: this.fb.array([], { validators: [Validators.required] }),
       thesaID: [-1],
       apikey: [this.serviceStorage.get('apikey')],
     });
   }
 
-  onCheckboxChange(event: any) {
-    const termsArray: FormArray = this.formAction.get('terms') as FormArray;
+  get termsArray(): FormArray {
+    return this.formAction.get('terms') as FormArray;
+  }
 
+  ngOnInit(): void {
+    this.formAction.patchValue({ thesaID: this.thesaID });
+  }
+
+  /** ✅ Marca e desmarca individualmente */
+  onCheckboxChange(event: any) {
+    const id = event.target.value;
     if (event.target.checked) {
-      termsArray.push(new FormControl(event.target.value));
+      this.termsArray.push(new FormControl(id));
     } else {
-      const index = termsArray.controls.findIndex(
-        (x) => x.value === event.target.value
-      );
-      if (index >= 0) {
-        termsArray.removeAt(index);
-      }
+      const index = this.termsArray.controls.findIndex((x) => x.value === id);
+      if (index >= 0) this.termsArray.removeAt(index);
     }
   }
 
-  // ⛳ Este método é chamado automaticamente quando @Input() muda
-  ngOnChanges(): void {
-    this.formAction.patchValue({ thesaurus: this.thesaID });
-
-    this.serviceThesa
-      .api_post('term_list/' + this.thesaID, [])
-      .subscribe((res) => {
-        this.data = res;
-        this.formAction.patchValue({ thesaID: this.thesaID });
-      });
+  /** ✅ Verifica se um termo está marcado */
+  isChecked(id: string): boolean {
+    return this.termsArray.value.includes(id);
   }
 
-  loadOrigin() {
-    this.formAction.patchValue({ thesaID: this.thesaID });
-    this.actionAC.emit('cancel');
+  /** ✅ Selecionar todos */
+  selectAll() {
+    this.termsArray.clear();
+    this.termListCandidate.forEach((term: any) => {
+      this.termsArray.push(new FormControl(term.id));
+    });
   }
 
+  /** ✅ Desmarcar todos */
+  deselectAll() {
+    this.termsArray.clear();
+  }
+
+  /** ✅ Enviar dados */
   onSubmit(): void {
     this.serviceThesa
       .api_post('concept_create_term', this.formAction.value)
       .subscribe((res) => {
         this.data = res;
+        console.log('Resposta do conceito criado:', this.data);
         if (this.data.status == '200') {
-          // Exibe a mensagem de sucesso
-          this.showSuccess = true;
-          this.formAction.patchValue({ terms: '' });
-          this.actionAC.emit('cancel');
-
-          this.showError = true;
-          this.messageError = this.data.message;
+          this.termsArray.clear(); // limpa seleção
+          this.showError = false;
+          this.termListCandidate = [];
+          this.actionAC.emit('update');
         } else {
-          // Exibe a mensagem de erro
           this.showError = true;
-          this.messageError = this.data.message;
-
-          // Oculta após 5 segundos
-          setTimeout(() => {
-            this.showError = false;
-          }, 5000);
+          this.messageError = this.data.result;
         }
       });
   }

@@ -66,7 +66,6 @@ export class ConfigLanguageComponent {
     this.serviceThesa
       .api_post('languages_set/' + this.thesaID, dt)
       .subscribe((res: any) => {
-        console.log(res)
         this.message = res.message;
         this.showError = true;
 

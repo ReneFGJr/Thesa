@@ -23,26 +23,8 @@ export class ThesaComponent {
 
   ngOnInit() {
     this.data = this.router.params.subscribe((params) => {
-      this.thesaID = +params['id']; // (+) converts string 'id' to a number
-
-      this.serviceThesa.api_post('th/' + this.thesaID, []).subscribe(
-        (res) => {
-          this.data = res;
-          /* Edição */
-          this.editMode = this.serviceStorage.mathEditMode(this.data)
-        },
-        (error) => error
-      );
-    });
+      this.thesaID = +params['th']; // (+) converts string 'id' to a number
+    })
   }
 
-  changeTerm(term: any) {
-    const id = Number(term);
-    if (!isNaN(id)) {
-      this.termID = id;
-    } else {
-      console.error('Valor inválido para term:', term);
-      // Aqui você pode exibir um alerta, desmarcar a seleção, etc.
-    }
-  }
 }

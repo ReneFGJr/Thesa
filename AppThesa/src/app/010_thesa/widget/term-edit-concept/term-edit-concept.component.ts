@@ -49,7 +49,6 @@ export class TermEditConceptComponent {
     };
     this.serviceThesa.api_post('updateTerm', data).subscribe(
       (res) => {
-        console.log(res);
         console.log('Conceito atualizado com sucesso:', res);
       },
       (error) => {

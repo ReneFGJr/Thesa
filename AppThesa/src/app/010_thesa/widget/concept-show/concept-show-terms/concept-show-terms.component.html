@@ -6,6 +6,7 @@
         [termID]="data?.c_concept"
         [terms]="data?.prefLabel"
         [label]="'prefLabel'"
+        [thesaID]="data.c_th"
         [editMode]="editMode"
       ></app-term-label>
       <app-term-label
@@ -13,6 +14,7 @@
         [termID]="data?.c_concept"
         [terms]="data?.altLabel"
         [label]="'altLabel'"
+        [thesaID]="data.c_th"
         [editMode]="editMode"
       ></app-term-label>
       <app-term-label
@@ -20,6 +22,7 @@
         [termID]="data?.c_concept"
         [terms]="data?.hiddenLabel"
         [label]="'hiddenLabel'"
+        [thesaID]="data.c_th"
         [editMode]="editMode"
       ></app-term-label>
     </div>

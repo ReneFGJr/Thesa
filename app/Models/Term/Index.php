@@ -77,12 +77,16 @@ class Index extends Model
             $conceptID = get("conceptID");
             $prop = get("verb");
 
+            $Nterm = '';
+
             foreach($terms as $id=>$idTerm)
                 {
                 /********************************* Localiza Termo */
-                $dt = $TermsTh->where('term_th_thesa', $thesaID)
-                ->where('term_th_term', $idTerm)
-                ->first();
+                $dt = $TermsTh
+                    ->join('thesa_terms', 'thesa_terms.id_term = thesa_terms_th.term_th_term')
+                    ->where('term_th_thesa', $thesaID)
+                    ->where('term_th_term', $idTerm)
+                    ->first();
                 if ($dt == []) {
                     $RSP['status'] = '500';
                     $RSP['message'] = 'Term not found in Thesaurus';
@@ -94,12 +98,20 @@ class Index extends Model
                     if ($dt['term_th_concept'] == 0) {
                         $dd['term_th_concept'] = $conceptID;
                     $TermsTh->set($dd)->where('term_th_id', $dt['term_th_id'])->update();
+                    $Nterm .= $dt['term_name'].'; ';
                 } else {
                         $RSP['status'] = '500';
                         $RSP['message'] = 'Term already related to a concept';
                         return $RSP;
                     }
                 }
+            }
+
+            if ($RSP['status'] = '200')
+            {
+                $Logs = new \App\Models\LogsModel();
+                $description = 'Adicionado termo(s) ao conceito "'. $Nterm .'"';
+                $Logs->registerLogs($thesaID, $conceptID, 'add_'.$prop, $description, $user);
             }
 
             $RSP['status'] = '200';

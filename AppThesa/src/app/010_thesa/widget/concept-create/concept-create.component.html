@@ -4,25 +4,49 @@
       {{ messageError }}
     </div>
 
-    <div *ngFor="let nterm of data.Terms">
-      <input
-        type="checkbox"
-        [value]="nterm.id"
-        (change)="onCheckboxChange($event)"
-      />
-      {{ nterm.term }} <sup>{{ nterm.lang }}</sup>
-    </div>
+    <div *ngIf="termListCandidate">
+      <!-- Botões de seleção -->
+      <div class="mb-3">
+        <button
+          type="button"
+          class="btn btn-outline-success me-2"
+          (click)="selectAll()"
+        >
+          Selecionar tudo
+        </button>
+        <button type="button" class="btn btn-outline-warning" (click)="deselectAll()">
+          Desmarcar tudo
+        </button>
+      </div>
 
-    <button type="submit" class="btn btn-primary mt-2 full" *ngIf="data.Terms">
-      Criar conceito
-    </button>
+      <div *ngFor="let nterm of termListCandidate">
+        <input
+          type="checkbox"
+          [value]="nterm.id"
+          [checked]="isChecked(nterm.id)"
+          (change)="onCheckboxChange($event)"
+        />
+        {{ nterm.term }} <sup>{{ nterm.lang }}</sup>
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary mt-2 full"
+        [disabled]="termsArray.length === 0"
+      >
+        Criar conceito
+      </button>
+    </div>
   </form>
 
-  <button class="btn btn-outline-warning mt-2 full" (click)="loadOrigin()">
+  <button
+    type="button"
+    class=""
+    class="btn btn-outline-warning btn-close2 mt-2 full"
+    data-bs-dismiss="offcanvas"
+    aria-label="Fechar"
+  >
     Fechar
   </button>
 
-  <div *ngIf="showSuccess" class="alert alert-success mt-4" role="alert">
-    Dados salvos com sucesso!
-  </div>
 </div>

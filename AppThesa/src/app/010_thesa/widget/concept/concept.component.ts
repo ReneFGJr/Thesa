@@ -52,13 +52,12 @@ export class ConceptComponent {
 
   onSubmit() {
     let data = {
-      c1: this.conceptID,
-      c2: this.formAction.value.termId,
+      c2: this.conceptID,
+      c1: this.formAction.value.termId,
       type: this.formAction.value.actionCV,
       property: this.actionCV,
-      thesaurus: this.thesaID,
+      thesaID: this.thesaID,
     };
-    console.log('data submit', data);
     this.serviceThesa.api_post('relateConcept', data).subscribe((res) => {
       console.log("Resposta", res);
       this.actionAC.emit('relateConcept');

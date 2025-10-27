@@ -22,10 +22,11 @@ export class ConceptShowComponent {
   @ViewChild('offcanvasNovo') offcanvasNovo!: ElementRef;
   @Input() thesaID: number = 0;
   @Input() conceptID: number = 0;
-  actionAC: string = '';
-  data: any;
+  @Input() dataConcept: any;
   @Input() editMode: boolean = false;
+  @Output() termChange: EventEmitter<string> = new EventEmitter<string>();
   terms: Array<any> | any;
+  actionAC: string = '';
 
   /* Messagems */
   title = language.thesa.conceptShow.title;
@@ -53,7 +54,6 @@ export class ConceptShowComponent {
   actionUpdate(ev: Event) {
     let actionACev = ev.toString();
     console.log('#1-actionUpdate#', actionACev);
-    this.ngOnChanges();
   }
 
   updateTerms() {
@@ -98,40 +98,31 @@ export class ConceptShowComponent {
     } else if (this.actionAC === 'relateConcept') {
       let url = 'relateConcept/' + this.thesaID + '/' + this.conceptID;
       console.log('relateConcept', url);
+    } else if (this.actionAC === 'reload') {
+      // Recarrega os dados do conceito
     } else {
       console.log('Ação não definida: ' + this.actionAC);
     }
   }
 
+  updateData() {
+    console.log('##########ngOnChanges ConceptShowComponent', this.conceptID);
+  }
+
   action(ev: Event) {
+    //alert('OI - concept-show.component.ts ' + ev.toString());
     this.actionAC = ev.toString();
     if (this.actionAC != '') {
       this.updateTerms();
-      if (
-        this.actionAC === 'relateConcept' ||
-        this.actionAC === 'cancel' ||
-        this.actionAC === 'reload'
-      ) {
+
+      if (this.actionAC === 'reload') {
+        // Recarrega os dados do conceito
+        this.termChange.emit(this.actionAC);
         this.painelService.closeConceptPanel('popupConcept');
-        console.log('#2-action', this.actionAC);
-        this.ngOnChanges();
-        //alert("reload")
       } else {
         this.painelService.openConceptPanel('popupConcept');
       }
+
     }
-  }
-
-  ngOnInit() {
-    this.ngOnChanges();
-  }
-
-  ngOnChanges() {
-    this.serviceThesa.api_post('c/' + this.conceptID, []).subscribe(
-      (res) => {
-        this.data = res;
-      },
-      (error) => error
-    );
   }
 }

@@ -1,14 +1,15 @@
 <!-- Caixa de input com botão "plus" embutido -->
-<div class="input-group mb-2">
+<div class="input-group mb-2" *ngIf="termListCandidate?.Terms">
   <input
     type="text"
     class="form-control"
     placeholder="Buscar termo..."
     [(ngModel)]="filterText"
   />
+
   <!------- Termos não associados-->
   <span
-    *ngIf="editMode && termTotal > 0"
+    *ngIf="editMode && termListCandidate.Terms.length > 0"
     class="input-group-text"
     role="button"
     title="Termos não associados"
@@ -16,9 +17,11 @@
     data-bs-target="#termPainel"
     aria-controls="termPainel"
     style="background-color: #ccf; color: #000"
+    (click)="loadTermsNotAssociated()"
   >
-    {{ termTotal }}
+    {{ termListCandidate.Terms.length }}
   </span>
+
 
   <span
     *ngIf="editMode"
@@ -48,6 +51,7 @@
 <!-- Offcanvas (painel lateral tipo PANEL) -->
 <!-- Import Concept -->
 <div
+  *ngIf="termListCandidate?.Terms"
   class="offcanvas offcanvas-end"
   tabindex="-1"
   id="importConcept"
@@ -85,7 +89,7 @@
     <!-- Conteúdo do painel -->
     <app-term-input
       [thesaID]="thesa"
-      (action)="actionAC($event)"
+      (action)="actionACfcn($event)"
     ></app-term-input>
   </div>
 </div>
@@ -97,6 +101,7 @@
   tabindex="-1"
   id="termPainel"
   aria-labelledby="termPainelLabel"
+  *ngIf="termListCandidate?.Terms"
 >
   <div class="offcanvas-header">
     <h5 id="termPainelLabel">Termos para candidatos a conceito</h5>
@@ -107,11 +112,12 @@
       aria-label="Fechar"
     ></button>
   </div>
-  <div class="offcanvas-body">
+  <div class="offcanvas-body" *ngIf="termListCandidate.Terms">
     <!-- Conteúdo do painel -->
     <app-concept-create
       [thesaID]="thesa"
-      (actionAC)="actionAC($event)"
+      [termListCandidate]="termListCandidate?.Terms"
+      (actionAC)="actionACfcn($event)"
     ></app-concept-create>
   </div>
 </div>

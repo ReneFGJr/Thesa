@@ -35,7 +35,6 @@ export class SigninComponent {
 
     this.serviceThesa.api_post('social/login', { email, password }).subscribe(
       (res) => {
-        console.log(res);
         this.data = res;
         if (this.data.status == '200') {
           console.log('Logado com sucesso');

@@ -11,7 +11,7 @@
     ></app-term-label>
     <app-concept-top-concept *ngIf="data?.topConcept"></app-concept-top-concept>
 
-    <app-term-label
+    <app-term-label *ngIf="data"
       (action)="action($event)"
       [thesaID]="data.c_th"
       [termID]="data?.c_concept"

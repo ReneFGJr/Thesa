@@ -23,21 +23,31 @@ export class PainelService {
 
   closeConceptPanel(element: string = 'popupConcept') {
     const el = document.getElementById(element);
+
     if (el && el.classList.contains('show')) {
       el.classList.remove('show');
-
-      // Remove o backdrop do offcanvas
-      const backdrop = document.querySelector('.offcanvas-backdrop');
-      if (backdrop) {
-        backdrop.remove();
-      }
-
-      // Também remove a classe do body, se necessário
-      document.body.classList.remove(
-        'offcanvas-backdrop',
-        'offcanvas-backdrop-open',
-        'modal-open'
-      );
     }
+
+    // ✅ Remove backdrop se existir
+    const backdrop = document.querySelector('.offcanvas-backdrop');
+    if (backdrop) {
+      backdrop.remove();
+    }
+
+    // ✅ Remove classes residuais
+    document.body.classList.remove(
+      'offcanvas-backdrop',
+      'offcanvas-backdrop-open',
+      'modal-open'
+    );
+
+    // ✅ Restaura o scroll do body
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+
+    // ✅ Corrige possíveis travas visuais no HTML também (caso o Bootstrap tenha aplicado)
+    const html = document.documentElement;
+    html.style.overflow = '';
+    html.classList.remove('offcanvas-backdrop', 'modal-open');
   }
 }

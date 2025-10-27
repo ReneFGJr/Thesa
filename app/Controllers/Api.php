@@ -203,14 +203,14 @@ class Api extends BaseController
                 $RSP = $this->removeRelation($arg2, $arg3);
                 break;
             case 'relateConcept':
-                
+
                 $th = get("thesaID");
                 $c1 = get("c1");
                 $c2 = get("c2");
-                $type = get("property");
+                $property = get("property");
+                $type = get("type");
 
-
-                switch ($type) {
+                switch ($property) {
                     case 'broader':
                         $Broader = new \App\Models\Thesa\Relations\Broader();
                         $RSP = $Broader->register($th, $c1, $c2, '');
@@ -218,12 +218,12 @@ class Api extends BaseController
                     case 'related':
                         $Related = new \App\Models\Thesa\Relations\Related();
                         $RSP = $Related->register($th, $c1, $c2, $type);
-                        
+
                         //$Related = new \App\Models\Thesa\Relations\Related();
                         break;
-                    }   
-                $RSP['type'] = $type;           
-                
+                    }
+                $RSP['type'] = $type;
+
                 break;
             case 'related_candidate':
                 $Related = new \App\Models\Thesa\Relations\Related();
@@ -414,6 +414,7 @@ class Api extends BaseController
 
     function removeRelation()
     {
+        $dr = [];
         $verb = get("type");
         if ($verb == 'narrow') {
             $verb = 'broader';
@@ -427,7 +428,17 @@ class Api extends BaseController
         switch ($verb) {
             case 'altLabel':
                 $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
-                $dr = $ThConceptPropriety->where('id_ct', get('idr'))->first();
+                $dr = $ThConceptPropriety
+                    ->join('thesa_terms', 'thesa_terms.id_term = ct_literal', 'left')
+                    ->where('id_ct', get('idr'))
+                    ->where('ct_th', get('thesaID'))
+                    ->first();
+
+                if (!$dr) {
+                    $RSP['status'] = '400';
+                    $RSP['message'] = 'Relation not found';
+                    return $RSP;
+                }
 
                 $TermsTh = new \App\Models\Term\TermsTh();
                 $dx = [];
@@ -464,6 +475,12 @@ class Api extends BaseController
                 $RSP['verb'] = $verb;
                 $RSP['post'] = $_POST;
                 break;
+        }
+
+        if ($RSP['status'] == '200') {
+            $Logs = new \App\Models\LogsModel();
+            $description = 'Removido ' . $dr['term_name'] . ' (' . $verb . ') ';
+            $Logs->registerLogs(get('thesaID'), $dr['ct_concept'], 'remove_'.$verb, $description);
         }
         return $RSP;
     }

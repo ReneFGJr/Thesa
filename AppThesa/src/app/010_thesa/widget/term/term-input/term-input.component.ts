@@ -1,6 +1,6 @@
 import { language } from './../../../../../language/language_pt';
 import { Component, EventEmitter, Input, Output, output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ServiceThesaService } from '../../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../../000_core/service/service-storage.service';
 import { PainelService } from '../../../../000_core/service/painel.service';
@@ -32,8 +32,8 @@ export class TermInputComponent {
     private painelService: PainelService
   ) {
     this.formAction = this.fb.group({
-      terms: [''],
-      lang: [1],
+      terms: ['', Validators.required],
+      lang: ['', Validators.required],
       thesaID: [-1],
       apikey: [this.serviceStorage.get('apikey')],
     });

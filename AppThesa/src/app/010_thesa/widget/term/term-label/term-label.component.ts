@@ -79,13 +79,13 @@ export class TermLabelComponent {
     let url = 'removeRelation';
     let dt = {
       terms: this.termID,
-      thesaID: this.serviceStorage.get('thesaID'),
+      thesaID: this.thesaID,
       idr: id,
       type: label,
     };
     this.serviceThesa.api_post(url, dt).subscribe(
       (res) => {
-        console.log(res);
+        console.log(url);
       },
       (error) => {
         console.error('Erro ao enviar os dados:', error);
@@ -114,7 +114,6 @@ export class TermLabelComponent {
       this.termLabel = 'Termo Oculto';
     } else if (this.label === 'broader') {
       this.termLabel = 'Conceito Geral (TG)';
-      console.log('=x=x=x=>', this.terms.length);
       if (this.terms.length > 0) {
         this.editPlus = false;
       } else {
@@ -136,11 +135,11 @@ export class TermLabelComponent {
   }
 
   onSelectTerm(term: any) {
-    alert(term);
+    alert("TERM1" + term);
   }
 
   newTerm() {
-    alert(this.termID);
+    alert('TERM2' + this.termID);
     alert(this.label);
   }
 

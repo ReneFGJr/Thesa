@@ -24,7 +24,7 @@ const routes: Routes = [
   { path: 'documentation', component: ApiDocComponent },
   { path: 'thopen', component: ThOpenComponent },
   { path: 'thmy', component: ThesaMyComponent },
-  { path: 'thesa/:id', component: ThesaComponent },
+  { path: 'thesa/:th', component: ThesaComponent },
   { path: 'about/:id', component: AboutThComponent },
   { path: 'configuration/:id', component: ConfigurationComponent },
   { path: 'chageEditMode/:thesaID/:id', component: EditModePageComponent },

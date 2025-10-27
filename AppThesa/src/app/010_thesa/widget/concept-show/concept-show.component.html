@@ -2,22 +2,20 @@
   Loading ... {{ thesaID }}
 </div>
 
-<app-concept-404 *ngIf="data?.status=='404'"></app-concept-404>
+<app-concept-404 *ngIf="dataConcept?.status=='404'"></app-concept-404>
 
-<div *ngIf="data && (data?.status !='404')" class="container">
+<div *ngIf="dataConcept && (dataConcept?.status !='404')" class="container">
   <div class="row">
     <div class="col-10 col-lg-10 col-md-8 col-sm-8">
-      <h2>
-        <app-term-edit-concept [data]="data" [editMode]="editMode"></app-term-edit-concept>
-        <app-top-concept [data]="data" [editMode]="editMode"></app-top-concept>
-      </h2>
+        <app-term-edit-concept [data]="dataConcept" [editMode]="editMode"></app-term-edit-concept>
+        <app-top-concept [data]="dataConcept" [editMode]="editMode"></app-top-concept>
     </div>
 
     <div class="col-12 col-lg-2 col-md-4 col-sm-4 text-end">
       <app-concept-delete [conceptID]="conceptID" [editMode]="editMode"></app-concept-delete>
       <i
         class="bi bi-arrow-clockwise float-start p-1 link"
-        (click)="ngOnChanges()"
+        (click)="updateData()"
       ></i>
       <app-concept-link [conceptLink]="conceptID"></app-concept-link>
     </div>
@@ -65,14 +63,14 @@
                   <!-- Terminology -->
                   <app-concept-show-terms
                     (actionAC)="action($event)"
-                    [data]="data"
+                    [data]="dataConcept"
                     [editMode]="editMode"
                   ></app-concept-show-terms>
 
                   <!-- Concepts Relations -->
                   <app-concept-show-concepts
                     (actionAC)="action($event)"
-                    [data]="data"
+                    [data]="dataConcept"
                     [editMode]="editMode"
                   ></app-concept-show-concepts>
 
@@ -80,7 +78,7 @@
                   <app-notes-show
                     (actionNotes)="actionUpdate($event)"
                     [editMode]="editMode"
-                    [notes]="data.notes"
+                    [notes]="dataConcept.notes"
                     [thesaID]="thesaID"
                     [conceptID]="conceptID"
                   ></app-notes-show>
@@ -89,7 +87,7 @@
                   <app-skos-exactmath
                     (actionLD)="action($event)"
                     [editMode]="editMode"
-                    [data]="data.exactmatch"
+                    [data]="dataConcept.exactmatch"
                     [thesaID]="thesaID"
                     [conceptID]="conceptID"
                   ></app-skos-exactmath>
@@ -98,14 +96,14 @@
                   <app-linkedata
                     (actionLD)="action($event)"
                     [editMode]="editMode"
-                    [data]="data.linkeddata"
+                    [data]="dataConcept.linkeddata"
                     [thesaID]="thesaID"
                     [conceptID]="conceptID"
                   ></app-linkedata>
                 </div>
                 <div class="col-12 col-lg-3 col-md-4 col-sm-4">
                   <app-video-play-show
-                    [medias]="data?.medias"
+                    [medias]="dataConcept?.medias"
                   ></app-video-play-show>
                 </div>
               </div>
@@ -118,22 +116,22 @@
             <app-notes-show
               (actionNotes)="actionUpdate($event)"
               [editMode]="editMode"
-              [notes]="data.notes"
+              [notes]="dataConcept.notes"
               [thesaID]="thesaID"
               [conceptID]="conceptID"
             ></app-notes-show>
           </ng-container>
           <!---------------------------------------- Card -->
           <ng-container *ngIf="tab.content == 'card'">
-            <app-concept-card [data]="data"></app-concept-card>
+            <app-concept-card [data]="dataConcept"></app-concept-card>
           </ng-container>
           <!---------------------------------------- Log -->
           <ng-container *ngIf="tab.content == 'log'">
-            <app-log-list-concept [data]="data"></app-log-list-concept>
-          </ng-container>          
+            <app-log-list-concept [data]="dataConcept"></app-log-list-concept>
+          </ng-container>
           <!---------------------------------------- Graph -->
           <ng-container *ngIf="tab.content == 'graph'">
-            <app-concept-grafo [conceptData]="data"></app-concept-grafo>
+            <app-concept-grafo [conceptData]="dataConcept"></app-concept-grafo>
           </ng-container>
         </div>
       </div>

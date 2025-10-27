@@ -60,6 +60,20 @@ class Index extends Model
                     ->where('term_th_term', $id)
                     ->first();
 
+            if ($dt == [])
+                {
+                    $dd = [];
+                    $dd['term_th_term'] = $id;
+                    $dd['term_th_thesa'] = $th;
+                    $dd['term_th_concept'] = 0;
+                    $dd['term_th_status'] = 1;
+                    $TermsTh->set($dd)->insert();
+                    $dt = $TermsTh
+                        ->where('term_th_thesa',$th)
+                        ->where('term_th_term', $id)
+                        ->first();
+                }
+
             if ($dt['term_th_concept'] == 0)
                 {
                     $dc = [];
@@ -80,6 +94,7 @@ class Index extends Model
                     $RSP['concept'] = $idC;
                     $this->idC = $idC;
 
+
                     /*********** PrefLabel */
                     $prop = $RDFproprity->getClass('prefLabel');
                     $ThConceptPropriety = new \App\Models\RDF\ThConceptPropriety();
@@ -88,6 +103,7 @@ class Index extends Model
                         ->where('ct_concept',$idC)
                         ->where('ct_propriety',$prop)
                         ->first();
+
 
                     if ($da == [])
                         {
@@ -103,12 +119,15 @@ class Index extends Model
 
 
                             /******************* LOGS */
-                            $term = $ThTerm->find($id);                            
+                            $term = $ThTerm->find($id);
                             $description = 'Create concept "'.$term['term_name'].'" ('.$idC.')';
                             $Logs->registerLogs($th, $this->idC, 'create_concept', $description);
 
                         } else {
-                            $ThConceptPropriety->set('ct_value',$id)->where('id_ct',$da['id_ct'])->update();
+                            if ($da['ct_literal'] == 0)
+                                {
+                                    $ThConceptPropriety->set('ct_literal',$id)->where('id_ct',$da['id_ct'])->update();
+                                }
                         }
 
                     $dd = [];
@@ -116,12 +135,12 @@ class Index extends Model
                     $TermsTh->set($dd)->where('term_th_id',$dt['term_th_id'])->update();
                     return("Termo criado com sucesso: ".$idC);
                 } else {
-                    return('Termo já existe');
+                    return('Termo já existe: ' . $id.' - '.$th);
                 }
         }
 
     function createConceptAPI($dt)
-        {            
+        {
             $RSP['result'] = '';
             if (!isset($dt['terms']))
                 {
@@ -145,6 +164,7 @@ class Index extends Model
                     foreach($RSP['terms'] as $id=>$item)
                         {
                             $RSP['result'] .= $this->createConcept($item, $th);
+                            $RSP['status'] = '200';
                         }
                 }
             return $RSP;

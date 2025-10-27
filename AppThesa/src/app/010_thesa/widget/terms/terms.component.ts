@@ -6,21 +6,23 @@ import { Offcanvas } from 'bootstrap';
 import { PainelService } from '../../../000_core/service/painel.service';
 
 @Component({
-    selector: 'app-terms',
-    templateUrl: './terms.component.html',
-    styleUrl: './terms.component.scss',
-    standalone: false
+  selector: 'app-terms',
+  templateUrl: './terms.component.html',
+  styleUrl: './terms.component.scss',
+  standalone: false,
 })
 export class TermsComponent {
   @ViewChild('offcanvasNovo') offcanvasNovo!: ElementRef;
   @Input() thesa: number = 0;
   @Input() actionVC: Array<any> = [];
   @Input() editMode: boolean = false;
+  @Input() termList: Array<any> | any;
+  @Input() termListCandidate: Array<any> | any;
   @Output() termChange: EventEmitter<any> = new EventEmitter<any>();
 
   action: string = '';
   termsList: any;
-  terms: any;
+
   filterText: string = '';
   selectedTerm: any = null;
   selectedConcept: any = null;
@@ -30,16 +32,27 @@ export class TermsComponent {
 
   constructor(
     private serviceThesa: ServiceThesaService,
-    private serviceStorage: ServiceStorageService,
-    private router: ActivatedRoute,
     private painelService: PainelService
   ) {}
 
-  actionAC(ev: Event | any) {
+  actionACfcn(ev: Event | any): string {
+    let action = ev.toString();
+
+    if (action === 'cancel') {
+      return ""
+    }
+    alert("Recebido evento: " + ev.toString());
+
     let actionACev = ev.toString();
-    console.log('#3-actionUpdate', actionACev);
-    this.ngOnChanges();
     this.painelService.closeConceptPanel('termPainel');
+
+    /* Atualiza dados */
+    this.updateData();
+    return "OK"
+  }
+
+  updateData() {
+    this.termChange.emit('update');
   }
 
   //<!-------------- TooglePanel --------------->
@@ -48,14 +61,12 @@ export class TermsComponent {
     bsOffcanvas.show();
   }
 
-  ngOnChanges() {
-    this.serviceThesa.api_post('terms/' + this.thesa, []).subscribe(
-      (res) => {
-        this.terms = res;
-      },
-      (error) => error
-    );
+  loadTermsNotAssociated() {
     this.updateTermosList();
+  }
+
+  ngOnChanges() {
+    //this.termChange.emit('update');
   }
 
   updateTermosList() {
@@ -69,9 +80,9 @@ export class TermsComponent {
   }
 
   filteredTerms(): any[] {
-    if (!this.terms?.terms) return [];
+    if (!this.termList?.terms) return [];
 
-    return this.terms.terms.filter((term: any) =>
+    return this.termList.terms.filter((term: any) =>
       term.Term.toLowerCase().includes(this.filterText.toLowerCase())
     );
   }
