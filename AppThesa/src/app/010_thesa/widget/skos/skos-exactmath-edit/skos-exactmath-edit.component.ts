@@ -5,8 +5,7 @@ import { ServiceThesaService } from '../../../../000_core/service/service-thesa.
 @Component({
   selector: 'app-skos-exactmath-edit',
   standalone: false,
-  templateUrl: './skos-exactmath-edit.component.html',
-  styleUrl: './skos-exactmath-edit.component.scss',
+  templateUrl: './skos-exactmath-edit.component.html'
 })
 export class SkosExactmathEditComponent {
   @Input() conceptID: number = 0;
@@ -50,12 +49,12 @@ export class SkosExactmathEditComponent {
       };
       this.serviceThesa.api_post('exactmatch', dt).subscribe({
         next: (response) => {
-          console.log('Link data added successfully:', response);
           this.data = response;
           if (this.data.status != '200') {
             this.message = this.data?.message || 'Error adding link data';
           } else if (this.data?.status == '200') {
             this.linkForm.reset();
+            this.actionAC.emit('reload');
           }
 
         },
