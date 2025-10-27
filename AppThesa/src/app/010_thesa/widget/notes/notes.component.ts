@@ -22,7 +22,7 @@ export class NotesComponent implements OnInit, AfterViewInit {
   @Input() editMode: boolean = false;
   @Input() thesaID: number = 0;
   @Input() conceptID: number = 0;
-  @Output() actionNotes = new EventEmitter<any>();
+  @Output() actionAC = new EventEmitter<any>();
 
   @ViewChild('offcanvasNovo', { static: true }) offcanvasEl!: ElementRef;
   offcanvasInstance!: Offcanvas;
@@ -67,7 +67,7 @@ export class NotesComponent implements OnInit, AfterViewInit {
     if (confirm('Deseja realmente excluir esta nota?')) {
       this.serviceThesa.api_post('deleteNote', { noteID: id }).subscribe(
         (res) => {
-          this.actionNotes.emit('OK deleteNotes');
+          this.actionAC.emit('reload');
         },
         (err) => console.error(err)
       );
@@ -120,6 +120,6 @@ export class NotesComponent implements OnInit, AfterViewInit {
       (err) => console.error(err)
     );
     this.offcanvasInstance.hide();
-    this.actionNotes.emit('OK Notes');
+    this.actionAC.emit('reload');
   }
 }
