@@ -76,7 +76,7 @@
 
                   <!-- Notes -->
                   <app-notes-show
-                    (actionNotes)="actionUpdate($event)"
+                    (actionAC)="action($event)"
                     [editMode]="editMode"
                     [notes]="dataConcept.notes"
                     [thesaID]="thesaID"
@@ -189,7 +189,6 @@
       <app-concept-relation
         [editMode]="editMode"
         [terms]="terms?.Terms"
-        [actionCV]="actionAC"
         [conceptID]="conceptID"
         [thesaID]="thesaID"
         (actionAC)="action($event)"
@@ -198,11 +197,18 @@
     </ng-container>
     <!------------------------------------------- Exact Match ------------>
     <ng-container *ngIf="actionAC === 'exactMatch'">
-    <app-skos-exactmath-edit [conceptID]="conceptID" [thesaID]="thesaID"></app-skos-exactmath-edit>
+    <app-skos-exactmath-edit
+        [conceptID]="conceptID"
+        [thesaID]="thesaID"
+        (actionAC)="action($event)"
+        ></app-skos-exactmath-edit>
     </ng-container>
     <!------------------------------------------- Linked Data------------->
     <ng-container *ngIf="actionAC === 'linkeddata'">
-    <app-linkedata-edit [conceptID]="conceptID" [thesaID]="thesaID"></app-linkedata-edit>
+    <app-linkedata-edit
+          [conceptID]="conceptID"
+          [thesaID]="thesaID"
+          (actionAC)="action($event)"></app-linkedata-edit>
     </ng-container>
   </div>
 </div>
