@@ -30,6 +30,7 @@ export class TermLabelComponent {
       // Executa a exclusão
       this.removeLabel(id, label);
       this.action.emit('reload');
+      alert("Reload")
     } else {
       // Cancela a exclusão
       console.log('Exclusão cancelada');
@@ -48,7 +49,7 @@ export class TermLabelComponent {
     if (confirm('Tem certeza que deseja excluir este Exact Match?')) {
       this.serviceThesa.api_post('deleteExactMatch', dt).subscribe(
         (res) => {
-
+          this.action.emit('reload');
         },
         (error) => {
           console.error('Erro ao enviar os dados:', error);

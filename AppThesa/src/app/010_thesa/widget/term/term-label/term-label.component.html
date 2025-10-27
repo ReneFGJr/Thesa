@@ -28,11 +28,6 @@
 
     <i
       *ngIf="editMode == true"
-      class="bi bi-pencil-square link"
-      (click)="editLinkedData(term.idReg)"
-    ></i>
-    <i
-      *ngIf="editMode == true"
       class="bi bi-trash ms-2 link"
       style="color: #fbb"
       (click)="deleteExactMatch(term.idReg)"

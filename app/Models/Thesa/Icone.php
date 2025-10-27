@@ -135,6 +135,7 @@ class Icone extends Model
         $RSP['message'] = 'Imagem salva com sucesso';
         $RSP['filename'] = $filename;
         $RSP['path'] = $filepath;
+        $RSP['uploadPath'] = $uploadPath;
         return $RSP;
     }
 
