@@ -44,13 +44,12 @@ export class ThemeUploadComponent {
       thesaID: this.thesaID, // Substitua pelo ID real do Thesa
     };
 
-    console.log('Selected file:', dt);
-
     const url = 'uploadSchema';
     this.ServiceThesa.api_post(url, dt).subscribe(
       (res) => {
         this.data = res;
         this.actionAC.emit(this.previewUrl as string);
+        console.log(res);
       },
       (error) => error
     );

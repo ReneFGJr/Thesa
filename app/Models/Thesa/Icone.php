@@ -44,7 +44,7 @@ class Icone extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public $directory = '../_repository/icones/';
+    public $directory = 'img/icons/';
     public $filePath = '';
     public $filePathExt = '';
 
@@ -57,7 +57,7 @@ class Icone extends Model
             parent::__construct();
             if ($_SERVER['SERVER_ADDR'] == '143.54.1.197')
                 {
-                    $this->directory = 'public/img/';
+                    $this->directory = 'img/icons/';
                 }
         }
 
@@ -153,7 +153,14 @@ class Icone extends Model
             if (file_exists($img)) {
                 $this->filePath = $img;
                 $this->filePathExt = troca($ext,'.','');
-                $img = base_url('image/icone/'.$dt['id_th']);
+
+                $size = $this->getImageResolution($img);
+                if ($size['width'] > 200 || $size['height'] > 200)
+                    {
+                        $this->resizeImage200('icone_'.strzero($dt['id_th'],4).$ext,$PATH.$this->directory);
+                    }
+
+                $img = base_url($this->directory . 'icone_' . strzero($dt['id_th'], 4) . $ext);
                 return $img;
                 break;
             }
@@ -256,4 +263,124 @@ class Icone extends Model
         return $sx;
         }
 
+    /**
+     * Retorna a resolução (largura e altura) de uma imagem.
+     *
+     * @param string $file Caminho local da imagem ou URL (se allow_url_fopen estiver ativo)
+     * @return array|false Retorna ['width' => LARGURA, 'height' => ALTURA] ou FALSE se falhar
+     */
+    function getImageResolution(string $file)
+    {
+        // Verifica se é uma URL e tenta baixar temporariamente, se necessário
+        if (filter_var($file, FILTER_VALIDATE_URL)) {
+            $tmpFile = tempnam(sys_get_temp_dir(), 'img');
+            $data = @file_get_contents($file);
+            if ($data === false) {
+                return false;
+            }
+            file_put_contents($tmpFile, $data);
+            $file = $tmpFile;
+        }
+
+        // Verifica se o arquivo existe
+        if (!file_exists($file)) {
+            return false;
+        }
+
+        // Obtém informações da imagem
+        $info = @getimagesize($file);
+        if ($info === false) {
+            return false;
+        }
+
+        // Retorna largura e altura
+        return [
+            'width'  => $info[0],
+            'height' => $info[1],
+            'mime'   => $info['mime'] ?? null
+        ];
+    }
+
+
+    /**
+     * Reduz uma imagem para 200x200 pixels, mantendo cópia do original.
+     *
+     * @param string $filename Nome do arquivo (ex: "icone_0004.png")
+     * @param string $baseDir Diretório onde está a imagem (ex: "/var/www/html/img/icons")
+     * @return string Caminho da nova imagem reduzida ou mensagem de erro
+     */
+    function resizeImage200(string $filename, string $baseDir): string
+    {
+        $filePath = rtrim($baseDir, '/') . '/' . $filename;
+
+        // 1. Verifica se o arquivo existe
+        if (!file_exists($filePath)) {
+            return "Erro: arquivo não encontrado em $filePath";
+        }
+
+        // 2. Cria cópia de segurança .original
+        $pathInfo = pathinfo($filePath);
+        $backupBase = $pathInfo['dirname'] . '/' . $pathInfo['filename'] . '.original';
+        $backupExt  = $pathInfo['extension'];
+        $backupFile = "$backupBase.$backupExt";
+        $count = 1;
+        while (file_exists($backupFile)) {
+            $backupFile = sprintf("%s.%03d.%s", $backupBase, $count, $backupExt);
+            $count++;
+        }
+        copy($filePath, $backupFile);
+
+        // 3. Determina tipo da imagem
+        $type = strtolower($pathInfo['extension']);
+        switch ($type) {
+            case 'jpg':
+            case 'jpeg':
+                $src = imagecreatefromjpeg($filePath);
+                break;
+            case 'png':
+                $src = imagecreatefrompng($filePath);
+                break;
+            case 'gif':
+                $src = imagecreatefromgif($filePath);
+                break;
+            default:
+                return "Formato não suportado: .$type";
+        }
+
+        // 4. Cria imagem destino 200x200
+        $width = imagesx($src);
+        $height = imagesy($src);
+        $dest = imagecreatetruecolor(200, 200);
+
+        // Mantém transparência se PNG ou GIF
+        if (in_array($type, ['png', 'gif'])) {
+            imagealphablending($dest, false);
+            imagesavealpha($dest, true);
+            $transparent = imagecolorallocatealpha($dest, 0, 0, 0, 127);
+            imagefilledrectangle($dest, 0, 0, 200, 200, $transparent);
+        }
+
+        // 5. Redimensiona
+        imagecopyresampled($dest, $src, 0, 0, 0, 0, 200, 200, $width, $height);
+
+        // 6. Sobrescreve o arquivo original com o novo tamanho
+        switch ($type) {
+            case 'jpg':
+            case 'jpeg':
+                imagejpeg($dest, $filePath, 90);
+                break;
+            case 'png':
+                imagepng($dest, $filePath, 6);
+                break;
+            case 'gif':
+                imagegif($dest, $filePath);
+                break;
+        }
+
+        // 7. Libera memória
+        imagedestroy($src);
+        imagedestroy($dest);
+
+        return "";
+    }
 }

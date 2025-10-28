@@ -169,6 +169,7 @@ class Thesa extends Model
         $dt['icone'] = $ThIcone->icone($dt);
 
         $dt['info'] = $Descriptions->show($id);
+        $dt['server'] = $_SERVER['SERVER_ADDR'];
         return $dt;
     }
 
