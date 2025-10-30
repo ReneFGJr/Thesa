@@ -4,8 +4,9 @@ import { Component } from '@angular/core';
   selector: 'app-about-us',
   standalone: false,
   templateUrl: './about-us.component.html',
-  styleUrl: './about-us.component.scss'
+  styleUrl: './about-us.component.scss',
 })
 export class AboutUsComponent {
-
+  version = 'v1.0';
+  year = new Date().getFullYear();
 }

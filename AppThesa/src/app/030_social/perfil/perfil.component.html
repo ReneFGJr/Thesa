@@ -1,3 +1,89 @@
-<p>perfil works!</p>
+<div class="container py-5">
+  <!-- Cabeçalho -->
+  <div class="card shadow-lg border-0 rounded-4">
+    <div class="card-body text-center">
+      <img
+        src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+        alt="Avatar do usuário"
+        class="rounded-circle mb-3 border border-3 border-primary"
+        style="width: 120px; height: 120px"
+      />
+      <h3 class="fw-bold mb-1">Olá, {{ user?.name || 'Usuário' }}!</h3>
+      <p class="text-muted mb-3">
+        {{ user?.email || 'email@exemplo.com' }}
+      </p>
 
-<a [routerLink]="['/social/logout']"  class="btn btn-danger">Logout</a>
+      <div class="d-flex justify-content-center gap-3">
+        <a
+          [routerLink]="['/social/logout']"
+          class="btn btn-danger d-flex align-items-center gap-2"
+        >
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </a>
+
+        <a
+          [routerLink]="['/social/edit-profile']"
+          class="btn btn-outline-primary d-flex align-items-center gap-2"
+        >
+          <i class="bi bi-pencil-square"></i> Editar Perfil
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Informações adicionais -->
+  <div class="mt-5">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body text-center">
+            <i class="bi bi-person-lines-fill fs-1 text-primary"></i>
+            <h5 class="mt-2">Sobre você</h5>
+            <p class="text-muted small mb-0">
+              {{ user?.bio || 'Adicione uma breve descrição sobre você.' }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body text-center">
+            <i class="bi bi-calendar-event fs-1 text-success"></i>
+            <h5 class="mt-2">Membro desde</h5>
+            <p class="text-muted small mb-0">
+              {{ user?.created_at | date: 'dd/MM/yyyy' }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body text-center">
+            <i class="bi bi-shield-check fs-1 text-warning"></i>
+            <h5 class="mt-2">Status</h5>
+            <p
+              class="badge"
+              [ngClass]="user?.active ? 'bg-success' : 'bg-secondary'"
+            >
+              {{ user?.active ? 'Ativo' : 'Inativo' }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="mt-5">
+  <h4 class="fw-bold mb-3">Atividades recentes</h4>
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let log of user?.logs">
+      <i class="bi bi-clock text-primary me-2"></i>
+      {{ log.action }} —
+      <span class="text-muted small">{{ log.date | date: 'dd/MM/yyyy HH:mm' }}</span>
+    </li>
+  </ul>
+</div>
