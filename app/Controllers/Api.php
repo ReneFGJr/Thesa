@@ -479,8 +479,19 @@ class Api extends BaseController
 
         if ($RSP['status'] == '200') {
             $Logs = new \App\Models\LogsModel();
-            $description = 'Removido ' . $dr['term_name'] . ' (' . $verb . ') ';
-            $Logs->registerLogs(get('thesaID'), $dr['ct_concept'], 'remove_'.$verb, $description);
+            if (isset($dr['term_name'])) {
+                $term_name = $dr['term_name'];
+            } else {
+                $term_name = '';
+            }
+            /**********************/
+            if (isset($dr['ct_concept']))
+                $concept = $dr['ct_concept'];
+            else
+                $concept = "";
+
+            $description = 'Removido ' . $term_name . ' (' . $verb . ') ';
+            $Logs->registerLogs(get('thesaID'), $concept, 'remove_'.$verb, $description);
         }
         return $RSP;
     }

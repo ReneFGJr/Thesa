@@ -59,13 +59,12 @@ export class ConceptComponent {
       thesaID: this.thesaID,
     };
     this.serviceThesa.api_post('relateConcept', data).subscribe((res) => {
-      console.log("Resposta", res);
-      this.actionAC.emit('relateConcept');
+      this.actionAC.emit('reload');
     });
   }
 
   cancelButton() {
-    this.actionAC.emit('relateConcept');
+    this.actionAC.emit('reload');
   }
 
   ngOnInit() {

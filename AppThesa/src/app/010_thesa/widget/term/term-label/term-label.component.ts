@@ -28,9 +28,9 @@ export class TermLabelComponent {
     );
     if (confirmacao) {
       // Executa a exclusão
+      console.log('Excluindo rótulo:', id, label);
       this.removeLabel(id, label);
       this.action.emit('reload');
-      alert("Reload")
     } else {
       // Cancela a exclusão
       console.log('Exclusão cancelada');
