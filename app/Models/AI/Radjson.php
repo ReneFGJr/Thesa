@@ -54,7 +54,45 @@ class Radjson extends Model
         return $term_array;
     }
 
-    function rad_json($th = '', $lang = '')
+    function rag2_json($th = '', $lang = '')
+    {
+        $Concept = new \App\Models\Thesa\Concepts\Index();
+        if ($th == '') {
+            return [];
+        }
+        $Concept
+            ->select('')
+            ->join('thesa_concept_term', 'ct_concept = c_concept')
+            ->join('thesa_property', 'ct_propriety = id_p')
+            ->join('thesa_terms', 'ct_literal = id_term')
+            ->join('language', 'term_lang = id_lg')
+            ->join('thesa_notes', 'nt_concept = c_concept', 'left');
+        /**
+        if ($lang != '') {
+            $Concept->where('lg_code', $lang);
+        }
+         */
+        $dt = $Concept
+            ->where('ct_th', $th)
+            ->findAll();
+        $data = [];
+        foreach ($dt as $k => $v) {
+
+            $id = $v['c_concept'];
+            $lang2 = $v['lg_code'];
+            $data[$id]['concept'] = $v['c_concept'];
+            $term = $v['term_name'];
+            $data[$id]['terms'][$term] = $lang2;
+        }
+        $dt = [];
+        foreach ($data as $k => $v) {
+            $dt[] = $v['terms'];
+        }
+        echo json_encode($dt, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        exit;
+    }
+
+    function rag_json($th = '', $lang = '')
     {
         $Concept = new \App\Models\Thesa\Concepts\Index();
         if ($th == '') {
@@ -66,9 +104,11 @@ class Radjson extends Model
             ->join('thesa_terms', 'ct_literal = id_term')
             ->join('language', 'term_lang = id_lg')
             ->join('thesa_notes', 'nt_concept = c_concept', 'left');
+        /**
         if ($lang != '') {
             $Concept->where('lg_code', $lang);
         }
+         */
         $dt = $Concept
             ->where('ct_th', $th)
             ->findAll();
@@ -80,16 +120,24 @@ class Radjson extends Model
             $data[$id]['concept'] = $v['c_concept'];
             switch ($v['p_name']) {
                 case 'prefLabel':
-                    $data[$id]['prefLabel'] = $v['term_name'];
+                    if ($lang != '') {
+                        if ($v['lg_code'] == $lang) {
+                            $data[$id]['prefLabel'] = $v['term_name'] . ' @' . $v['lg_code'];
+                        } else {
+                            $data[$id]['altLabel'][] = $v['term_name'].' @'.$v['lg_code'];
+                        }
+                    } else {
+                        $data[$id]['prefLabel'] = $v['term_name'] . ' @' . $v['lg_code'];
+                    }
                     break;
                 case 'altLabel':
                     $data[$id]['altLabel'] = $this->checkTermArray($data[$id]['altLabel'] ?? [], $v['term_name']);
                     break;
-
                 case 'hiddenLabel':
                     $data[$id]['hiddenLabel'] = $this->checkTermArray($data[$id]['hiddenLabel'] ?? [], $v['term_name']);
                     break;
             }
+
             if ($v['nt_content'] != '') {
                 $exist_note = false;
                 if ($v['nt_lang'] > 0) {
@@ -103,12 +151,14 @@ class Radjson extends Model
                         }
                     }
                     if (!$exist_note) {
-                        $data[$id]['notes'][] = $note;
+                        $data[$id]['notes'][] = $note . ' @' . $v['lg_cod_marc'];
                     }
                 }
             }
         }
         $rsp = [];
+
+        /************************************** Gerar dados */
         foreach ($data as $k => $v) {
             if (!isset($v['prefLabel']))
             {
@@ -118,7 +168,7 @@ class Radjson extends Model
             {
                 $v['notes'] = [];
             }
-            $rsp[] = ['term'=> $v['prefLabel'], 'definition' => $v['notes']];
+            $rsp[] = ['term'=> $v['prefLabel'], 'variant'=> array_merge($v['altLabel'] ?? [], $v['hiddenLabel'] ?? []) ?? [], 'definition' => $v['notes']];
         }
         echo json_encode($rsp, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         exit;
