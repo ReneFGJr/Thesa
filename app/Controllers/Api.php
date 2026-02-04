@@ -72,6 +72,10 @@ class Api extends BaseController
         }
 
         switch ($arg1) {
+            case 'ai_rad_json':
+                $AI = new \App\Models\AI\Radjson();
+                $RSP = $AI->rad_json($arg2, $arg3);
+                break;
             case 'concept_import_uri':
                 $ExtractSkos = new \App\Models\Skos\ExtractSkos();
                 $url = get('uri');
