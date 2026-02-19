@@ -106,7 +106,7 @@ class Source_rdf extends Model
             $domain = $this->extrairDominio($link);
 
             $dt = $this->where('lds_url', $domain)->first();
-            $icone = '/assets/icone/diagram-3-fill.svg';
+            $icone = base_url('/assets/icone/diagram-3-fill.svg');
             if ($dt)
             {
                 $icone = $dt['lds_icone'];

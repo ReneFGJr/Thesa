@@ -54,6 +54,24 @@ class Radjson extends Model
         return $term_array;
     }
 
+    function rag2_concepts_json($th = '')
+    {
+        $Concept = new \App\Models\Thesa\Concepts\Index();
+        if ($th == '') {
+            return [];
+        }
+        $Concept
+            ->select('c_concept as concept, term_name as term, lg_code as lang')
+            ->join('thesa_concept_term', 'ct_concept = c_concept')
+            ->join('thesa_terms', 'ct_literal = id_term')
+            ->join('language', 'term_lang = id_lg');
+
+        $dt = $Concept
+            ->where('ct_th', $th)
+            ->findAll();
+        return $dt;
+    }
+
     function rag2_json($th = '', $lang = '')
     {
         $Concept = new \App\Models\Thesa\Concepts\Index();
@@ -67,11 +85,7 @@ class Radjson extends Model
             ->join('thesa_terms', 'ct_literal = id_term')
             ->join('language', 'term_lang = id_lg')
             ->join('thesa_notes', 'nt_concept = c_concept', 'left');
-        /**
-        if ($lang != '') {
-            $Concept->where('lg_code', $lang);
-        }
-         */
+
         $dt = $Concept
             ->where('ct_th', $th)
             ->findAll();

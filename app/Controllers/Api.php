@@ -72,6 +72,14 @@ class Api extends BaseController
         }
 
         switch ($arg1) {
+            case 'ai_pajek':
+                $Pajek = new \App\Models\Thesa\Pajek();
+                $RSP = $Pajek->index($arg2, 'net');
+                break;
+            case 'ai_terms_json':
+                $AI = new \App\Models\AI\Radjson();
+                $RSP = $AI->rag2_concepts_json($arg2, $arg3);
+                break;
             case 'ai_rag2_json':
                 $AI = new \App\Models\AI\Radjson();
                 $RSP = $AI->rag2_json($arg2, $arg3);
@@ -85,6 +93,10 @@ class Api extends BaseController
                 $url = get('uri');
                 $ThID = get('thesaID');
                 $RSP = $ExtractSkos->registerConcept($url,$ThID);
+                break;
+            case 'pajek':
+                $Pajek = new \App\Models\Thesa\Pajek();
+                $RSP = $Pajek->index($arg2, $arg3);
                 break;
             case 'systematic':
                 $Systematic = new \App\Models\Thesa\Systematic();

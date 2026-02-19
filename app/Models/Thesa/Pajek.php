@@ -4,7 +4,7 @@ namespace App\Models\Thesa;
 
 use CodeIgniter\Model;
 
-class Systematic extends Model
+class Pajek extends Model
 {
     protected $DBGroup          = 'default';
     protected $table            = 'thesa_descriptions';
@@ -48,88 +48,77 @@ class Systematic extends Model
     protected $afterDelete    = [];
     public $terms = [];
 
-    function index($th)
+    function index($th,$type= 'net')
     {
         $mtx = [];
-        $RSP = [];
-        $RSP['thesa'] = $th;
-        $RSP['topConcepts'] = $this->topConcepts($th, $mtx);
-        $RSP['map'] = $this->getTopConcepts($th, $mtx);
-        return $RSP;
+        $netContent = $this->exportToPajek($th, $mtx);
+        switch($type)
+            {
+                case 'net':
+                    echo $netContent;
+                    exit;
+                default:
+                    echo view('Grapho/network3d', [
+                        'netContent' => $netContent
+                    ]);
+                    exit;
+        }
     }
 
-    function buildForest(array $relations): array
+    function exportToPajek(int $th)
     {
-        $parentKey = 'b_concept_boader';
-        $childKey  = 'b_concept_narrow';
 
-        $children  = [];
-        $hasParent = [];
-        $nodes     = [];
+        $Broader = new \App\Models\Thesa\Relations\Broader();
+        $relations =
+            $Broader
+            ->where('b_th',$th)
+            ->findALl();
 
+        $nodes = [];
+        $edges = [];
+
+        // Coleta todos os nós
         foreach ($relations as $rel) {
-            $p = (int)$rel[$parentKey];
-            $c = (int)$rel[$childKey];
+            $p = (int)$rel['b_concept_boader'];
+            $c = (int)$rel['b_concept_narrow'];
 
-            $children[$p][] = $c;
-            $hasParent[$c]  = true;
             $nodes[$p] = true;
             $nodes[$c] = true;
         }
 
-        // Normaliza filhos
-        foreach ($children as &$list) {
-            $list = array_values(array_unique($list));
-            sort($list, SORT_NUMERIC);
-        }
-        unset($list);
+        $nodes = array_keys($nodes);
+        sort($nodes);
 
-        // Raízes = nunca foram filhos
-        $roots = array_values(array_diff(array_keys($nodes), array_keys($hasParent)));
-        sort($roots, SORT_NUMERIC);
-
-        // Função recursiva segura
-        $build = function (int $id, array $stack = []) use (&$build, $children): array {
-
-            if (isset($stack[$id])) {
-                return [
-                    'id' => $id,
-                    'name' => '[CICLO]',
-                    'children' => [],
-                    'cycle' => true
-                ];
-            }
-
-            $stack[$id] = true;
-
-            $term = $this->terms[$id] ?? null;
-
-            if (!$term) {
-                log_message('warning', 'Termo ausente no buildForest: ' . $id);
-            }
-
-            $node = [
-                'id' => $id,
-                'name' => $term['term_name'] ?? '[Termo não encontrado]',
-                'lang' => $term['lg_cod_marc'] ?? null,
-                'children' => []
-            ];
-
-            foreach ($children[$id] ?? [] as $childId) {
-                $node['children'][] = $build($childId, $stack);
-            }
-
-            return $node;
-        };
-
-        $forest = [];
-        foreach ($roots as $r) {
-            $forest[] = $build($r);
+        // Mapear ID real -> ID Pajek sequencial
+        $map = [];
+        $i = 1;
+        foreach ($nodes as $nodeId) {
+            $map[$nodeId] = $i++;
         }
 
-        return $forest;
+        // Começa montar texto
+        $txt  = "*Vertices " . count($nodes) . PHP_EOL;
+
+        foreach ($nodes as $nodeId) {
+            $name = $terms[$nodeId]['term_name'] ?? "Termo $nodeId";
+            $name = str_replace('"', '', $name); // evita erro de aspas
+
+            $txt .= $map[$nodeId] . ' "' . $name . '"' . PHP_EOL;
+        }
+
+        $txt .= PHP_EOL . "*Arcs" . PHP_EOL;
+
+        foreach ($relations as $rel) {
+            $p = (int)$rel['b_concept_boader'];
+            $c = (int)$rel['b_concept_narrow'];
+
+            if (isset($map[$p]) && isset($map[$c])) {
+                $txt .= $map[$p] . " " . $map[$c] . PHP_EOL;
+            }
+        }
+
+        return $txt;
     }
-
 
     function getTopConcepts($th, $mtx)
     {
@@ -163,13 +152,5 @@ class Systematic extends Model
         $this->terms = $terms;
         $RSP = $this->buildForest($dtb);
         return $RSP;
-    }
-
-    function topConcepts($th)
-    {
-        $db = \Config\Database::connect();
-        $dt = [];
-
-        return $dt;
     }
 }
