@@ -100,7 +100,7 @@ class Pajek extends Model
         $txt  = "*Vertices " . count($nodes) . PHP_EOL;
 
         foreach ($nodes as $nodeId) {
-            $name = $terms[$nodeId]['term_name'] ?? "Termo $nodeId";
+            $name = $terms[$nodeId]['term_name'] ?? "thesa:c$nodeId";
             $name = str_replace('"', '', $name); // evita erro de aspas
 
             $txt .= $map[$nodeId] . ' "' . $name . '"' . PHP_EOL;
