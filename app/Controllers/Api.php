@@ -43,13 +43,16 @@ class Api extends BaseController
     public function index($arg1 = '', $arg2 = '', $arg3 = '')
     {
 
-        /* NAO USADO PARA AS APIS */
+        /* CORS Headers */
         header('Access-Control-Allow-Origin: *');
-        //header('Access-Control-Allow-Origin', '*');
-        //header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-        //header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-        //echo "OK";
-        //exit;
+        header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
+        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            http_response_code(200);
+            exit(0);
+        }
+
         if ((get("test") == '') and (get("code") == '')) {
             header("Content-Type: application/json");
         }
@@ -71,7 +74,26 @@ class Api extends BaseController
             $arg1 = 't';
         }
 
+        $ac = [
+            'createConcept' => 'th',
+            't' => 't',
+            'c' => 'c',
+        ];
+
         switch ($arg1) {
+            /********************************************* V2 */
+            case 'createConcept': /* V2 */
+                $Concept = new \App\Models\Concept\Index();
+                $DT = $_GET;
+                $DT = array_merge($DT, $_POST);
+                $RSP = $Concept->createConceptV2($DT);
+                break;
+            case 'getConceptByName': /* V2 */
+                $Concept = new \App\Models\Concept\Index();
+                $DT = $_GET;
+                $DT = array_merge($DT, $_POST);
+                $RSP = $Concept->getConceptByNameV2($DT);
+                break;
             case 'ai_pajek':
                 $Pajek = new \App\Models\Thesa\Pajek();
                 $RSP = $Pajek->index($arg2, 'net');
@@ -409,6 +431,7 @@ class Api extends BaseController
 
         echo json_encode($RSP);
         exit;
+        return "";
     }
 
     function th($id, $RSP)

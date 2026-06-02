@@ -61,6 +61,7 @@ import { RecoverPasswordComponent } from './030_social/recover-password/recover-
 import { ImagePlayComponent } from './010_thesa/widget/play-media-show/image-play/image-play.component';
 import { EditModePageComponent } from './010_thesa/page/edit-mode-page/edit-mode-page.component';
 import { LogoutComponent } from './030_social/logout/logout.component';
+import { EditProfileComponent } from './030_social/edit-profile/edit-profile.component';
 import { LinkedataComponent } from './010_thesa/widget/linkedata/linkedata.component';
 import { ProcessingComponent } from './000_core/widget/processing/processing.component';
 import { ThCanceledComponent } from './010_thesa/widget/th-canceled/th-canceled.component';
@@ -142,6 +143,7 @@ import { LogListConceptComponent } from './010_thesa/widget/log/log-list-concept
     ImagePlayComponent,
     EditModePageComponent,
     LogoutComponent,
+    EditProfileComponent,
     LinkedataComponent,
     ProcessingComponent,
     ThCanceledComponent,

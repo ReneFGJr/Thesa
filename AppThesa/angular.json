@@ -103,7 +103,8 @@
               "buildTarget": "AppThesa:build:production"
             },
             "development": {
-              "buildTarget": "AppThesa:build:development"
+              "buildTarget": "AppThesa:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

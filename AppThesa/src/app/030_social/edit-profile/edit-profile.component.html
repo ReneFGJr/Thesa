@@ -1,0 +1,217 @@
+<div class="container py-5">
+  <!-- Barra de progresso de carregamento -->
+  <div *ngIf="isLoading" class="d-flex justify-content-center mb-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Carregando...</span>
+    </div>
+  </div>
+
+  <!-- Mensagem de erro -->
+  <div *ngIf="errorMessage && !isLoading" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="bi bi-exclamation-triangle"></i>
+    {{ errorMessage }}
+    <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+  </div>
+
+  <!-- Mensagem de sucesso -->
+  <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="bi bi-check-circle"></i>
+    {{ successMessage }}
+    <button type="button" class="btn-close" (click)="successMessage = ''"></button>
+  </div>
+
+  <!-- Conteúdo principal -->
+  <div *ngIf="!isLoading && userData" class="row">
+    <!-- Seção de Perfil -->
+    <div class="col-lg-4 mb-4">
+      <div class="card shadow-lg border-0 rounded-4 sticky-top" style="top: 20px">
+        <div class="card-body text-center p-4">
+          <!-- Avatar -->
+          <img
+            [src]="userData.imagem || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'"
+            alt="Avatar do usuário"
+            class="rounded-circle mb-3 border border-4 border-primary"
+            style="width: 140px; height: 140px; object-fit: cover"
+          />
+
+          <!-- Nome e Email -->
+          <h2 class="fw-bold mb-1">{{ userData.nome }}</h2>
+          <p class="text-muted mb-1">
+            <i class="bi bi-envelope"></i>
+            {{ userData.email }}
+          </p>
+          <p class="text-muted mb-3">
+            <i class="bi bi-building"></i>
+            {{ userData.instituicao }}
+          </p>
+
+          <!-- Status -->
+          <div class="mb-3">
+            <span
+              [ngClass]="{
+                'badge bg-success': userData.verificado === '1',
+                'badge bg-warning': userData.verificado === '0'
+              }"
+            >
+              <i class="bi bi-check-circle"></i>
+              {{ userData.verificado === '1' ? 'Verificado' : 'Não Verificado' }}
+            </span>
+            <span class="badge bg-info ms-2">
+              <i class="bi bi-key"></i>
+              API {{ userData.apikey_ativo === '1' ? 'Ativa' : 'Inativa' }}
+            </span>
+          </div>
+
+          <!-- Informações adicionais -->
+          <div class="list-group list-group-flush border-top border-bottom py-3">
+            <div class="list-group-item bg-transparent px-0">
+              <small class="text-muted">Último Acesso</small>
+              <p class="mb-0">
+                {{ formatDate(userData.ultimo_acesso) }}
+              </p>
+            </div>
+            <div class="list-group-item bg-transparent px-0">
+              <small class="text-muted">Gênero</small>
+              <p class="mb-0">
+                {{
+                  userData.genero === 'M'
+                    ? 'Masculino'
+                    : userData.genero === 'F'
+                      ? 'Feminino'
+                      : 'Não informado'
+                }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Botões de ação -->
+          <div class="d-grid gap-2 mt-3">
+            <button
+              class="btn btn-outline-primary"
+              (click)="editPersonalData()"
+              [disabled]="isLoading"
+            >
+              <i class="bi bi-pencil-square"></i>
+              Editar Dados Pessoais
+            </button>
+            <button
+              class="btn btn-outline-secondary"
+              (click)="goBack()"
+            >
+              <i class="bi bi-arrow-left"></i>
+              Voltar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção de Tesauros -->
+    <div class="col-lg-8">
+      <div class="card shadow-lg border-0 rounded-4 mb-4">
+        <div class="card-header bg-primary text-white rounded-top-4 p-4">
+          <h3 class="mb-0">
+            <i class="bi bi-diagram-2"></i>
+            Tesauros com Acesso
+            <span class="badge bg-light text-primary ms-2">{{ tesauros.length }}</span>
+          </h3>
+          <small class="text-white-50">
+            Visualize os tesauros aos quais você tem acesso e suas permissões
+          </small>
+        </div>
+
+        <div class="card-body p-0">
+          <!-- Se não há tesauros -->
+          <div
+            *ngIf="tesauros.length === 0"
+            class="alert alert-info m-4 mb-0"
+          >
+            <i class="bi bi-info-circle"></i>
+            Você ainda não tem acesso a nenhum tesauro.
+          </div>
+
+          <!-- Lista de tesauros -->
+          <div *ngIf="tesauros.length > 0" class="list-group list-group-flush">
+            <div
+              *ngFor="let thesa of tesauros; let last = last"
+              class="list-group-item px-4 py-3 border-bottom"
+              [ngClass]="{ 'border-bottom-0': last }"
+            >
+              <div class="row align-items-center">
+                <!-- Ícone do tesauro -->
+                <div class="col-auto">
+                  <img
+                    [src]="getThesaImageUrl(thesa.th_icone_custom)"
+                    [alt]="thesa.th_name"
+                    class="rounded"
+                    style="width: 70px; height: 70px; object-fit: cover; background: #f0f0f0"
+                    onerror="this.src='https://via.placeholder.com/70?text=Tesauro'"
+                  />
+                </div>
+
+                <!-- Informações do tesauro -->
+                <div class="col ms-3">
+                  <h5 class="mb-1 fw-bold">{{ thesa.th_name }}</h5>
+                  <p class="mb-1 text-muted small">
+                    <span class="badge bg-light text-dark">{{ thesa.th_achronic }}</span>
+                  </p>
+                  <p class="mb-0 small">
+                    <i class="bi bi-person-badge"></i>
+                    <strong>Perfil:</strong>
+                    <span class="text-primary">{{ thesa.pf_name }}</span>
+                  </p>
+                </div>
+
+                <!-- Ações -->
+                <div class="col-auto">
+                  <button
+                    class="btn btn-sm btn-primary"
+                    (click)="openThesa(thesa.th_us_th)"
+                    title="Abrir tesauro"
+                  >
+                    <i class="bi bi-box-arrow-up-right"></i>
+                    Abrir
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Seção de API Key -->
+      <div class="card shadow-lg border-0 rounded-4" *ngIf="userData.apikey">
+        <div class="card-header bg-secondary text-white rounded-top-4 p-4">
+          <h5 class="mb-0">
+            <i class="bi bi-key"></i>
+            Informações de API
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label class="form-label fw-bold">API Key</label>
+            <div class="input-group">
+              <input
+                [type]="apiKeyVisible ? 'text' : 'password'"
+                class="form-control"
+                [value]="userData.apikey"
+                readonly
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                (click)="toggleApiKeyVisibility()"
+                [title]="apiKeyVisible ? 'Ocultar API Key' : 'Mostrar API Key'"
+              >
+                <i [ngClass]="apiKeyVisible ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+              </button>
+            </div>
+            <small class="form-text text-muted">
+              Status: {{ userData.apikey_ativo === '1' ? 'Ativa' : 'Inativa' }}
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

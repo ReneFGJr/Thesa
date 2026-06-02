@@ -57,6 +57,52 @@ class Index extends Model
         return $RSP;
     }
 
+    /***************************************** V2 */
+    function checkParamets($parms, $dt)
+    {
+        foreach ($parms as $p) {
+            if (!isset($dt[$p])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function registerTermV2($dt)
+        {
+            $RSP = [];
+            $TermsTh = new \App\Models\Term\TermsTh();
+            $Lang = new \App\Models\Language\Index();
+
+            $parms = ['term', 'thesaID','lang'];
+            if ($this->checkParamets($parms, $dt) == false) {
+                $RSP['message'] = 'Parâmetros necessários: ' . implode(', ', $parms);
+                $RSP['status'] = '500';
+                return $RSP;
+            }
+            $langDt = $Lang->getCode($dt['lang']);
+            $dt['lang'] = $langDt['id_lg'];
+
+            $idTerm = $this->where('term_name', $dt['term'])->where('term_lang', $dt['lang'])->first();
+            if ($idTerm == []) {
+                $dd['term_name'] = $dt['term'];
+                $dd['term_lang'] = $dt['lang'];
+                $idTerm = $this->set($dd)->insert();
+                $RSP['status'] = '200';
+                $RSP['message'] = 'Term registered successfully';
+            } else {
+                $RSP['status'] = '201';
+                $RSP['message'] = 'Term already exists';
+                $idTerm = $idTerm['id_term'];
+            }
+
+            /************* Registra no Thesaurus */
+            $TermsTh->register($idTerm, $dt['thesaID']);
+
+            $RSP['id_term'] = $idTerm;
+            return $idTerm;
+        }
+
     function registerTerm($user)
         {
             $RSP = [];

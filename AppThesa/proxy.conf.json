@@ -1,0 +1,8 @@
+{
+  "/api/*": {
+    "target": "http://thesa",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

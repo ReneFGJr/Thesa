@@ -41,7 +41,7 @@ export class TermsComponent {
     if (action === 'cancel') {
       return ""
     }
-    alert("Recebido evento: " + ev.toString());
+    //alert("Recebido evento: " + ev.toString());
 
     let actionACev = ev.toString();
     this.painelService.closeConceptPanel('termPainel');

@@ -44,6 +44,87 @@ class Index extends Model
     protected $afterDelete    = [];
     public $idC = 0;
 
+    function checkParamets($parms, $dt)
+        {
+            foreach($parms as $p)
+                {
+                    if (!isset($dt[$p]))
+                        {
+                            return false;
+                        }
+                }
+            return true;
+        }
+
+
+    function getConceptByNameV2($dt)
+        {
+            $parms = ['term','thesaID'];
+            if ($this->checkParamets($parms, $dt) == false)
+                {
+                    $RSP['message'] = 'Parâmetros necessários: '.implode(', ', $parms);
+                    $RSP['status'] = '500';
+                    return $RSP;
+                }
+             foreach($parms as $p)
+                {
+                    if (!isset($dt[$p]))
+                        {
+                            $RSP['message'] = 'Parâmetro "'.$p.'" não foi informado';
+                            $RSP['status'] = '500';
+                            return $RSP;
+                        }
+                }
+
+            $result = $this->db->table('thesa_concept_term')
+                ->select('*')
+                ->join('thesa_terms', 'thesa_terms.id_term = thesa_concept_term.ct_literal', 'INNER')
+                ->where('thesa_concept_term.ct_th', $dt['thesaID'])
+                ->where('thesa_terms.term_name', $dt['term'])
+                ->get()
+                ->getRowArray();
+            return $result;
+        }
+
+    function createConceptV2($dt)
+        {
+            $RSP = [];
+            $Logs = new \App\Models\LogsModel();
+            $TermsTh = new \App\Models\Term\TermsTh();
+            $RDFproprity = new \App\Models\RDF\ThProprity();
+            $ThTerm = new \App\Models\RDF\ThTerm();
+
+            $parms = ['term', 'thesaID','apiKey','lang'];
+            if ($this->checkParamets($parms, $dt) == false) {
+                $RSP['message'] = 'Parâmetros necessários: ' . implode(', ', $parms);
+                $RSP['status'] = '500';
+                return $RSP;
+            }
+
+            $isBroader = false;
+            if ((isset($dt['broader']) and ($dt['broader'] != '')))
+                {
+                    $broader = $this->getConceptByNameV2(['term' => $dt['broader'], 'thesaID' => $dt['thesaID']]);
+                    if ($broader == [])
+                        {
+                            $RSP['message'] = 'Termo mais amplo "'.$dt['broader'].'" não encontrado';
+                            $RSP['status'] = '500';
+                            return $RSP;
+                        }
+                     $isBroader = true;
+                }
+
+            /*********************** Cria ou recupera ID do termo */
+            $Term = new \App\Models\Term\Index();
+            $idTerm = $Term->registerTermV2($dt);
+
+            /*********************** Registra o conceito */
+            $idC = $this->createConcept($idTerm, $dt['thesaID']);
+            pre($idC);
+
+            return $RSP;
+        }
+
     function createConcept($id,$th)
         {
             $RSP = [];

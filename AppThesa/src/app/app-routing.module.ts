@@ -13,6 +13,7 @@ import { IndexAlphabeticComponent } from './010_thesa/page/index-alphabetic/inde
 import { ExportPDFComponent } from './010_thesa/page/export/export.component';
 import { ThesaMyComponent } from './010_thesa/page/thesa-my/thesa-my.component';
 import { AuthPageComponent } from './030_social/auth-page/auth-page.component';
+import { EditProfileComponent } from './030_social/edit-profile/edit-profile.component';
 import { EditModePageComponent } from './010_thesa/page/edit-mode-page/edit-mode-page.component';
 import { AboutUsComponent } from './010_thesa/page/about-us/about-us.component';
 
@@ -34,6 +35,7 @@ const routes: Routes = [
   { path: 'systemic_index/:id', component: IndexSystemicComponent },
   { path: 'alphabetic_index/:id', component: IndexAlphabeticComponent },
   { path: 'export/:id', component: ExportPDFComponent },
+  { path: 'social/edit-profile', component: EditProfileComponent },
   { path: 'social/:id', component: AuthPageComponent },
   { path: 'social/:id/:chk', component: AuthPageComponent },
   { path: 'social', component: AuthPageComponent },

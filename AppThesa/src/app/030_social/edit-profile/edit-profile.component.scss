@@ -1,0 +1,58 @@
+::ng-deep .card {
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.container {
+  max-width: 1200px;
+}
+
+.list-group-item {
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #f8f9fa !important;
+  }
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.35rem 0.65rem;
+}
+
+img {
+  &[alt="Avatar do usuário"] {
+    box-shadow: 0 0 20px rgba(0, 123, 255, 0.3);
+  }
+}
+
+.btn {
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    transform: scale(1.02);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+.form-control[readonly] {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+}
+
+@media (max-width: 991px) {
+  .card.sticky-top {
+    position: static !important;
+  }
+}
