@@ -132,6 +132,61 @@ class Socials extends Model
 		return $sx;
 	}
 
+	function profile($id)
+	{
+		$RSP = [];
+
+		// Validar ID
+		if (empty($id)) {
+			$RSP['status'] = '404';
+			$RSP['message'] = 'ID do usuário não informado';
+			return $RSP;
+		}
+
+		// Buscar dados do usuário
+		$user = $this->where('id_us', $id)->first();
+		if ($user == []) {
+			$RSP['status'] = '404';
+			$RSP['message'] = 'Usuário não encontrado';
+			return $RSP;
+		}
+
+		// Buscar tesauros que o usuário tem acesso
+		$builder = $this->db->table('thesa_users');
+		$builder->join('thesa', 'thesa_users.th_us_th = thesa.id_th', 'left');
+		$builder->join('thesa_users_perfil', 'thesa_users.th_us_perfil = thesa_users_perfil.id_pf', 'left');
+		$builder->where('thesa_users.th_us_user', $id);
+		$builder->select('
+			thesa_users.th_us_user,
+			thesa_users.th_us_th,
+			thesa_users.th_us_perfil,
+			thesa.th_name,
+			thesa.th_achronic,
+			thesa.th_icone_custom,
+			thesa_users_perfil.pf_name
+		');
+		$query = $builder->get();
+		$tesauros = $query->getResult('array');
+
+		// Montar resposta
+		$RSP['status'] = '200';
+		$RSP['message'] = 'Perfil do usuário';
+		$RSP['user'] = [
+			'id' => $user['id_us'],
+			'nome' => $user['us_nome'],
+			'email' => $user['us_email'],
+			'instituicao' => $user['us_affiliation'],
+			'imagem' => $user['us_image'],
+			'genero' => $user['us_genero'],
+			'verificado' => $user['us_verificado'],
+			'ultimo_acesso' => $user['us_lastaccess'],
+			'apikey' => $user['us_apikey'],
+			'apikey_ativo' => $user['us_apikey_active']
+		];
+		$RSP['tesauros'] = $tesauros;
+
+		return $RSP;
+	}
 
 	function index($cmd = '', $id = '', $dt = '', $cab = '')
 	{
@@ -158,6 +213,10 @@ class Socials extends Model
 				break;
 			case 'logout':
 				$sx = $this->logout();
+				break;
+			case 'profile':
+				$rsp = $this->profile($id);
+				return $rsp;
 				break;
 			default:
 				$access = $this->getAccess('#ADM#GER');
