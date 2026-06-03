@@ -218,6 +218,10 @@ class Socials extends Model
 				$rsp = $this->profile($id);
 				return $rsp;
 				break;
+			case 'search-term':
+				$rsp = $this->searchTerm();
+				return $rsp;
+				break;
 			default:
 				$access = $this->getAccess('#ADM#GER');
 				if (!$access) {
@@ -454,6 +458,46 @@ class Socials extends Model
 				$RSP['image'] = $dt['us_image'];
 			}
 		}
+		return $RSP;
+	}
+
+	function searchTerm()
+	{
+		$RSP = [];
+		$RSP['status'] = '200';
+		$RSP['concept'] = [];
+
+		// Obter dados da requisição
+		$thesaID = isset($_POST['thesaID']) ? $_POST['thesaID'] : (isset($_GET['thesaID']) ? $_GET['thesaID'] : null);
+		$term_name = isset($_POST['term_name']) ? $_POST['term_name'] : (isset($_GET['term_name']) ? $_GET['term_name'] : null);
+
+		if (!$thesaID) {
+			$RSP['status'] = '400';
+			$RSP['message'] = 'Thesaurus ID não foi informado';
+			return $RSP;
+		}
+
+		if (!$term_name) {
+			$RSP['status'] = '400';
+			$RSP['message'] = 'Termo não foi informado';
+			return $RSP;
+		}
+
+		// Usar o modelo de Conceitos para buscar (com LIKE para fulltext)
+		$Concept = new \App\Models\Concept\Index();
+		$result = $Concept->searchConceptByNameV2([
+			'thesaID' => $thesaID,
+			'term' => $term_name
+		]);
+
+		if ($result) {
+			$RSP['concept'] = $result;
+			$RSP['message'] = count($result) . ' termo(s) encontrado(s)';
+		} else {
+			$RSP['status'] = '404';
+			$RSP['message'] = 'Nenhum termo encontrado';
+		}
+
 		return $RSP;
 	}
 }

@@ -56,7 +56,12 @@ export class ThesaMyComponent {
   }
 
   selectThesa(thesa: any) {
+    // Guardar o ID do thesaurus selecionado em localStorage
+    this.serviceStorage.set('thesaActual', thesa);
+
+    // Guardar a thesa completa também
     this.serviceStorage.set('thesa', thesa);
+
     this.router.navigate(['/thesa/' + thesa]);
   }
 }

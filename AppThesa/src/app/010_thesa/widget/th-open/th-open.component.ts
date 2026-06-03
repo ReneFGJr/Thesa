@@ -55,7 +55,12 @@ export class ThOpenComponent implements OnInit {
   }
 
   selectThesa(id: any) {
+    // Guardar o ID do thesaurus selecionado em localStorage
+    this.serviceStorage.set('thesaActual', id);
+
+    // Guardar a thesa também
     this.serviceStorage.set('thesa', id);
+
     this.router.navigate(['/thesa/' + id]);
   }
 }

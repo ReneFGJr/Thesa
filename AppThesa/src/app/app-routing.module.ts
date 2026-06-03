@@ -16,11 +16,13 @@ import { AuthPageComponent } from './030_social/auth-page/auth-page.component';
 import { EditProfileComponent } from './030_social/edit-profile/edit-profile.component';
 import { EditModePageComponent } from './010_thesa/page/edit-mode-page/edit-mode-page.component';
 import { AboutUsComponent } from './010_thesa/page/about-us/about-us.component';
+import { SearchTermsComponent } from './010_thesa/page/search-terms/search-terms.component';
 
 
 const routes: Routes = [
   { path: '', component: HomepageComponent },
   { path: 'home', component: HomepageComponent },
+  { path: 'search', component: SearchTermsComponent },
   { path: 'about', component: AboutUsComponent },
   { path: 'documentation', component: ApiDocComponent },
   { path: 'thopen', component: ThOpenComponent },

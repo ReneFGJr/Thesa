@@ -19,6 +19,11 @@
     <!-- conteúdo da navbar -->
     <div class="collapse navbar-collapse" id="navbarNavX">
       <ul class="navbar-nav" (click)="closeMenu()">
+        <li class="nav-item" *ngIf="hasThesaSelected">
+          <a class="nav-link" [routerLink]="['/search']">
+            <i class="bi bi-search me-2"></i>Pesquisar
+          </a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/thopen']">Thesa Abertos</a>
         </li>

@@ -43,7 +43,32 @@ class Api extends BaseController
     public function index($arg1 = '', $arg2 = '', $arg3 = '')
     {
 
+        // 1. Allow access from the origin making the request
+        if (isset($_SERVER['HTTP_ORIGIN'])) {
+            header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+            header('Access-Control-Allow-Credentials: true');
+            header('Access-Control-Max-Age: 86400');    // cache preflight for 1 day
+        }
+
+        // 2. Handle the Preflight OPTIONS request
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+
+            if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'])) {
+                // Specify all the methods you intend to allow
+                header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+            }
+
+            if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'])) {
+                // Echo back whatever headers the client is trying to send (Authorization, Content-Type, etc.)
+                header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+            }
+
+            // Kill the preflight request here with a 200 OK status so it doesn't process backend code
+            exit(0);
+        }
+
         /* CORS Headers */
+        /*
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -52,6 +77,7 @@ class Api extends BaseController
             http_response_code(200);
             exit(0);
         }
+        */
 
         if ((get("test") == '') and (get("code") == '')) {
             header("Content-Type: application/json");
@@ -421,6 +447,10 @@ class Api extends BaseController
             case 'social':
                 $Socials = new \App\Models\Socials();
                 $RSP = $Socials->index($arg2, $arg3);
+                break;
+            case 'search-term':
+                $Socials = new \App\Models\Socials();
+                $RSP = $Socials->searchTerm();
                 break;
             default:
                 $RSP['status'] = '400';

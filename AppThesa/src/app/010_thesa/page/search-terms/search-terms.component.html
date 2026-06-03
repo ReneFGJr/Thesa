@@ -1,0 +1,309 @@
+<div class="container py-5">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <!-- Formulário de busca -->
+      <div class="card shadow-lg border-0 rounded-4 mb-4">
+        <div class="card-body p-4">
+          <!-- Thesaurus Hidden -->
+          <input type="hidden" [(ngModel)]="selectedThesaurus" />
+
+          <!-- Campo de busca -->
+          <div class="mb-4">
+            <label for="searchInput" class="form-label fw-bold">
+              <i class="bi bi-search text-primary me-2"></i>Termo a pesquisar *
+            </label>
+            <div class="input-group input-group-lg">
+              <input
+                id="searchInput"
+                type="text"
+                class="form-control"
+                placeholder="Ex: Base de Dados, Computação..."
+                [(ngModel)]="searchTerm"
+                (keyup.enter)="searchTerms()"
+              />
+              <button
+                class="btn btn-primary"
+                type="button"
+                (click)="searchTerms()"
+                [disabled]="isLoading"
+              >
+                <i *ngIf="!isLoading" class="bi bi-search me-2"></i>
+                <span *ngIf="!isLoading">Pesquisar</span>
+                <span *ngIf="isLoading">
+                  <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Pesquisando...
+                </span>
+              </button>
+              <button
+                *ngIf="searchTerm"
+                class="btn btn-outline-secondary"
+                type="button"
+                (click)="clearSearch()"
+                title="Limpar busca"
+              >
+                <i class="bi bi-x"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Mensagem de erro -->
+          <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            {{ errorMessage }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Resultados -->
+      <div *ngIf="searchResults.length > 0" class="card shadow-lg border-0 rounded-4 mb-4">
+        <div class="card-header bg-success text-white p-4 rounded-top-4">
+          <h5 class="mb-0">
+            <i class="bi bi-check-circle me-2"></i>
+            Resultados encontrados ({{ searchResults.length }})
+          </h5>
+        </div>
+        <div class="card-body p-4">
+          <div class="list-group">
+            <button
+              *ngFor="let result of searchResults"
+              type="button"
+              class="list-group-item list-group-item-action p-3 border-bottom"
+              (click)="openConcept(result.ct_concept)"
+            >
+              <div class="d-flex justify-content-between align-items-start">
+                <div class="flex-grow-1">
+                  <h6 class="mb-1 fw-bold">
+                    {{ result.term_name || result.ct_literal }}
+                  </h6>
+                  <p class="mb-0 text-muted small">
+                    <strong>ID:</strong> {{ result.ct_concept }}
+                  </p>
+                </div>
+                <i class="bi bi-chevron-right text-primary"></i>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nenhum resultado -->
+      <div *ngIf="noResults && !isLoading" class="card shadow-lg border-0 rounded-4 bg-light">
+        <div class="card-body p-5 text-center">
+          <i class="bi bi-search text-muted" style="font-size: 3rem;"></i>
+          <h5 class="mt-3 text-muted">
+            Nenhum resultado encontrado
+          </h5>
+          <p class="text-muted small">
+            Tente pesquisar com termos diferentes.
+          </p>
+        </div>
+      </div>
+
+      <!-- Dicas iniciais -->
+      <div *ngIf="searchResults.length === 0 && !noResults && !isLoading" class="card shadow-lg border-0 rounded-4 bg-light">
+        <div class="card-body p-5">
+          <h5 class="fw-bold mb-3">
+            <i class="bi bi-lightbulb text-warning me-2"></i>Dicas para buscar:
+          </h5>
+          <ul class="list-unstyled">
+            <li class="mb-2">
+              <i class="bi bi-check2 text-success me-2"></i>
+              Digite o termo exato ou parcial que deseja encontrar
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-check2 text-success me-2"></i>
+              Use a busca com caracteres alfabéticos ou números
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-check2 text-success me-2"></i>
+              Clique em um resultado para ver detalhes do conceito
+            </li>
+            <li>
+              <i class="bi bi-check2 text-success me-2"></i>
+              Você está pesquisando no thesaurus que selecionou anteriormente
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de detalhes do conceito -->
+<div class="modal fade" id="conceptDetailModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <!-- Header do modal -->
+      <div class="modal-header bg-primary text-white border-0">
+        <h5 class="modal-title fw-bold">
+          <i class="bi bi-diagram-2 me-2"></i>Detalhes do Conceito
+        </h5>
+        <button type="button" class="btn-close btn-close-white" (click)="closeDetailPanel()" aria-label="Close"></button>
+      </div>
+
+      <!-- Body do modal -->
+      <div class="modal-body p-4">
+        <!-- Carregando -->
+        <div *ngIf="conceptLoading" class="d-flex justify-content-center">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Carregando...</span>
+          </div>
+        </div>
+
+        <!-- Erro -->
+        <div *ngIf="conceptError && !conceptLoading" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          {{ conceptError }}
+          <button type="button" class="btn-close" (click)="closeDetailPanel()"></button>
+        </div>
+
+        <!-- Conteúdo -->
+        <div *ngIf="conceptDetail && !conceptLoading && !conceptError">
+          <!-- ID e Label Principal -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <p class="text-muted small mb-1">ID do Conceito</p>
+              <h6 class="fw-bold">{{ conceptDetail.id_c || conceptDetail.c_concept || 'N/A' }}</h6>
+            </div>
+            <div class="col-md-6">
+              <p class="text-muted small mb-1">Label Principal</p>
+              <h6 class="fw-bold">{{ conceptDetail.label || 'N/A' }}</h6>
+            </div>
+          </div>
+
+          <hr>
+
+          <!-- URI e Thesaurus -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <p class="text-muted small mb-1">Thesaurus ID</p>
+              <p>{{ conceptDetail.c_th || 'N/A' }}</p>
+            </div>
+            <div class="col-md-6">
+              <p class="text-muted small mb-1">Data de Criação</p>
+              <p>{{ conceptDetail.c_created | date: 'dd/MM/yyyy HH:mm' || 'N/A' }}</p>
+            </div>
+          </div>
+
+          <hr>
+
+          <!-- Preferred Labels -->
+          <div *ngIf="conceptDetail.prefLabel && conceptDetail.prefLabel.length > 0" class="mb-3">
+            <p class="text-muted small mb-2"><strong>Labels Preferenciais</strong></p>
+            <div class="list-group list-group-flush">
+              <div *ngFor="let label of conceptDetail.prefLabel" class="list-group-item px-0 py-2">
+                <span class="badge bg-success me-2">{{ label.Lang }}</span>
+                {{ label.Term }}
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <!-- Alternative Labels -->
+          <div *ngIf="conceptDetail.altLabel && conceptDetail.altLabel.length > 0" class="mb-3">
+            <p class="text-muted small mb-2"><strong>Labels Alternativos</strong></p>
+            <div class="list-group list-group-flush">
+              <div *ngFor="let label of conceptDetail.altLabel" class="list-group-item px-0 py-2">
+                <span class="badge bg-info me-2">{{ label.Lang }}</span>
+                <i class="bi bi-arrow-left-right text-info me-1"></i>
+                {{ label.Term }}
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <!-- Hidden Labels -->
+          <div *ngIf="conceptDetail.hiddenLabel && conceptDetail.hiddenLabel.length > 0" class="mb-3">
+            <p class="text-muted small mb-2"><strong>Labels Ocultos</strong></p>
+            <div class="list-group list-group-flush">
+              <div *ngFor="let label of conceptDetail.hiddenLabel" class="list-group-item px-0 py-2">
+                <span class="badge bg-warning me-2">{{ label.Lang }}</span>
+                <i class="bi bi-eye-slash text-warning me-1"></i>
+                {{ label.Term }}
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <!-- Broader Concepts -->
+          <div *ngIf="conceptDetail.broader && conceptDetail.broader.length > 0" class="mb-3">
+            <p class="text-muted small mb-2"><strong>Conceitos Mais Amplos (Broader)</strong></p>
+            <div class="list-group list-group-flush">
+              <div *ngFor="let concept of conceptDetail.broader" class="list-group-item px-0 py-2">
+                <i class="bi bi-arrow-up text-primary me-2"></i>
+                {{ concept.Term || concept.label || concept.prefLabel?.Term || 'N/A' }}
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <!-- Narrower Concepts -->
+          <div *ngIf="conceptDetail.narrow && conceptDetail.narrow.length > 0" class="mb-3">
+            <p class="text-muted small mb-2"><strong>Conceitos Mais Específicos (Narrow)</strong></p>
+            <div class="list-group list-group-flush">
+              <div *ngFor="let concept of conceptDetail.narrow" class="list-group-item px-0 py-2">
+                <i class="bi bi-arrow-down text-info me-2"></i>
+                {{ concept.Term || concept.label || concept.prefLabel?.Term || 'N/A' }}
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <!-- Related Concepts -->
+          <div *ngIf="conceptDetail.relations && conceptDetail.relations.length > 0" class="mb-3">
+            <p class="text-muted small mb-2"><strong>Conceitos Relacionados</strong></p>
+            <div class="list-group list-group-flush">
+              <div *ngFor="let concept of conceptDetail.relations" class="list-group-item px-0 py-2">
+                <i class="bi bi-link-45deg text-warning me-2"></i>
+                {{ concept.Term || concept.label || concept.prefLabel?.Term || 'N/A' }}
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <!-- Notes -->
+          <div *ngIf="conceptDetail.notes && conceptDetail.notes.length > 0" class="mb-3">
+            <p class="text-muted small mb-2"><strong>Notas</strong></p>
+            <div class="list-group list-group-flush">
+              <div *ngFor="let note of conceptDetail.notes" class="list-group-item px-0 py-2">
+                {{ note.note || note }}
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <!-- JSON completo em accordion -->
+          <div class="accordion" id="conceptDataAccordion">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseData">
+                  <i class="bi bi-code-square me-2"></i>Dados Completos (JSON)
+                </button>
+              </h2>
+              <div id="collapseData" class="accordion-collapse collapse" data-bs-parent="#conceptDataAccordion">
+                <div class="accordion-body p-0">
+                  <pre class="mb-0"><code>{{ conceptDetail | json }}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer do modal -->
+      <div class="modal-footer border-top">
+        <button type="button" class="btn btn-secondary" (click)="closeDetailPanel()">
+          <i class="bi bi-x me-1"></i>Fechar
+        </button>
+        <a
+          *ngIf="conceptDetail"
+          [href]="'/c/' + (conceptDetail.id_c || conceptDetail.c_concept)"
+          target="_blank"
+          class="btn btn-primary"
+        >
+          <i class="bi bi-box-arrow-up-right me-1"></i>Abrir em Nova Aba
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

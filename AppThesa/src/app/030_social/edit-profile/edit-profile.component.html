@@ -141,12 +141,19 @@
                 <!-- Ícone do tesauro -->
                 <div class="col-auto">
                   <img
+                    *ngIf="thesa.th_icone_custom"
                     [src]="getThesaImageUrl(thesa.th_icone_custom)"
                     [alt]="thesa.th_name"
                     class="rounded"
                     style="width: 70px; height: 70px; object-fit: cover; background: #f0f0f0"
-                    onerror="this.src='https://via.placeholder.com/70?text=Tesauro'"
                   />
+                  <div
+                    *ngIf="!thesa.th_icone_custom"
+                    class="rounded d-flex align-items-center justify-content-center"
+                    style="width: 70px; height: 70px; background: #f0f0f0; font-size: 2rem"
+                  >
+                    <i class="bi bi-diagram-2 text-primary"></i>
+                  </div>
                 </div>
 
                 <!-- Informações do tesauro -->

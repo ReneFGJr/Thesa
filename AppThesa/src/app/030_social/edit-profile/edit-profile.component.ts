@@ -86,9 +86,6 @@ export class EditProfileComponent implements OnInit {
    * Cria a URL da imagem do tesauro
    */
   getThesaImageUrl(iconPath: string): string {
-    if (!iconPath) {
-      return 'https://via.placeholder.com/80?text=Tesauro';
-    }
     return `http://thesa/${iconPath}`;
   }
 

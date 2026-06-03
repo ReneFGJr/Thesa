@@ -83,6 +83,39 @@ class Index extends Model
                 ->where('thesa_terms.term_name', $dt['term'])
                 ->get()
                 ->getRowArray();
+
+                echo $this->db->getLastQuery();
+                exit;
+            return $result;
+        }
+
+    function searchConceptByNameV2($dt)
+        {
+            $parms = ['term','thesaID'];
+            if ($this->checkParamets($parms, $dt) == false)
+                {
+                    $RSP['message'] = 'Parâmetros necessários: '.implode(', ', $parms);
+                    $RSP['status'] = '500';
+                    return $RSP;
+                }
+             foreach($parms as $p)
+                {
+                    if (!isset($dt[$p]))
+                        {
+                            $RSP['message'] = 'Parâmetro "'.$p.'" não foi informado';
+                            $RSP['status'] = '500';
+                            return $RSP;
+                        }
+                }
+
+            $result = $this->db->table('thesa_concept_term')
+                ->select('*')
+                ->join('thesa_terms', 'thesa_terms.id_term = thesa_concept_term.ct_literal', 'INNER')
+                ->where('thesa_concept_term.ct_th', $dt['thesaID'])
+                ->like('thesa_terms.term_name', $dt['term'], 'both')
+                ->get()
+                ->getResultArray();
+
             return $result;
         }
 

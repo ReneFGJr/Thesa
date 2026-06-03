@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ServiceStorageService {
   private storage: Storage;
+  private storageChange$ = new Subject<{ key: string; value: any }>();
+
   constructor() {
     this.storage = window.localStorage;
   }
@@ -12,6 +15,8 @@ export class ServiceStorageService {
   set(key: string, value: any): boolean {
     if (this.storage) {
       this.storage.setItem(key, JSON.stringify(value));
+      // Emite evento de mudança
+      this.storageChange$.next({ key, value });
       return true;
     }
     return false;
@@ -35,9 +40,16 @@ export class ServiceStorageService {
     }
   }
 
+  // Retorna um Observable que emite quando o storage muda
+  getStorageChanges() {
+    return this.storageChange$.asObservable();
+  }
+
   remove(key: string): boolean {
     if (this.storage) {
       this.storage.removeItem(key);
+      // Emite evento de mudança
+      this.storageChange$.next({ key, value: null });
       return true;
     } else {
       console.log('Error: Storage not available ', key);

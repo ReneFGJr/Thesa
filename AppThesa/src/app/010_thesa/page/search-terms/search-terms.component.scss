@@ -1,0 +1,61 @@
+// Estilos do componente de busca de termos
+
+.form-select-lg,
+.form-control,
+.input-group-lg .form-control,
+.input-group-lg .btn {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+}
+
+.list-group-item-action:hover {
+  background-color: #f8f9fa;
+  transform: translateX(5px);
+  transition: all 0.3s ease;
+}
+
+.card {
+  border-radius: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  }
+}
+
+.btn-primary {
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+
+  &:hover:not(:disabled) {
+    transform: scale(1.02);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .col-lg-8 {
+    padding: 0 1rem;
+  }
+
+  .form-select-lg,
+  .form-control,
+  .input-group-lg .form-control {
+    font-size: 0.9rem;
+  }
+
+  .card-body {
+    padding: 1.5rem !important;
+  }
+}

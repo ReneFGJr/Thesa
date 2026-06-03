@@ -39,11 +39,8 @@ $routes->set404Override();
 
 $routes->get('/image/(:any)/(:any)', 'Api::image/$1/$2');
 
-$routes->get('/api', 'Api::index/');
-$routes->post('/api', 'Api::index/');
-$routes->get('/api/(:any)', 'Api::index/$1');
-$routes->post('/api/(:any)', 'Api::index/$1');
-
+$routes->match(['get', 'post'], '/api', 'Api::index/');
+$routes->match(['get', 'post'], '/api/(:any)', 'Api::index/$1');
 $routes->get('/admin', 'Admin::index');
 $routes->get('/admin/(:any)', 'Admin::index/$1');
 $routes->get('/thesa/admin/(:any)', 'Admin::index/$1');

@@ -54,10 +54,10 @@ export class ServiceThesaService {
     if (apikey) {
       formData.append('apikey', apikey);
     }
-    /*
+
     console.log('API Post URL:', url);
     console.log('API Post Data:', dt);
-    */
+
 
 
     return this.HttpClient.post<Array<any>>(url, formData).pipe(
