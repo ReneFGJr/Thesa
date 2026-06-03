@@ -26,6 +26,7 @@ export class SearchTermsComponent implements OnInit {
   conceptDetail: any = null;
   conceptLoading: boolean = false;
   conceptError: string = '';
+  private detailModal: any = null; // Referência ao modal Bootstrap
 
   constructor(
     private router: Router,
@@ -147,8 +148,14 @@ export class SearchTermsComponent implements OnInit {
 
     if (modalElement) {
       try {
-        const modal = new bootstrap.Modal(modalElement);
-        modal.show();
+        // Fechar modal anterior se existir
+        if (this.detailModal) {
+          this.detailModal.hide();
+        }
+
+        // Criar e armazenar nova instância do modal
+        this.detailModal = new bootstrap.Modal(modalElement);
+        this.detailModal.show();
         console.log('Modal aberto com sucesso');
       } catch (error) {
         console.error('Erro ao abrir modal:', error);
@@ -159,9 +166,74 @@ export class SearchTermsComponent implements OnInit {
   }
 
   closeDetailPanel(): void {
+    // Fechar o modal Bootstrap primeiro
+    if (this.detailModal) {
+      this.detailModal.hide();
+    }
+
+    // Depois limpar o estado Angular
     this.showDetailPanel = false;
     this.conceptDetail = null;
     this.conceptError = '';
+  }
+
+  copyTermToClipboard(term: string): void {
+    if (!term) return;
+
+    navigator.clipboard.writeText(term).then(() => {
+      // Mostrar feedback visual
+      alert('Termo copiado: ' + term);
+    }).catch((error) => {
+      console.error('Erro ao copiar:', error);
+      alert('Erro ao copiar o termo');
+    });
+  }
+
+  getPropertyColor(propertyName: string): string {
+    if (!propertyName) return 'bg-secondary';
+
+    const name = propertyName.toLowerCase();
+
+    // Mapa de cores para diferentes tipos de propriedades
+    const colorMap: { [key: string]: string } = {
+      'preferred': 'bg-success',
+      'preferido': 'bg-success',
+      'preferred term': 'bg-success',
+      'termo preferencial': 'bg-success',
+
+      'alternative': 'bg-info',
+      'alternativo': 'bg-info',
+      'alternative term': 'bg-info',
+      'termo alternativo': 'bg-info',
+
+      'hidden': 'bg-warning',
+      'oculto': 'bg-warning',
+      'hidden term': 'bg-warning',
+      'termo oculto': 'bg-warning',
+
+      'non preferred': 'bg-danger',
+      'não preferencial': 'bg-danger',
+      'non preferred term': 'bg-danger',
+
+      'broader': 'bg-primary',
+      'mais amplo': 'bg-primary',
+
+      'narrower': 'bg-primary',
+      'mais específico': 'bg-primary',
+
+      'related': 'bg-info',
+      'relacionado': 'bg-info',
+    };
+
+    // Procurar correspondência exata ou parcial
+    for (const [key, color] of Object.entries(colorMap)) {
+      if (name.includes(key) || key.includes(name)) {
+        return color;
+      }
+    }
+
+    // Cor padrão
+    return 'bg-secondary';
   }
 
   clearSearch(): void {

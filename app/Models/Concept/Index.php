@@ -109,10 +109,12 @@ class Index extends Model
                 }
 
             $result = $this->db->table('thesa_concept_term')
-                ->select('*')
+                ->select('ct_th, ct_concept, term_name, p_name')
                 ->join('thesa_terms', 'thesa_terms.id_term = thesa_concept_term.ct_literal', 'INNER')
+                ->join('thesa_property', 'thesa_property.id_p = thesa_concept_term.ct_propriety', 'INNER')
                 ->where('thesa_concept_term.ct_th', $dt['thesaID'])
                 ->like('thesa_terms.term_name', $dt['term'], 'both')
+                ->orderBy('term_name', 'ASC')
                 ->get()
                 ->getResultArray();
 

@@ -72,9 +72,14 @@
             >
               <div class="d-flex justify-content-between align-items-start">
                 <div class="flex-grow-1">
-                  <h6 class="mb-1 fw-bold">
-                    {{ result.term_name || result.ct_literal }}
-                  </h6>
+                  <div class="d-flex align-items-center gap-2 mb-2">
+                    <h6 class="mb-0 fw-bold">
+                      {{ result.term_name || result.ct_literal }}
+                    </h6>
+                    <span *ngIf="result.p_name" class="badge" [ngClass]="getPropertyColor(result.p_name)">
+                      {{ result.p_name }}
+                    </span>
+                  </div>
                   <p class="mb-0 text-muted small">
                     <strong>ID:</strong> {{ result.ct_concept }}
                   </p>
@@ -159,132 +164,147 @@
 
         <!-- Conteúdo -->
         <div *ngIf="conceptDetail && !conceptLoading && !conceptError">
-          <!-- ID e Label Principal -->
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <p class="text-muted small mb-1">ID do Conceito</p>
-              <h6 class="fw-bold">{{ conceptDetail.id_c || conceptDetail.c_concept || 'N/A' }}</h6>
-            </div>
-            <div class="col-md-6">
-              <p class="text-muted small mb-1">Label Principal</p>
-              <h6 class="fw-bold">{{ conceptDetail.label || 'N/A' }}</h6>
+          <!-- Header Compacto -->
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <small class="text-muted d-block">ID: {{ conceptDetail.id_c || conceptDetail.c_concept }}</small>
+              <h5 class="mb-0">{{ conceptDetail.label || 'N/A' }}</h5>
+              <small class="text-muted">Thesa: {{ conceptDetail.c_th }} | Criado: {{ conceptDetail.c_created | date: 'dd/MM/yyyy' }}</small>
             </div>
           </div>
 
-          <hr>
+          <!-- Abas/Tabs de Conteúdo -->
+          <ul class="nav nav-tabs nav-fill" role="tablist" style="font-size: 0.9rem;">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="labelsTab" data-bs-toggle="tab" data-bs-target="#labelsContent" type="button" role="tab">
+                <i class="bi bi-tags me-1"></i>Labels
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="relationsTab" data-bs-toggle="tab" data-bs-target="#relationsContent" type="button" role="tab">
+                <i class="bi bi-diagram-2 me-1"></i>Relações
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="dataTab" data-bs-toggle="tab" data-bs-target="#dataContent" type="button" role="tab">
+                <i class="bi bi-code-square me-1"></i>Dados
+              </button>
+            </li>
+          </ul>
 
-          <!-- URI e Thesaurus -->
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <p class="text-muted small mb-1">Thesaurus ID</p>
-              <p>{{ conceptDetail.c_th || 'N/A' }}</p>
-            </div>
-            <div class="col-md-6">
-              <p class="text-muted small mb-1">Data de Criação</p>
-              <p>{{ conceptDetail.c_created | date: 'dd/MM/yyyy HH:mm' || 'N/A' }}</p>
-            </div>
-          </div>
+          <!-- Tab Content -->
+          <div class="tab-content mt-3" style="font-size: 0.9rem;">
+            <!-- Labels Tab -->
+            <div class="tab-pane fade show active" id="labelsContent" role="tabpanel">
+              <!-- Preferred Labels -->
+              <div *ngIf="conceptDetail.prefLabel && conceptDetail.prefLabel.length > 0" class="mb-3">
+                <small class="text-muted d-block mb-2"><strong>✓ Preferenciais</strong></small>
+                <div class="ps-2">
+                  <!-- Primeiro termo destacado -->
+                  <div *ngIf="conceptDetail.prefLabel[0]" class="mb-3 p-2 bg-light rounded border-start border-success border-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <span class="badge bg-success" style="font-size: 0.75rem; margin-right: 0.5rem;">{{ conceptDetail.prefLabel[0].Lang }}</span>
+                        <span style="font-size: 1.25rem; font-weight: bold; color: #333;">{{ conceptDetail.prefLabel[0].Term }}</span>
+                      </div>
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-outline-success"
+                        (click)="copyTermToClipboard(conceptDetail.prefLabel[0].Term)"
+                        title="Copiar termo"
+                      >
+                        <i class="bi bi-clipboard"></i>
+                      </button>
+                    </div>
+                  </div>
 
-          <hr>
-
-          <!-- Preferred Labels -->
-          <div *ngIf="conceptDetail.prefLabel && conceptDetail.prefLabel.length > 0" class="mb-3">
-            <p class="text-muted small mb-2"><strong>Labels Preferenciais</strong></p>
-            <div class="list-group list-group-flush">
-              <div *ngFor="let label of conceptDetail.prefLabel" class="list-group-item px-0 py-2">
-                <span class="badge bg-success me-2">{{ label.Lang }}</span>
-                {{ label.Term }}
-              </div>
-            </div>
-            <hr>
-          </div>
-
-          <!-- Alternative Labels -->
-          <div *ngIf="conceptDetail.altLabel && conceptDetail.altLabel.length > 0" class="mb-3">
-            <p class="text-muted small mb-2"><strong>Labels Alternativos</strong></p>
-            <div class="list-group list-group-flush">
-              <div *ngFor="let label of conceptDetail.altLabel" class="list-group-item px-0 py-2">
-                <span class="badge bg-info me-2">{{ label.Lang }}</span>
-                <i class="bi bi-arrow-left-right text-info me-1"></i>
-                {{ label.Term }}
-              </div>
-            </div>
-            <hr>
-          </div>
-
-          <!-- Hidden Labels -->
-          <div *ngIf="conceptDetail.hiddenLabel && conceptDetail.hiddenLabel.length > 0" class="mb-3">
-            <p class="text-muted small mb-2"><strong>Labels Ocultos</strong></p>
-            <div class="list-group list-group-flush">
-              <div *ngFor="let label of conceptDetail.hiddenLabel" class="list-group-item px-0 py-2">
-                <span class="badge bg-warning me-2">{{ label.Lang }}</span>
-                <i class="bi bi-eye-slash text-warning me-1"></i>
-                {{ label.Term }}
-              </div>
-            </div>
-            <hr>
-          </div>
-
-          <!-- Broader Concepts -->
-          <div *ngIf="conceptDetail.broader && conceptDetail.broader.length > 0" class="mb-3">
-            <p class="text-muted small mb-2"><strong>Conceitos Mais Amplos (Broader)</strong></p>
-            <div class="list-group list-group-flush">
-              <div *ngFor="let concept of conceptDetail.broader" class="list-group-item px-0 py-2">
-                <i class="bi bi-arrow-up text-primary me-2"></i>
-                {{ concept.Term || concept.label || concept.prefLabel?.Term || 'N/A' }}
-              </div>
-            </div>
-            <hr>
-          </div>
-
-          <!-- Narrower Concepts -->
-          <div *ngIf="conceptDetail.narrow && conceptDetail.narrow.length > 0" class="mb-3">
-            <p class="text-muted small mb-2"><strong>Conceitos Mais Específicos (Narrow)</strong></p>
-            <div class="list-group list-group-flush">
-              <div *ngFor="let concept of conceptDetail.narrow" class="list-group-item px-0 py-2">
-                <i class="bi bi-arrow-down text-info me-2"></i>
-                {{ concept.Term || concept.label || concept.prefLabel?.Term || 'N/A' }}
-              </div>
-            </div>
-            <hr>
-          </div>
-
-          <!-- Related Concepts -->
-          <div *ngIf="conceptDetail.relations && conceptDetail.relations.length > 0" class="mb-3">
-            <p class="text-muted small mb-2"><strong>Conceitos Relacionados</strong></p>
-            <div class="list-group list-group-flush">
-              <div *ngFor="let concept of conceptDetail.relations" class="list-group-item px-0 py-2">
-                <i class="bi bi-link-45deg text-warning me-2"></i>
-                {{ concept.Term || concept.label || concept.prefLabel?.Term || 'N/A' }}
-              </div>
-            </div>
-            <hr>
-          </div>
-
-          <!-- Notes -->
-          <div *ngIf="conceptDetail.notes && conceptDetail.notes.length > 0" class="mb-3">
-            <p class="text-muted small mb-2"><strong>Notas</strong></p>
-            <div class="list-group list-group-flush">
-              <div *ngFor="let note of conceptDetail.notes" class="list-group-item px-0 py-2">
-                {{ note.note || note }}
-              </div>
-            </div>
-            <hr>
-          </div>
-
-          <!-- JSON completo em accordion -->
-          <div class="accordion" id="conceptDataAccordion">
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseData">
-                  <i class="bi bi-code-square me-2"></i>Dados Completos (JSON)
-                </button>
-              </h2>
-              <div id="collapseData" class="accordion-collapse collapse" data-bs-parent="#conceptDataAccordion">
-                <div class="accordion-body p-0">
-                  <pre class="mb-0"><code>{{ conceptDetail | json }}</code></pre>
+                  <!-- Outros termos preferenciais -->
+                  <ng-container *ngFor="let label of conceptDetail.prefLabel; let i = index">
+                    <div *ngIf="i > 0" class="mb-1">
+                      <span class="badge bg-success" style="font-size: 0.75rem;">{{ label.Lang }}</span>
+                      {{ label.Term }}
+                    </div>
+                  </ng-container>
                 </div>
               </div>
+
+              <!-- Alternative Labels -->
+              <div *ngIf="conceptDetail.altLabel && conceptDetail.altLabel.length > 0" class="mb-2">
+                <small class="text-muted d-block mb-1"><strong>↔ Alternativos</strong></small>
+                <div class="ps-2">
+                  <div *ngFor="let label of conceptDetail.altLabel" class="mb-1">
+                    <span class="badge bg-info" style="font-size: 0.75rem;">{{ label.Lang }}</span>
+                    {{ label.Term }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Hidden Labels -->
+              <div *ngIf="conceptDetail.hiddenLabel && conceptDetail.hiddenLabel.length > 0" class="mb-2">
+                <small class="text-muted d-block mb-1"><strong>🔒 Ocultos</strong></small>
+                <div class="ps-2">
+                  <div *ngFor="let label of conceptDetail.hiddenLabel" class="mb-1">
+                    <span class="badge bg-warning" style="font-size: 0.75rem;">{{ label.Lang }}</span>
+                    {{ label.Term }}
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="!conceptDetail.prefLabel && !conceptDetail.altLabel && !conceptDetail.hiddenLabel" class="text-muted">
+                Nenhum label definido
+              </div>
+            </div>
+
+            <!-- Relations Tab -->
+            <div class="tab-pane fade" id="relationsContent" role="tabpanel">
+              <!-- Broader Concepts -->
+              <div *ngIf="conceptDetail.broader && conceptDetail.broader.length > 0" class="mb-2">
+                <small class="text-muted d-block mb-1"><strong>↑ Mais Amplos</strong></small>
+                <div class="ps-2">
+                  <div *ngFor="let concept of conceptDetail.broader" class="mb-1">
+                    {{ concept.Term || concept.label || concept.prefLabel?.Term || 'N/A' }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Narrower Concepts -->
+              <div *ngIf="conceptDetail.narrow && conceptDetail.narrow.length > 0" class="mb-2">
+                <small class="text-muted d-block mb-1"><strong>↓ Mais Específicos</strong></small>
+                <div class="ps-2">
+                  <div *ngFor="let concept of conceptDetail.narrow" class="mb-1">
+                    {{ concept.Term || concept.label || concept.prefLabel?.Term || 'N/A' }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Related Concepts -->
+              <div *ngIf="conceptDetail.relations && conceptDetail.relations.length > 0" class="mb-2">
+                <small class="text-muted d-block mb-1"><strong>🔗 Relacionados</strong></small>
+                <div class="ps-2">
+                  <div *ngFor="let concept of conceptDetail.relations" class="mb-1">
+                    {{ concept.Term || concept.label || concept.prefLabel?.Term || 'N/A' }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Notes -->
+              <div *ngIf="conceptDetail.notes && conceptDetail.notes.length > 0" class="mb-2">
+                <small class="text-muted d-block mb-1"><strong>📝 Notas</strong></small>
+                <div class="ps-2">
+                  <div *ngFor="let note of conceptDetail.notes" class="mb-1 small">
+                    {{ note.note || note }}
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="!conceptDetail.broader && !conceptDetail.narrow && !conceptDetail.relations && !conceptDetail.notes" class="text-muted">
+                Nenhuma relação definida
+              </div>
+            </div>
+
+            <!-- Data Tab -->
+            <div class="tab-pane fade" id="dataContent" role="tabpanel">
+              <pre class="mb-0" style="font-size: 0.8rem; max-height: 400px; overflow-y: auto;"><code>{{ conceptDetail | json }}</code></pre>
             </div>
           </div>
         </div>
