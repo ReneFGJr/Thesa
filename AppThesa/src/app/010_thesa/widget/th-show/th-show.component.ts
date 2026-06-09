@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
 
@@ -8,7 +8,7 @@ import { ServiceStorageService } from '../../../000_core/service/service-storage
   styleUrl: './th-show.component.scss',
   standalone: false,
 })
-export class ThShowComponent {
+export class ThShowComponent implements OnInit, OnChanges {
   @Input() thesa: any;
   @Input() thesaID: number = 0;
   @Input() tab: string = '';
@@ -24,6 +24,16 @@ export class ThShowComponent {
   ) {}
 
   ngOnInit() {
+    this.loadEditMode();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['thesaID'] && !changes['thesaID'].firstChange) {
+      this.loadEditMode();
+    }
+  }
+
+  loadEditMode() {
     setTimeout(() => {
       this.editModeLocal = this.serviceStorage.getEditMode();
       if (this.thesaID > 0) {

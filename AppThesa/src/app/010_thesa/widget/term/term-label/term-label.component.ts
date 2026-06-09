@@ -110,7 +110,7 @@ export class TermLabelComponent {
     if (this.label === 'prefLabel') {
       this.termLabel = 'Termo Preferencial';
     } else if (this.label === 'altLabel') {
-      this.termLabel = 'Termo Alternativo';
+      this.termLabel = 'Termo Equivalente';
     } else if (this.label === 'hiddenLabel') {
       this.termLabel = 'Termo Oculto';
     } else if (this.label === 'broader') {

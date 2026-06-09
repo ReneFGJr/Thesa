@@ -421,7 +421,6 @@ class Api extends BaseController
             case 'thmy': /* Thesaurus aberto */
                 $Thesa = new \App\Models\Thesa\Index();
                 $userID = $this->user();
-                $userID = 2;
 
                 if ($userID == 0) {
                     $RSP['status'] = '400';
@@ -470,16 +469,26 @@ class Api extends BaseController
         $RSP = $Thesa->le($id);
 
         /* Privilegios */
-        $apikey = get('apikey');
-        $apikey = troca($apikey, '"', '');
+        $userID = $this->user();
         $RSP['editMode'] = false;
-        if ($apikey != '') {
+        if ($userID > 0) {
             $Collaborators = new \App\Models\Thesa\Collaborators();
-            $editMode = $Collaborators->isMember($apikey, $id);
-            if ($editMode > 0) {
+            $Thesa = new \App\Models\Thesa\Thesa();
+
+            // Verifica se é proprietário
+            $thD = $Thesa->where('id_th', $id)->first();
+            if ($thD != [] && $thD['th_own'] == $userID) {
                 $RSP['editMode'] = 'allow';
             } else {
-                $RSP['editMode'] = 'deny';
+                // Verifica se é colaborador
+                $collaborator = $Collaborators
+                    ->where('th_us_th', $id)
+                    ->where('th_us_user', $userID)
+                    ->first();
+
+                if ($collaborator != []) {
+                    $RSP['editMode'] = 'allow';
+                }
             }
         }
         return $RSP;
