@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from './000_core/service/auth.service';
+import { ServiceThesaService } from './000_core/service/service-thesa.service';
 
 @Component({
     selector: 'app-root',
@@ -13,6 +14,7 @@ export class AppComponent {
 
   constructor(
     private auth: AuthService,
+    public serviceThesa: ServiceThesaService,
   ) {}
 
   ngOnInit(){

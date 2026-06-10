@@ -1,7 +1,7 @@
 import { environment } from './../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, finalize, map, Observable, throwError } from 'rxjs';
 
 
 @Injectable({
@@ -12,6 +12,7 @@ export class ServiceThesaService {
   //private url: string = 'https://ufrgs.br/thesa/api';
   //private url: string = 'http://thesa/api';
   private url: string = environment.apiUrl;
+  public isLoading$ = new BehaviorSubject<boolean>(false);
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -58,9 +59,10 @@ export class ServiceThesaService {
     console.log('API Post URL:', url);
     console.log('API Post Data:', dt);
 
-
+    this.isLoading$.next(true);
 
     return this.HttpClient.post<Array<any>>(url, formData).pipe(
+      finalize(() => this.isLoading$.next(false)),
       map((res) => res),
       catchError((error) => throwError(() => new Error('An error occurred')))
     );

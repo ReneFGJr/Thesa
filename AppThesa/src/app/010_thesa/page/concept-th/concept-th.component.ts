@@ -83,8 +83,8 @@ export class ConceptTHComponent {
 
   updateData() {
         this.dadosTesauro(this.thesaID);
-        this.dadosTermos(this.thesaID);
         this.dadosTermosCandidatos(this.thesaID);
+        this.dadosTermos(this.thesaID);
   }
 
   changeTerm(term: any) {
