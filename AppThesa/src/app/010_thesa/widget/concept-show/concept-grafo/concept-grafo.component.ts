@@ -1,9 +1,17 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild, OnInit, OnChanges } from '@angular/core';
 import * as d3 from 'd3';
 
-interface TreeNode {
+interface GraphNode extends d3.SimulationNodeDatum {
+  id: string;
   name: string;
-  children?: TreeNode[];
+  type: 'main' | 'broader' | 'narrow' | 'related';
+}
+
+interface GraphLink extends d3.SimulationLinkDatum<GraphNode> {
+  source: string | GraphNode;
+  target: string | GraphNode;
+  label: string;
+  type: 'broader' | 'narrower' | 'related' | 'exactMatch' | 'closeMatch';
 }
 
 @Component({
@@ -12,137 +20,279 @@ interface TreeNode {
   styleUrl: './concept-grafo.component.scss',
   standalone: false,
 })
-export class ConceptGrafoComponent {
+export class ConceptGrafoComponent implements OnInit, OnChanges {
   @Input() conceptData: any;
 
   @ViewChild('treeContainer', { static: true }) treeContainer!: ElementRef;
 
-  data: TreeNode = {
-    name: 'THESA',
-    children: []
-  };
+  nodes: GraphNode[] = [];
+  links: GraphLink[] = [];
 
   constructor() {}
 
-  buildTreeFromConcept(conceptData: any): TreeNode {
-    const node: TreeNode = {
-      name: conceptData.label,
-      children: [],
-    };
+  buildGraphFromConcept(conceptData: any): { nodes: GraphNode[]; links: GraphLink[] } {
+    const nodes: GraphNode[] = [];
+    const links: GraphLink[] = [];
+    const mainId = conceptData.id_c || conceptData.c_concept || 'main';
 
-    // Adiciona narrow (filhos)
-    if (Array.isArray(conceptData.narrow) && conceptData.narrow.length > 0) {
-      node.children = conceptData.narrow.map((n: any) => ({
-        name: n.Term,
-      }));
-    }
+    // Adiciona o conceito principal
+    nodes.push({
+      id: mainId,
+      name: conceptData.label || conceptData.prefLabel?.[0]?.Term || 'Conceito',
+      type: 'main',
+    });
 
-    // Adiciona broader (como pai do conceito atual)
+    // Adiciona broader (conceitos mais amplos)
     if (Array.isArray(conceptData.broader) && conceptData.broader.length > 0) {
-      return {
-        name: conceptData.broader[0].Term,
-        children: [node],
-      };
+      conceptData.broader.forEach((broader: any, idx: number) => {
+        const broaderId = broader.id || `broader-${idx}`;
+        nodes.push({
+          id: broaderId,
+          name: broader.Term || broader.label || 'N/A',
+          type: 'broader',
+        });
+        links.push({
+          source: broaderId,
+          target: mainId,
+          label: 'broader',
+          type: 'broader',
+        });
+      });
     }
 
-    return node;
+    // Adiciona narrow (conceitos mais específicos)
+    if (Array.isArray(conceptData.narrow) && conceptData.narrow.length > 0) {
+      conceptData.narrow.forEach((narrow: any, idx: number) => {
+        const narrowId = narrow.id || `narrow-${idx}`;
+        nodes.push({
+          id: narrowId,
+          name: narrow.Term || narrow.label || 'N/A',
+          type: 'narrow',
+        });
+        links.push({
+          source: mainId,
+          target: narrowId,
+          label: 'narrower',
+          type: 'narrower',
+        });
+      });
+    }
+
+    // Adiciona related (conceitos relacionados)
+    if (Array.isArray(conceptData.relations) && conceptData.relations.length > 0) {
+      conceptData.relations.forEach((related: any, idx: number) => {
+        const relatedId = related.id || `related-${idx}`;
+        nodes.push({
+          id: relatedId,
+          name: related.Term || related.label || 'N/A',
+          type: 'related',
+        });
+        links.push({
+          source: mainId,
+          target: relatedId,
+          label: 'related',
+          type: 'related',
+        });
+      });
+    }
+
+    return { nodes, links };
   }
 
   ngOnInit(): void {
-    this.data = this.buildTreeFromConcept(this.conceptData);
-    this.createTree();
+    if (this.conceptData) {
+      const graph = this.buildGraphFromConcept(this.conceptData);
+      this.nodes = graph.nodes;
+      this.links = graph.links;
+      this.createGraph();
+    }
   }
 
   ngOnChanges(): void {
     if (this.conceptData) {
-      this.data = this.buildTreeFromConcept(this.conceptData);
-      this.createTree();
+      const graph = this.buildGraphFromConcept(this.conceptData);
+      this.nodes = graph.nodes;
+      this.links = graph.links;
+      this.createGraph();
     }
   }
 
-  createTree(): void {
-    const element = this.treeContainer.nativeElement;
+  private getColorByType(type: string): string {
+    const colorMap: { [key: string]: string } = {
+      main: '#9b59b6',
+      broader: '#95a5a6',
+      narrow: '#95a5a6',
+      related: '#95a5a6',
+    };
+    return colorMap[type] || '#95a5a6';
+  }
 
-    // Limpa o gráfico anterior, se existir
+  private getLinkColor(type: string): string {
+    const colorMap: { [key: string]: string } = {
+      broader: '#7f8c8d',
+      narrower: '#7f8c8d',
+      related: '#7f8c8d',
+      exactMatch: '#7f8c8d',
+      closeMatch: '#7f8c8d',
+    };
+    return colorMap[type] || '#7f8c8d';
+  }
+
+  createGraph(): void {
+    const element = this.treeContainer.nativeElement;
     d3.select(element).selectAll('svg').remove();
 
-    const width = 450;
-    const height = 600;
+    // Se não há dados, retorna
+    if (this.nodes.length === 0) {
+      return;
+    }
 
-    const margin = { top: 20, right: 120, bottom: 30, left: 90 };
-    const innerWidth = width - margin.left - margin.right;
-    const innerHeight = height - margin.top - margin.bottom;
+    const width = 800;
+    const height = 600;
 
     const svg = d3
       .select(element)
       .append('svg')
       .attr('width', width)
       .attr('height', height)
-      .append('g')
-      .attr('transform', `translate(${margin.left},${margin.top})`);
+      .attr('viewBox', [0, 0, width, height]);
 
-    const root = d3.hierarchy<TreeNode>(this.data);
+    // Define arrow markers para diferentes tipos de relações
+    const defs = svg.append('defs');
 
-    // Inverte x/y para orientação horizontal
-    const treeLayout = d3.tree<TreeNode>().size([innerHeight, innerWidth]);
-    treeLayout(root);
+    ['broader', 'narrower', 'related'].forEach((type) => {
+      defs
+        .append('marker')
+        .attr('id', `arrow-${type}`)
+        .attr('markerWidth', 10)
+        .attr('markerHeight', 10)
+        .attr('refX', 25)
+        .attr('refY', 3)
+        .attr('orient', 'auto')
+        .append('path')
+        .attr('d', 'M0,0 L0,6 L9,3 z')
+        .attr('fill', this.getLinkColor(type));
+    });
 
-    // Desenhar linhas (links)
-    svg
-      .attr('fill', 'none')
-      .attr('stroke', '#555')
-      .attr('stroke-opacity', 0.4)
-      .attr('stroke-width', 1.5)
-      .selectAll('path.link')
-      .data(root.links())
+    // Cria a simulação de força
+    const simulation = d3
+      .forceSimulation<GraphNode>(this.nodes)
+      .force(
+        'link',
+        d3
+          .forceLink<GraphNode, GraphLink>(this.links)
+          .id((d) => d.id)
+          .distance(120)
+          .strength(0.5)
+      )
+      .force('charge', d3.forceManyBody().strength(-500))
+      .force('center', d3.forceCenter(width / 2, height / 2))
+      .force('collide', d3.forceCollide().radius(50));
+
+    // Cria o container para os links
+    const linkGroup = svg.append('g').attr('class', 'links');
+
+    // Desenha os links
+    const links = linkGroup
+      .selectAll('line')
+      .data(this.links)
       .enter()
-      .append('path')
-      .attr('class', 'link')
-      .attr('d', (d: d3.HierarchyLink<TreeNode>) => {
-        const link = d as unknown as d3.HierarchyPointLink<TreeNode>;
-        return (
-          d3
-            .linkHorizontal<
-              d3.HierarchyPointLink<TreeNode>,
-              d3.HierarchyPointNode<TreeNode>
-            >()
-            .x((d) => d.y)
-            .y((d) => d.x)(link) ?? ''
-        );
-      });
-    //.attr('marker-end', 'url(#arrowhead)');
+      .append('g');
 
-    // Desenhar nós
-    const node = svg
-      .selectAll('g.node')
-      .data(root.descendants())
+    // Adiciona as linhas
+    links
+      .append('line')
+      .attr('stroke', (d) => this.getLinkColor(d.type))
+      .attr('stroke-width', 2)
+      .attr('stroke-opacity', 0.6)
+      .attr('marker-end', (d) => `url(#arrow-${d.type})`);
+
+    // Adiciona labels nas linhas
+    links
+      .append('text')
+      .attr('font-size', '11px')
+      .attr('fill', '#666')
+      .attr('text-anchor', 'middle')
+      .text((d) => d.label);
+
+    // Cria o container para os nós
+    const nodeGroup = svg.append('g').attr('class', 'nodes');
+
+    // Desenha os nós
+    const nodes = nodeGroup
+      .selectAll('g')
+      .data(this.nodes)
       .enter()
       .append('g')
       .attr('class', 'node')
-      .attr('transform', (d: d3.HierarchyNode<TreeNode>) => {
-        const point = d as d3.HierarchyPointNode<TreeNode>;
-        return `translate(${point.y ?? 0},${point.x ?? 0})`; // trocado
-      });
+      .call(
+        d3
+          .drag<SVGGElement, GraphNode>()
+          .on('start', (event, d) => {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+          })
+          .on('drag', (event, d) => {
+            d.fx = event.x;
+            d.fy = event.y;
+          })
+          .on('end', (event, d) => {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+          })
+      );
 
-    node
+    // Adiciona círculos nos nós
+    nodes
       .append('circle')
-      .attr('r', 4)
-      .attr('fill', '#ff0')
+      .attr('r', (d) => (d.type === 'main' ? 25 : 18))
+      .attr('fill', (d) => this.getColorByType(d.type))
       .attr('stroke', '#333')
       .attr('stroke-width', 2);
 
-    node
+    // Adiciona texto nos nós
+    nodes
       .append('text')
-      .attr('dy', (d) => (d.children ? -6 : 6))
-      .attr('fill', '#333')
-      .attr('stroke', 'none')
-      .attr('x', (d) => (d.children ? -6 : 6))
-      .attr('text-anchor', (d) => (d.children ? 'end' : 'start'))
-      .style('font-size', '12px')
-      .attr('paint-order', 'stroke')
-      .text((d: d3.HierarchyNode<TreeNode>) => {
-        const point = d as d3.HierarchyPointNode<TreeNode>;
-        return point.data.name;
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'central')
+      .style('font-size', (d) => (d.type === 'main' ? '15px' : '14px'))
+      .style('font-weight', (d) => (d.type === 'main' ? 'bold' : 'bold'))
+      .style('fill', '#000')
+      .style('pointer-events', 'none')
+      .text((d) => {
+        // Limita o texto para não ficar muito grande
+        const text = d.name;
+        return text.length > 15 ? text.substring(0, 12) + '...' : text;
       });
+
+    // Atualiza as posições durante a simulação
+    simulation.on('tick', () => {
+      links
+        .selectAll('line')
+        .attr('x1', (d: any) => (d.source as GraphNode).x!)
+        .attr('y1', (d: any) => (d.source as GraphNode).y!)
+        .attr('x2', (d: any) => (d.target as GraphNode).x!)
+        .attr('y2', (d: any) => (d.target as GraphNode).y!)        ;
+
+      links
+        .selectAll('text')
+        .attr(
+          'x',
+          (d: any) =>
+            ((d.source as GraphNode).x! + (d.target as GraphNode).x!) / 2,
+        )
+        .attr(
+          'y',
+          (d: any) =>
+            ((d.source as GraphNode).y! + (d.target as GraphNode).y!) / 2,
+        )
+        .style('font-size', (d) => ('13px'));
+
+      nodes.attr('transform', (d: any) => `translate(${d.x},${d.y})`);
+    });
   }
 }

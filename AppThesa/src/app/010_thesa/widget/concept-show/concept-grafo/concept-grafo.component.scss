@@ -1,17 +1,49 @@
 svg {
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fa;
+  border-radius: 8px;
 }
 
-.link {
-  fill: none;
-  stroke: #ccc;
-  stroke-width: 1.5px;
+.links {
+  line {
+    stroke: #999;
+    stroke-opacity: 0.6;
+  }
+
+  text {
+    font-size: 11px;
+    fill: #000;
+    font-weight: 600;
+    background-color: white;
+    padding: 2px 4px;
+  }
 }
 
-.node circle {
-  fill: #0d6efd;
-}
+.nodes {
+  .node {
+    cursor: grab;
 
-.node text {
-  font: 10px sans-serif;
+    &:active {
+      cursor: grabbing;
+    }
+
+    circle {
+      stroke-width: 2px;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+      transition: r 0.2s ease;
+
+      &:hover {
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+      }
+    }
+
+    text {
+      pointer-events: none;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      fill: #000;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+  }
 }
