@@ -42,7 +42,6 @@ class Api extends BaseController
     }
     public function index($arg1 = '', $arg2 = '', $arg3 = '')
     {
-
         // 1. Allow access from the origin making the request
         if (isset($_SERVER['HTTP_ORIGIN'])) {
             header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
@@ -111,7 +110,18 @@ class Api extends BaseController
             case 'createConcept': /* V2 */
                 $Concept = new \App\Models\Concept\Index();
                 $DT = $_GET;
-                $DT = array_merge($DT, $_POST);
+                if (!isset($DT['thesaID'])) {
+                    $DT = $_POST;
+                }
+                if (!isset($DT['thesaID'])) {
+                    pre($_POST);
+                    echo "===========";
+                    $RSP['status'] = '400';
+                    $RSP['message'] = 'Thesaurus ID not informed';
+                    echo json_encode($RSP);
+                    exit;
+                }
+
                 $RSP = $Concept->createConceptV2($DT);
                 break;
             case 'getConceptByName': /* V2 */

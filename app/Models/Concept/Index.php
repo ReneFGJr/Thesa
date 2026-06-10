@@ -131,7 +131,8 @@ class Index extends Model
 
             $parms = ['term', 'thesaID','apiKey','lang'];
             if ($this->checkParamets($parms, $dt) == false) {
-                $RSP['message'] = 'Parâmetros necessários: ' . implode(', ', $parms);
+                $RSP['message'] = 'Parameter required: ' . implode(', ', $parms);
+                $RSP['post'] = $dt;
                 $RSP['status'] = '500';
                 return $RSP;
             }

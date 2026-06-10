@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Se o arquivo ou diretório solicitado existir, use-o diretamente
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Redireciona tudo para index.html dentro de /web
+    RewriteRule ^web/(.*)$ /web/index.html [L]
+
+    # Caso esteja acessando diretamente algo como /web/c/327
+    RewriteRule ^web$ /web/index.html [L]
+</IfModule>
