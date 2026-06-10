@@ -131,7 +131,7 @@
           </ng-container>
           <!---------------------------------------- Graph -->
           <ng-container *ngIf="tab.content == 'graph'">
-            <app-concept-grafo [conceptData]="dataConcept"></app-concept-grafo>
+            <app-concept-grafo #conceptGrafo [conceptData]="dataConcept"></app-concept-grafo>
           </ng-container>
         </div>
       </div>

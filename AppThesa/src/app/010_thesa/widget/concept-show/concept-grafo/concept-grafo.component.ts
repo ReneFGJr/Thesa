@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild, OnInit, OnChanges } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild, OnInit, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import * as d3 from 'd3';
 
 interface GraphNode extends d3.SimulationNodeDatum {
@@ -101,20 +101,30 @@ export class ConceptGrafoComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     if (this.conceptData) {
-      const graph = this.buildGraphFromConcept(this.conceptData);
-      this.nodes = graph.nodes;
-      this.links = graph.links;
-      this.createGraph();
+      this.updateGraph();
     }
   }
 
-  ngOnChanges(): void {
-    if (this.conceptData) {
-      const graph = this.buildGraphFromConcept(this.conceptData);
-      this.nodes = graph.nodes;
-      this.links = graph.links;
-      this.createGraph();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['conceptData'] || changes) {
+      if (this.conceptData) {
+        this.updateGraph();
+      }
     }
+  }
+
+  // Método público para forçar atualização do grafo
+  refresh(): void {
+    if (this.conceptData) {
+      this.updateGraph();
+    }
+  }
+
+  private updateGraph(): void {
+    const graph = this.buildGraphFromConcept(this.conceptData);
+    this.nodes = graph.nodes;
+    this.links = graph.links;
+    this.createGraph();
   }
 
   private getColorByType(type: string): string {

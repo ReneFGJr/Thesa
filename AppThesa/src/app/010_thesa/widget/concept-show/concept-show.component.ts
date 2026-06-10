@@ -20,6 +20,7 @@ import { PainelService } from '../../../000_core/service/painel.service';
 })
 export class ConceptShowComponent {
   @ViewChild('offcanvasNovo') offcanvasNovo!: ElementRef;
+  @ViewChild('conceptGrafo') conceptGrafo: any;
   @Input() thesaID: number = 0;
   @Input() conceptID: number = 0;
   @Input() dataConcept: any;
@@ -119,6 +120,14 @@ export class ConceptShowComponent {
         // Recarrega os dados do conceito
         this.termChange.emit(this.actionAC);
         this.painelService.closeConceptPanel('popupConcept');
+      } else if (this.actionAC === 'linkeddata') {
+        // Atualiza o grafo quando novo linked data é adicionado
+        if (this.conceptGrafo) {
+          setTimeout(() => {
+            this.conceptGrafo.refresh();
+          }, 300);
+        }
+        this.painelService.openConceptPanel('popupConcept');
       } else {
         this.painelService.openConceptPanel('popupConcept');
       }
