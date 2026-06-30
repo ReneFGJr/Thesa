@@ -43,9 +43,30 @@ class Index extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function searchConcept($th, $term)
+    {
+        $dt = $this
+            ->select('c_concept, term_name, id_term, lg_code')
+            ->join('thesa_terms_th', 'c_concept = term_th_concept')
+            ->join('thesa_terms', 'term_th_term = id_term')
+            ->join('language', 'term_lang = id_lg')
+            ->where('c_th', $th)
+            ->where('c_ativo', 1)
+            ->where('term_name', $term)
+            ->orderBy('term_name, c_concept')
+            ->findAll();
+        return $dt;
+    }
+
     function index_alphabetic($th)
     {
             $dt = $this
+            ->select('
+                c_concept,
+                term_name,
+                id_term,
+                lg_code
+            ')
             ->join('thesa_terms_th', 'c_concept = term_th_concept')
             ->join('thesa_terms', 'term_th_term = id_term')
             ->join('language', 'term_lang = id_lg')
@@ -224,8 +245,6 @@ class Index extends Model
         $sx = '<a href="' . PATH . '/v/' . $id_concept . '" class="btn btn-outline-secondary">' . 'thesa:c' . $id_term . '</a>' . ' created';
         return $sx . '<br>';
     }
-
-
 
     function recover_th($id)
         {

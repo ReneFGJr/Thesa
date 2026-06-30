@@ -107,6 +107,42 @@ class Api extends BaseController
 
         switch ($arg1) {
             /********************************************* V2 */
+            case 'broaderConcept':
+                $th = get("thesaID");
+                $Broader = new \App\Models\Thesa\Relations\Broader();
+                $Concept = new \App\Models\Thesa\Concepts\Index();
+                if ($th == '')
+                    {
+                    $th = $arg2;
+                    }
+
+
+                /****************************** C1 */
+                $c1 = get("c1");
+                $c1c = $Concept->searchConcept($th, $c1);
+                if ($c1c == []) {
+                    $RSP['status'] = '400';
+                    $RSP['message'] = 'Concept 1 not found ('.$c1.') - th:'.$th;
+                    echo json_encode($RSP);
+                    exit;
+                }
+                $c1 = $c1c[0]['c_concept'];
+
+                /****************************** C2 */
+                $c2 = get("c2");
+                $c2c = $Concept->searchConcept($th, $c2);
+                if ($c2c == []) {
+                    $RSP['status'] = '400';
+                    $RSP['message'] = 'Concept 2 not found ('.$c2.')';
+                    echo json_encode($RSP);
+                    exit;
+                }
+                $c2 = $c2c[0]['c_concept'];
+
+                $master = get("master");
+                $RSP = $Broader->register($th, $c1, $c2, $master);
+                break;
+            /********************************************* V2 */
             case 'createConcept': /* V2 */
                 $Concept = new \App\Models\Concept\Index();
                 $DT = $_GET;
@@ -180,7 +216,6 @@ class Api extends BaseController
                 $Icone = new \App\Models\Thesa\Icone();
                 $RSP = $Icone->uploadSchema();
                 break;
-
             case 'updateTerm':
                 $Term = new \App\Models\Term\Index();
                 $RSP = $Term->updateTerm();
