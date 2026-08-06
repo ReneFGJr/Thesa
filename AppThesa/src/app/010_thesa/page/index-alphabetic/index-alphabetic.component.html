@@ -16,7 +16,11 @@
         >
           <h2>{{ concept.ltr }}</h2>
           <div *ngFor="let terms of concept.terms">
-            <a class="link small" [routerLink]="['/c', terms.id]">
+            <a
+              class="link small"
+              [routerLink]="['/c', terms.id]"
+              [ngClass]="{ 'fst-italic': terms.prop === 'altLabel' }"
+            >
               {{ terms.term }}
             </a>
           </div>

@@ -92,6 +92,7 @@ class Index extends Model
                 $dx['id'] = $d['c_concept'];
                 $dx['term'] = $d['term_name'];
                 $dx['prop'] = $d['p_name'];
+                $dx['lang'] = $d['lg_code'];
                 array_push($dd[$ltr], $dx);
             }
             $dx = [];
