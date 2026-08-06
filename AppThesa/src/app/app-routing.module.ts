@@ -11,6 +11,7 @@ import { ThesaCreateComponent } from './010_thesa/page/thesa-create/thesa-create
 import { IndexSystemicComponent } from './010_thesa/page/index-systemic/index-systemic.component';
 import { IndexAlphabeticComponent } from './010_thesa/page/index-alphabetic/index-alphabetic.component';
 import { ExportPDFComponent } from './010_thesa/page/export/export.component';
+import { TermsPageComponent } from './010_thesa/page/terms/terms.component';
 import { ThesaMyComponent } from './010_thesa/page/thesa-my/thesa-my.component';
 import { AuthPageComponent } from './030_social/auth-page/auth-page.component';
 import { EditProfileComponent } from './030_social/edit-profile/edit-profile.component';
@@ -34,6 +35,7 @@ const routes: Routes = [
   { path: 'c/:id', component: ConceptTHComponent },
   { path: 'create', component: ThesaCreateComponent },
   { path: 'export/:id', component: ExportPDFComponent },
+  { path: 'terms/:id', component: TermsPageComponent },
   { path: 'systemic_index/:id', component: IndexSystemicComponent },
   { path: 'alphabetic_index/:id', component: IndexAlphabeticComponent },
   { path: 'export/:id', component: ExportPDFComponent },

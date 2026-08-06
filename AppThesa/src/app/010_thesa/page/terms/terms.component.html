@@ -1,0 +1,93 @@
+<app-th-show
+  *ngIf="thesa"
+  [thesaID]="thesaID"
+  [thesa]="thesa"
+  [tab]="'6'"
+  [editMode]="editMode"
+></app-th-show>
+
+<div class="container py-4" *ngIf="thesaID > 0">
+  <div class="row">
+    <div class="col-12 col-lg-10">
+      <div class="d-flex align-items-end justify-content-between mb-3">
+        <div>
+          <h3 class="mb-1">Termos</h3>
+          <small class="text-muted" *ngIf="!loading">{{ terms.length }} termos</small>
+        </div>
+      </div>
+
+      <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div *ngIf="loading" class="text-muted">Carregando termos...</div>
+
+          <div *ngIf="!loading && terms.length === 0" class="text-muted">
+            Nenhum termo encontrado.
+          </div>
+
+          <ul class="list-group list-group-flush" *ngIf="!loading && terms.length > 0">
+            <li
+              class="list-group-item d-flex align-items-center justify-content-between"
+              *ngFor="let term of terms"
+            >
+              <div class="flex-grow-1 me-3">
+                <div *ngIf="!term.editing" class="d-flex align-items-center flex-wrap gap-2">
+                  <span class="fw-semibold">{{ termLabel(term) }}</span>
+                  <sup class="text-muted" *ngIf="termLang(term)">({{ termLang(term) }})</sup>
+                  <i
+                    *ngIf="canEditTerm(term)"
+                    role="button"
+                    title="Ajustar capitalização"
+                    class="bi bi-fonts ms-1 text-secondary"
+                    (click)="adjustTerm(term)"
+                  ></i>
+                  <i
+                    *ngIf="canEditTerm(term)"
+                    role="button"
+                    title="Editar"
+                    class="bi bi-pencil-square ms-2 text-secondary"
+                    (click)="startEdit(term)"
+                  ></i>
+                </div>
+
+                <div *ngIf="term.editing" class="row g-2 align-items-center">
+                  <div class="col-12 col-md-8 col-lg-7">
+                    <input
+                      type="text"
+                      class="form-control border border-secondary"
+                      [(ngModel)]="term.draftLabel"
+                      placeholder="Editar nome do termo"
+                    />
+                  </div>
+                  <div class="col-auto">
+                    <i
+                      role="button"
+                      title="Ajustar capitalização"
+                      class="bi bi-fonts text-secondary"
+                      (click)="adjustTerm(term)"
+                    ></i>
+                  </div>
+                  <div class="col-auto">
+                    <i
+                      role="button"
+                      title="Salvar"
+                      class="bi bi-check-circle text-primary"
+                      (click)="saveTerm(term)"
+                    ></i>
+                    <i
+                      role="button"
+                      title="Cancelar"
+                      class="bi bi-x-circle ms-2 text-danger"
+                      (click)="cancelEdit(term)"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -52,6 +52,7 @@ return [
     'labels' => 'Nota de definição',
     'definition' => 'Definição',
     'scopeNote' => 'Nota de escopo',
+    'pre_existing_definition' => 'Definição pré-existente',
     'notation' => 'Notação',
     'note' => 'Notas Gerais',
     'changeNote' => 'Notas de alterações',

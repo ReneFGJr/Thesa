@@ -57,6 +57,21 @@ class Index extends Model
         return $RSP;
     }
 
+    function updateTermAPI($dt)
+    {
+        $idt = $dt['id_term'];
+        $name = trim($dt['label']);
+
+        $dd = [];
+        $dd['term_name'] = $name;
+        $this->set($dd)->where('id_term', $idt)->update();
+        $RSP = [];
+        $RSP['status'] = '200';
+        $RSP['message'] = 'Term updated successfully';
+        $RSP['id_term'] = $idt;
+        return $RSP;
+    }
+
     /***************************************** V2 */
     function checkParamets($parms, $dt)
     {

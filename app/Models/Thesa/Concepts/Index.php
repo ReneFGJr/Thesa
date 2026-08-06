@@ -60,20 +60,27 @@ class Index extends Model
 
     function index_alphabetic($th)
     {
-            $dt = $this
+        /*
+            ')
+            */
+        $dt = $this
             ->select('
                 c_concept,
                 term_name,
                 id_term,
-                lg_code
+                lg_code,
+                p_name
             ')
             ->join('thesa_terms_th', 'c_concept = term_th_concept')
             ->join('thesa_terms', 'term_th_term = id_term')
             ->join('language', 'term_lang = id_lg')
+            ->join('thesa_concept_term', 'id_term = ct_literal and ct_concept = c_concept', 'left')
+            ->join('thesa_property', 'ct_propriety = id_p', 'left')
                 ->where('c_th', $th)
                 ->where('c_ativo', 1)
                 ->orderBy('term_name, c_concept')
                 ->findAll();
+
             $dd = [];
             foreach ($dt as $d) {
                 $dx = [];
@@ -84,6 +91,7 @@ class Index extends Model
                 }
                 $dx['id'] = $d['c_concept'];
                 $dx['term'] = $d['term_name'];
+                $dx['prop'] = $d['p_name'];
                 array_push($dd[$ltr], $dx);
             }
             $dx = [];

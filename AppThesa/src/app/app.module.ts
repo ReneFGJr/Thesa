@@ -47,6 +47,7 @@ import { ConceptGrafoComponent } from './010_thesa/widget/concept-show/concept-g
 import { IndexSystemicComponent } from './010_thesa/page/index-systemic/index-systemic.component';
 import { IndexAlphabeticComponent } from './010_thesa/page/index-alphabetic/index-alphabetic.component';
 import { ExportPDFComponent } from './010_thesa/page/export/export.component';
+import { TermsPageComponent } from './010_thesa/page/terms/terms.component';
 import { ConfigLanguageComponent } from './010_thesa/widget/config/config-language/config-language.component';
 import { VideoPlayComponent } from './010_thesa/widget/play-media-show/video-play/video-play.component';
 import { VideoPlayShowComponent } from './010_thesa/widget/play-media-show/play-media-show.component';
@@ -128,6 +129,7 @@ import { LogListConceptComponent } from './010_thesa/widget/log/log-list-concept
     IndexSystemicComponent,
     IndexAlphabeticComponent,
     ExportPDFComponent,
+    TermsPageComponent,
     ConfigLanguageComponent,
     VideoPlayComponent,
     VideoPlayShowComponent,

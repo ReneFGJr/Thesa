@@ -426,6 +426,11 @@ class Api extends BaseController
                 $DT = array_merge($DT, $_POST);
                 $RSP = $Term->createConceptAPI($DT);
                 break;
+            case 'term_update':
+                $dt = $_POST;
+                $Term = new \App\Models\Term\Index();
+                $RSP = $Term->updateTermAPI($dt);
+                break;
             case 'term_list':
                 $Term = new \App\Models\Term\Index();
                 $RSP = $Term->listTerm($arg2);

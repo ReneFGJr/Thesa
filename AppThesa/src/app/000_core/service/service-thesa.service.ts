@@ -52,7 +52,7 @@ export class ServiceThesaService {
     }
 
     let apikey = localStorage.getItem('apikey');
-    if (apikey) {
+    if (apikey && !(dt && typeof dt === 'object' && 'apikey' in dt)) {
       formData.append('apikey', apikey);
     }
 

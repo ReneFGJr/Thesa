@@ -265,7 +265,7 @@ class Index extends Model
     function terms($th, $lt = '')
     {
         $Concept = new \App\Models\Thesa\Concepts\Index();
-        $cp = 'term_name as Term,c_concept as Concept, p_name as Propriety, lg_code as Lang';
+        $cp = 'term_name as Term,c_concept as Concept, p_name as Propriety, lg_code as Lang, id_term as TermID';
         $cpg = 'Term, Concept, Propriety';
         //$cp = '*';
         $dt = $Concept
