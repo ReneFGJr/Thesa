@@ -1,3 +1,4 @@
+import { LanguageService } from '../../../000_core/service/language.service';
 import { Component } from '@angular/core';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
@@ -17,6 +18,7 @@ export class IndexAlphabeticComponent {
   editMode: boolean = false;
   concepts: Array<any> | any;
   constructor(
+    public readonly language: LanguageService,
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService,
     private router: ActivatedRoute

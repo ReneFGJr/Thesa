@@ -1,3 +1,4 @@
+import { LanguageService } from '../../../000_core/service/language.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
@@ -14,12 +15,13 @@ export class ThesaMyComponent {
   thesa: Array<any> | any;
   dataCheck: Array<any> | any;
   searchTerm: string = '';
-  title: string = 'Meus Thesa'; // título da página
+  get title(): string { return this.language.labels().mine; }
   create: boolean = false;
   allow: boolean = false; // permite criar nova thesa
   @Input() editMode: boolean = false; // modo de edição
 
   constructor(
+    public readonly language: LanguageService,
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService,
     private router: Router

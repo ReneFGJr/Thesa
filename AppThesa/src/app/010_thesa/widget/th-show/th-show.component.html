@@ -17,7 +17,7 @@
             [routerLink]="['/thesa/', thesa.id_th]"
             [ngClass]="{ active: tab === '1' }"
             routerLinkActive="active"
-            >Conceitos</a
+            >{{ language.labels().concepts }}</a
           >
         </li>
 
@@ -27,7 +27,7 @@
             [routerLink]="['/about/', thesa.id_th]"
             [ngClass]="{ active: tab === '2' }"
             routerLinkActive="active"
-            >Sobre</a
+            >{{ language.labels().about }}</a
           >
         </li>
 
@@ -37,7 +37,7 @@
             [routerLink]="['/alphabetic_index/', thesa.id_th]"
             [ngClass]="{ active: tab === '3' }"
             routerLinkActive="active"
-            >Apresentação Alfabética</a
+            >{{ language.labels().alphabeticalDisplay }}</a
           >
         </li>
 
@@ -47,7 +47,7 @@
             [routerLink]="['/systemic_index/', thesa.id_th]"
             [ngClass]="{ active: tab === '4' }"
             routerLinkActive="active"
-            >Apresentação Sistemática</a
+            >{{ language.labels().systematicDisplay }}</a
           >
         </li>
 
@@ -57,7 +57,7 @@
             [routerLink]="['/export/', thesa.id_th]"
             [ngClass]="{ active: tab === '5' }"
             routerLinkActive="active"
-            >Exportação</a
+            >{{ language.labels().export }}</a
           >
         </li>
 
@@ -67,7 +67,7 @@
             [routerLink]="['/terms/', thesa.id_th]"
             [ngClass]="{ active: tab === '6' }"
             routerLinkActive="active"
-            >Termos</a
+            >{{ language.labels().terms }}</a
           >
         </li>
 
@@ -78,7 +78,7 @@
             [ngClass]="{ active: tab === '7' }"
             *ngIf="editMode == true"
             routerLinkActive="active"
-            >Configurações</a
+            >{{ language.labels().settings }}</a
           >
         </li>
 
@@ -90,7 +90,7 @@
             [ngClass]="{ active: tab === '8' }"
             *ngIf="editMode == true"
             routerLinkActive="active"
-            >Desativar Edição</a
+            >{{ language.labels().disableEditing }}</a
           >
         </li>
 
@@ -102,13 +102,13 @@
             [ngClass]="{ active: tab === '8' }"
             *ngIf="editMode == true"
             routerLinkActive="active"
-            >Habilita Edição</a
+            >{{ language.labels().enableEditing }}</a
           >
         </li>
       </ul>
 
       <div class="edit-ribbon" *ngIf="editModeLocal && editMode">
-        <i class="bi bi-pencil-fill"></i> EDIÇÃO ATIVADA
+        <i class="bi bi-pencil-fill"></i> {{ language.labels().editingEnabled }}
       </div>
     </div>
   </div>

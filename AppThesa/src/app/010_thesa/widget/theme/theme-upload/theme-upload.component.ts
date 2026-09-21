@@ -1,3 +1,4 @@
+import { LanguageService } from '../../../../000_core/service/language.service';
 import { ServiceThesaService } from './../../../../000_core/service/service-thesa.service';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
@@ -19,12 +20,14 @@ export class ThemeUploadComponent {
   @Output() actionAC = new EventEmitter<string>();
 
   constructor(
+    public readonly language: LanguageService,
     private http: HttpClient,
     private ServiceThesa: ServiceThesaService
   ) {}
 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
+    if (!file) return;
     if (file && file.type.startsWith('image/')) {
       this.selectedFile = file;
 
@@ -32,7 +35,9 @@ export class ThemeUploadComponent {
       reader.onload = (e) => (this.previewUrl = reader.result);
       reader.readAsDataURL(file);
     } else {
-      alert('Por favor, selecione uma imagem válida.');
+      this.selectedFile = null;
+      this.previewUrl = null;
+      alert(this.language.labels().invalidImage);
     }
   }
 

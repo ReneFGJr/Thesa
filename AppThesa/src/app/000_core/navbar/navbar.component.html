@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light navbar-custom mb-5 fixed-top">
+<nav class="navbar navbar-expand-lg navbar-light navbar-custom mb-5 fixed-top" [attr.lang]="language.currentLanguage()">
   <div class="container-fluid">
     <a class="navbar-brand ms-2" [routerLink]="['/']">
       <img [src]="logo" title="Thesa" style="height: 30px" />
@@ -11,7 +11,7 @@
       (click)="toggleMenu()"
       aria-controls="navbarNavX"
       aria-expanded="false"
-      aria-label="Toggle navigation"
+      [attr.aria-label]="language.labels().toggleNavigation"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -21,25 +21,40 @@
       <ul class="navbar-nav" (click)="closeMenu()">
         <li class="nav-item" *ngIf="hasThesaSelected">
           <a class="nav-link" [routerLink]="['/search']">
-            <i class="bi bi-search me-2"></i>Pesquisar
+            <i class="bi bi-search me-2"></i>{{ language.labels().search }}
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/thopen']">Thesa Abertos</a>
+          <a class="nav-link" [routerLink]="['/thopen']">{{ language.labels().open }}</a>
         </li>
         <li class="nav-item" *ngIf="user">
-          <a class="nav-link" [routerLink]="['/thmy']">Meus Thesa</a>
+          <a class="nav-link" [routerLink]="['/thmy']">{{ language.labels().mine }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/documentation']">Documentação</a>
+          <a class="nav-link" [routerLink]="['/documentation']">{{ language.labels().documentation }}</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/about']">Sobre</a>
+          <a class="nav-link" [routerLink]="['/about']">{{ language.labels().about }}</a>
         </li>
       </ul>
 
       <ul class="ms-auto navbar-nav">
-        <app-user-menu [user]="user"></app-user-menu>
+        <li class="nav-item language-picker">
+          <button #languageToggle id="languageToggle" type="button" class="btn language-flag-btn"
+            (click)="languageMenuOpen = !languageMenuOpen"
+            [attr.aria-expanded]="languageMenuOpen" aria-controls="languageSelect"
+            [attr.aria-label]="language.labels().openLanguageSelection"
+            [title]="language.labels().selectLanguage">
+            <img [src]="language.selectedOption().flagSrc" [alt]="language.selectedOption().label" width="18" height="12" />
+          </button>
+          <select id="languageSelect" class="form-select form-select-sm language-select"
+            [hidden]="!languageMenuOpen" [ngModel]="language.currentLanguage()"
+            (ngModelChange)="setLanguage($event)" [attr.aria-label]="language.labels().selectLanguage"
+            (keydown.escape)="languageMenuOpen = false; languageToggle.focus()">
+            <option *ngFor="let option of language.options" [ngValue]="option.code">{{ option.label }}</option>
+          </select>
+        </li>
+        <li class="nav-item"><app-user-menu [user]="user"></app-user-menu></li>
       </ul>
     </div>
   </div>

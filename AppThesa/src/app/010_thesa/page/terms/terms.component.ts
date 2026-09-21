@@ -1,3 +1,4 @@
+import { LanguageService } from '../../../000_core/service/language.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
@@ -33,6 +34,7 @@ export class TermsPageComponent implements OnInit {
   error = '';
 
   constructor(
+    public readonly language: LanguageService,
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService,
     private router: ActivatedRoute

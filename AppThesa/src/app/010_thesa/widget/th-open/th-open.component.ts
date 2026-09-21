@@ -1,3 +1,4 @@
+import { LanguageService } from '../../../000_core/service/language.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
@@ -10,17 +11,18 @@ import { Router } from '@angular/router';
   standalone: false,
 })
 export class ThOpenComponent implements OnInit {
+  get title(): string { return this.language.labels().openThesaTitle; }
   public data: any;
   public dataCheck: any;
   public thesa: any[] = [];
   public searchTerm: string = ''; // termo de busca
-  public title: string = 'Thesa Aberto'; // título da página
   public allow: boolean = false; // permite criar nova thesa
 
   @Input() editMode: boolean = false; // modo de edição
   @Input() canCreate: string = ''; // ID do modo de edição
 
   constructor(
+    public readonly language: LanguageService,
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService,
     private router: Router

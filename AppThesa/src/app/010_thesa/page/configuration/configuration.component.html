@@ -18,7 +18,7 @@
         <section class="doc-content">
           <ng-container [ngSwitch]="selectedSection">
             <div *ngSwitchCase="'Title'" class="fade-in">
-            <h1>Titulo</h1>
+            <h1>{{ language.labels().title }}</h1>
 
             <app-config-title [thesaID]="id"></app-config-title>
             </div>
@@ -27,35 +27,35 @@
 <!----------------------------------------- Introduction-->
           <ng-container [ngSwitch]="selectedSection">
             <div *ngSwitchCase="'Descript'" class="fade-in">
-            <h4>Descrição do vocabulário / tesauro</h4>
+            <h4>{{ language.labels().vocabularyDescription }}</h4>
             <app-form-textarea [thesaID]="id" [field]="'Introduction'"></app-form-textarea>
             </div>
           </ng-container>
 <!----------------------------------------- Introduction-->
           <ng-container [ngSwitch]="selectedSection">
             <div *ngSwitchCase="'Type'" class="fade-in">
-            <h4>Tipo do Thesa</h4>
+            <h4>{{ language.labels().thesaType }}</h4>
             <app-config-type [thesaID]="id" [field]="'Type'"></app-config-type>
             </div>
           </ng-container>
 <!----------------------------------------- Methodology-->
           <ng-container [ngSwitch]="selectedSection">
             <div *ngSwitchCase="'Methodology'" class="fade-in">
-            <h4>Metodologia</h4>
+            <h4>{{ language.labels().methodology }}</h4>
             <app-form-textarea [thesaID]="id" [field]="'Methodology'"></app-form-textarea>
             </div>
           </ng-container>
 <!----------------------------------------- Audience-->
           <ng-container [ngSwitch]="selectedSection">
             <div *ngSwitchCase="'Audience'" class="fade-in">
-            <h4>Público Alvo</h4>
+            <h4>{{ language.labels().audience }}</h4>
             <app-form-textarea [thesaID]="id" [field]="'Audience'"></app-form-textarea>
             </div>
           </ng-container>
 <!----------------------------------------- Lnaguage -->
           <ng-container [ngSwitch]="selectedSection">
             <div *ngSwitchCase="'Language'" class="fade-in">
-            <h4>Idiomas</h4>
+            <h4>{{ language.labels().languages }}</h4>
             <app-config-language [thesaID]="id"></app-config-language>
             </div>
           </ng-container>
@@ -63,14 +63,14 @@
 <!----------------------------------------- License-->
           <ng-container [ngSwitch]="selectedSection">
             <div *ngSwitchCase="'License'" class="fade-in">
-            <h4>Licença</h4>
+            <h4>{{ language.labels().license }}</h4>
               <app-config-license [thesaID]="id"></app-config-license>
             </div>
           </ng-container>
 <!----------------------------------------- visibility-->
           <ng-container [ngSwitch]="selectedSection">
             <div *ngSwitchCase="'Visibility'" class="fade-in">
-            <h4>Visibilidade</h4>
+            <h4>{{ language.labels().visibility }}</h4>
             <app-config-visibility [thesaID]="id" [status]="data.th_status" (thesaIDChange)="update()"></app-config-visibility>
             </div>
           </ng-container>
@@ -78,7 +78,7 @@
 <!----------------------------------------- Themes -->
           <ng-container [ngSwitch]="selectedSection">
             <div *ngSwitchCase="'Themes'" class="fade-in">
-            <h4>Temas</h4>
+            <h4>{{ language.labels().themes }}</h4>
             <app-theme-config [thesaID]="id" [thesa]="data"></app-theme-config>
             </div>
           </ng-container>
@@ -86,7 +86,7 @@
 <!----------------------------------------- Related  -->
           <ng-container [ngSwitch]="selectedSection">
             <div *ngSwitchCase="'Relations'" class="fade-in">
-            <h4>Relações</h4>
+            <h4>{{ language.labels().relations }}</h4>
             <app-config-related [thesaID]="id" [thesa]="data"></app-config-related>
             </div>
           </ng-container>
@@ -94,7 +94,7 @@
 <!----------------------------------------- Members -->
           <ng-container [ngSwitch]="selectedSection">
             <div *ngSwitchCase="'Members'" class="fade-in">
-            <h4>Membros do tesauro</h4>
+            <h4>{{ language.labels().thesaurusMembers }}</h4>
             <app-config-members [thesaID]="id"></app-config-members>
             </div>
           </ng-container>

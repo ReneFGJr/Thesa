@@ -3,14 +3,14 @@
     <div *ngFor="let lang of languagesFormArray.controls; let i = index" [formGroupName]="i">
       <label>
         <input type="checkbox" formControlName="checked" />
-        {{ lang.get('label')?.value }}
+        {{ languageLabel(lang.get('code')?.value, lang.get('label')?.value) }}
       </label>
     </div>
   </div>
 
   <div class="alert alert-info mt-3" role="alert" *ngIf="showError">
-    <strong>Observação:</strong> {{message}}
+    <strong>{{ language.labels().note }}:</strong> {{message}}
   </div>
 
-  <button type="submit" class="btn btn-primary mt-3">Enviar</button>
+  <button type="submit" class="btn btn-primary mt-3">{{ language.labels().submit }}</button>
 </form>

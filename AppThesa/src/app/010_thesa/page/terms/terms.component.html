@@ -11,8 +11,8 @@
     <div class="col-12 col-lg-10">
       <div class="d-flex align-items-end justify-content-between mb-3">
         <div>
-          <h3 class="mb-1">Termos</h3>
-          <small class="text-muted" *ngIf="!loading">{{ terms.length }} termos</small>
+          <h3 class="mb-1">{{ language.labels().terms }}</h3>
+          <small class="text-muted" *ngIf="!loading">{{ terms.length }} {{ terms.length === 1 ? language.labels().termSingular : language.labels().termPlural }}</small>
         </div>
       </div>
 

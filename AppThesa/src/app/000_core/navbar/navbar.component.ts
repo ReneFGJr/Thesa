@@ -4,6 +4,7 @@ import { ServiceStorageService } from '../service/service-storage.service';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { Subscription } from 'rxjs';
+import { LanguageService } from '../service/language.service';
 
 declare var bootstrap: any; // garante acesso à API JS do Bootstrap
 
@@ -19,6 +20,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   logo = 'assets/img/logo/logo_thesa.svg';
   URLhome = environment.Url;
   hasThesaSelected: boolean = false;
+  languageMenuOpen = false;
   private storageSubscription: Subscription | null = null;
 
   goURL(URL: string) {
@@ -26,10 +28,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   constructor(
+    public readonly language: LanguageService,
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService,
     private router: Router
   ) {}
+
+  setLanguage(value: string): void {
+    this.language.setLanguage(value);
+    this.languageMenuOpen = false;
+    document.getElementById('languageToggle')?.focus();
+  }
 
   ngOnInit(): void {
     this.checkThesaActual();

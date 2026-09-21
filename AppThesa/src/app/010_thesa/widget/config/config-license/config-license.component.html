@@ -6,16 +6,17 @@
         name="type"
         [checked]="tp.id == licence"
         [value]="tp.id"
+        [attr.aria-label]="licenseName(tp)"
         (click)="selectType(tp.id)"
       />
     </td>
     <td valign="top">
-      <img [src]="tp.icon" style="height: 40px" />
+      <img [src]="tp.icon" [alt]="licenseName(tp)" style="height: 40px" />
     </td>
     <td class="p-2" [class.marked]="tp.id === licence">
-      {{ tp.name }}
+      {{ licenseName(tp) }}
       <p class="small" [class.marked]="tp.id === licence">
-        {{ tp.description }}
+        {{ licenseDescription(tp) }}
       </p>
     </td>
   </tr>

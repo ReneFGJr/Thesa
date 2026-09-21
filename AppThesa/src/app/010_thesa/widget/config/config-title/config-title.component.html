@@ -1,6 +1,6 @@
 <div class="container mt-4">
   <form [formGroup]="formAction" (ngSubmit)="onSubmit()">
-    <label>Título do tesauro</label>
+    <label>{{ language.labels().thesaurusTitle }}</label>
     <div class="mb-3">
       <input
         id="title"
@@ -10,7 +10,7 @@
       />
     </div>
 
-    <label>Acrônimo</label>
+    <label>{{ language.labels().acronym }}</label>
     <div class="mb-3">
       <input
         id="acronic"
@@ -20,13 +20,13 @@
       />
     </div>
 
-    <button type="submit" class="btn btn-outline-primary">Salvar</button>
+    <button type="submit" class="btn btn-outline-primary">{{ language.labels().save }}</button>
     <span class="btn btn-outline-warning ms-2" (click)="loadOrigin()"
-      >Cancelar</span>
+      >{{ language.labels().cancel }}</span>
   </form>
 
   <div *ngIf="showSuccess" class="alert alert-success mt-4" role="alert">
-    Dados salvos com sucesso!
+    {{ language.labels().savedSuccessfully }}
   </div>
 
 </div>

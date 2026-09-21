@@ -1,3 +1,4 @@
+import { LanguageService } from '../../../000_core/service/language.service';
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
@@ -31,6 +32,7 @@ export class TermsComponent {
   isPanelOpen = false;
 
   constructor(
+    public readonly language: LanguageService,
     private serviceThesa: ServiceThesaService,
     private painelService: PainelService
   ) {}

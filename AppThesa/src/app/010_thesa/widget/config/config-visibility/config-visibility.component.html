@@ -4,6 +4,7 @@
       <input type="radio" name="type"
       [checked]="tp.id == status"
       [value]="tp.id"
+      [attr.aria-label]="tp.name"
       (click)="selectType(tp.id)" />
       </td>
     <td class="p-2" [class.marked]="tp.id == status">{{ tp.name }}

@@ -4,11 +4,12 @@
       <input type="radio" name="type"
       [checked]="tp.id == type"
       [value]="tp.id"
+      [attr.aria-label]="typeText(tp).name"
       (click)="selectType(tp.id)" />
       </td>
     <td class="p-2" [class.marked]="tp.id === type">
-      {{ tp.name }}
-      <p class="small" [class.marked]="tp.id === type">{{ tp.description }}</p>
+      {{ typeText(tp).name }}
+      <p class="small" [class.marked]="tp.id === type">{{ typeText(tp).description }}</p>
     </td>
   </tr>
 </table>

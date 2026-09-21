@@ -9,8 +9,8 @@
 <div class="container">
   <div class="row">
     <div class="col-12 col-lg-4 col-md-4 col-sm-12" *ngIf="thesaID > 0">
-      <h3>Conceitos</h3>
-      <sup>{{ termList?.terms.length }} conceitos</sup>
+      <h3>{{ language.labels().concepts }}</h3>
+      <sup>{{ termList?.terms?.length ?? 0 }} {{ termList?.terms?.length === 1 ? language.labels().conceptSingular : language.labels().conceptPlural }}</sup>
       <app-terms
         [thesa]="thesaID"
         [termList]="termList"
@@ -38,7 +38,7 @@
         class="alert alert-info"
         role="alert"
       >
-        Selecione um termo para ver os detalhes.
+        {{ language.labels().selectTerm }}
       </div>
     </div>
 

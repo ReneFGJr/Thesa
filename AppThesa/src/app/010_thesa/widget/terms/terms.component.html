@@ -3,7 +3,8 @@
   <input
     type="text"
     class="form-control"
-    placeholder="Buscar termo..."
+    [placeholder]="language.labels().searchTerm"
+    [attr.aria-label]="language.labels().searchTerm"
     [(ngModel)]="filterText"
   />
 
@@ -12,7 +13,7 @@
     *ngIf="editMode && termListCandidate.Terms.length > 0"
     class="input-group-text"
     role="button"
-    title="Termos não associados"
+    [title]="language.labels().unassociatedTerms"
     data-bs-toggle="offcanvas"
     data-bs-target="#termPainel"
     aria-controls="termPainel"

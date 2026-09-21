@@ -1,17 +1,21 @@
 <form method="post" enctype="multipart/form-data">
   <div class="card-header">
-    <h3>Upload de Imagem</h3>
+    <h3>{{ language.labels().imageUpload }}</h3>
   </div>
 <div class="card p-4">
-  <h5>Upload de Imagem</h5>
+  <h5>{{ language.labels().imageUpload }}</h5>
 
-  <input type="file" (change)="onFileSelected($event)" accept="image/*" class="form-control mb-2">
-
-  <div *ngIf="previewUrl" class="mb-3">
-    <img [src]="previewUrl" class="img-thumbnail" style="max-height: 200px;">
+  <input #imageFile type="file" (change)="onFileSelected($event)" accept="image/*" hidden>
+  <div class="input-group mb-2">
+    <button type="button" class="btn btn-outline-secondary" (click)="imageFile.click()">{{ language.labels().chooseFile }}</button>
+    <span class="form-control text-break" aria-live="polite">{{ selectedFile?.name || language.labels().noFileChosen }}</span>
   </div>
 
-  <button class="btn btn-primary" (click)="uploadImage()" [disabled]="!selectedFile">Enviar</button>
+  <div *ngIf="previewUrl" class="mb-3">
+    <img [alt]="language.labels().imagePreview" [src]="previewUrl" class="img-thumbnail" style="max-height: 200px;">
+  </div>
+
+  <button type="button" class="btn btn-primary" (click)="uploadImage()" [disabled]="!selectedFile">{{ language.labels().submit }}</button>
 
   <div *ngIf="uploadProgress > 0" class="mt-3">
     <div class="progress">
@@ -22,11 +26,11 @@
   </div>
 
   <div *ngIf="uploadSuccess === true" class="alert alert-success mt-3">
-    Upload concluído com sucesso!
+    {{ language.labels().uploadCompleted }}
   </div>
 
   <div *ngIf="uploadSuccess === false" class="alert alert-danger mt-3">
-    Erro no upload. Tente novamente.
+    {{ language.labels().uploadFailed }}
   </div>
 </div>
 </form>

@@ -1,7 +1,7 @@
-<a routerLink="/social/login" class="nav-link" *ngIf="!user">
-  <img [src]="iconeLogin" style="height: 25px;">
+<a routerLink="/social/login" class="nav-link" *ngIf="!user" [attr.aria-label]="language.labels().login" [title]="language.labels().login">
+  <img [src]="iconeLogin" style="height: 25px;" alt="">
 </a>
 
-<a routerLink="/social/perfil" class="nav-link" *ngIf="user">
+<a routerLink="/social/perfil" class="nav-link" *ngIf="user" [title]="language.labels().profile">
   {{ user.name }}
 </a>

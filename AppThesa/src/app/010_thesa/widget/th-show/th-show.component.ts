@@ -1,3 +1,4 @@
+import { LanguageService } from '../../../000_core/service/language.service';
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
@@ -19,6 +20,7 @@ export class ThShowComponent implements OnInit, OnChanges {
   data: Array<any> | any;
 
   constructor(
+    public readonly language: LanguageService,
     private serviceThesa: ServiceThesaService, // private serviceStorage: ServiceStorageService,
     private serviceStorage: ServiceStorageService
   ) {}

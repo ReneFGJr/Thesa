@@ -1,3 +1,4 @@
+import { LanguageService } from '../../../../000_core/service/language.service';
 import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ServiceThesaService } from '../../../../000_core/service/service-thesa.service';
@@ -20,6 +21,7 @@ export class FormTextareaComponent {
   data: any = [];
 
   constructor(
+    public readonly language: LanguageService,
     private fb: FormBuilder,
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService

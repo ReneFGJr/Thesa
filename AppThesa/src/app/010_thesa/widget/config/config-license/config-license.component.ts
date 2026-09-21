@@ -1,3 +1,5 @@
+import { LanguageService } from '../../../../000_core/service/language.service';
+import { licenseDescriptions } from './license-translations';
 import { Component, Input } from '@angular/core';
 import { ServiceThesaService } from '../../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../../000_core/service/service-storage.service';
@@ -16,7 +18,15 @@ export class ConfigLicenseComponent {
   licence: number = 0; // Tipo de thesa
   licences: Array<any> | any; // Tipos de thesa
 
-  constructor(private serviceThesa: ServiceThesaService) {}
+  constructor(public readonly language: LanguageService, private serviceThesa: ServiceThesaService) {}
+
+  licenseDescription(license: { id: string | number; description: string }): string {
+    return licenseDescriptions[this.language.currentLanguage()]?.[String(license.id)] ?? license.description;
+  }
+
+  licenseName(license: { id: string | number; name: string }): string {
+    return String(license.id) === '8' ? this.language.labels().reservedCopyright : license.name;
+  }
 
   ngOnInit() {
     this.serviceThesa.api_post('thesaLicences', []).subscribe((res) => {
@@ -39,7 +49,7 @@ export class ConfigLicenseComponent {
   }
 
   selectType(id: number) {
-    if (confirm('Você tem certeza que deseja alterar o tipo de thesa?')) {
+    if (confirm(this.language.labels().confirmLicenseChange)) {
       let dt = { type: id };
       this.serviceThesa
         .api_post('typeLicence/' + this.thesaID, dt)

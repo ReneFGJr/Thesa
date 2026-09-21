@@ -1,0 +1,15 @@
+.language-picker {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.language-flag-btn {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.language-select {
+  width: auto;
+}

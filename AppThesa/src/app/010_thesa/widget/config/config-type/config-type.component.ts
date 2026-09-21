@@ -1,3 +1,5 @@
+import { LanguageService } from '../../../../000_core/service/language.service';
+import { typeTranslations, ThesaTypeText } from './type-translations';
 import { Component, Input } from '@angular/core';
 import { ServiceThesaService } from '../../../../000_core/service/service-thesa.service';
 
@@ -15,7 +17,11 @@ export class ConfigTypeComponent {
   type: number = 0; // Tipo de thesa
   types: Array<any> | any; // Tipos de thesa
 
-  constructor(private serviceThesa: ServiceThesaService) {}
+  constructor(public readonly language: LanguageService, private serviceThesa: ServiceThesaService) {}
+
+  typeText(type: ThesaTypeText & { id: string | number }): ThesaTypeText {
+    return typeTranslations[this.language.currentLanguage()]?.[String(type.id)] ?? type;
+  }
 
   ngOnInit() {
     this.serviceThesa.api_post('thesaTypes', []).subscribe((res) => {
@@ -40,7 +46,7 @@ export class ConfigTypeComponent {
 
   selectType(id:number)
     {
-      if (confirm('Você tem certeza que deseja alterar o tipo de thesa?')) {
+      if (confirm(this.language.labels().confirmTypeChange)) {
         let dt = {type: id}
         this.serviceThesa
           .api_post(

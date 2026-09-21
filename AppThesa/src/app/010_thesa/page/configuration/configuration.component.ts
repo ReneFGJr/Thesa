@@ -1,3 +1,4 @@
+import { LanguageService } from '../../../000_core/service/language.service';
 import { environment } from './../../../../environments/environment';
 import { Component } from '@angular/core';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
@@ -19,24 +20,25 @@ export class ConfigurationComponent {
   editMode: boolean = false;
 
   constructor(
+    public readonly language: LanguageService,
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService,
     private router: ActivatedRoute
   ) {}
 
-  sections = [
+  get sections() { return [
     { id: 'Title', title: 'Thesa' },
-    { id: 'Type', title: 'Tipo do Thesa' },
-    { id: 'Descript', title: 'Descrição' },
-    { id: 'Methodology', title: 'Metodologia' },
-    { id: 'Audience', title: 'Público Alvo' },
-    { id: 'Language', title: 'Idiomas' },
-    { id: 'License', title: 'Licença' },
-    { id: 'Visibility', title: 'Visibilidade' },
-    { id: 'Themes', title: 'Thema e Incones' },
-    { id: 'Relations', title: 'Tipos de Relações' },
-    { id: 'Members', title: 'Membros' },
-  ];
+    { id: 'Type', title: this.language.labels().thesaType },
+    { id: 'Descript', title: this.language.labels().description },
+    { id: 'Methodology', title: this.language.labels().methodology },
+    { id: 'Audience', title: this.language.labels().audience },
+    { id: 'Language', title: this.language.labels().languages },
+    { id: 'License', title: this.language.labels().license },
+    { id: 'Visibility', title: this.language.labels().visibility },
+    { id: 'Themes', title: this.language.labels().themeIcons },
+    { id: 'Relations', title: this.language.labels().relationTypes },
+    { id: 'Members', title: this.language.labels().members },
+  ]; }
 
   selectedSection = 'Title';
 

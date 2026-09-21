@@ -1,3 +1,4 @@
+import { LanguageService } from '../../../../000_core/service/language.service';
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ServiceThesaService } from '../../../../000_core/service/service-thesa.service';
@@ -18,32 +19,19 @@ export class ConfigVisibilityComponent {
   thesa: any = []; // Dados do thesa
   busy: boolean = false; // Indica se a requisição está em andamento
 
-  types: Array<any> | any; // Tipos de thesa
+
 
   constructor(
+    public readonly language: LanguageService,
     private serviceThesa: ServiceThesaService,
     private cdr: ChangeDetectorRef
   ) {}
-  setType() {
-    this.types = [
-      {
-        id: 1,
-        name: 'Público',
-        description:
-          'O Thesa está disponível para qualquer pessoa visualizar, sem restrições de acesso.',
-      },
-      {
-        id: 2,
-        name: 'Privado',
-        description:
-          'O Thesa é restrito e somente usuários autorizados podem visualizá-lo.',
-      },
-      {
-        id: 9,
-        name: 'Cancelado',
-        description:
-          'O Thesa foi invalidado ou desativado, estando indisponível para visualização pública ou privada.',
-      },
+  get types() {
+    const labels = this.language.labels();
+    return [
+      { id: 1, name: labels.publicStatus, description: labels.publicDescription },
+      { id: 2, name: labels.privateStatus, description: labels.privateDescription },
+      { id: 9, name: labels.cancelledStatus, description: labels.cancelledDescription },
     ];
   }
 
@@ -57,14 +45,13 @@ export class ConfigVisibilityComponent {
     this.busy = true;
     this.serviceThesa.api_post('th/' + this.thesaID, []).subscribe((res) => {
       this.thesa = res;
-      this.setType();
       this.busy = false;
       this.cdr.detectChanges(); // <- Aqui força o Angular a atualizar a tela
     });
   }
 
   selectType(id: number) {
-    if (confirm('Você tem certeza que deseja alterar o tipo de thesa?')) {
+    if (confirm(this.language.labels().confirmVisibilityChange)) {
       let dt = { type: id };
       this.serviceThesa
         .api_post('changeStatus/' + this.thesaID, dt)
