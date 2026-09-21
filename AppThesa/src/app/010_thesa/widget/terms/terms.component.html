@@ -83,7 +83,7 @@
       type="button"
       class="btn-close"
       data-bs-dismiss="offcanvas"
-      aria-label="Fechar"
+      [attr.aria-label]="language.labels().close"
     ></button>
   </div>
   <div class="offcanvas-body">
@@ -105,12 +105,12 @@
   *ngIf="termListCandidate?.Terms"
 >
   <div class="offcanvas-header">
-    <h5 id="termPainelLabel">Termos para candidatos a conceito</h5>
+    <h5 id="termPainelLabel">{{ language.labels().candidateTerms }}</h5>
     <button
       type="button"
       class="btn-close"
       data-bs-dismiss="offcanvas"
-      aria-label="Fechar"
+      [attr.aria-label]="language.labels().close"
     ></button>
   </div>
   <div class="offcanvas-body" *ngIf="termListCandidate.Terms">

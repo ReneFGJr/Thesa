@@ -1,3 +1,4 @@
+import { LanguageService } from '../../../000_core/service/language.service';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
@@ -23,6 +24,7 @@ export class ConceptCreateComponent {
   formAction: FormGroup;
 
   constructor(
+    public readonly language: LanguageService,
     private fb: FormBuilder,
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService

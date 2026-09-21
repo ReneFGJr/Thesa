@@ -3,6 +3,12 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 
 const translations = {
   'pt-br': {
+    candidateTerms: "Termos para candidatos a conceito",
+    selectAll: "Selecionar tudo",
+    deselectAll: "Desmarcar tudo",
+    createConcept: "Criar conceito",
+    close: "Fechar",
+
     publicDescription: "O Thesa está disponível para qualquer pessoa visualizar, sem restrições de acesso.",
     privateDescription: "O Thesa é restrito e somente usuários autorizados podem visualizá-lo.",
     cancelledDescription: "O Thesa foi invalidado ou desativado, estando indisponível para visualização pública ou privada.",
@@ -70,6 +76,12 @@ const translations = {
     searchTerm: 'Buscar termo...', unassociatedTerms: 'Termos não associados',
   },
   en: {
+    candidateTerms: "Candidate terms for concepts",
+    selectAll: "Select all",
+    deselectAll: "Deselect all",
+    createConcept: "Create concept",
+    close: "Close",
+
     publicDescription: "Thesa is available for anyone to view, without access restrictions.",
     privateDescription: "Thesa is restricted and only authorized users can view it.",
     cancelledDescription: "Thesa has been invalidated or deactivated and is unavailable for public or private viewing.",
@@ -137,6 +149,12 @@ const translations = {
     searchTerm: 'Search for a term...', unassociatedTerms: 'Unassociated terms',
   },
   es: {
+    candidateTerms: "Términos candidatos a concepto",
+    selectAll: "Seleccionar todo",
+    deselectAll: "Desmarcar todo",
+    createConcept: "Crear concepto",
+    close: "Cerrar",
+
     publicDescription: "Thesa está disponible para que cualquier persona lo consulte, sin restricciones de acceso.",
     privateDescription: "Thesa es restringido y solo los usuarios autorizados pueden consultarlo.",
     cancelledDescription: "Thesa ha sido invalidado o desactivado y no está disponible para consulta pública ni privada.",
