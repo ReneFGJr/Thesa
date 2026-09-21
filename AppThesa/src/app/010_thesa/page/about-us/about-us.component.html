@@ -1,16 +1,16 @@
-<div class="container">
+<div class="container" [attr.lang]="language.currentLanguage()">
   <div class="row">
     <div class="">
       <!-- Cabeçalho -->
       <section class="hero-section text-center">
         <img
           src="/thesa/assets/img/logo/logo_thesa.svg"
-          alt="Thesa Logo"
+          [alt]="labels().logo"
           class="logo mb-3 animate-fade-in"
         />
         <img
           src="/thesa/assets/img/logo/logo_thesa_txt.svg"
-          alt="Logo Thesa"
+          [alt]="labels().logo"
           class="logo mb-3 animate-fade-in"
         />
         <br />
@@ -21,20 +21,14 @@
         <div class="card shadow-sm border-0 mb-4">
           <div class="card-body p-4">
             <h3 class="fw-semibold text-primary mb-3">
-              <i class="bi bi-info-circle"></i> Sobre o Projeto
+              <i class="bi bi-info-circle"></i> {{ labels().project }}
             </h3>
             <p class="text-justify">
-              O <strong>Thesa</strong> é uma plataforma desenvolvida para apoiar
-              a criação, gestão e publicação de tesauros e vocabulários
-              controlados. Utiliza tecnologias modernas como
-              <strong>Angular</strong> e <strong>CodeIgniter 4 (PHP)</strong>,
-              garantindo desempenho e flexibilidade.
+              {{ labels().introStart }} <strong>Thesa</strong> {{ labels().introPlatform }}
+              <strong>Angular</strong> {{ labels().introTechnologies }} <strong>CodeIgniter 4 (PHP)</strong>{{ labels().introEnd }}
             </p>
             <p class="text-justify">
-              Seu principal objetivo é facilitar o trabalho de pesquisadores,
-              bibliotecários e profissionais da informação na estruturação de
-              conceitos e relações semânticas, de acordo com os padrões
-              internacionais <strong>SKOS</strong> e <strong>RDF</strong>.
+              {{ labels().purpose }} <strong>SKOS</strong> {{ labels().purposeAnd }} <strong>RDF</strong>.
             </p>
           </div>
         </div>
@@ -42,35 +36,35 @@
         <div class="card shadow-sm border-0 mb-4">
           <div class="card-body p-4">
             <h3 class="fw-semibold text-primary mb-3">
-              <i class="bi bi-stars"></i> Principais Funcionalidades
+              <i class="bi bi-stars"></i> {{ labels().features }}
             </h3>
             <div class="row g-3">
               <div class="col-md-6">
                 <div class="feature-card">
                   <i class="bi bi-pencil-square text-primary"></i>
-                  <span>Criação e edição de termos e conceitos</span>
+                  <span>{{ labels().editing }}</span>
                 </div>
                 <div class="feature-card">
                   <i class="bi bi-diagram-3 text-primary"></i>
-                  <span>Relações hierárquicas e associativas</span>
+                  <span>{{ labels().relationships }}</span>
                 </div>
                 <div class="feature-card">
                   <i class="bi bi-file-earmark-code text-primary"></i>
-                  <span>Exportação em formatos SKOS/RDF</span>
+                  <span>{{ labels().export }}</span>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="feature-card">
                   <i class="bi bi-person-badge text-primary"></i>
-                  <span>Controle de usuários e histórico de edições</span>
+                  <span>{{ labels().users }}</span>
                 </div>
                 <div class="feature-card">
                   <i class="bi bi-cloud-arrow-up text-primary"></i>
-                  <span>Integração com APIs e repositórios externos</span>
+                  <span>{{ labels().integration }}</span>
                 </div>
                 <div class="feature-card">
                   <i class="bi bi-globe text-primary"></i>
-                  <span>Interoperabilidade com sistemas de informação</span>
+                  <span>{{ labels().interoperability }}</span>
                 </div>
               </div>
             </div>
@@ -81,9 +75,9 @@
       <!-- Rodapé -->
       <footer class="text-center py-4 mt-5 border-top">
         <p class="text-muted small mb-0">
-          <strong>Versão:</strong> {{ version }} · © {{ year }} Thesa
+          <strong>{{ labels().version }}:</strong> {{ version }} · © {{ year }} Thesa
           <br />
-          Desenvolvido por
+          {{ labels().developedBy }}
           <a href="https://brapci.inf.br" target="_blank"
             >UFRGS / BRAPCI</a
           >
