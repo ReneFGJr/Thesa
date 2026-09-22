@@ -11,6 +11,7 @@ import {
 import { Offcanvas } from 'bootstrap';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LanguageService } from '../../../000_core/service/language.service';
 
 @Component({
     selector: 'app-notes-show',
@@ -34,7 +35,8 @@ export class NotesComponent implements OnInit, AfterViewInit {
 
   constructor(
     private serviceThesa: ServiceThesaService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    public readonly language: LanguageService
   ) {}
 
   ngOnInit() {
@@ -63,8 +65,12 @@ export class NotesComponent implements OnInit, AfterViewInit {
     );
   }
 
+  noteTypeLabel(name: string): string {
+    return name === 'Notas Gerais' ? this.language.labels().generalNotes : name;
+  }
+
   deleteNote(id: string) {
-    if (confirm('Deseja realmente excluir esta nota?')) {
+    if (confirm(this.language.labels().deleteNoteConfirm)) {
       this.serviceThesa.api_post('deleteNote', { noteID: id }).subscribe(
         (res) => {
           this.actionAC.emit('reload');

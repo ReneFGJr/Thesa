@@ -10,14 +10,14 @@
           <!-- Campo de busca -->
           <div class="mb-4">
             <label for="searchInput" class="form-label fw-bold">
-              <i class="bi bi-search text-primary me-2"></i>Termo a pesquisar *
+              <i class="bi bi-search text-primary me-2"></i>{{ language.labels().searchInputLabel }} *
             </label>
             <div class="input-group input-group-lg">
               <input
                 id="searchInput"
                 type="text"
                 class="form-control"
-                placeholder="Ex: Base de Dados, Computação..."
+                [placeholder]="language.labels().searchPlaceholder"
                 [(ngModel)]="searchTerm"
                 (keyup.enter)="searchTerms()"
               />
@@ -28,10 +28,10 @@
                 [disabled]="isLoading"
               >
                 <i *ngIf="!isLoading" class="bi bi-search me-2"></i>
-                <span *ngIf="!isLoading">Pesquisar</span>
+                <span *ngIf="!isLoading">{{ language.labels().search }}</span>
                 <span *ngIf="isLoading">
                   <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                  Pesquisando...
+                  {{ language.labels().searching }}
                 </span>
               </button>
               <button
@@ -39,7 +39,7 @@
                 class="btn btn-outline-secondary"
                 type="button"
                 (click)="clearSearch()"
-                title="Limpar busca"
+                [title]="language.labels().clearSearch"
               >
                 <i class="bi bi-x"></i>
               </button>
@@ -59,7 +59,7 @@
         <div class="card-header bg-success text-white p-4 rounded-top-4">
           <h5 class="mb-0">
             <i class="bi bi-check-circle me-2"></i>
-            Resultados encontrados ({{ searchResults.length }})
+            {{ language.labels().resultsFound }} ({{ searchResults.length }})
           </h5>
         </div>
         <div class="card-body p-4">
@@ -96,10 +96,10 @@
         <div class="card-body p-5 text-center">
           <i class="bi bi-search text-muted" style="font-size: 3rem;"></i>
           <h5 class="mt-3 text-muted">
-            Nenhum resultado encontrado
+            {{ language.labels().noResultsFound }}
           </h5>
           <p class="text-muted small">
-            Tente pesquisar com termos diferentes.
+            {{ language.labels().tryDifferentTerms }}
           </p>
         </div>
       </div>
@@ -108,24 +108,24 @@
       <div *ngIf="searchResults.length === 0 && !noResults && !isLoading" class="card shadow-lg border-0 rounded-4 bg-light">
         <div class="card-body p-5">
           <h5 class="fw-bold mb-3">
-            <i class="bi bi-lightbulb text-warning me-2"></i>Dicas para buscar:
+            <i class="bi bi-lightbulb text-warning me-2"></i>{{ language.labels().searchTips }}
           </h5>
           <ul class="list-unstyled">
             <li class="mb-2">
               <i class="bi bi-check2 text-success me-2"></i>
-              Digite o termo exato ou parcial que deseja encontrar
+              {{ language.labels().searchTipExact }}
             </li>
             <li class="mb-2">
               <i class="bi bi-check2 text-success me-2"></i>
-              Use a busca com caracteres alfabéticos ou números
+              {{ language.labels().searchTipCharacters }}
             </li>
             <li class="mb-2">
               <i class="bi bi-check2 text-success me-2"></i>
-              Clique em um resultado para ver detalhes do conceito
+              {{ language.labels().searchTipDetails }}
             </li>
             <li>
               <i class="bi bi-check2 text-success me-2"></i>
-              Você está pesquisando no thesaurus que selecionou anteriormente
+              {{ language.labels().searchTipThesaurus }}
             </li>
           </ul>
         </div>
@@ -141,9 +141,9 @@
       <!-- Header do modal -->
       <div class="modal-header bg-primary text-white border-0">
         <h5 class="modal-title fw-bold">
-          <i class="bi bi-diagram-2 me-2"></i>Detalhes do Conceito
+          <i class="bi bi-diagram-2 me-2"></i>{{ language.labels().conceptDetails }}
         </h5>
-        <button type="button" class="btn-close btn-close-white" (click)="closeDetailPanel()" aria-label="Close"></button>
+        <button type="button" class="btn-close btn-close-white" (click)="closeDetailPanel()" [attr.aria-label]="language.labels().close"></button>
       </div>
 
       <!-- Body do modal -->
@@ -151,7 +151,7 @@
         <!-- Carregando -->
         <div *ngIf="conceptLoading" class="d-flex justify-content-center">
           <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Carregando...</span>
+            <span class="visually-hidden">{{ language.labels().loading }}</span>
           </div>
         </div>
 
@@ -169,7 +169,7 @@
             <div>
               <small class="text-muted d-block">ID: {{ conceptDetail.id_c || conceptDetail.c_concept }}</small>
               <h5 class="mb-0">{{ conceptDetail.label || 'N/A' }}</h5>
-              <small class="text-muted">Thesa: {{ conceptDetail.c_th }} | Criado: {{ conceptDetail.c_created | date: 'dd/MM/yyyy' }}</small>
+              <small class="text-muted">Thesa: {{ conceptDetail.c_th }} | {{ language.labels().created }} {{ conceptDetail.c_created | date: 'dd/MM/yyyy' }}</small>
             </div>
           </div>
 
@@ -182,12 +182,12 @@
             </li>
             <li class="nav-item" role="presentation">
               <button class="nav-link" id="relationsTab" data-bs-toggle="tab" data-bs-target="#relationsContent" type="button" role="tab">
-                <i class="bi bi-diagram-2 me-1"></i>Relações
+                <i class="bi bi-diagram-2 me-1"></i>{{ language.labels().relations }}
               </button>
             </li>
             <li class="nav-item" role="presentation">
               <button class="nav-link" id="dataTab" data-bs-toggle="tab" data-bs-target="#dataContent" type="button" role="tab">
-                <i class="bi bi-code-square me-1"></i>Dados
+                <i class="bi bi-code-square me-1"></i>{{ language.labels().dataTitle }}
               </button>
             </li>
           </ul>
@@ -198,7 +198,7 @@
             <div class="tab-pane fade show active" id="labelsContent" role="tabpanel">
               <!-- Preferred Labels -->
               <div *ngIf="conceptDetail.prefLabel && conceptDetail.prefLabel.length > 0" class="mb-3">
-                <small class="text-muted d-block mb-2"><strong>✓ Preferenciais</strong></small>
+                <small class="text-muted d-block mb-2"><strong>✓ {{ language.labels().preferredLabels }}</strong></small>
                 <div class="ps-2">
                   <!-- Primeiro termo destacado -->
                   <div *ngIf="conceptDetail.prefLabel[0]" class="mb-3 p-2 bg-light rounded border-start border-success border-4">
@@ -211,7 +211,7 @@
                         type="button"
                         class="btn btn-sm btn-outline-success"
                         (click)="copyTermToClipboard(conceptDetail.prefLabel[0].Term)"
-                        title="Copiar termo"
+                        [title]="language.labels().copyTerm"
                       >
                         <i class="bi bi-clipboard"></i>
                       </button>
@@ -230,7 +230,7 @@
 
               <!-- Alternative Labels -->
               <div *ngIf="conceptDetail.altLabel && conceptDetail.altLabel.length > 0" class="mb-2">
-                <small class="text-muted d-block mb-1"><strong>↔ Alternativos</strong></small>
+                <small class="text-muted d-block mb-1"><strong>↔ {{ language.labels().alternativeLabels }}</strong></small>
                 <div class="ps-2">
                   <div *ngFor="let label of conceptDetail.altLabel" class="mb-1">
                     <span class="badge bg-info" style="font-size: 0.75rem;">{{ label.Lang }}</span>
@@ -241,7 +241,7 @@
 
               <!-- Hidden Labels -->
               <div *ngIf="conceptDetail.hiddenLabel && conceptDetail.hiddenLabel.length > 0" class="mb-2">
-                <small class="text-muted d-block mb-1"><strong>🔒 Ocultos</strong></small>
+                <small class="text-muted d-block mb-1"><strong>🔒 {{ language.labels().hiddenLabels }}</strong></small>
                 <div class="ps-2">
                   <div *ngFor="let label of conceptDetail.hiddenLabel" class="mb-1">
                     <span class="badge bg-warning" style="font-size: 0.75rem;">{{ label.Lang }}</span>
@@ -251,7 +251,7 @@
               </div>
 
               <div *ngIf="!conceptDetail.prefLabel && !conceptDetail.altLabel && !conceptDetail.hiddenLabel" class="text-muted">
-                Nenhum label definido
+                {{ language.labels().noLabels }}
               </div>
             </div>
 
@@ -259,7 +259,7 @@
             <div class="tab-pane fade" id="relationsContent" role="tabpanel">
               <!-- Broader Concepts -->
               <div *ngIf="conceptDetail.broader && conceptDetail.broader.length > 0" class="mb-2">
-                <small class="text-muted d-block mb-1"><strong>↑ Mais Amplos</strong></small>
+                <small class="text-muted d-block mb-1"><strong>↑ {{ language.labels().broaderConcepts }}</strong></small>
                 <div class="ps-2">
                   <div *ngFor="let concept of conceptDetail.broader" class="mb-1">
                     {{ concept.Term || concept.label || concept.prefLabel?.Term || 'N/A' }}
@@ -269,7 +269,7 @@
 
               <!-- Narrower Concepts -->
               <div *ngIf="conceptDetail.narrow && conceptDetail.narrow.length > 0" class="mb-2">
-                <small class="text-muted d-block mb-1"><strong>↓ Mais Específicos</strong></small>
+                <small class="text-muted d-block mb-1"><strong>↓ {{ language.labels().narrowerConcepts }}</strong></small>
                 <div class="ps-2">
                   <div *ngFor="let concept of conceptDetail.narrow" class="mb-1">
                     {{ concept.Term || concept.label || concept.prefLabel?.Term || 'N/A' }}
@@ -279,7 +279,7 @@
 
               <!-- Related Concepts -->
               <div *ngIf="conceptDetail.relations && conceptDetail.relations.length > 0" class="mb-2">
-                <small class="text-muted d-block mb-1"><strong>🔗 Relacionados</strong></small>
+                <small class="text-muted d-block mb-1"><strong>🔗 {{ language.labels().relatedConcepts }}</strong></small>
                 <div class="ps-2">
                   <div *ngFor="let concept of conceptDetail.relations" class="mb-1">
                     {{ concept.Term || concept.label || concept.prefLabel?.Term || 'N/A' }}
@@ -289,7 +289,7 @@
 
               <!-- Notes -->
               <div *ngIf="conceptDetail.notes && conceptDetail.notes.length > 0" class="mb-2">
-                <small class="text-muted d-block mb-1"><strong>📝 Notas</strong></small>
+                <small class="text-muted d-block mb-1"><strong>📝 {{ language.labels().notesTitle }}</strong></small>
                 <div class="ps-2">
                   <div *ngFor="let note of conceptDetail.notes" class="mb-1 small">
                     {{ note.note || note }}
@@ -298,7 +298,7 @@
               </div>
 
               <div *ngIf="!conceptDetail.broader && !conceptDetail.narrow && !conceptDetail.relations && !conceptDetail.notes" class="text-muted">
-                Nenhuma relação definida
+                {{ language.labels().noRelations }}
               </div>
             </div>
 
@@ -313,7 +313,7 @@
       <!-- Footer do modal -->
       <div class="modal-footer border-top">
         <button type="button" class="btn btn-secondary" (click)="closeDetailPanel()">
-          <i class="bi bi-x me-1"></i>Fechar
+          <i class="bi bi-x me-1"></i>{{ language.labels().close }}
         </button>
         <a
           *ngIf="conceptDetail"
@@ -321,7 +321,7 @@
           (click)="closeDetailPanel()"
           class="btn btn-primary"
         >
-          <i class="bi bi-box-arrow-up-right me-1"></i>Abrir em Nova Aba
+          <i class="bi bi-box-arrow-up-right me-1"></i>{{ language.labels().openNewTab }}
         </a>
       </div>
     </div>

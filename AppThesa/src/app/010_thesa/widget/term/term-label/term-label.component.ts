@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ServiceThesaService } from '../../../../000_core/service/service-thesa.service';
 import { ServiceStorageService } from '../../../../000_core/service/service-storage.service';
+import { LanguageService } from '../../../../000_core/service/language.service';
 
 @Component({
   selector: 'app-term-label',
@@ -14,17 +15,17 @@ export class TermLabelComponent {
   @Input() editMode: boolean = false;
   @Input() thesaID: string = '';
   @Output() action = new EventEmitter<any>();
-  public termLabel = '';
   editPlus: boolean = true;
 
   constructor(
     private serviceThesa: ServiceThesaService,
-    private serviceStorage: ServiceStorageService
+    private serviceStorage: ServiceStorageService,
+    public readonly language: LanguageService
   ) {}
 
   deleteItem(id: string = '', label: string) {
     const confirmacao = confirm(
-      'Tem certeza que deseja excluir este rótulo? ' + label
+      this.language.labels().deleteLabelConfirm + label
     );
     if (confirmacao) {
       // Executa a exclusão
@@ -107,31 +108,21 @@ export class TermLabelComponent {
   }
 
   ngOnChanges() {
-    if (this.label === 'prefLabel') {
-      this.termLabel = 'Termo Preferencial';
-    } else if (this.label === 'altLabel') {
-      this.termLabel = 'Termo Equivalente';
-    } else if (this.label === 'hiddenLabel') {
-      this.termLabel = 'Termo Oculto';
-    } else if (this.label === 'broader') {
-      this.termLabel = 'Conceito Geral (TG)';
-      if (this.terms.length > 0) {
-        this.editPlus = false;
-      } else {
-        this.editPlus = true;
-      }
-    } else if (this.label === 'narrow') {
-      this.termLabel = 'Conceito Específico (TE)';
-    } else if (this.label === 'related') {
-      this.termLabel = 'Conceito Relacionado (TR)';
-    } else if (this.label === 'exactMatch') {
-      this.termLabel = 'Exact Match (SKOS)';
-    } else if (this.label === 'linkedData') {
-      this.termLabel = 'Linked Data (LD)';
-    } else if (this.label === 'exactMatch') {
-      this.termLabel = 'Exact Match (EM)';
-    } else {
-      this.termLabel = 'Termo ->' + this.label;
+    this.editPlus = this.label !== 'broader' || !this.terms?.length;
+  }
+
+  labelText(): string {
+    const labels = this.language.labels();
+    switch (this.label) {
+      case 'prefLabel': return labels.preferredTermLabel;
+      case 'altLabel': return labels.equivalentTermLabel;
+      case 'hiddenLabel': return labels.hiddenTermLabel;
+      case 'broader': return labels.broaderConceptLabel;
+      case 'narrow': return labels.narrowerConceptLabel;
+      case 'related': return labels.relatedConceptLabel;
+      case 'exactMatch': return 'Exact Match (SKOS)';
+      case 'linkedData': return 'Linked Data (LD)';
+      default: return labels.termLabelFallback + ' ->' + this.label;
     }
   }
 

@@ -4,6 +4,7 @@ import { ServiceStorageService } from '../../../000_core/service/service-storage
 import { AuthService } from '../../../000_core/service/auth.service';
 import { ServiceThesaService } from '../../../000_core/service/service-thesa.service';
 import { environment } from '../../../../environments/environment';
+import { LanguageService } from '../../../000_core/service/language.service';
 
 declare var bootstrap: any;
 
@@ -30,6 +31,7 @@ export class SearchTermsComponent implements OnInit {
 
   constructor(
     private router: Router,
+    public readonly language: LanguageService,
     private serviceStorage: ServiceStorageService,
     private authService: AuthService,
     private serviceThesa: ServiceThesaService
@@ -58,14 +60,14 @@ export class SearchTermsComponent implements OnInit {
 
   searchTerms(): void {
     if (!this.searchTerm.trim()) {
-      this.errorMessage = 'Por favor, digite um termo para pesquisar.';
+      this.errorMessage = this.language.labels().enterSearchTerm;
       this.searchResults = [];
       this.noResults = false;
       return;
     }
 
     if (!this.selectedThesaurus) {
-      this.errorMessage = 'Nenhum thesaurus selecionado. Por favor, selecione um thesaurus primeiro.';
+      this.errorMessage = this.language.labels().selectThesaurusFirst;
       this.searchResults = [];
       this.noResults = false;
       return;
@@ -92,7 +94,7 @@ export class SearchTermsComponent implements OnInit {
       error: (error: any) => {
         this.isLoading = false;
         console.error('Erro na busca:', error);
-        this.errorMessage = 'Erro ao realizar a busca. Tente novamente.';
+        this.errorMessage = this.language.labels().searchFailed;
         this.searchResults = [];
       }
     });
@@ -100,7 +102,7 @@ export class SearchTermsComponent implements OnInit {
 
   openConcept(conceptId: string): void {
     if (!conceptId) {
-      this.conceptError = 'ID do conceito inválido';
+      this.conceptError = this.language.labels().invalidConceptId;
       console.error('ID do conceito é inválido:', conceptId);
       return;
     }
@@ -127,14 +129,14 @@ export class SearchTermsComponent implements OnInit {
             this.openDetailModal();
           }, 100);
         } else {
-          this.conceptError = 'Nenhum dado retornado do servidor';
+          this.conceptError = this.language.labels().noConceptData;
           console.error('Resposta vazia da API');
         }
       },
       error: (error: any) => {
         this.conceptLoading = false;
         console.error('Erro ao buscar conceito:', error);
-        this.conceptError = 'Erro ao carregar detalhes. Tente novamente.';
+        this.conceptError = this.language.labels().loadConceptFailed;
       }
     });
   }
@@ -182,10 +184,10 @@ export class SearchTermsComponent implements OnInit {
 
     navigator.clipboard.writeText(term).then(() => {
       // Mostrar feedback visual
-      alert('Termo copiado: ' + term);
+      alert(this.language.labels().termCopied + term);
     }).catch((error) => {
       console.error('Erro ao copiar:', error);
-      alert('Erro ao copiar o termo');
+      alert(this.language.labels().copyTermFailed);
     });
   }
 

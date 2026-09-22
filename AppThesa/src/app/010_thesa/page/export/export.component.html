@@ -1,17 +1,82 @@
-<app-th-show *ngIf="data" [thesaID]="id" [thesa]="data" [tab]="'5'" [editMode]="editMode"></app-th-show>
+<app-th-show
+  *ngIf="data?.id_th"
+  [thesaID]="id"
+  [thesa]="data"
+  [tab]="'5'"
+  [editMode]="editMode"
+></app-th-show>
 
-<div class="container">
+<div class="container py-4">
   <div class="row">
-    <div class="col-12 col-lg-2 col-md-2 col-sm-2">
-      <h3>
-        Exportação
-      </h3>
+    <div class="col-12 col-lg-2">
+      <h3>{{ language.labels().export }}</h3>
     </div>
-    <div class="col-12 col-lg-10 col-md-10 col-sm-10">
-    <h1>Exportação</h1>
-    <pre>
-    {{data | json}}
-    </pre>
+
+    <div class="col-12 col-lg-10">
+      <h1>{{ language.labels().export }}</h1>
+      <p class="text-muted">{{ language.labels().exportWholeThesaurus }}</p>
+
+      <div *ngIf="isLoading" class="text-muted" role="status">
+        {{ language.labels().loading }}
+      </div>
+      <div *ngIf="loadError" class="alert alert-danger" role="alert">
+        {{ language.labels().exportLoadFailed }}
+      </div>
+
+      <ng-container *ngIf="data?.id_th">
+        <div class="d-flex flex-wrap gap-2 mb-4">
+          <a class="btn btn-outline-primary" [href]="exportUrl('xml')">RDF/XML</a>
+          <a class="btn btn-outline-primary" [href]="exportUrl('turtle')">TURTLE</a>
+          <a class="btn btn-outline-primary" [href]="exportUrl('json')">JSON-LD</a>
+          <a class="btn btn-outline-primary" [href]="exportUrl('txt')">TXT</a>
+        </div>
+
+        <h2 class="h5 mb-3">{{ language.labels().exportDetails }}</h2>
+
+        <section class="card border-0 shadow-sm mb-3">
+          <div class="card-body">
+            <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
+              <div>
+                <div class="text-muted small">{{ language.labels().thesaurusTitle }}</div>
+                <h2 class="h4 mb-0">{{ data.th_name }}</h2>
+              </div>
+              <span class="badge" [ngClass]="statusClass()">{{ statusLabel() }}</span>
+            </div>
+            <dl class="row mb-0" *ngIf="data.th_achronic">
+              <dt class="col-sm-3">{{ language.labels().acronym }}</dt>
+              <dd class="col-sm-9 mb-0">{{ data.th_achronic }}</dd>
+            </dl>
+          </div>
+        </section>
+
+        <section *ngIf="data.th_description?.trim()" class="card border-0 shadow-sm mb-3">
+          <div class="card-body">
+            <h2 class="h5">{{ language.labels().description }}</h2>
+            <p class="info-text mb-0">{{ data.th_description }}</p>
+          </div>
+        </section>
+
+        <section *ngIf="authors.length" class="card border-0 shadow-sm mb-3">
+          <div class="card-body">
+            <h2 class="h5">{{ language.labels().exportAuthors }}</h2>
+            <ul class="list-unstyled mb-0">
+              <li *ngFor="let author of authors" class="mb-2">
+                <strong>{{ author.fullname }}</strong>
+                <span *ngIf="author.affiliation" class="text-muted">
+                  · {{ author.affiliation }}
+                </span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section *ngFor="let info of infoSections" class="card border-0 shadow-sm mb-3">
+          <div class="card-body">
+            <h2 class="h5">{{ infoLabel(info.class) }}</h2>
+            <p class="info-text mb-0">{{ info.description }}</p>
+          </div>
+        </section>
+      </ng-container>
     </div>
   </div>
 </div>

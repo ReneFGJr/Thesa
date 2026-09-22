@@ -1,5 +1,5 @@
 <div class="alert alert-success" *ngIf="thesaID === 0">
-  Loading ... {{ thesaID }}
+  {{ language.labels().loading }} {{ thesaID }}
 </div>
 
 <app-concept-404 *ngIf="dataConcept?.status=='404'"></app-concept-404>
@@ -39,7 +39,7 @@
             [attr.aria-controls]="tab.id"
             [attr.aria-selected]="i === 0 ? 'true' : 'false'"
           >
-            {{ tab.name }}
+            {{ tabLabel(tab.name) }}
           </button>
         </li>
       </ul>
@@ -125,6 +125,14 @@
           <ng-container *ngIf="tab.content == 'card'">
             <app-concept-card [data]="dataConcept"></app-concept-card>
           </ng-container>
+          <ng-container *ngIf="tab.content == 'export'">
+            <div class="d-flex flex-wrap gap-2 p-3">
+              <a class="btn btn-outline-primary" [href]="exportUrl('xml')">RDF/XML</a>
+              <a class="btn btn-outline-primary" [href]="exportUrl('turtle')">TURTLE</a>
+              <a class="btn btn-outline-primary" [href]="exportUrl('json')">JSON-LD</a>
+              <a class="btn btn-outline-primary" [href]="exportUrl('txt')">TXT</a>
+            </div>
+          </ng-container>
           <!---------------------------------------- Log -->
           <ng-container *ngIf="tab.content == 'log'">
             <app-log-list-concept [data]="dataConcept"></app-log-list-concept>
@@ -150,12 +158,12 @@
   aria-labelledby="popupConceptLabel"
 >
   <div class="offcanvas-header">
-    <h5 id="popupConceptLabel">{{ title }}</h5>
+    <h5 id="popupConceptLabel">{{ language.labels().conceptPanelTitle }}</h5>
     <button
       type="button"
       class="btn-close"
       data-bs-dismiss="offcanvas"
-      aria-label="Fechar"
+      [attr.aria-label]="language.labels().close"
     ></button>
   </div>
   <div class="offcanvas-body">

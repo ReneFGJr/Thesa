@@ -39,6 +39,10 @@ $routes->set404Override();
 
 $routes->get('/image/(:any)/(:any)', 'Api::image/$1/$2');
 
+$routes->get('/api/export/(:num)/xml', 'ApiExport::xml/$1');
+$routes->get('/api/export/(:num)/turtle', 'ApiExport::download/$1/turtle');
+$routes->get('/api/export/(:num)/json', 'ApiExport::download/$1/json');
+$routes->get('/api/export/(:num)/txt', 'ApiExport::download/$1/txt');
 $routes->match(['get', 'post'], '/api', 'Api::index/');
 $routes->match(['get', 'post'], '/api/(:any)', 'Api::index/$1');
 $routes->get('/admin', 'Admin::index');

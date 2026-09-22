@@ -10,8 +10,9 @@ import { ServiceThesaService } from '../../../000_core/service/service-thesa.ser
 import { ServiceStorageService } from '../../../000_core/service/service-storage.service';
 import { ActivatedRoute } from '@angular/router';
 import { Offcanvas } from 'bootstrap';
-import { language } from '../../../../language/language_pt';
 import { PainelService } from '../../../000_core/service/painel.service';
+import { LanguageService } from '../../../000_core/service/language.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-concept-show',
@@ -22,6 +23,7 @@ export class ConceptShowComponent {
   @ViewChild('offcanvasNovo') offcanvasNovo!: ElementRef;
   @ViewChild('conceptGrafo') conceptGrafo: any;
   @Input() thesaID: number = 0;
+  @Input() thesaStatus: number | string = 1;
   @Input() conceptID: number = 0;
   @Input() dataConcept: any;
   @Input() editMode: boolean = false;
@@ -29,28 +31,48 @@ export class ConceptShowComponent {
   terms: Array<any> | any;
   actionAC: string = '';
 
-  /* Messagems */
-  title = language.thesa.conceptShow.title;
-
   tabs: Array<any> = [
     {
-      name: 'Informação',
+      name: 'conceptInformation',
       id: 'information',
       icon: 'fa-solid fa-book',
       content: 'information',
     },
-    { name: 'Grafo', id: 'graph', icon: 'fa-solid fa-book', content: 'graph' },
-    { name: 'Ficha', id: 'card', icon: 'fa-solid fa-book', content: 'card' },
-    { name: 'Notas', id: 'notas', icon: 'fa-solid fa-book', content: 'notas' },
-    { name: 'Log', id: 'log', icon: 'fa-solid fa-book', content: 'log' },
+    { name: 'conceptGraph', id: 'graph', icon: 'fa-solid fa-book', content: 'graph' },
+    { name: 'conceptCard', id: 'card', icon: 'fa-solid fa-book', content: 'card' },
+    { name: 'conceptNotes', id: 'notas', icon: 'fa-solid fa-book', content: 'notas' },
+    { name: 'export', id: 'export', icon: 'fa-solid fa-download', content: 'export' },
+    { name: 'conceptLog', id: 'log', icon: 'fa-solid fa-book', content: 'log' },
   ];
 
   constructor(
     private serviceThesa: ServiceThesaService,
     private serviceStorage: ServiceStorageService,
     private router: ActivatedRoute,
-    private painelService: PainelService
+    private painelService: PainelService,
+    public readonly language: LanguageService
   ) {}
+
+  tabLabel(name: string): string {
+    const labels = this.language.labels();
+    switch (name) {
+      case 'conceptInformation': return labels.conceptInformation;
+      case 'conceptGraph': return labels.conceptGraph;
+      case 'conceptCard': return labels.conceptCard;
+      case 'conceptNotes': return labels.conceptNotes;
+      case 'export': return labels.export;
+      case 'conceptLog': return labels.conceptLog;
+      default: return name;
+    }
+  }
+
+  exportUrl(format: 'xml' | 'turtle' | 'json' | 'txt'): string {
+    const url = `${environment.apiUrl}/export/${this.conceptID}/${format}?scope=concept`;
+    const apiKey = this.serviceStorage.get('apikey');
+    return Number(this.thesaStatus) !== 1 && apiKey
+      ? `${url}&apikey=${encodeURIComponent(apiKey)}`
+      : url;
+  }
 
   actionUpdate(ev: Event) {
     let actionACev = ev.toString();

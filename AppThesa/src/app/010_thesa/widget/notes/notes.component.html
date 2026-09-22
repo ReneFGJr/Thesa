@@ -2,13 +2,13 @@
   <div class="row">
     <div *ngIf="notasProp?.length > 0 || editMode" class="mt-2">
       <h5 *ngIf="editMode">
-        Notas
+        {{ language.labels().conceptNotes }}
         <i class="bi bi-plus-circle link" (click)="newNotes()"></i>
       </h5>
 
       <div *ngFor="let note of notes">
         <h5>
-          Nota de {{ note.p_name }}
+          {{ language.labels().noteOf }} {{ noteTypeLabel(note.p_name) }}
           <i
             *ngIf="editMode == true"
             class="bi bi-pencil-square link"
@@ -35,11 +35,11 @@
       aria-labelledby="offcanvasNovoLabel"
     >
       <div class="offcanvas-header">
-        <h5 id="offcanvasNovoLabel">Nova Nota</h5>
+        <h5 id="offcanvasNovoLabel">{{ language.labels().newNote }}</h5>
         <button
           type="button"
           class="btn-close text-reset"
-          aria-label="Close"
+          [attr.aria-label]="language.labels().close"
           (click)="offcanvasInstance.hide()"
         ></button>
       </div>
@@ -47,7 +47,7 @@
         <form [formGroup]="formAction" (ngSubmit)="saveNote()">
           <!-- Tipo de nota -->
           <div class="mb-3">
-            <label for="noteType" class="form-label bold">Tipo das notas</label>
+            <label for="noteType" class="form-label bold">{{ language.labels().noteType }}</label>
             <select
               id="noteType"
               class="form-select border border-secondary"
@@ -59,7 +59,7 @@
                 [value]="prop.id"
                 [selected]="prop.id == formAction.value.noteType"
               >
-                {{ prop.label }}
+                {{ noteTypeLabel(prop.label) }}
               </option>
             </select>
           </div>
@@ -67,7 +67,7 @@
           <!-- Conteúdo da nota -->
           <div class="mb-3">
             <label for="noteContent" class="form-label bold mt-3"
-              >Conteúdo da nota</label
+              >{{ language.labels().noteContent }}</label
             >
             <textarea
               id="noteContent"
@@ -79,7 +79,7 @@
 
           <div class="mb-3">
             <label for="noteType" class="form-label bold"
-              >Idioma do texto</label
+              >{{ language.labels().textLanguage }}</label
             >
             <div *ngFor="let lang of languages?.languages" class="form-check">
               <input
@@ -100,12 +100,12 @@
             class="btn btn-primary full"
             [disabled]="formAction.invalid"
           >
-            Salvar Nota
+            {{ language.labels().saveNote }}
           </button>
 
           <!-- Botão de fechar -->
           <span class="btn btn-warning mt-3 full" (click)="cancelButton()"
-            >Fechar</span
+            >{{ language.labels().close }}</span
           >
         </form>
       </div>
