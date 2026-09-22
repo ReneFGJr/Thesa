@@ -20,6 +20,7 @@ export class ConceptCreateComponent {
   orign: string = '';
   showError: boolean = false;
   messageError: string = '';
+  isSubmitting: boolean = false;
 
   formAction: FormGroup;
 
@@ -34,6 +35,19 @@ export class ConceptCreateComponent {
       thesaID: [-1],
       apikey: [this.serviceStorage.get('apikey')],
     });
+  }
+
+  get candidateGroups(): { lang: string; terms: any[] }[] {
+    const groups = new Map<string, any[]>();
+    for (const term of this.termListCandidate ?? []) {
+      const lang = term.lang || '';
+      if (!groups.has(lang)) groups.set(lang, []);
+      groups.get(lang)!.push(term);
+    }
+    return Array.from(groups, ([lang, terms]) => ({
+      lang,
+      terms: terms.sort((a, b) => String(a.term).localeCompare(String(b.term))),
+    })).sort((a, b) => a.lang.localeCompare(b.lang));
   }
 
   get termsArray(): FormArray {
@@ -57,14 +71,14 @@ export class ConceptCreateComponent {
 
   /** ✅ Verifica se um termo está marcado */
   isChecked(id: string): boolean {
-    return this.termsArray.value.includes(id);
+    return this.termsArray.value.includes(String(id));
   }
 
   /** ✅ Selecionar todos */
   selectAll() {
     this.termsArray.clear();
     this.termListCandidate.forEach((term: any) => {
-      this.termsArray.push(new FormControl(term.id));
+      this.termsArray.push(new FormControl(String(term.id)));
     });
   }
 
@@ -74,7 +88,30 @@ export class ConceptCreateComponent {
   }
 
   /** ✅ Enviar dados */
+  unlinkSelected(): void {
+    if (this.termsArray.length === 0 || this.isSubmitting) return;
+    this.isSubmitting = true;
+    this.showError = false;
+    this.serviceThesa.api_post('term_unlink', this.formAction.value).subscribe({
+      next: (res: any) => {
+        this.isSubmitting = false;
+        if (res.status == '200') {
+          this.termsArray.clear();
+          this.actionAC.emit('update');
+        } else {
+          this.showError = true;
+          this.messageError = res.message || res.result;
+        }
+      },
+      error: () => {
+        this.isSubmitting = false;
+        this.showError = true;
+        this.messageError = this.language.labels().removeCandidateTermsFailed;
+      },
+    });
+  }
   onSubmit(): void {
+    if (this.isSubmitting) return;
     this.serviceThesa
       .api_post('concept_create_term', this.formAction.value)
       .subscribe((res) => {

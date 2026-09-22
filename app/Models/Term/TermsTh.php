@@ -75,4 +75,39 @@ class TermsTh extends Model
         }
         return true;
     }
+
+    function unlinkCandidates($data)
+    {
+        $th = filter_var($data['thesaID'] ?? null, FILTER_VALIDATE_INT);
+        $rawIds = explode(',', (string) ($data['terms'] ?? ''));
+        $ids = array_unique($rawIds);
+        if (!$th || $th < 1 || !$rawIds || count($ids) !== count($rawIds)) {
+            return ['status' => '500', 'message' => 'Invalid thesaurus or terms'];
+        }
+        foreach ($ids as $id) {
+            if (!ctype_digit($id) || (int) $id < 1) {
+                return ['status' => '500', 'message' => 'Invalid term ID'];
+            }
+        }
+
+        $Collaborators = new \App\Models\Thesa\Collaborators();
+        if (!$Collaborators->isMember((string) ($data['apikey'] ?? ''), $th)) {
+            return ['status' => '403', 'message' => 'Not authorized to edit this thesaurus'];
+        }
+
+        $links = $this->where('term_th_thesa', $th)
+            ->where('term_th_concept', 0)
+            ->whereIn('term_th_term', $ids)
+            ->findAll();
+        if (count(array_unique(array_column($links, 'term_th_term'))) !== count($ids)) {
+            return ['status' => '404', 'message' => 'Candidate term not found in thesaurus'];
+        }
+
+        $this->where('term_th_thesa', $th)
+            ->where('term_th_concept', 0)
+            ->whereIn('term_th_term', $ids)
+            ->delete();
+
+        return ['status' => '200', 'message' => 'Term links removed'];
+    }
 }

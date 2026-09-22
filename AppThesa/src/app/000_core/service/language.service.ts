@@ -88,6 +88,8 @@ const translations = {
     selectAll: "Selecionar tudo",
     deselectAll: "Desmarcar tudo",
     createConcept: "Criar conceito",
+    removeCandidateTerms: "Excluir",
+    removeCandidateTermsFailed: "Não foi possível excluir os vínculos dos termos.",
     close: "Fechar",
 
     publicDescription: "O Thesa está disponível para qualquer pessoa visualizar, sem restrições de acesso.",
@@ -242,6 +244,8 @@ const translations = {
     selectAll: "Select all",
     deselectAll: "Deselect all",
     createConcept: "Create concept",
+    removeCandidateTerms: "Delete",
+    removeCandidateTermsFailed: "Could not remove the term links.",
     close: "Close",
 
     publicDescription: "Thesa is available for anyone to view, without access restrictions.",
@@ -396,6 +400,8 @@ const translations = {
     selectAll: "Seleccionar todo",
     deselectAll: "Desmarcar todo",
     createConcept: "Crear concepto",
+    removeCandidateTerms: "Eliminar",
+    removeCandidateTermsFailed: "No se pudieron eliminar los vínculos de los términos.",
     close: "Cerrar",
 
     publicDescription: "Thesa está disponible para que cualquier persona lo consulte, sin restricciones de acceso.",

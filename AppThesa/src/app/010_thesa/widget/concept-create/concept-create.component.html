@@ -17,22 +17,33 @@
         <button type="button" class="btn btn-outline-warning" (click)="deselectAll()">
           {{ language.labels().deselectAll }}
         </button>
+        <button
+        type="button"
+        class="btn btn-outline-danger ms-2"
+        [disabled]="termsArray.length === 0 || isSubmitting"
+        (click)="unlinkSelected()"
+      >
+        {{ language.labels().removeCandidateTerms }}
+        </button>
       </div>
 
-      <div *ngFor="let nterm of termListCandidate">
-        <input
-          type="checkbox"
-          [value]="nterm.id"
-          [checked]="isChecked(nterm.id)"
-          (change)="onCheckboxChange($event)"
-        />
-        {{ nterm.term }} <sup>{{ nterm.lang }}</sup>
+      <div *ngFor="let group of candidateGroups" class="mb-3">
+        <h6 class="border-bottom pb-1">{{ group.lang }}</h6>
+        <div *ngFor="let nterm of group.terms">
+          <input
+            type="checkbox"
+            [value]="nterm.id"
+            [checked]="isChecked(nterm.id)"
+            (change)="onCheckboxChange($event)"
+          />
+          {{ nterm.term }}
+        </div>
       </div>
 
       <button
         type="submit"
         class="btn btn-primary mt-2 full"
-        [disabled]="termsArray.length === 0"
+        [disabled]="termsArray.length === 0 || isSubmitting"
       >
         {{ language.labels().createConcept }}
       </button>

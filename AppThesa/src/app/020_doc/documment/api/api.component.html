@@ -1,542 +1,103 @@
 <div class="doc-container">
   <aside class="doc-menu">
     <ul>
-      <li
-        *ngFor="let section of sections"
-        [class.active]="section.id === selectedSection"
-        (click)="selectSection(section.id)"
-      >
+      <li *ngFor="let section of sections"
+          [class.active]="section.id === selectedSection"
+          (click)="selectSection(section.id)">
         {{ section.title }}
       </li>
     </ul>
   </aside>
 
-  <section class="doc-content">
-    <ng-container [ngSwitch]="selectedSection">
-      <div *ngSwitchCase="'intro'" class="fade-in">
-        <h2>Introdução</h2>
-        <p>
-          Bem-vindo à API do nosso sistema. Esta documentação apresenta os
-          principais recursos.
-        </p>
+  <section class="doc-content" [ngSwitch]="selectedSection">
+    <div *ngSwitchCase="'intro'" class="fade-in">
+      <h2>{{ t('intro') }}</h2>
+      <p>{{ t('welcome') }}</p>
+    </div>
+
+    <div *ngSwitchCase="'glossario'" class="fade-in">
+      <h2>{{ t('glossaryTitle') }}</h2>
+      <div *ngFor="let item of glossary">
+        <h4>{{ t(item.title) }}</h4>
+        <p>{{ t(item.text) }}</p>
       </div>
+    </div>
 
-      <div *ngSwitchCase="'glossario'" class="fade-in">
-        <h2>Glossário do Thesa</h2>
+    <div *ngSwitchCase="'endpoints'" class="fade-in">
+      <h2>{{ t('endpoints') }}</h2>
+      <ul>
+        <li><code>GET /users</code></li>
+        <li><code>POST /login</code></li>
+        <li><code>DELETE /users/:id</code></li>
+      </ul>
+    </div>
 
-        <h4>Conceito</h4>
-        <p>
-          Um <b>conceito</b> é uma ideia, noção ou representação mental que
-          expressa o significado de algo. <br />Ele é abstrato e independente da
-          linguagem. <br />Na organização do conhecimento, o conceito é a base
-          que dá sentido aos termos usados para descrevê-lo. <br />É por meio
-          dos conceitos que se estruturam as relações entre informações em
-          sistemas como tesauros, ontologias e classificações.
-        </p>
-
-        <h4>Termo</h4>
-        <p>
-          Um <b>termo</b> é uma palavra ou expressão que representa um conceito
-          específico em um determinado contexto. <br />Os termos são usados para
-          nomear e descrever conceitos, facilitando a comunicação e a
-          compreensão entre pessoas que compartilham o mesmo domínio de
-          conhecimento. <br />Os termos podem variar de acordo com o idioma, a
-          cultura e o contexto em que são utilizados. <br />Em sistemas de
-          organização do conhecimento, como tesauros e ontologias, os termos são
-          associados a conceitos para garantir que a informação seja acessível e
-          compreensível.
-        </p>
-        <h4>Microtesauro</h4>
-        <p>
-          Um <b>Microtesauro</b> é uma palavra ou expressão que representa um conceito
-          específico em um determinado contexto. <br />Os termos são usados para
-          nomear e descrever conceitos, facilitando a comunicação e a
-          compreensão entre pessoas que compartilham o mesmo domínio de
-          conhecimento. <br />Os termos podem variar de acordo com o idioma, a
-          cultura e o contexto em que são utilizados. <br />Em sistemas de
-          organização do conhecimento, como tesauros e ontologias, os termos são
-          associados a conceitos para garantir que a informação seja acessível e
-          compreensível.
-        </p>
-        <h4>Tesauro</h4>
-        <p>
-          Um <b>Microtesauro</b> é uma palavra ou expressão que representa um conceito
-          específico em um determinado contexto. <br />Os termos são usados para
-          nomear e descrever conceitos, facilitando a comunicação e a
-          compreensão entre pessoas que compartilham o mesmo domínio de
-          conhecimento. <br />Os termos podem variar de acordo com o idioma, a
-          cultura e o contexto em que são utilizados. <br />Em sistemas de
-          organização do conhecimento, como tesauros e ontologias, os termos são
-          associados a conceitos para garantir que a informação seja acessível e
-          compreensível.
-        </p>
-      </div>
-
-      <div *ngSwitchCase="'endpoints'" class="fade-in">
-        <h2>Endpoints</h2>
-        <ul>
-          <li>GET /users</li>
-          <li>POST /login</li>
-          <li>DELETE /users/:id</li>
-        </ul>
-      </div>
-
-      <div *ngSwitchCase="'exportacao'" class="fade-in">
-        <h2>Exportação pela API</h2>
-        <p>
-          Use <code>GET /api/export/:id/:formato</code> para baixar um tesauro
-          inteiro ou um conceito em um dos formatos abaixo.
-        </p>
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Formato</th>
-              <th>Endpoint</th>
-              <th>Content-Type</th>
-              <th>Arquivo</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let format of exportFormats">
-              <td>{{ format.label }}</td>
-              <td><code>/api/export/:id/{{ format.path }}</code></td>
-              <td><code>{{ format.mime }}</code></td>
-              <td><code>{{ format.extension }}</code></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <h4>Qual ID usar</h4>
-        <p>
-          Para exportar toda a base, informe o ID do tesauro. Por exemplo,
-          <a [href]="exportApiUrl + '/export/6/xml'">/api/export/6/xml</a>
-          exporta o tesauro 6.
-        </p>
-        <p>
-          Para exportar apenas um conceito, informe o ID do conceito e acrescente
-          <code>?scope=concept</code>. Por exemplo,
-          <a [href]="exportApiUrl + '/export/366/xml?scope=concept'"
-            >/api/export/366/xml?scope=concept</a
-          >. Esse parâmetro é necessário quando um mesmo número identifica
-          tanto um conceito quanto um tesauro. Sem <code>scope</code>, o ID do
-          tesauro tem prioridade.
-        </p>
-
-        <h4>Acesso a tesauros não públicos</h4>
-        <p>
-          Envie a APIKEY de um proprietário ou colaborador em
-          <code>?apikey=SUA_APIKEY</code> ou no cabeçalho
-          <code>X-API-Key</code>. Para exportar um conceito privado, combine
-          os parâmetros: <code>?scope=concept&amp;apikey=SUA_APIKEY</code>.
-          Tesauros públicos dispensam a chave. Evite compartilhar links com
-          APIKEY, pois URLs podem aparecer no histórico e em logs.
-        </p>
-
-        <h4>Exemplos</h4>
-        <pre>curl -L "{{ exportApiUrl }}/export/6/turtle" -o thesa-6.ttl
-curl -L "{{ exportApiUrl }}/export/366/json?scope=concept" -o concept-366.jsonld
-curl -L -H "X-API-Key: SUA_APIKEY" "{{ exportApiUrl }}/export/ID/txt" -o thesa-ID.txt</pre>
-        <p>
-          A API retorna <code>200</code> no download, <code>403</code> quando
-          não há autorização e <code>404</code> para um ID inexistente.
-        </p>
-      </div>
-
-      <div *ngSwitchCase="'examples'" class="fade-in">
-        <h2>Exemplos de Uso</h2>
-        <pre>
-curl -X GET https://api.meusistema.com/users \
-  -H "Authorization: Bearer seu_token_aqui"
-        </pre>
-      </div>
-
-      <div *ngSwitchCase="'errors'">
-        <h2>Tratamento de Erros</h2>
-        <p>Erros seguem o formato padrão HTTP com mensagens descritivas.</p>
-      </div>
-
-      <div *ngSwitchCase="'api'" class="fade-in">
-        <h2>Uso das API</h2>
-        <table class="table table-bordered">
-          <tr>
-            <th colspan="3" class="text-center bg-dark text-white">
-              API abertas
-            </th>
+    <div *ngSwitchCase="'exportacao'" class="fade-in">
+      <h2>{{ t('exportTitle') }}</h2>
+      <p>{{ t('exportIntro') }}</p>
+      <table class="table table-bordered">
+        <thead><tr>
+          <th>{{ t('format') }}</th><th>Endpoint</th><th>Content-Type</th><th>{{ t('file') }}</th>
+        </tr></thead>
+        <tbody>
+          <tr *ngFor="let format of exportFormats">
+            <td>{{ format.label }}</td>
+            <td><code>/api/export/:id/{{ format.path }}</code></td>
+            <td><code>{{ format.mime }}</code></td>
+            <td><code>{{ format.extension }}</code></td>
           </tr>
+        </tbody>
+      </table>
+      <h4>{{ t('whichId') }}</h4>
+      <p>{{ t('exportThesaurus') }}</p>
+      <p>{{ t('exportConcept') }}</p>
+      <h4>{{ t('privateAccess') }}</h4>
+      <p>{{ t('privateAccessText') }}</p>
+      <h4>{{ t('exportExamples') }}</h4>
+      <pre>curl -L "{{ exportApiUrl }}/export/6/turtle" -o thesa-6.ttl
+curl -L "{{ exportApiUrl }}/export/366/json?scope=concept" -o concept-366.jsonld
+curl -L -H "X-API-Key: YOUR_API_KEY" "{{ exportApiUrl }}/export/ID/txt" -o thesa-ID.txt</pre>
+      <p>{{ t('exportStatuses') }}</p>
+    </div>
 
-          <thead>
-            <tr>
-              <th width="20%">Endpoint</th>
-              <th width="5%" class="text-center">Método</th>
-              <th width="75%">Descrição</th>
-            </tr>
-          </thead>
+    <div *ngSwitchCase="'examples'" class="fade-in">
+      <h2>{{ t('examples') }}</h2>
+      <pre>curl -X GET https://api.meusistema.com/users \
+  -H "Authorization: Bearer YOUR_TOKEN"</pre>
+    </div>
 
-          <tbody>
-            <tr>
+    <div *ngSwitchCase="'errors'" class="fade-in">
+      <h2>{{ t('errors') }}</h2>
+      <p>{{ t('errorText') }}</p>
+    </div>
+
+    <div *ngSwitchCase="'api'" class="fade-in">
+      <h2>{{ t('api') }}</h2>
+      <table class="table table-bordered">
+        <thead><tr>
+          <th>Endpoint</th><th>{{ t('method') }}</th><th>{{ t('description') }}</th>
+        </tr></thead>
+        <tbody>
+          <ng-container *ngFor="let group of apiGroups">
+            <tr><th colspan="3" class="text-center bg-dark text-white">{{ t(group.title) }}</th></tr>
+            <tr *ngFor="let item of group.items">
               <td>
-                <a href="{{ url }}/thopen" target="_blank">/api/thopen</a>
+                <a [href]="url + '/' + item.path" target="_blank" rel="noopener noreferrer">/api/{{ item.path }}</a>
               </td>
-              <td class="text-center">GET</td>
-              <td>Lista todos os tesauros publicos.</td>
-            </tr>
-            <tr>
+              <td class="text-center">{{ item.method }}</td>
               <td>
-                <a href="{{ url }}/th/:th" target="_blank">/api/th/:th</a>
-              </td>
-              <td class="text-center">GET</td>
-              <td>
-                Dados detalhados de um tesauro.
-                <ul>
-                  <li>:th - Número (ID) do tesauros (Thesa)</li>
+                <span *ngIf="item.text">{{ t(item.text) }}</span>
+                <button *ngIf="item.path === 'export/:id/:formato'"
+                        type="button" class="btn btn-link p-0 align-baseline ms-1"
+                        (click)="selectSection('exportacao')">{{ t('viewExport') }}</button>
+                <ul *ngIf="item.params.length">
+                  <li *ngFor="let param of item.params">{{ t(param) }}</li>
                 </ul>
               </td>
             </tr>
-
-            <tr>
-              <td>
-                <a href="{{ url }}/terms/:th" target="_blank">/api/terms/:th</a>
-              </td>
-              <td class="text-center">GET</td>
-              <td>
-                Conceitos do tesauro.
-                <ul>
-                  <li>:th - Número (ID) do tesauros (Thesa)</li>
-                  <li>:apikey (opcional) - Se informado retorna variável editMode (true ou false)</li>
-                </ul>
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                <a href="{{ url }}/t/:idT" target="_blank">/api/t/:idT</a>
-              </td>
-              <td class="text-center">GET</td>
-              <td>
-                Termo dentro dos tesauros.
-                <ul>
-                  <li>:idT - Número (ID) do termo</li>
-                </ul>
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                <a href="{{ url }}/c/:idC" target="_blank">/api/c/:idC</a>
-              </td>
-              <td class="text-center">GET</td>
-              <td>
-                Conceitos do tesauro.
-                <ul>
-                  <li>:idC - Número (ID) do conceito</li>
-                </ul>
-              </td>
-            </tr>
-
-            <tr>
-              <th colspan="3" class="text-center bg-dark text-white">
-                API de exportação
-              </th>
-            </tr>
-            <tr>
-              <td><code>/api/export/:id/:formato</code></td>
-              <td class="text-center">GET</td>
-              <td>
-                Baixa o tesauro completo ou um conceito em RDF/XML, Turtle,
-                JSON-LD ou TXT.
-                <button type="button" class="btn btn-link p-0 align-baseline"
-                  (click)="selectSection('exportacao')"
-                >Ver formatos, parâmetros e exemplos</button>.
-              </td>
-            </tr>
-
-            <!-- API com token -->
-            <tr>
-              <th colspan="3" class="text-center bg-dark text-white">
-                API de manutenção do tesauro
-              </th>
-            </tr>
-
-            <tr>
-              <td>
-                <a href="{{ url }}/createThesa" target="_blank"
-                  >/api/createThesa</a
-                >
-              </td>
-              <td class="text-center">POST</td>
-              <td>
-                <ul>
-                  <li>:apikey - API key do usuário</li>
-                  <li>
-                    :title - Título do instrumento de controle de vocabulário
-                  </li>
-                  <li>:acronic - Abreviatura, acronico do instrumento</li>
-                  <li>
-                    :type - Tipo do instrumento
-                    <ul>
-                      <li>1: Vocabulário controlado / Glossário</li>
-                      <li>2: Tesauro (tradicional - TG/TE/TR)</li>
-                      <li>3: Tesauro (SKOS/semântico)</li>
-                      <li>4: Controle de autoridade</li>
-                    </ul>
-                  </li>
-                  <li>
-                    :visibility - Conteúdo a ser salvo dentro do campo de
-                    descrição
-                    <ul>
-                      <li>1: Restrito</li>
-                      <li>2: Público</li>
-                    </ul>
-                  </li>
-                  <li>
-                    :finality - Conteúdo a ser salvo dentro do campo de
-                    descrição
-                    <ul>
-                      <li>1: Testar a ferramenta</li>
-                      <li>2: Atividade de ensino/pesquisa</li>
-                      <li>3: Produção de tesauro</li>
-                    </ul>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                <a href="{{ url }}/removeRelation" target="_blank"
-                  >/api/removeRelation</a
-                >
-              </td>
-              <td class="text-center">POST</td>
-              <td>
-                <ul>
-                  <li>:apikey - API key do usuário</li>
-                  <li>:terms - ID dos termos a serem relacionados</li>
-                  <li>:thesaID - Número (ID) do tesauro</li>
-                  <li>
-                    :verb - Verbo de relacionamento
-                    <ul>
-                      <li>altLabel: Termo Equivalente</li>
-                      <li>hiddenLabel: Termo Oculto</li>
-                    </ul>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                <a href="{{ url }}/relateTerms" target="_blank"
-                  >/api/relateTerms</a
-                >
-              </td>
-              <td class="text-center">POST</td>
-              <td>
-                <ul>
-                  <li>:apikey - API key do usuário</li>
-                  <li>:terms - ID dos termos a serem relacionados</li>
-                  <li>:thesaID - Número (ID) do tesauro</li>
-                  <li>
-                    :verb - Verbo de relacionamento
-                    <ul>
-                      <li>altLabel: Termo Equivalente</li>
-                      <li>hiddenLabel: Termo Oculto</li>
-                    </ul>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                <a href="{{ url }}/saveDescription" target="_blank"
-                  >/api/saveDescription</a
-                >
-              </td>
-              <td class="text-center">POST</td>
-              <td>
-                <ul>
-                  <li>:apikey - API key do usuário</li>
-                  <li>
-                    :field - Nome do campo da descrição (title, achronic,
-                    introduction, Methodology, Audience, License)
-                  </li>
-                  <li>:thesaurus - Número (ID) do tesauro</li>
-                  <li>
-                    :description - Conteúdo a ser salvo dentro do campo de
-                    descrição
-                  </li>
-                </ul>
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                <a href="{{ url }}/relateConcept" target="_blank"
-                  >/api/relateConcept</a
-                >
-              </td>
-              <td class="text-center">POST</td>
-              <td>
-                <ul>
-                  <li>:apikey - API key do usuário</li>
-                  <li>:thesaurus - Número (ID) do tesauro</li>
-                  <li>:property - Tipo de vinculo (broader, related)</li>
-                  <li>:c1 - Conceito principal</li>
-                  <li>:c2 - Conceito secundario</li>
-                </ul>
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                <a href="{{ url }}/term_add" target="_blank">/api/term_add</a>
-              </td>
-              <td class="text-center">POST</td>
-              <td>
-                <ul>
-                  <li>:apikey - API key do usuário</li>
-                </ul>
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                <a href="{{ url }}/concept_create_term" target="_blank"
-                  >/api/concept_create_term</a
-                >
-              </td>
-              <td class="text-center">POST</td>
-              <td>
-                <ul>
-                  <li>:apikey - API key do usuário</li>
-                </ul>
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                <a href="{{ url }}/term_list/:idTh" target="_blank"
-                  >/api/term_list/:idTh</a
-                >
-              </td>
-              <td class="text-center">POST</td>
-              <td>
-                <ul>
-                  <li>:apikey - API key do usuário</li>
-                  <li>:idTh - ID do tesauro</li>
-                </ul>
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                <a href="{{ url }}/term_pref_list/:idTh/:idC" target="_blank"
-                  >/api/term_pref_list/:idTh/:idC</a
-                >
-              </td>
-              <td class="text-center">POST</td>
-              <td>
-                <ul>
-                  <li>:apikey - API key do usuário</li>
-                  <li>:idTh - ID do tesauro</li>
-                  <li>:idC - ID do conceito</li>
-                </ul>
-              </td>
-            </tr>
-
-<tr>
-              <td>
-                <a href="{{ url }}/saveNote" target="_blank"
-                  >/api/saveNote</a
-                >
-              </td>
-              <td class="text-center">POST</td>
-              <td>
-                <ul>
-                  <li>:apikey - API key do usuário</li>
-                  <li>:field - Nome do campo da descrição (title, achronic, introduction, Methodology, Audience, License)</li>
-                  <li>:thesaurus - Número (ID) do tesauro</li>
-                  <li>:noteID (opcional) - ID da nota para alteração</li>
-                  <li>:conceptID - Número (ID) do conceito</li>
-                  <li>:note - Conteúdo a ser salvo dentro do campo de</li>
-                  <li>:noteType - Tipo de vinculo (broader, related)</li>
-                  <li>:thesaurus - Número (ID) do tesauro</li>
-                  <li>:lang - Idioma da nota (por, eng, spn, fra, get, ...)</li>
-                </ul>
-              </td>
-            </tr>
-
-            <tr>
-              <td><a href="{{ url }}/deleteNote" target="_blank">/api/deleteNote</a></td>
-              <td class="text-center">POST</td>
-              <td>
-                <ul>
-                  <li>:apikey - API key do usuário</li>
-                  <li>noteID: - ID do registro da Nota</li>
-                </ul>
-              </td>
-            </tr>
-
-            <tr>
-              <td><a href="{{ url }}/getNote" target="_blank">/api/getNote</a></td>
-              <td class="text-center">POST</td>
-              <td>
-                Recupera dados de uma nota.
-                <ul>
-                  <li>:apikey - API key do usuário</li>
-                  <li>noteID: - ID do registro da Nota</li>
-                </ul>
-              </td>
-            </tr>
-
-            <tr>
-              <td><a href="{{ url }}/tools" target="_blank">/api/tools</a></td>
-              <td class="text-center">POST</td>
-              <td>
-                <ul>
-                  <li>:apikey - API key do usuário</li>
-                </ul>
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                <a href="{{ url }}/import" target="_blank">/api/import</a>
-              </td>
-              <td class="text-center">POST</td>
-              <td>
-                <ul>
-                  <li>:apikey - API key do usuário</li>
-                </ul>
-              </td>
-            </tr>
-
-            <!-- Estatistica API -->
-            <tr>
-              <th colspan="3" class="text-center bg-dark text-white">
-                API estatíticas
-              </th>
-            </tr>
-
-            <tr>
-              <td>
-                <a href="{{ url }}/status" target="_blank">/api/status</a>
-              </td>
-              <td class="text-center">GET</td>
-              <td>Saude do sistema.</td>
-            </tr>
-
-            <tr>
-              <td>
-                <a href="{{ url }}/resume" target="_blank">/api/resume</a>
-              </td>
-              <td class="text-center">GET</td>
-              <td>Dados resumidos de todos os tesauros.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </ng-container>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
   </section>
 </div>

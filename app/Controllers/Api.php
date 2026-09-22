@@ -426,6 +426,14 @@ class Api extends BaseController
                 $DT = array_merge($DT, $_POST);
                 $RSP = $Term->createConceptAPI($DT);
                 break;
+            case 'term_unlink':
+                if ($user == 0) {
+                    $RSP = $this->apiError();
+                } else {
+                    $TermsTh = new \App\Models\Term\TermsTh();
+                    $RSP = $TermsTh->unlinkCandidates($_POST);
+                }
+                break;
             case 'term_update':
                 $dt = $_POST;
                 $Term = new \App\Models\Term\Index();
