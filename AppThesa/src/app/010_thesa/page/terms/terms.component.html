@@ -26,10 +26,32 @@
             Nenhum termo encontrado.
           </div>
 
-          <ul class="list-group list-group-flush" *ngIf="!loading && terms.length > 0">
+          <div class="term-filter mb-3" *ngIf="!loading && terms.length > 0">
+            <label for="termFilter" class="visually-hidden">{{ language.labels().searchTerm }}</label>
+            <div class="input-group">
+              <span class="input-group-text" aria-hidden="true"><i class="bi bi-search"></i></span>
+              <input
+                id="termFilter"
+                type="search"
+                class="form-control"
+                [(ngModel)]="filterText"
+                [placeholder]="language.labels().searchTerm"
+                [attr.aria-label]="language.labels().searchTerm"
+              />
+            </div>
+            <small class="text-muted" *ngIf="filterText.trim()">
+              {{ filteredTerms.length }} / {{ terms.length }} {{ language.labels().termPlural }}
+            </small>
+          </div>
+
+          <div *ngIf="!loading && terms.length > 0 && filteredTerms.length === 0" class="text-muted">
+            Nenhum termo encontrado.
+          </div>
+
+          <ul class="list-group list-group-flush" *ngIf="!loading && filteredTerms.length > 0">
             <li
               class="list-group-item d-flex align-items-center justify-content-between"
-              *ngFor="let term of terms"
+              *ngFor="let term of filteredTerms"
             >
               <div class="flex-grow-1 me-3">
                 <div *ngIf="!term.editing" class="d-flex align-items-center flex-wrap gap-2">

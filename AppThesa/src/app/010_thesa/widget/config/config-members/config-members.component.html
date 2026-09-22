@@ -1,114 +1,78 @@
-<table
-  class="table table-bordered table-striped table-hover w-100"
-  *ngIf="members"
->
-  <thead class="table-light">
-    <tr>
-      <th scope="col">Nome</th>
-      <th scope="col">Instituição</th>
-      <th scope="col">Função</th>
-      <th scope="col">Ação</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let person of members.members">
-      <td>{{ person.fullname }}</td>
-      <td>{{ person.affiliation || "—" }}</td>
-      <td>{{ person.function || "—" }}</td>
-      <td class="text-center">
-        <i class="link bi bi-trash" (click)="removeMember(person.idv)"></i>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<section class="members-panel" *ngIf="members">
+  <div class="table-responsive">
+    <table class="table members-table mb-0">
+      <thead>
+        <tr>
+          <th scope="col">{{ language.labels().memberName }}</th>
+          <th scope="col">{{ language.labels().memberInstitution }}</th>
+          <th scope="col">{{ language.labels().memberRole }}</th>
+          <th scope="col" class="text-center action-column">{{ language.labels().memberAction }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let person of members.members">
+          <td class="member-name">{{ person.fullname }}</td>
+          <td>{{ person.affiliation || '—' }}</td>
+          <td><span class="member-role">{{ roleLabel(person.function) }}</span></td>
+          <td class="text-center">
+            <button type="button" class="member-remove" (click)="removeMember(person.idv)"
+              [attr.aria-label]="language.labels().removeMember"
+              [title]="language.labels().removeMember">
+              <i class="bi bi-trash" aria-hidden="true"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="mb-4">
-  <div class="container border rounded p-2 border-secondary">
-    <div class="row">
-      <div class="col-12 col-lg-12 navbar-custom">Adicionar novos membros</div>
-      <div class="col-12 col-lg-6">
-        <label for="searchInput" class="form-label bold"
-          >Informe o E-mail</label
-        >
-        <input
-          id="searchInput"
-          type="text"
-          formControlName="search"
-          class="form-control border border-secondary"
-          placeholder="Digite o nome ou e-mail do usuário"
-        />
-
-        <button
-          type="submit"
-          class="btn btn-outline-primary mt-2 full"
-          [disabled]="form.invalid"
-        >
-          Registrar
-        </button>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="member-form">
+  <div class="form-heading">
+    <i class="bi bi-person-plus" aria-hidden="true"></i>
+    <span>{{ language.labels().addMembers }}</span>
+  </div>
+  <div class="form-content">
+    <div class="row g-3 align-items-start">
+      <div class="col-12 col-xl-5">
+        <label for="memberSearch" class="form-label">{{ language.labels().memberEmailPrompt }}</label>
+        <input id="memberSearch" type="text" formControlName="search" class="form-control"
+          [placeholder]="language.labels().memberSearchPlaceholder" />
       </div>
-      <div class="col-12 col-lg-6">
-        <label for="searchInput" class="form-label bold">Tipo de vinculo</label>
-        <br />
-<input
-          type="radio"
-          name="type"
-          formControlName="type"
-          value="1"
-          id="type"
-          class="form-check-input border border-secondary"
-        />
-        Autor e Revisor (Gerente)<br />
-
-        <input
-          type="radio"
-          name="type"
-          formControlName="type"
-          value="2"
-          id="type"
-          class="form-check-input border border-secondary"
-        />
-        Autor (Coautor) <br /><input
-          type="radio"
-          name="type"
-          formControlName="type"
-          value="2"
-          id="type"
-          class="form-check-input border border-secondary"
-        />
-        Colaborador <br />
-
-        <input
-          type="radio"
-          name="type"
-          formControlName="type"
-          value="3"
-          id="type"
-          class="form-check-input border border-secondary"
-        />
-        Orientador<br />
-
-
-
-        <input
-          type="radio"
-          name="type"
-          formControlName="type"
-          value="5"
-          id="type"
-          class="form-check-input border border-secondary"
-        />
-        Digitador<br />
-      </div>
-      <div class="col-12 col-lg-12 mt-3">
-        <div *ngIf="loading" class="alert alert-info">Registrando...</div>
-
-        <div
-          *ngIf="!loading && results?.length === 0"
-          class="alert alert-warning"
-        >
-          Nenhum resultado encontrado.
+      <fieldset class="col-12 col-xl-7">
+        <legend class="form-label">{{ language.labels().membershipType }}</legend>
+        <div class="role-options">
+          <label class="role-option" [class.selected]="form.get('type')?.value === '1'" for="memberRoleManager">
+            <input type="radio" formControlName="type" value="1" id="memberRoleManager" />
+            {{ language.labels().managerRole }}
+          </label>
+          <label class="role-option" [class.selected]="form.get('type')?.value === '2'" for="memberRoleCoauthor">
+            <input type="radio" formControlName="type" value="2" id="memberRoleCoauthor" />
+            {{ language.labels().coauthorRole }}
+          </label>
+          <label class="role-option" [class.selected]="form.get('type')?.value === '3'" for="memberRoleCollaborator">
+            <input type="radio" formControlName="type" value="3" id="memberRoleCollaborator" />
+            {{ language.labels().collaboratorRole }}
+          </label>
+          <label class="role-option" [class.selected]="form.get('type')?.value === '4'" for="memberRoleAdvisor">
+            <input type="radio" formControlName="type" value="4" id="memberRoleAdvisor" />
+            {{ language.labels().advisorRole }}
+          </label>
+          <label class="role-option" [class.selected]="form.get('type')?.value === '5'" for="memberRoleTypist">
+            <input type="radio" formControlName="type" value="5" id="memberRoleTypist" />
+            {{ language.labels().typistRole }}
+          </label>
         </div>
-      </div>
+      </fieldset>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary" [disabled]="form.invalid || loading">
+        {{ language.labels().registerMember }}
+      </button>
+    </div>
+    <div *ngIf="loading" class="alert alert-info mt-3 mb-0">{{ language.labels().registeringMember }}</div>
+    <div *ngIf="!loading && results?.length === 0" class="alert alert-warning mt-3 mb-0">
+      {{ language.labels().noMemberResults }}
     </div>
   </div>
 </form>

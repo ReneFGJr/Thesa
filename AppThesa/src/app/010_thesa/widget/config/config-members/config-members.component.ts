@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ServiceThesaService } from '../../../../000_core/service/service-thesa.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LanguageService } from '../../../../000_core/service/language.service';
 
 @Component({
     selector: 'app-config-members',
@@ -17,6 +18,7 @@ export class ConfigMembersComponent {
   loading = false;
 
   constructor(
+    public readonly language: LanguageService,
     private fb: FormBuilder,
     private serviceThesa: ServiceThesaService
   ) {
@@ -30,8 +32,19 @@ export class ConfigMembersComponent {
     this.getMembers(this.thesaID);
   }
 
+  roleLabel(role: string): string {
+    const labels = this.language.labels();
+    switch (role) {
+      case 'thesa.author': return labels.authorRole;
+      case 'thesa.collaborator': return labels.collaboratorRole;
+      case 'thesa.advisor': return labels.advisorRole;
+      case 'thesa.guest': return labels.typistRole;
+      default: return role || '—';
+    }
+  }
+
   removeMember(id: string) {
-    if (confirm('Deseja remover este membro?')) {
+    if (confirm(this.language.labels().removeMemberConfirm)) {
     let dt = {'id': id, 'thesaID': this.thesaID};
         this.serviceThesa.api_post('members_remove', dt).subscribe(
           (res) => {

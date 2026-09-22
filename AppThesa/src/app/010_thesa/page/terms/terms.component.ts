@@ -29,6 +29,7 @@ export class TermsPageComponent implements OnInit {
   thesaID = 0;
   thesa: any = null;
   terms: ThesaTermItem[] = [];
+  filterText = '';
   editMode = false;
   loading = false;
   error = '';
@@ -79,6 +80,19 @@ export class TermsPageComponent implements OnInit {
         this.loading = false;
       }
     );
+  }
+
+  get filteredTerms(): ThesaTermItem[] {
+    const query = this.normalizeSearch(this.filterText.trim());
+    if (!query) return this.terms;
+
+    return this.terms.filter((term) =>
+      this.normalizeSearch(this.termLabel(term)).includes(query)
+    );
+  }
+
+  private normalizeSearch(value: string): string {
+    return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase();
   }
 
   termLabel(term: ThesaTermItem): string {

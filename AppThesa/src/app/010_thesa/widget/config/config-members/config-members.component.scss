@@ -1,0 +1,147 @@
+.members-panel,
+.member-form {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.members-panel {
+  margin-bottom: 1rem;
+}
+
+.members-table {
+  font-size: 0.94rem;
+  vertical-align: middle;
+
+  th {
+    background: #f8fafc;
+    color: #475569;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0.7rem 1rem;
+  }
+
+  td {
+    border-color: #eef2f7;
+    padding: 0.65rem 1rem;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+}
+
+.member-name {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.member-role {
+  display: inline-block;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 0.82rem;
+  padding: 0.2rem 0.6rem;
+  white-space: nowrap;
+}
+
+.action-column {
+  width: 5rem;
+}
+
+.member-remove {
+  border: 0;
+  border-radius: 0.4rem;
+  background: transparent;
+  color: #64748b;
+  padding: 0.3rem 0.5rem;
+
+  &:hover,
+  &:focus-visible {
+    background: #fef2f2;
+    color: #dc2626;
+  }
+}
+
+.form-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  color: #1e293b;
+  font-weight: 600;
+
+  .bi {
+    color: #2563eb;
+  }
+}
+
+.form-content {
+  padding: 1rem;
+}
+
+.form-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+fieldset {
+  min-width: 0;
+}
+
+.role-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.role-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.65rem;
+  border: 1px solid #dbe2ea;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.86rem;
+  line-height: 1.25;
+
+  input {
+    margin: 0;
+    accent-color: #2563eb;
+  }
+
+  &:hover,
+  &.selected {
+    border-color: #93c5fd;
+    background: #eff6ff;
+  }
+
+  &:focus-within {
+    outline: 2px solid #93c5fd;
+    outline-offset: 2px;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.75rem;
+}
+
+@media (max-width: 575px) {
+  .members-table th,
+  .members-table td {
+    padding: 0.55rem 0.7rem;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+  }
+}
