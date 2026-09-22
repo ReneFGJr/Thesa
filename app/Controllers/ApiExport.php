@@ -142,11 +142,17 @@ class ApiExport extends BaseController
         if ($format !== 'xml') {
             $serializer = new RdfGraphSerializer();
             $triples = $serializer->triples($xml);
-            $xml = match ($format) {
-                'turtle' => $serializer->turtle($triples),
-                'json' => $serializer->jsonLd($triples),
-                'txt' => $serializer->text($triples),
-            };
+            switch ($format) {
+                case 'turtle':
+                    $xml = $serializer->turtle($triples);
+                    break;
+                case 'json':
+                    $xml = $serializer->jsonLd($triples);
+                    break;
+                case 'txt':
+                    $xml = $serializer->text($triples);
+                    break;
+            }
         }
 
         return $this->response

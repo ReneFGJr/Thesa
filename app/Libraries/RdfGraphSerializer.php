@@ -132,9 +132,9 @@ class RdfGraphSerializer
             $nodes[$subject][$key][] = $value;
         }
 
-        return json_encode(
+        return $this->encodeJson(
             ['@context' => self::PREFIXES, '@graph' => array_values($nodes)],
-            JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
         ) . "\n";
     }
 
@@ -163,7 +163,7 @@ class RdfGraphSerializer
     private function term(string $uri): string
     {
         foreach (self::PREFIXES as $prefix => $namespace) {
-            if (str_starts_with($uri, $namespace)) {
+            if (strpos($uri, $namespace) === 0) {
                 return $prefix . ':' . substr($uri, strlen($namespace));
             }
         }
@@ -173,15 +173,24 @@ class RdfGraphSerializer
     private function compact(string $uri): string
     {
         foreach (self::PREFIXES as $prefix => $namespace) {
-            if (str_starts_with($uri, $namespace)) {
+            if (strpos($uri, $namespace) === 0) {
                 return $prefix . ':' . substr($uri, strlen($namespace));
             }
         }
         return $uri;
     }
 
+    private function encodeJson($value, int $options): string
+    {
+        $json = json_encode($value, $options);
+        if ($json === false) {
+            throw new \RuntimeException('Failed to encode JSON: ' . json_last_error_msg());
+        }
+        return $json;
+    }
+
     private function quote(string $value): string
     {
-        return json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+        return $this->encodeJson($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 }

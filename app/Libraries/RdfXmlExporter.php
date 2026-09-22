@@ -22,9 +22,13 @@ class RdfXmlExporter
         string $baseUrl
     ): string {
         $schemeUri = $baseUrl . '/th/' . (int) $scheme['id_th'];
-        $conceptUri = static fn (int $id): string => $baseUrl . '/v/' . $id;
+        $conceptUri = static function (int $id) use ($baseUrl): string {
+            return $baseUrl . '/v/' . $id;
+        };
         $conceptIds = array_fill_keys(array_map(
-            static fn (array $concept): int => (int) $concept['c_concept'],
+            static function (array $concept): int {
+                return (int) $concept['c_concept'];
+            },
             $concepts
         ), true);
 
@@ -125,9 +129,9 @@ class RdfXmlExporter
             }
             foreach (['c_created' => 'created', 'c_updated' => 'modified'] as $column => $property) {
                 $date = trim((string) ($concept[$column] ?? ''));
-                if ($date !== '' && $date !== '0000-00-00' && !str_starts_with($date, '0000-00-00')) {
+                if ($date !== '' && $date !== '0000-00-00' && strpos($date, '0000-00-00') !== 0) {
                     $value = str_replace(' ', 'T', $date);
-                    $datatype = str_contains($value, 'T') ? 'dateTime' : 'date';
+                    $datatype = strpos($value, 'T') !== false ? 'dateTime' : 'date';
                     $this->literal($xml, 'dc', $property, self::DC, $value, '', 'http://www.w3.org/2001/XMLSchema#' . $datatype);
                 }
             }
