@@ -49,8 +49,8 @@
         </tbody>
       </table>
       <h4>{{ t('whichId') }}</h4>
-      <p>{{ t('exportThesaurus') }}</p>
-      <p>{{ t('exportConcept') }}</p>
+      <p>{{ t('exportThesaurus') }} <a [href]="exportApiUrl + '/export/6/xml'">/api/export/6/xml</a></p>
+      <p>{{ t('exportConcept') }} <a [href]="exportApiUrl + '/export/366/xml?scope=concept'">/api/export/366/xml?scope=concept</a></p>
       <h4>{{ t('privateAccess') }}</h4>
       <p>{{ t('privateAccessText') }}</p>
       <h4>{{ t('exportExamples') }}</h4>
